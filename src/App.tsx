@@ -53,7 +53,7 @@ const App = () => {
         <Route path="/linkinbio" element={<LinkInBio />} />
         <Route path="/Otp" element={<Otp />} />
         <Route path="/pricing" element={<BiogramPricing />} />
-        <Route path="/gogreensection" element={<GoGreenSection />} />
+        {/* <Route path="/gogreensection" element={<GoGreenSection />} /> */}
         <Route path="/featuredlinkform" element={<FeaturedLinkForm />} />
         <Route path="/addmultilink" element={<AddMultiLink />} />
         <Route path="/addmerge" element={<AddMerch />} />
