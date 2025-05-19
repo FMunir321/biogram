@@ -3,7 +3,10 @@ import logo from "../../assets/Biogramlogo2.png";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gradient-to-br from-orange-400 via-pink-500 to-pink-600 text-white py-12 px-6 overflow-x-hidden">
+    <footer
+  className="text-white py-12 px-6 overflow-x-hidden"
+  style={{ background: "linear-gradient(to right, #7ECFA7, #53886C)" }}
+>
       {/* Logo Section */}
       <div className="max-w-7xl mx-auto mb-10 text-center md:text-left">
         <a href="/" className="flex items-center ">
@@ -14,7 +17,7 @@ const Footer: React.FC = () => {
       {/* Links Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-center md:text-left">
         {/* Products */}
-        <div className="bg-white/20 rounded-2xl p-4 space-y-4">
+        <div className="bg-white/20 rounded-2xl p-4 space-y-4 w-[315px] h-[444px]">
           <h2 className="text-lg font-bold ml-2">Products</h2>
 
           <ul className="space-y-2 mt-24">
