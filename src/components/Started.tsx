@@ -43,9 +43,9 @@ const Started = () => {
             </h1>
             <p className="text-gray-700 text-lg md:text-xl max-w-[500px] mx-auto lg:mx-0 font-poppins">
               Over 200 million people have a Biogram profile. Unlock your
-              business's potential with Biogram's{" "}
-              <strong>cutting-edge</strong> marketing tools and ad solutions,
-              designed to elevate your business.
+              business's potential with Biogram's <strong>cutting-edge</strong>{" "}
+              marketing tools and ad solutions, designed to elevate your
+              business.
             </p>
             <Link to="/startnow">
               <button className="w-full sm:w-[280px] h-[56px] sm:h-[64px] rounded-full text-white text-lg md:text-xl font-semibold shadow-lg bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:opacity-90 transition">
@@ -62,13 +62,11 @@ const Started = () => {
               className="w-full h-auto object-cover"
             />
           </div>
-        
         </div>
-   {/* DropDown */}
-   <div className="flex justify-end mt-8 px-6  z-50">
+        {/* DropDown */}
+        <div className="flex justify-end mt-8 px-6  z-50">
           <DropDown />
         </div>
-       
       </div>
     </div>
   );
