@@ -1,7 +1,7 @@
 import { Button } from "../components/ui/button";
 import Dashboard from "./Dashboard";
 import DropDown from "./DropDown";
-import bground from "../assets/Rectangle67.png";
+import bground from "../assets/lightbg.png";
 import LogoStartNow from "./LogoStartNow";
 import { Link } from "react-router-dom";
 
@@ -20,11 +20,11 @@ const Started = () => {
       <div className="relative z-10">
         <LogoStartNow />
 
-        <div className="container max-w-screen-xl mx-auto px-4 xl:px-16 pt-24 xl:pt-20 pb-20 xl:pb-0 flex flex-col xl:flex-row items-center xl:justify-between gap-12 xl:h-screen">
+        <div className="container max-w-screen-xl mx-auto px-4 xl:px-16 flex flex-col xl:flex-row items-center xl:justify-between gap-12 xl:h-screen">
           
           {/* Left Content */}
-          <div className="w-full xl:w-1/2 text-center xl:text-left space-y-6 ">
-            <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold leading-tight text-black">
+          <div className="w-full text-center xl:text-left space-y-6 mx-auto">
+            <h1 className="text-5xl sm:text-4xl xl:text-7xl font-bold leading-tight text-black">
               Reach Millions. <br />
               Your <span className="text-black">Business</span>, <br />
               Our Platform.
@@ -34,7 +34,7 @@ const Started = () => {
               Biogram cutting edge marketing tools and ad solutions, designed to elevate your business.
             </p>
             <Link to="/startnow">
-              <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-base sm:text-lg px-10 py-4 rounded-full">
+              <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-base sm:text-lg px-40 py-8 rounded-full ml-10">
                 Get Started
               </Button>
             </Link>
@@ -43,8 +43,8 @@ const Started = () => {
           {/* Right Side */}
           <div className="w-full xl:w-[520px] relative">
             <Dashboard />
-            <div className="absolute bottom-[-16px] right-0">
-              <div className="absolute top-full right-0 mt-1">
+            <div className="absolute bottom-[-10px]">
+              <div className="absolute top-full mt-1 left-[480px]">
                 <DropDown />
               </div>
             </div>

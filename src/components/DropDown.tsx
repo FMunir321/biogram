@@ -6,7 +6,7 @@ export const DropDown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="text-orange-500 border-orange-500 px-4 py-2 flex items-center gap-1">
+        <Button variant="outline" className="text-black border-black px-4 py-2 flex items-center gap-1 bg-gradient-to-br from-[#7ECFA7] to-[#53886C]">
           For Business
           <ChevronDown className="h-4 w-4" />
         </Button>

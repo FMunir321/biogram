@@ -11,7 +11,7 @@ const LogoStartNow = ({ variant = "default" }: LogoStartNowProps) => {
   const logo = variant === "alt" ? BiogramLogo2 : BiogramLogo1;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-8 py-2 bg-gradient-to-r from-white to-pink-100">
+    <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-8 py-2">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/">

@@ -19,10 +19,10 @@ const StartNow = () => {
 
       {/* Main text content */}
       <div className="text-center max-w-4xl px-2">
-        <h2 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-white">
+        <h2 className="text-3xl sm:text-5xl lg:text-8xl font-bold text-white">
           Apply to start
         </h2>
-        <h3 className="text-xl sm:text-3xl lg:text-5xl font-bold text-white mt-2">
+        <h3 className="text-xl sm:text-3xl lg:text-7xl font-bold text-white mt-3">
           Advertising on Biogram
         </h3>
         <p className="text-white/90 text-sm sm:text-base mt-4">
