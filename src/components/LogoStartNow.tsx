@@ -20,7 +20,13 @@ const LogoStartNow = ({ variant = "default" }: LogoStartNowProps) => {
 
         {/* Start Now Button */}
         <Link to="/startnow">
-          <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm sm:text-base px-4 py-1.5 sm:px-6 sm:py-2 rounded-lg cursor-pointer">
+          <Button
+            className="text-white text-sm sm:text-base w-[168px] h-[48px] rounded-[10px] cursor-pointer"
+            style={{
+              background:
+                "linear-gradient(97.29deg, #7ECFA7 13.65%, #53886C 90.87%)",
+            }}
+          >
             Start Now
           </Button>
         </Link>
