@@ -1,22 +1,24 @@
 import { Button } from "../components/ui/button";
-import Dashboard from "./Dashboard";
 import DropDown from "./DropDown";
 import bground from "../assets/lightbg.png";
-import LogoStartNow from "./LogoStartNow";
+import logo from "../assets/Biogramlogo.png";
 import { Link } from "react-router-dom";
+import AnalyticsImage from "../assets/Analytics 2.png";
 
 const Started = () => {
   return (
-    <div className="relative min-h-screen bg-white ">
+    <div className="relative min-h-screen w-full bg-white overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 z-0">
         <img
           src={bground}
           alt="background"
           className="w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-white/80" />
       </div>
 
+      {/* Content */}
       <div className="relative z-10">
         <LogoStartNow />
 
@@ -29,14 +31,16 @@ const Started = () => {
               Your <span className="text-black">Business</span>, <br />
               Our Platform.
             </h1>
-            <p className="text-gray-600 text-base xl:text-lg max-w-xl mx-auto xl:mx-0">
-              Over 200 million people have a Biogram profile. Unlock your business's potential with
-              Biogram cutting edge marketing tools and ad solutions, designed to elevate your business.
+            <p className="text-gray-700 text-lg md:text-xl max-w-[500px] mx-auto lg:mx-0 font-poppins">
+              Over 200 million people have a Biogram profile. Unlock your
+              business's potential with Biogram's <strong>cutting-edge</strong>{" "}
+              marketing tools and ad solutions, designed to elevate your
+              business.
             </p>
             <Link to="/startnow">
               <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-base sm:text-lg px-40 py-8 rounded-full ml-10">
                 Get Started
-              </Button>
+              </button>
             </Link>
           </div>
 
@@ -49,6 +53,10 @@ const Started = () => {
               </div>
             </div>
           </div>
+        </div>
+        {/* DropDown */}
+        <div className="flex justify-end mt-8 px-6  z-50">
+          <DropDown />
         </div>
       </div>
     </div>

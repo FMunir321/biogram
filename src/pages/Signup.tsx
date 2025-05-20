@@ -9,10 +9,10 @@ import logo from "../assets/Biogramlogo.png";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
-import RightImage from "../assets/image19.png";
-import LeftImage from "../assets/image20.png";
+import RightImage from "../assets/RightImage.png";
+import LeftImage from "../assets/LeftImage.png";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/Biogramlogo.png";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,12 +33,21 @@ const Signup = () => {
         {/* Center Form - Responsive */}
         <div className="flex-1 px-4 md:px-8 py-6 overflow-y-auto w-full max-w-[900px] mx-auto">
           {/* Decorative Lines */}
+          <div className="flex items-center justify-center gap-[4px] mb-6">
+            <div className="w-[78px] h-[6px] rounded-[8px]">
+              <div
+                className="h-full rounded-[8px]"
+                style={{
+                  background:
+                    "linear-gradient(97.29deg, #7ECFA7 13.65%, #53886C 90.87%)",
+                }}
+              ></div>
           <div className="flex items-center justify-center gap-[2px] mb-6">
             <div className="w-[30px]">
               <div className="h-[3px] bg-gradient-to-r from-[#98e6c3] to-[#4a725f] via-[#7ECFA7] "></div>
             </div>
-            <div className="w-[30px]">
-              <div className="h-[3px] bg-gradient-to-r from-[#2c23232c]"></div>
+            <div className="w-[78px] h-[6px] rounded-[8px]">
+              <div className="h-full bg-[#D9D9D9] rounded-[8px]"></div>
             </div>
           </div>
 
@@ -60,19 +69,30 @@ const Signup = () => {
                 Networking just got an upgrade
               </p>
             </div>
-
-            <Tabs defaultValue="personal" className="w-full">
-              <div className="px-2 md:px-6">
-                <TabsList className="grid w-full grid-cols-2 p-1 bg-[#F8F8F8] rounded-full mb-8">
+            <Tabs
+              defaultValue="personal"
+              className="w-full border-r-emerald-300"
+            >
+              <div className="px-2 md:px-6 flex justify-center">
+                <TabsList
+                  className="relative w-[546px] h-[66px] p-1 mb-8"
+                  style={{
+                    background:
+                      "linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)",
+                    border: "1px solid",
+                    borderRadius: "42px", // ✅ match tab border radius
+                  }}
+                >
                   <TabsTrigger
                     value="personal"
-                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#98e6c3] data-[state=active]:to-[#4a725f] data-[state=active]:text-white"
+                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF00EE] data-[state=active]:to-[#FF6200] data-[state=active]:text-white"
                   >
                     Personal
                   </TabsTrigger>
+
                   <TabsTrigger
                     value="business"
-                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#98e6c3] data-[state=active]:to-[#4a725f] data-[state=active]:text-white"
+                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF00EE] data-[state=active]:to-[#FF6200] data-[state=active]:text-white"
                   >
                     Business
                   </TabsTrigger>
@@ -81,73 +101,102 @@ const Signup = () => {
 
               <TabsContent value="personal" className="space-y-4">
                 <form className="space-y-4">
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email or Phone Number"
-                    autoComplete="email"
-                    className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                  />
-                  <Input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    placeholder="Full Name"
-                    autoComplete="name"
-                    className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                  />
-                  <div className="grid grid-cols-3 gap-3">
-                    <Input
-                      id="birthDay"
-                      name="birthDay"
-                      placeholder="Day"
-                      autoComplete="bday-day"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
-                    <Input
-                      id="birthMonth"
-                      name="birthMonth"
-                      placeholder="Month"
-                      autoComplete="bday-month"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
-                    <Input
-                      id="birthYear"
-                      name="birthYear"
-                      placeholder="Year"
-                      autoComplete="bday-year"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Email or Phone Number</legend>
+                      <Input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email or Phone Number"
+                        autoComplete="email"
+                        className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
                   </div>
-                  <Input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Username"
-                    autoComplete="username"
-                    className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
-                  />
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      name="password"
-                      placeholder="Password"
-                      autoComplete="current-password"
-                      className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 pr-12 focus:border-black focus:ring-black"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showPassword ? (
-                        <EyeOffIcon size={20} />
-                      ) : (
-                        <EyeIcon size={20} />
-                      )}
-                    </button>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Full Name</legend>
+                      <Input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Full Name"
+                        autoComplete="name"
+                        className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Date of Birth</legend>
+                      <div className="grid grid-cols-3 gap-3">
+                        <Input
+                          id="birthDay"
+                          name="birthDay"
+                          placeholder="Day"
+                          autoComplete="bday-day"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                        <Input
+                          id="birthMonth"
+                          name="birthMonth"
+                          placeholder="Month"
+                          autoComplete="bday-month"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                        <Input
+                          id="birthYear"
+                          name="birthYear"
+                          placeholder="Year"
+                          autoComplete="bday-year"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                      </div>
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Username</legend>
+                      <Input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        autoComplete="username"
+                        className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Password</legend>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          name="password"
+                          placeholder="Password"
+                          autoComplete="current-password"
+                          className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 pr-12 focus:border-black focus:ring-black"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                        >
+                          {showPassword ? (
+                            <EyeOffIcon size={20} />
+                          ) : (
+                            <EyeIcon size={20} />
+                          )}
+                        </button>
+                      </div>
+                    </fieldset>
                   </div>
                   <div className="text-xs text-gray-500">
                     <label className="flex items-start gap-2">
@@ -172,14 +221,14 @@ const Signup = () => {
                   </div>
                   <Link
                     to="/otp"
-                    className="block w-full h-[52px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
+                    className="block w-full h-[52px] bg-gradient-to-r from-[#FF5C00] to-[#FF0676] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
                   >
                     Continue
                   </Link>
-                  
+
                   <p className="text-center text-sm text-gray-500">
                     Already have an account?{" "}
-                    <a href="/login" className="text-[#7ECFA7] hover:underline">
+                    <a href="/login" className="text-[#FF0676] hover:underline">
                       Login
                     </a>
                   </p>
@@ -188,73 +237,102 @@ const Signup = () => {
 
               <TabsContent value="business" className="space-y-4">
                 <form className="space-y-4">
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email or Phone Number"
-                    autoComplete="email"
-                    className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                  />
-                  <Input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    placeholder="Full Name"
-                    autoComplete="name"
-                    className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                  />
-                  <div className="grid grid-cols-3 gap-3">
-                    <Input
-                      id="birthDay"
-                      name="birthDay"
-                      placeholder="Day"
-                      autoComplete="bday-day"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
-                    <Input
-                      id="birthMonth"
-                      name="birthMonth"
-                      placeholder="Month"
-                      autoComplete="bday-month"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
-                    <Input
-                      id="birthYear"
-                      name="birthYear"
-                      placeholder="Year"
-                      autoComplete="bday-year"
-                      className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                    />
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Email or Phone Number</legend>
+                      <Input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email or Phone Number"
+                        autoComplete="email"
+                        className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
                   </div>
-                  <Input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Username"
-                    autoComplete="username"
-                    className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
-                  />
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      name="password"
-                      placeholder="Password"
-                      autoComplete="current-password"
-                      className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 pr-12 focus:border-black focus:ring-black"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showPassword ? (
-                        <EyeOffIcon size={20} />
-                      ) : (
-                        <EyeIcon size={20} />
-                      )}
-                    </button>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Full Name</legend>
+                      <Input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Full Name"
+                        autoComplete="name"
+                        className="w-full h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Date of Birth</legend>
+                      <div className="grid grid-cols-3 gap-3">
+                        <Input
+                          id="birthDay"
+                          name="birthDay"
+                          placeholder="Day"
+                          autoComplete="bday-day"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                        <Input
+                          id="birthMonth"
+                          name="birthMonth"
+                          placeholder="Month"
+                          autoComplete="bday-month"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                        <Input
+                          id="birthYear"
+                          name="birthYear"
+                          placeholder="Year"
+                          autoComplete="bday-year"
+                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        />
+                      </div>
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Username</legend>
+                      <Input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        autoComplete="username"
+                        className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="space-y-2">
+                    <fieldset className="relative">
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Password</legend>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          name="password"
+                          placeholder="Password"
+                          autoComplete="current-password"
+                          className="w-full h-[52px] rounded-[14px] border-black bg-[#F8F8F8] px-4 pr-12 focus:border-black focus:ring-black"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                        >
+                          {showPassword ? (
+                            <EyeOffIcon size={20} />
+                          ) : (
+                            <EyeIcon size={20} />
+                          )}
+                        </button>
+                      </div>
+                    </fieldset>
                   </div>
                   <div className="text-xs text-gray-500">
                     <label className="flex items-start gap-2">
@@ -279,13 +357,14 @@ const Signup = () => {
                   </div>
                   <Link
                     to="/otp"
-                    className="block w-full h-[52px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
+                    className="block w-full h-[52px] bg-gradient-to-r from-[#FF5C00] to-[#FF0676] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
                   >
                     Continue
                   </Link>
+
                   <p className="text-center text-sm text-gray-500">
                     Already have an account?{" "}
-                    <a href="/login" className="text-[#7ECFA7] hover:underline">
+                    <a href="/login" className="text-[#FF0676] hover:underline">
                       Login
                     </a>
                   </p>
