@@ -10,7 +10,8 @@ import BiogramShoutPage from "./BiogramShoutPage";
 import BiogramPricing from "./BiogramPrincing";
 // import JoinTheFamilySection from "./JoinFamily";
 import Footer from "@/components/footer/Footer";
-
+import ProfileCard from "./ProfileCard";
+import InstagramRedirectFeatures from "./InstagramRedirectFeatures";
 const Forpeople = () => {
   return (
     <div>
@@ -20,8 +21,11 @@ const Forpeople = () => {
       <LinkInBio />
       <RealTimeAnalyticsHero />
       <ArtistShowcase />
+     
        <BiogramProfile />
        <BiogramShoutPage />
+       <ProfileCard />
+       <InstagramRedirectFeatures />
       {/* <GoGreenSection /> */}
       {/* <JoinTheFamilySection /> */}
       <BiogramPricing />

@@ -73,7 +73,7 @@ const Otp = () => {
             <div className="h-[3px] bg-gradient-to-r from-[#2c23232c]"></div>
           </div>
           <div className="w-[30px]">
-            <div className="h-[3px] bg-gradient-to-r from-[#FF6200] via-[#FF00EE] to-[#FF6200]"></div>
+            <div className="h-[3px] bg-gradient-to-r from-[#98e6c3] via-[#4a725f] to-[#7ECFA7]"></div>
           </div>
         </div>
 
@@ -82,8 +82,8 @@ const Otp = () => {
           Verify Your Identity
         </h1>
 
-        <div className="w-full max-w-md bg-white/80 backdrop-blur-sm bg-gradient-to-r from-[#FF5C00]/10 to-[#FF0676]/10 rounded-2xl p-4 mb-6 sm:mb-8 flex items-center gap-3">
-          <div className="bg-gradient-to-r from-[#FF5C00] to-[#FF0676] rounded-lg p-2">
+        <div className="w-full max-w-md bg-white/80 backdrop-blur-sm bg-gradient-to-r from-[#98e6c3]/10 to-[#4a725f]/10 rounded-2xl p-4 mb-6 sm:mb-8 flex items-center gap-3">
+          <div className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-lg p-2">
             <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
@@ -119,7 +119,7 @@ const Otp = () => {
             received the code.{" "}
             <Link
               to="/SocialMedia"
-              className="text-[#FF0676] font-medium hover:underline"
+              className="text-[#7ECFA7] font-medium hover:underline"
             >
               Resend
             </Link>

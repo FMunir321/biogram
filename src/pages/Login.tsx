@@ -10,7 +10,7 @@ const Login = () => {
         <div className="w-[90%] max-w-[420px] px-6 mx-auto">
           {/* Logo */}
           <div className="text-center mb-14">
-            <h1 className="text-[52px] font-serif text-transparent bg-clip-text bg-gradient-to-r from-[#FF5C00] to-[#FF0676] italic font-normal leading-tight">Biogram</h1>
+            <h1 className="text-[52px] font-serif text-transparent bg-clip-text bg-gradient-to-r from-[#98e6c3] to-[#4a725f] italic font-normal leading-tight">Biogram</h1>
             <p className="text-[#666666] text-sm mt-1">Networking just got an upgrade</p>
           </div>
 
@@ -21,7 +21,7 @@ const Login = () => {
               <input
                 type="text"
                 placeholder="enter here"
-                className="w-full h-12 px-5 rounded-[100px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-pink-300 focus:ring-1 focus:ring-pink-200"
+                className="w-full h-12 px-5 rounded-[100px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200"
               />
             </div>
 
@@ -30,7 +30,7 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="enter here"
-                className="w-full h-12 px-5 rounded-[100px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-pink-300 focus:ring-1 focus:ring-pink-200"
+                className="w-full h-12 px-5 rounded-[100px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200"
               />
             </div>
 
@@ -38,7 +38,7 @@ const Login = () => {
               <input
                 type="checkbox"
                 id="terms"
-                className="mt-1 h-4 w-4 rounded border-[#E5E5E5] text-[#FF0676] focus:ring-[#FF0676]"
+                className="mt-1 h-4 w-4 rounded border-[#E5E5E5] text-[#98e6c3] focus:ring-[#98e6c3]"
               />
               <label htmlFor="terms" className="text-xs text-[#666666] leading-5">
                 By checking the box and tapping continue, you acknowledge that you have read the{" "}
@@ -53,14 +53,14 @@ const Login = () => {
             </div>
             <Link to="/maindashboard">
             <button 
-              className="w-full h-12 mt-4 rounded-[100px] bg-gradient-to-r from-[#FF5C00] to-[#FF0676] text-white text-sm font-medium cursor-pointer"
+              className="w-full h-12 mt-4 rounded-[100px] bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer"
             >
               Continue
             </button>
             </Link>
             <div className="text-center mt-4">
               <span className="text-xs text-[#666666]">Don't have an account? </span>
-              <Link to="/signup" className="text-[#FF0676] text-xs">
+              <Link to="/signup" className="text-[#47705e] text-xs">
                 Signup
               </Link>
             </div>

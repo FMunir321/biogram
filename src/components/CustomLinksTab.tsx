@@ -183,7 +183,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           {/* Profile Picture Section */}
           <div className="flex flex-col items-center">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-pink-100 to-pink-50 p-1">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] p-1">
                 <img
                   src={profileImage}
                   alt="Profile character"
@@ -210,7 +210,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           </div>
 
           {/* Bio Toggle Section */}
-          <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-2xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-semibold">Enable Bio</h3>
@@ -219,7 +219,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               <button 
                 onClick={() => setIsBioEnabled(!isBioEnabled)}
                 className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isBioEnabled ? 'bg-pink-500' : 'bg-gray-300'
+                  isBioEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                 }`}
               >
                 <span 
@@ -250,7 +250,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           {/* Add No Thumbnail Link Button */}
           <div 
             onClick={() => setShowFeaturedLinks(!showFeaturedLinks)}
-            className="w-full h-14 bg-gradient-to-r from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity mb-6"
+            className="w-full h-14 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-2xl flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity mb-6"
           >
             <span className="text-white font-medium">+ Add No Thumbnail link</span>
           </div>
@@ -261,7 +261,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Featured Links</h2>
                 <Link to="/featuredlinkform">
-                  <Button className="bg-gradient-to-r from-orange-400 to-pink-500 font-medium py-1.5 px-4 rounded-md text-sm cursor-pointer">
+                  <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] font-medium py-1.5 px-4 rounded-md text-sm cursor-pointer">
                     Start Now
                   </Button>
                 </Link>
@@ -274,7 +274,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 style={{
                   background: bigThumbnailImage 
                     ? `url(${bigThumbnailImage}) center/cover` 
-                    : 'linear-gradient(to right, #FF7B25, #ED5A6B)'
+                    : 'linear-gradient(to right, #98e6c3, #4a725f)'
                 }}
               >
                 {!bigThumbnailImage && (
@@ -300,7 +300,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                   style={{
                     background: smallThumbnailImages[0] 
                       ? `url(${smallThumbnailImages[0]}) center/cover` 
-                      : 'linear-gradient(to right, #FF7B25, #ED5A6B)'
+                      : 'linear-gradient(to right, #98e6c3, #4a725f)'
                   }}
                 >
                   {!smallThumbnailImages[0] && (
@@ -324,7 +324,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                   style={{
                     background: smallThumbnailImages[1] 
                       ? `url(${smallThumbnailImages[1]}) center/cover` 
-                      : 'linear-gradient(to right, #FF7B25, #ED5A6B)'
+                      : 'linear-gradient(to right, #98e6c3, #4a725f)'
                   }}
                 >
                   {!smallThumbnailImages[1] && (
@@ -352,7 +352,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           )}
 
           {/* Merch Section */}
-          <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-2xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <h3 className="text-lg font-bold">Merch (0 Items)</h3>
@@ -360,7 +360,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               </div>
               <button 
                 className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isMerchEnabled ? 'bg-pink-500' : 'bg-gray-300'
+                  isMerchEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                 }`}
                 onClick={() => setIsMerchEnabled(!isMerchEnabled)}
               >
@@ -374,7 +374,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
             {isMerchEnabled && (
               <div className="mt-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center justify-center cursor-pointer relative overflow-hidden">
+                  <div className="w-20 h-20 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center justify-center cursor-pointer relative overflow-hidden">
                     <input
                       type="file"
                       onChange={handleMerchImageChange}
@@ -404,7 +404,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           </div>
 
           {/* Gallery Section */}
-          <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-2xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <h3 className="text-lg font-bold">Gallery</h3>
@@ -412,7 +412,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               </div>
               <button 
                 className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isGalleryEnabled ? 'bg-pink-500' : 'bg-gray-300'
+                  isGalleryEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                 }`}
                 onClick={() => setIsGalleryEnabled(!isGalleryEnabled)}
               >
@@ -427,12 +427,12 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               <div className="mt-4">
                 <div className="grid grid-cols-3 gap-4">
                   {galleryImages.map((image, index) => (
-                    <div key={index} className="aspect-square bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl overflow-hidden">
+                    <div key={index} className="aspect-square bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl overflow-hidden">
                       <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
                   <div 
-                    className="aspect-square bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center justify-center cursor-pointer relative"
+                    className="aspect-square bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center justify-center cursor-pointer relative"
                     onClick={() => galleryInputRef.current?.click()}
                   >
                     <input
@@ -454,13 +454,13 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           </div>
 
           {/* Contact Info Section */}
-          <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-2xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold">Contact Info</h3>
               <button 
                 onClick={() => setIsContactEnabled(!isContactEnabled)}
                 className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isContactEnabled ? 'bg-pink-500' : 'bg-gray-300'
+                  isContactEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                 }`}
               >
                 <span 
@@ -483,7 +483,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                   {contactInfo.map((info, index) => (
                     <div 
                       key={index}
-                      className="w-full h-12 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center px-4"
+                      className="w-full h-12 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center px-4"
                     >
                       <span className="text-white capitalize mr-2">{info.type}:</span>
                       <span className="text-white">{info.value}</span>
@@ -498,7 +498,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                         onClick={() => handleContactTypeChange('phone')}
                         className={`px-4 py-2 rounded-full text-sm ${
                           newContact.type === 'phone' 
-                            ? 'bg-gradient-to-r from-orange-400 to-pink-500 text-white' 
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
                             : 'bg-gray-100'
                         }`}
                       >
@@ -508,7 +508,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                         onClick={() => handleContactTypeChange('email')}
                         className={`px-4 py-2 rounded-full text-sm ${
                           newContact.type === 'email' 
-                            ? 'bg-gradient-to-r from-orange-400 to-pink-500 text-white' 
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
                             : 'bg-gray-100'
                         }`}
                       >
@@ -518,7 +518,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                         onClick={() => handleContactTypeChange('url')}
                         className={`px-4 py-2 rounded-full text-sm ${
                           newContact.type === 'url' 
-                            ? 'bg-gradient-to-r from-orange-400 to-pink-500 text-white' 
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
                             : 'bg-gray-100'
                         }`}
                       >
@@ -535,7 +535,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     <div className="flex gap-2">
                       <button
                         onClick={handleAddContactInfo}
-                        className="flex-1 h-12 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl text-white font-medium"
+                        className="flex-1 h-12 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl text-white font-medium"
                       >
                         Add
                       </button>
@@ -550,7 +550,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 ) : (
                   <button
                     onClick={() => setShowContactForm(true)}
-                    className="w-full h-12 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl flex items-center justify-center text-white font-medium"
+                    className="w-full h-12 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center justify-center text-white font-medium"
                   >
                     + Add Contact Info
                   </button>
@@ -560,13 +560,13 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           </div>
 
           {/* Shouts/Media Section */}
-          <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-2xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold">Shouts/Media</h3>
               <button 
                 onClick={() => setIsShoutMediaEnabled(!isShoutMediaEnabled)}
                 className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isShoutMediaEnabled ? 'bg-pink-500' : 'bg-gray-300'
+                  isShoutMediaEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                 }`}
               >
                 <span 
@@ -584,7 +584,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     onClick={() => setActiveTab('shouts')}
                     className={`px-6 py-2 rounded-full ${
                       activeTab === 'shouts' 
-                        ? 'bg-gradient-to-r from-orange-400 to-pink-500 text-white' 
+                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
                         : 'bg-gray-100 text-gray-600'
                     }`}
                   >
@@ -594,7 +594,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     onClick={() => setActiveTab('media')}
                     className={`px-6 py-2 rounded-full ${
                       activeTab === 'media' 
-                        ? 'bg-gradient-to-r from-orange-400 to-pink-500 text-white' 
+                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
                         : 'bg-gray-100 text-gray-600'
                     }`}
                   >

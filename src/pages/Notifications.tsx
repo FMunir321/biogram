@@ -60,7 +60,7 @@ const Notifications = () => {
               onClick={() => setActiveTab('today')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
                 ${activeTab === 'today' 
-                  ? 'bg-[#FF5733] text-white' 
+                  ? 'bg-[#98e6c3] text-white' 
                   : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
             >
               Today
@@ -69,7 +69,7 @@ const Notifications = () => {
               onClick={() => setActiveTab('yesterday')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
                 ${activeTab === 'yesterday' 
-                  ? 'bg-[#FF5733] text-white' 
+                  ? 'bg-[#98e6c3] text-white' 
                   : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
             >
               Yesterday
@@ -78,7 +78,7 @@ const Notifications = () => {
               onClick={() => setActiveTab('this-week')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
                 ${activeTab === 'this-week' 
-                  ? 'bg-[#FF5733] text-white' 
+                  ? 'bg-[#98e6c3] text-white' 
                   : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
             >
               This week
@@ -91,7 +91,7 @@ const Notifications = () => {
           {notifications.map((notification) => (
             <div 
               key={notification.id}
-              className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-pink-50 to-pink-100 hover:from-pink-100 hover:to-pink-200 transition-colors cursor-pointer"
+              className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] hover:from-[#c1e4d3] hover:to-[#b0d8c5] transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <img

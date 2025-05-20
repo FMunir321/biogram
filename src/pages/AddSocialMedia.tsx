@@ -20,7 +20,7 @@ import AddSocialMediapopup from "../components/popup/AddSocialMediapopup"
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
-    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#FF6200,_#FF00EE)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
+    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
       {/* Left Section */}
       <div className="w-full lg:w-1/2 p-2">
         <div className="mb-4 md:mb-8">
@@ -40,7 +40,7 @@ const AddSocialMedia = () => {
             className="w-full md:w-[736px] lg:w-[500px] xl:w-[920px] p-8  rounded-full bg-white text-black"
           />
           <Button
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-[linear-gradient(to_right,_#FF00EE,_#FF6200)] text-white md:px-8 md:py-3"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-[linear-gradient(to_right,_#98e6c3,_#4a725f)] text-white md:px-8 md:py-3"
           >
             Search
           </Button>
@@ -158,11 +158,11 @@ const AddSocialMedia = () => {
 
       {/* Right Preview Section */}
        <div className="w-full lg:w-[800px] p-4">
-        <div className="bg-[linear-gradient(to_bottom_right,_#FF6200,_#FF00EE)] rounded-[32px]  md:h-[857px] relative overflow-hidden">
+        <div className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] rounded-[32px]  md:h-[857px] relative overflow-hidden">
           {/* Top Tabs */}
           <div className="flex items-end justify-end p-4">
-            <div className="inline-flex bg-[#FF518F] rounded-full p-1">
-              <button className="px-4 md:px-6 py-1.5 rounded-full bg-[#FF1F77] text-white text-sm font-medium">
+            <div className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1">
+              <button className="px-4 md:px-6 py-1.5 rounded-full bg-[#98e6c3] text-white text-sm font-medium">
                 Shots
               </button>
               <button className="px-4 md:px-6 py-1.5 text-white text-sm font-medium hover:bg-white/10">

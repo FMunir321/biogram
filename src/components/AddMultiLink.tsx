@@ -20,7 +20,7 @@ const AddMultiLink: React.FC = () => {
   return (
     <div className="
       min-h-screen w-full
-      bg-gradient-to-r from-orange-500 to-red-500
+      bg-gradient-to-r from-[#98e6c3] to-[#4a725f]
       flex items-center justify-center
       p-0 m-0
     ">
@@ -76,7 +76,7 @@ const AddMultiLink: React.FC = () => {
        <Link to="/addmerge">
           <button 
             type="submit" 
-            className="bg-blue-500 text-white rounded-lg w-full p-2 hover:bg-blue-600"
+            className="bg-white text-black rounded-lg w-full p-2 hover:bg-white"
           >
             Add
           </button>

@@ -5,6 +5,7 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 import { Input } from "../components/ui/input";
+import logo from "../assets/Biogramlogo.png";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
@@ -34,7 +35,7 @@ const Signup = () => {
           {/* Decorative Lines */}
           <div className="flex items-center justify-center gap-[2px] mb-6">
             <div className="w-[30px]">
-              <div className="h-[3px] bg-gradient-to-r from-[#FF6200] via-[#FF00EE] to-[#FF6200]"></div>
+              <div className="h-[3px] bg-gradient-to-r from-[#98e6c3] to-[#4a725f] via-[#7ECFA7] "></div>
             </div>
             <div className="w-[30px]">
               <div className="h-[3px] bg-gradient-to-r from-[#2c23232c]"></div>
@@ -53,7 +54,7 @@ const Signup = () => {
                 style={{ fontFamily: "Dancing Script" }}
                 className="text-[48px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF5C00] to-[#FF0676] tracking-wide mb-1"
               >
-                Biogram
+                <img src={logo} alt="logo" className="w-50 h-20 ml-40" />
               </h1>
               <p style={{ fontFamily: "Poppins" }} className="text-black">
                 Networking just got an upgrade
@@ -65,13 +66,13 @@ const Signup = () => {
                 <TabsList className="grid w-full grid-cols-2 p-1 bg-[#F8F8F8] rounded-full mb-8">
                   <TabsTrigger
                     value="personal"
-                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF00EE] data-[state=active]:to-[#FF6200] data-[state=active]:text-white"
+                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#98e6c3] data-[state=active]:to-[#4a725f] data-[state=active]:text-white"
                   >
                     Personal
                   </TabsTrigger>
                   <TabsTrigger
                     value="business"
-                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#FF00EE] data-[state=active]:to-[#FF6200] data-[state=active]:text-white"
+                    className="w-full rounded-full py-3 text-gray-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#98e6c3] data-[state=active]:to-[#4a725f] data-[state=active]:text-white"
                   >
                     Business
                   </TabsTrigger>
@@ -171,14 +172,14 @@ const Signup = () => {
                   </div>
                   <Link
                     to="/otp"
-                    className="block w-full h-[52px] bg-gradient-to-r from-[#FF5C00] to-[#FF0676] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
+                    className="block w-full h-[52px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
                   >
                     Continue
                   </Link>
                   
                   <p className="text-center text-sm text-gray-500">
                     Already have an account?{" "}
-                    <a href="/login" className="text-[#FF0676] hover:underline">
+                    <a href="/login" className="text-[#7ECFA7] hover:underline">
                       Login
                     </a>
                   </p>
@@ -278,13 +279,13 @@ const Signup = () => {
                   </div>
                   <Link
                     to="/otp"
-                    className="block w-full h-[52px] bg-gradient-to-r from-[#FF5C00] to-[#FF0676] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
+                    className="block w-full h-[52px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90"
                   >
                     Continue
                   </Link>
                   <p className="text-center text-sm text-gray-500">
                     Already have an account?{" "}
-                    <a href="/login" className="text-[#FF0676] hover:underline">
+                    <a href="/login" className="text-[#7ECFA7] hover:underline">
                       Login
                     </a>
                   </p>
