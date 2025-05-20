@@ -12,7 +12,6 @@ import { useState } from "react";
 import RightImage from "../assets/RightImage.png";
 import LeftImage from "../assets/LeftImage.png";
 import { Link } from "react-router-dom";
-import logo from "../assets/Biogramlogo.png";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
