@@ -5,6 +5,7 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 import { Input } from "../components/ui/input";
+import logo from "../assets/Biogramlogo.png";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";

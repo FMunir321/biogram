@@ -27,14 +27,14 @@ const ProfileLink = () => {
             placeholder="http://your-link.com"
             defaultValue="http://onlinesjasdbasljbasdi234"
             />
-          <button className="text-pink-500 hover:text-pink-700 text-lg">🗑</button>
+          <button className="text-[#98e6c3] hover:text-[#4a725f] text-lg">🗑</button>
         </div>
 
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-700">Shield Protection</span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" className="sr-only peer" />
-            <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-pink-500"></div>
+            <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-[#98e6c3]"></div>
             <div className="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
           </label>
         </div>
@@ -44,14 +44,14 @@ const ProfileLink = () => {
           <a href="#" className="text-blue-600 underline">How Shield Protection Works?</a>
         </p>
        <Link to="/maindashboard">
-        <button className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold py-2 rounded-full hover:opacity-90 transition cursor-pointer">
+        <button className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white font-semibold py-2 rounded-full hover:opacity-90 transition cursor-pointer">
           View Profile
         </button>
         </Link>
       </div>
 
       {/* Right: User Card */}
-      <div className="flex flex-col items-center text-center bg-pink-300 rounded-[40px] p-4 max-w-[300px] mx-auto">
+      <div className="flex flex-col items-center text-center bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-[40px] p-4 max-w-[300px] mx-auto">
         <img
           src={profile}
           alt="User"

@@ -58,7 +58,7 @@ const Layout = ({ children }: LayoutProps) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-[280px] bg-gradient-to-b from-pink-100 to-orange-100 py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
+        className={`fixed top-0 left-0 h-full w-[280px] bg-[#e6f8f0] py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full shadow-2xl"} 
           md:translate-x-0 md:relative md:w-64 md:shadow-none`}
       >
@@ -137,7 +137,7 @@ const Layout = ({ children }: LayoutProps) => {
           <img
             src="https://i.pravatar.cc/300"
             alt="Profile"
-            className="w-10 h-10 rounded-full ring-2 ring-pink-500"
+            className="w-10 h-10 rounded-full ring-2 ring-black"
           />
           <div>
             <p className="font-semibold text-sm">Alex James</p>
@@ -163,13 +163,13 @@ const Layout = ({ children }: LayoutProps) => {
 
             {/* Searchbar */}
             <div className="flex justify-center flex-1 md:justify-center px-4">
-              <div className="flex items-center bg-gradient-to-r from-pink-300 to-orange-400 rounded-full p-1 w-full max-w-md shadow-md">
+              <div className="flex items-center bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-full p-1 w-full max-w-md shadow-md">
                 <input
                   type="text"
                   placeholder="Search Person name here"
                   className="px-4 py-2 flex-1 rounded-l-full outline-none text-sm w-full min-w-0 bg-white"
                 />
-                <button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
+                <button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
                   Search
                 </button>
               </div>
@@ -202,7 +202,7 @@ const SidebarItem = ({
     <div
       className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer text-sm transition-colors
         ${active 
-          ? "text-pink-500 font-semibold bg-white bg-opacity-50" 
+          ? "text-black font-semibold bg-white bg-opacity-50" 
           : "text-gray-700 hover:bg-white hover:bg-opacity-30"
         }`}
     >

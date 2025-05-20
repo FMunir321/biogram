@@ -11,7 +11,7 @@ const AddMerch: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-orange-500 to-red-500 p-4 overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 overflow-hidden">
       <div className="w-full max-w-sm p-6 bg-white/20 rounded-lg shadow-lg">
         <h2 className="mb-6 text-2xl font-bold text-white text-center">Add Merch</h2>
 
@@ -61,7 +61,7 @@ const AddMerch: React.FC = () => {
 
         {/* Add Button */}
         <Link to="/profilelink">
-        <button className="w-full bg-white text-pink-600 font-bold py-3 rounded hover:bg-gray-200 transition">
+        <button className="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200 transition">
           Add
         </button>
         </Link>

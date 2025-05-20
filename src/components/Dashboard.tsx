@@ -3,8 +3,8 @@ import map from "../assets/map-sample.png";
 
 const Dashboard = () => {
   return (
-    <div className="relative w-full max-w-full">
-      <div className="flex justify-center px-4 sm:px-6 lg:px-0">
+    <div className="relative w-full ">
+      <div className="flex justify-center px-4 sm:px-6 lg:px-0 w-[700px]">
         <Card className="w-full max-w-3xl rounded-xl shadow-lg bg-white">
           <CardContent className="p-4 sm:p-6">
             <h3 className="text-md font-bold text-black mb-1">Overview</h3>
@@ -33,7 +33,7 @@ const Dashboard = () => {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-gradient-to-br from-[#e1f7ef] to-[#d4e8dd] border border-[#a2d8c2] rounded-xl px-4 py-4 shadow-sm text-center"
+                  className="bg-gradient-to-br from-[#7ECFA7] to-[#d4e8dd] border border-[#a2d8c2] rounded-xl px-4 py-4 shadow-sm text-center"
                 >
                   <p className="text-sm text-gray-700 font-medium mb-2">
                     {item.title}

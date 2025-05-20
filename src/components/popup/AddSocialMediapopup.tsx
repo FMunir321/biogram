@@ -52,13 +52,13 @@ const AddSocialMediapopup = ({ icon, platformName, isOpen, onClose }: AddSocialM
           </DialogHeader>
 
           <div className="space-y-4 ">
-            <div className="w-full rounded-full p-[2px] bg-gradient-to-r from-[#FF6200] to-[#FF00EE]">
+            <div className="w-full rounded-full p-[2px] bg-gradient-to-r from-[#98e6c3] to-[#4a725f]">
               <Input
                 type="text"
                 placeholder="Paste URL Here"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                className="w-full px-4 py-2 rounded-full bg-gradient-to-r from-orange-200 to-pink-200 focus:outline-none"
+                className="w-full px-4 py-2 rounded-full bg-[#d8f1e6] focus:outline-none"
               />
             </div>
 
@@ -66,14 +66,14 @@ const AddSocialMediapopup = ({ icon, platformName, isOpen, onClose }: AddSocialM
             <div className="flex gap-2 justify-center mt-6">
               <Button
                 onClick={onClose}
-                className="px-8 py-2 rounded-full bg-gray-200 text-black hover:bg-gray-300 cursor-pointer"
+                className="px-8 py-2 rounded-full bg-gray-200/80 backdrop-blur-sm text-black hover:bg-gray-300 cursor-pointer"
               >
                 Cancel
               </Button>
               <Link to="/AddSocialMediaUploadPicture">
   <Button
     onClick={handleSave}
-    className="px-8 py-2 rounded-full bg-gradient-to-r from-[#FF00EE] to-[#FF6200] text-white hover:opacity-90 cursor-pointer"
+    className="px-8 py-2 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"
   >
     Save
   </Button>

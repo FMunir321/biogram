@@ -17,7 +17,7 @@ const ProfileMainDashboard: React.FC = () => {
     <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-screen p-4 lg:p-6 bg-white">
       {/* Left Card - Profile Section */}
       <div className="w-full lg:w-[40%] xl:w-[35%] 2xl:w-[30%] flex-shrink-0">
-        <div className="rounded-3xl border border-pink-300 bg-gradient-to-r from-orange-300 to-pink-300 shadow-2xl w-full h-[870px] flex flex-col p-4 md:p-6">
+        <div className="rounded-3xl border border-pink-300 bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] shadow-2xl w-full h-[870px] flex flex-col p-4 md:p-6">
           {/* Top Section: Name, Username, Tabs, Paragraphs, Image */}
           <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 p-0 md:p-4 pb-0">
             {/* Left: Info */}
@@ -29,13 +29,13 @@ const ProfileMainDashboard: React.FC = () => {
                 <TabsList className="flex gap-2 bg-gray-100 rounded-full p-1 w-fit mb-4">
                   <TabsTrigger
                     value="shots"
-                    className="px-4 py-1 rounded-full text-sm data-[state=active]:bg-pink-500 data-[state=active]:text-white"
+                    className="px-4 py-1 rounded-full text-sm data-[state=active]:bg-[#98e6c3] data-[state=active]:text-white"
                   >
                     Shots
                   </TabsTrigger>
                   <TabsTrigger
                     value="media"
-                    className="px-4 py-1 rounded-full text-sm data-[state=active]:bg-pink-500 data-[state=active]:text-white"
+                    className="px-4 py-1 rounded-full text-sm data-[state=active]:bg-[#98e6c3] data-[state=active]:text-white"
                   >
                     Media
                   </TabsTrigger>
@@ -81,7 +81,7 @@ const ProfileMainDashboard: React.FC = () => {
                 </a>
               ))}
             </div>
-            <Button className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-orange-400 via-pink-500 to-fuchsia-500 text-white rounded-full shadow-lg hover:opacity-90 transition">
+            <Button className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white rounded-full shadow-lg hover:opacity-90 transition">
               Share profile
             </Button>
           </div>
@@ -94,7 +94,7 @@ const ProfileMainDashboard: React.FC = () => {
           <h2 className="text-2xl font-bold sticky top-0 bg-white z-10 py-4 col-span-full">Templates</h2>
           
           {/* Template Card 1 */}
-          <div className="rounded-3xl border-4 border-pink-500 bg-black w-full h-full p-4 md:p-6 text-white flex flex-col">
+          <div className="rounded-3xl bg-black w-full h-full p-4 md:p-6 text-white flex flex-col">
             {/* Header Row */}
             <div className="flex flex-col md:flex-row justify-between items-start mb-4 gap-2 md:gap-0">
               <div>

@@ -21,7 +21,7 @@ const FeaturedLinkForm: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen 
-      bg-none md:bg-gradient-to-r md:from-orange-500 md:to-red-500
+      bg-none md:bg-gradient-to-r md:from-[#98e6c3] md:to-[#4a725f]
       px-4">
       <form 
         onSubmit={handleSubmit}
@@ -104,7 +104,7 @@ const FeaturedLinkForm: React.FC = () => {
         <Link to="/addmultilink">
         <button 
           type="submit" 
-          className="w-full bg-blue-500 text-white py-2 rounded mt-4"
+          className="w-full bg-white text-black py-2 rounded mt-4"
         >
           Add
         </button>

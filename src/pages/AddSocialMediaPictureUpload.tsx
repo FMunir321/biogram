@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const AddSocialMediaPictureUpload = () => {
   return (
-    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#FF6200,_#FF00EE)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-8">
+    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-8">
       {/* Left Section */}
       <div className="w-full lg:w-[960px] min-h-[850px] rounded-[32px] p-8 flex flex-col justify-between items-center">
         <div className="flex flex-col items-center">
@@ -36,11 +36,11 @@ const AddSocialMediaPictureUpload = () => {
 
       {/* Right Preview Section */}
       <div className="w-full lg:w-[800px] p-7">
-        <div className="bg-[linear-gradient(to_bottom_right,_#FF6200,_#FF00EE)] rounded-[32px] md:h-[857px] relative overflow-hidden">
+        <div className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] rounded-[32px] md:h-[857px] relative overflow-hidden">
           {/* Top Tabs */}
           <div className="flex items-end justify-end p-4">
-            <div className="inline-flex bg-[#FF518F] rounded-full p-1">
-              <button className="px-4 md:px-6 py-1.5 rounded-full bg-[#FF1F77] text-white text-sm font-medium">
+            <div className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1">
+              <button className="px-4 md:px-6 py-1.5 rounded-full bg-[#98e6c3] text-white text-sm font-medium">
                 Shots
               </button>
               <button className="px-4 md:px-6 py-1.5 text-white text-sm font-medium hover:bg-white/10">
