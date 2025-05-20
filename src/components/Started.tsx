@@ -1,15 +1,16 @@
-import DropDown from "./DropDown";
+import { useState } from "react";
+// import DropDown from "./DropDown";
 import bground from "../assets/Rectangle67.png";
-// import logo from "../assets/Biogramlogo.png";
 import { Link } from "react-router-dom";
 import AnalyticsImage from "../assets/Analytics 2.png";
-// import Dashboard from "./Dashboard";
 import LogoStartNow from "./LogoStartNow";
 
 const Started = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <div className="relative min-h-screen w-full bg-white overflow-hidden">
-      {/* Background Image */}
+      {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
           src={bground}
@@ -19,46 +20,89 @@ const Started = () => {
         <div className="absolute inset-0 bg-white/80" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10">
+      {/* Foreground content */}
+      <div className="relative z-20">
+        {/* Logo */}
         <LogoStartNow />
 
         {/* Main Section */}
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between px-6 md:px-12 mt-12 lg:mt-20 gap-10">
+        <main className="flex flex-col-reverse lg:flex-row items-center justify-between px-6 md:px-12 mt-12 lg:mt-20 gap-10">
           {/* Left Text */}
-          <div className="lg:w-1/2 space-y-6 text-center lg:text-left">
-            <h1 className="text-[36px] sm:text-[48px] lg:text-[64px] font-extrabold leading-tight text-black font-poppins">
+          <section className="lg:w-1/2 space-y-6 text-center lg:text-left">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-black font-poppins leading-tight">
               Reach Millions.
-              <br />
-              Your Business,
-              <br />
-              Our Platform.
+              <br className="hidden sm:block" />
+              Your Business, Our Platform.
             </h1>
-            <p className="text-gray-700 text-lg md:text-xl max-w-[500px] mx-auto lg:mx-0 font-poppins">
+            <p className="text-gray-700 text-base sm:text-lg lg:text-xl max-w-[500px] mx-auto lg:mx-0 font-poppins">
               Over 200 million people have a Biogram profile. Unlock your
               business's potential with Biogram's <strong>cutting-edge</strong>{" "}
               marketing tools and ad solutions, designed to elevate your
               business.
             </p>
             <Link to="/startnow">
-              <button className="w-full sm:w-[280px] h-[56px] sm:h-[64px] rounded-full text-white text-lg md:text-xl font-semibold shadow-lg bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:opacity-90 transition">
+              <button className="w-full sm:w-[280px] px-6 py-3 sm:py-4 rounded-full text-white text-lg sm:text-xl font-semibold shadow-lg bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:opacity-90 transition mx-auto block">
                 Get Started
               </button>
             </Link>
-          </div>
+          </section>
 
           {/* Right Image Card */}
-          <div className="w-full lg:w-[50%] rounded-[40px] bg-white shadow-2xl overflow-hidden">
-            <img
-              src={AnalyticsImage}
-              alt="Analytics"
-              className="w-full h-auto object-cover"
-            />
+          <section className="w-full lg:w-1/2 bg-white shadow-lg rounded-3xl overflow-hidden border-t border-b border-l border-gray-200">
+  <img
+    src={AnalyticsImage}
+    alt="Analytics"
+    className="w-full h-auto object-cover"
+  />
+</section>
+        </main>
+
+        {/* For Business Button with Dropdown */}
+        <div className="absolute right-6 bottom-6 z-30">
+          <div className="relative">
+            {/* Toggle Button */}
+            <div
+              className="w-[189px] h-[48px] rounded-[10px] border border-black cursor-pointer flex items-center justify-between px-4 text-black font-poppins font-normal text-[20px] leading-[100%] tracking-[0%] bg-gradient-to-r from-[#7ECFA780] to-[#53886C80] backdrop-blur-[20.2px] shadow-sm"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              For Business
+              <svg
+                className={`w-4 h-4 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            {/* Dropdown Content */}
+            {isDropdownOpen && (
+              <div className="absolute bottom-[60px] right-0 w-[189px] rounded-[10px] border border-black bg-gradient-to-r from-[#7ECFA780] to-[#53886C80] backdrop-blur-[20.2px] shadow-lg overflow-hidden">
+                <div className="py-1">
+                  <Link
+                    to="/"
+                    className="block px-4 py-2 text-sm text-black font-poppins hover:bg-[#7ECFA7]/70"
+                  >
+                    For People
+                  </Link>
+                  <Link
+                    to="/started"
+                    className="block px-4 py-2 text-sm text-black font-poppins hover:bg-[#7ECFA7]/70"
+                  >
+                    Business
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-        {/* DropDown */}
-        <div className="flex justify-end mt-8 px-6  z-50">
-          <DropDown />
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import Forpeople from "./pages/Forpeople";
 import AddSocialMediaPictureUpload from "./pages/AddSocialMediaPictureUpload";
 
 import ArtistShowcase from "./pages/ArtistShowcase";
-import GoGreenSection from "./components/GoGreenSection";
+// import GoGreenSection from "./components/GoGreenSection";
 import BiogramPricing from "./pages/BiogramPrincing";
 import MainDashboard from "./components/maindashboard/MainDashboard";
 import Profile from "./components/maindashboard/Profile";
