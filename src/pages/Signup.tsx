@@ -12,7 +12,6 @@ import { useState } from "react";
 import RightImage from "../assets/RightImage.png";
 import LeftImage from "../assets/LeftImage.png";
 import { Link } from "react-router-dom";
-import logo from "../assets/Biogramlogo.png";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -106,7 +105,9 @@ const Signup = () => {
                 <form className="space-y-4">
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Email or Phone Number</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Email or Phone Number
+                      </legend>
                       <Input
                         type="email"
                         id="email"
@@ -120,7 +121,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Full Name</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Full Name
+                      </legend>
                       <Input
                         type="text"
                         id="fullName"
@@ -134,7 +137,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Date of Birth</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Date of Birth
+                      </legend>
                       <div className="grid grid-cols-3 gap-3">
                         <Input
                           id="birthDay"
@@ -163,7 +168,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Username</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Username
+                      </legend>
                       <Input
                         type="text"
                         id="username"
@@ -177,7 +184,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Password</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Password
+                      </legend>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
@@ -242,7 +251,9 @@ const Signup = () => {
                 <form className="space-y-4">
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Email or Phone Number</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Email or Phone Number
+                      </legend>
                       <Input
                         type="email"
                         id="email"
@@ -256,7 +267,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Full Name</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Full Name
+                      </legend>
                       <Input
                         type="text"
                         id="fullName"
@@ -270,7 +283,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Date of Birth</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Date of Birth
+                      </legend>
                       <div className="grid grid-cols-3 gap-3">
                         <Input
                           id="birthDay"
@@ -299,7 +314,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Username</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Username
+                      </legend>
                       <Input
                         type="text"
                         id="username"
@@ -313,7 +330,9 @@ const Signup = () => {
 
                   <div className="space-y-2">
                     <fieldset className="relative">
-                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">Password</legend>
+                      <legend className="absolute -top-2 left-2 px-2 bg-white text-sm font-medium text-gray-700">
+                        Password
+                      </legend>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}

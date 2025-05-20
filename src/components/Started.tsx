@@ -1,9 +1,10 @@
-import { Button } from "../components/ui/button";
 import DropDown from "./DropDown";
 import bground from "../assets/Rectangle67.png";
-import logo from "../assets/Biogramlogo.png";
+// import logo from "../assets/Biogramlogo.png";
 import { Link } from "react-router-dom";
 import AnalyticsImage from "../assets/Analytics 2.png";
+// import Dashboard from "./Dashboard";
+import LogoStartNow from "./LogoStartNow";
 
 const Started = () => {
   return (
@@ -20,15 +21,7 @@ const Started = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header */}
-        <div className="flex justify-between items-center w-full px-6 md:px-12 pt-6 md:pt-8">
-          <img src={logo} alt="logo" className="w-[120px] md:w-auto" />
-          <Link to="/startnow">
-            <button className="w-[140px] md:w-[168px] h-[44px] md:h-[48px] rounded-[10px] text-white text-sm md:text-base font-medium shadow bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:opacity-90 transition">
-              Start Now
-            </button>
-          </Link>
-        </div>
+        <LogoStartNow />
 
         {/* Main Section */}
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between px-6 md:px-12 mt-12 lg:mt-20 gap-10">
