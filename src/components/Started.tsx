@@ -1,9 +1,11 @@
 import { Button } from "../components/ui/button";
 import DropDown from "./DropDown";
 import bground from "../assets/lightbg.png";
-import logo from "../assets/Biogramlogo.png";
+// import logo from "../assets/Biogramlogo.png";
 import { Link } from "react-router-dom";
-import AnalyticsImage from "../assets/Analytics 2.png";
+// import AnalyticsImage from "../assets/Analytics 2.png";
+import Dashboard from "./Dashboard";
+import LogoStartNow from "./LogoStartNow";
 
 const Started = () => {
   return (
@@ -40,7 +42,7 @@ const Started = () => {
             <Link to="/startnow">
               <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-base sm:text-lg px-40 py-8 rounded-full ml-10">
                 Get Started
-              </button>
+              </Button>
             </Link>
           </div>
 
