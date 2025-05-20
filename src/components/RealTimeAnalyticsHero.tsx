@@ -1,5 +1,6 @@
 import { useState } from "react";
 import world from "../assets/world.png";
+import { Link } from "react-router-dom";
 // import mapPlaceholder from "../assets/map-placeholder.png";
 // import instagramIcon from "../assets/instagram.svg";
 // import tiktokIcon from "../assets/tiktok.svg";
@@ -104,32 +105,31 @@ export default function RealTimeAnalyticsHero() {
             </div>
         </div>
 
-        {/* For People Dropdown (Fixed) */}
-        <div className="fixed bottom-6 right-6 z-30">
-            <div
-                className="bg-white/70 py-1 px-4 rounded-lg text-black shadow-sm cursor-pointer flex items-center gap-2"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-                For People
-                <svg
-                    className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
-            {isDropdownOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="py-1">
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Option 1</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Option 2</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Option 3</a>
+       {/* For People Button with Dropdown */}
+       <div className="fixed bottom-6 right-6 z-30">
+                    <div
+                        className="bg-green-200 py-1 px-4 rounded-lg text-black shadow-sm cursor-pointer flex items-center gap-2"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    >
+                        For People
+                        <svg
+                            className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                     </div>
+                    {isDropdownOpen && (
+                        <div className="absolute bottom-full right-0 mb-2 w-48 bg-green-200 rounded-lg shadow-lg overflow-hidden">
+                            <div className="py-1">
+                                <Link to="/signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-400">Personal</Link>
+                                <Link to="/started" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-400">Business</Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
-        </div>
     </section>
   );
 }
