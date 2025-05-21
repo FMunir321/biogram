@@ -11,7 +11,7 @@ import {
   MessageCircle,
   ArrowUpRight,
 } from "lucide-react";
-import bground from "../assets/lightbg.png";
+// import bground from "../assets/lightbg.png";
 
 const features = [
   {
@@ -79,8 +79,8 @@ const features = [
 export default function InstagramRedirectFeatures() {
   return (
     <div
-      className="max-w-8xl mx-auto px-4 py-10 rounded-3xl bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${bground})` }}
+      // className="max-w-8xl mx-auto px-4 py-10 rounded-3xl bg-cover bg-center bg-no-repeat"
+      // style={{ backgroundImage: `url(${bground})` }}
     >
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
         All in one solution to drive traffic away from <br className="hidden md:block" />

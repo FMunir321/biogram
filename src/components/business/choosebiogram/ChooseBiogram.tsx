@@ -5,6 +5,7 @@ import user2 from "../../../assets/Rectangle80.jpg";
 import user3 from "../../../assets/Rectangle77.jpg";
 import user4 from "../../../assets/Rectangle76.jpg";
 import user5 from "../../../assets/Rectangle78.jpg";
+
 import {
   FaInstagram,
   FaFacebookF,
@@ -26,32 +27,31 @@ const people = [
     tag: "@chan567james.com",
     role: "Blogger",
     imagePath: user3,
-    rotation: "-rotate-6",
+    rotation: "",
   },
   {
     name: "Sara James",
     tag: "@sara123james.com",
     role: "Designer",
     imagePath: user4,
-    rotation: "-rotate-2",
+    rotation: "",
   },
   {
     name: "James Max",
     tag: "@james555.com",
     role: "Actor",
     imagePath: user5,
-    rotation: "rotate-3",
+    rotation: "",
   },
   {
     name: "Alex",
     tag: "@alexcraft.com",
     role: "Slicer",
     imagePath: user2,
-    rotation: "rotate-6",
+    rotation: "",
   },
 ];
 
-// Social icon brand colors
 const socialColors = [
   "#E1306C", // Instagram
   "#1877F3", // Facebook
@@ -71,10 +71,11 @@ const cardVariants = {
 
 const ChooseBiogram: React.FC = () => {
   return (
-    <div className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* Heading */}
+    <div className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-visible">
+      
 
+      <div className="max-w-7xl mx-auto relative z-20">
+        {/* Heading */}
         <h2 className="text-[96px] leading-[106.56px] font-extrabold font-poppins text-black max-w-[921px]">
           Connect Smarter <br /> with Biogram
         </h2>
@@ -99,7 +100,7 @@ const ChooseBiogram: React.FC = () => {
           {[...people, ...people].map((person, index) => (
             <motion.div
               key={index}
-              className="w-60 h-[360px] bg-white rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white flex-shrink-0"
+              className={`w-60 h-[360px] bg-white rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white flex-shrink-0 ${person.rotation}`}
               whileHover={{
                 scale: 1.07,
                 boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
@@ -122,6 +123,7 @@ const ChooseBiogram: React.FC = () => {
               >
                 {person.role}
               </div>
+
               {/* Card Image */}
               <div className="w-full h-1/2 flex items-center justify-center overflow-hidden rounded-t-3xl bg-white">
                 <img
@@ -131,6 +133,7 @@ const ChooseBiogram: React.FC = () => {
                   style={{ aspectRatio: "1/1" }}
                 />
               </div>
+
               {/* Info */}
               <div className="p-4 text-left bg-gradient-to-r from-[#98e6c3] to-[#4a725f] bg-opacity-90 h-1/2 flex flex-col justify-end rounded-b-3xl">
                 <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow">
@@ -140,13 +143,7 @@ const ChooseBiogram: React.FC = () => {
                   {person.tag}
                 </p>
                 <div className="flex gap-2 mt-auto">
-                  {[
-                    FaInstagram,
-                    FaFacebookF,
-                    FaTwitter,
-                    FaWhatsapp,
-                    FaTiktok,
-                  ].map((Icon, i) => (
+                  {[FaInstagram, FaFacebookF, FaTwitter, FaWhatsapp, FaTiktok].map((Icon, i) => (
                     <span
                       key={i}
                       className="bg-white rounded-full p-1.5 shadow flex items-center justify-center"
@@ -157,12 +154,6 @@ const ChooseBiogram: React.FC = () => {
                   ))}
                 </div>
               </div>
-              {/* For Peoples Badge
-              {person.name === "Alex" && (
-                <div className="absolute bottom-4 right-4 bg-[#98e6c3] text-white px-4 py-1 rounded-full text-xs font-semibold shadow z-30">
-                  For Peoples
-                </div>
-              )} */}
             </motion.div>
           ))}
         </motion.div>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
+import men from "../../assets/men.png";
 // import bgImage from "../../assets/lightbg.png";
-import group1 from "../../assets/Group1.png"; // adjust path if needed
+import group from "../../assets/group.png"; // adjust path if needed
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -32,51 +33,59 @@ const HeroSection: React.FC = () => {
     //     backgroundSize: "cover", // image ko container ke size ke according scale karega    // image ko center karega
     //   }}
     // >
-      <div className="min-h-[90vh] sm:min-h-[90vh] md:min-h-[30vh] lg:min-h-[30vh] xl:min-h-[90vh] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          {/* Left Column: Text & Form */}
-          <div className="w-full md:w-[60%] z-10">
-            <h1 className="font-poppins font-extrabold text-[32px] sm:text-[48px] md:text-[80px] lg:text-[110px] leading-[1.1] tracking-tight text-black">
-              One link,
-              <br className="hidden sm:block" />
-              Endless possibilities.
-            </h1>
+    <div className="min-h-[90vh] sm:min-h-[90vh] md:min-h-[30vh] lg:min-h-[30vh] xl:min-h-[90vh] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        {/* Left Column: Text & Form */}
+        <div className="w-full md:w-[60%] z-10">
+          <h1 className="font-poppins font-extrabold text-[32px] sm:text-[48px] md:text-[80px] lg:text-[110px] leading-[1.1] tracking-tight text-black">
+            One link,
+            <br className="hidden sm:block" />
+            Endless possibilities.
+          </h1>
 
-            <p className="font-poppins font-medium text-base sm:text-lg md:text-xl leading-relaxed tracking-normal text-black max-w-[670px] mt-4 mb-8">
-              Biogram puts your entire digital world in one smart link. From
-              socials to stores, content to contact — bring everything together
-              in one sleek, shareable place. One link. Zero limits.
-            </p>
+          <p className="font-poppins font-medium text-base sm:text-lg md:text-xl leading-relaxed tracking-normal text-black max-w-[670px] mt-4 mb-8">
+            Biogram puts your entire digital world in one smart link. From
+            socials to stores, content to contact — bring everything together in
+            one sleek, shareable place. One link. Zero limits.
+          </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-[#cbeede] w-full md:w-[655px]">
-              <Input
-                type="text"
-                placeholder="Biogram/Your name"
-                className="flex-1 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none w-full sm:w-auto py-3 px-4 border-0 shadow-none"
-                value={username}
-                onChange={handleUsernameChange}
-              />
-              <Button
-                className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-lg px-6 py-3 rounded-full font-poppins w-full sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none h-[60px] transition duration-200 cursor-pointer"
-                onClick={handleSignupWithName}
-              >
-                Signup Free
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Column: Image */}
-          <div className="w-full md:w-[40%] mt-10 md:mt-0 flex justify-center">
-            <img
-              src={group1}
-              alt="Person using Biogram on laptop with social media icons"
-              className="w-[250px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-auto object-contain relative z-10"
+          <div className="flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-[#cbeede] w-full md:w-[655px]">
+            <Input
+              type="text"
+              placeholder="Biogram/Your name"
+              className="flex-1 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none w-full sm:w-auto py-3 px-4 border-0 shadow-none"
+              value={username}
+              onChange={handleUsernameChange}
             />
+            <Button
+              className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-lg px-6 py-3 rounded-full font-poppins w-full sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none h-[60px] transition duration-200 cursor-pointer"
+              onClick={handleSignupWithName}
+            >
+              Signup Free
+            </Button>
           </div>
         </div>
 
-        {/* Audience Selector Dropdown */}
-        {/* <div className="absolute bottom-4 right-4 z-10">
+        <div className="relative w-full md:w-[40%] h-[600px] flex justify-center items-start mt-10 md:mt-0">
+  {/* Men Image - behind */}
+  <img
+    src={men}
+    alt="Man using Biogram"
+    className="relative w-[400px] md:w-[500px] lg:w-[550px] h-auto object-contain z-10"
+  />
+
+  {/* Group Image - in front and lower near knees */}
+  <img
+    src={group}
+    alt="Group illustration"
+    className="absolute w-[300px] h-[340px] top-[280px] -left-8 object-contain z-20"
+  />
+</div>
+
+      </div>
+
+      {/* Audience Selector Dropdown */}
+      {/* <div className="absolute bottom-4 right-4 z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="bg-gradient-to-r from-orange-500 to-pink-500 bg-opacity-80 text-white text-lg border flex items-center justify-between gap-2 px-4 py-2 rounded-xl">
@@ -95,10 +104,10 @@ const HeroSection: React.FC = () => {
           </DropdownMenu>
         </div> */}
 
-        {/* Background Gradient Effects */}
-        <div className="absolute top-0 right-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.orange.100)_0%,transparent_70%)] opacity-70"></div>
-        <div className="absolute bottom-0 left-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.pink.100)_0%,transparent_70%)] opacity-70"></div>
-      </div>
+      {/* Background Gradient Effects */}
+      <div className="absolute top-0 right-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.orange.100)_0%,transparent_70%)] opacity-70"></div>
+      <div className="absolute bottom-0 left-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.pink.100)_0%,transparent_70%)] opacity-70"></div>
+    </div>
     // </div>
   );
 };
