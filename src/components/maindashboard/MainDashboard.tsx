@@ -1,17 +1,34 @@
 import bground from "../../assets/lightbg.png"; // ✅ Adjust the path if needed
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 const MainDashboard = () => {
   return (
     <div
-      className="flex flex-col justify-center items-center min-h-[calc(100vh-10rem)] bg-cover bg-center"
+      className="flex flex-col md:flex-row justify-center h-full  bg-cover bg-center"
       style={{ backgroundImage: `url(${bground})` }}
     >
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Welcome to Your Dashboard
-      </h2>
-      <p className="text-gray-600 text-center">
-        Click on user to preview their profile
-      </p>
+      <div className="w-[50%] p-5">
+        {/* Searchbar */}
+        <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
+          <Input
+            type="text"
+            placeholder="Search Platforms"
+            className="py-7 m-1 text-[20px] font-medium border-0 focus:border-0 focus:ring-0 focus-visible:ring-0 outline-none shadow-none"
+          />
+          <Button className="py-7 px-9 m-1 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white rounded-full text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
+            Search
+          </Button>
+        </div>
+      </div>
+
+      <div className="w-[50%] md:border-l md:border-[#6fb793] md:pl-8 flex justify-center items-center">
+        <div>
+          <p className="text-gray-600 text-center">
+            Click on user to preview their profile
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
