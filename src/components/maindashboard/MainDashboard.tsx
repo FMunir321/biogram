@@ -22,7 +22,7 @@ const MainDashboard = () => {
         </div>
       </div>
 
-      <div className="w-[50%] md:border-l md:border-[#6fb793] md:pl-8 flex justify-center items-center">
+      <div className="w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
         <div>
           <p className="text-gray-600 text-center">
             Click on user to preview their profile
