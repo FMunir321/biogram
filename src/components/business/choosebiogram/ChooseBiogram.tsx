@@ -105,6 +105,10 @@ const ChooseBiogram: React.FC = () => {
                 boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
                 zIndex: 2,
               }}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              custom={index}
             >
               {/* Role Ribbon */}
               <div

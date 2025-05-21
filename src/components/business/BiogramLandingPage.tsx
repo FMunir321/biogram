@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-import bgImage from "../../assets/lightbg.png";
+// import bgImage from "../../assets/lightbg.png";
 import group1 from "../../assets/Group1.png"; // adjust path if needed
 // import {
 //   DropdownMenu,
@@ -24,14 +24,14 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <div
-      className="relative hero-background overflow-hidden"
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover", // image ko container ke size ke according scale karega    // image ko center karega
-      }}
-    >
+    // <div
+    //   className="relative hero-background overflow-hidden"
+    //   style={{
+    //     backgroundImage: `url(${bgImage})`,
+    //     backgroundRepeat: "no-repeat",
+    //     backgroundSize: "cover", // image ko container ke size ke according scale karega    // image ko center karega
+    //   }}
+    // >
       <div className="min-h-[90vh] sm:min-h-[90vh] md:min-h-[30vh] lg:min-h-[30vh] xl:min-h-[90vh] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
         <div className="flex flex-col md:flex-row justify-between items-center">
           {/* Left Column: Text & Form */}
@@ -99,7 +99,7 @@ const HeroSection: React.FC = () => {
         <div className="absolute top-0 right-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.orange.100)_0%,transparent_70%)] opacity-70"></div>
         <div className="absolute bottom-0 left-0 -z-10 w-[40%] h-[40%] bg-[radial-gradient(circle,theme(colors.pink.100)_0%,transparent_70%)] opacity-70"></div>
       </div>
-    </div>
+    // </div>
   );
 };
 
