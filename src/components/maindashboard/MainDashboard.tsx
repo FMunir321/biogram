@@ -24,7 +24,7 @@ const MainDashboard = () => {
 
       <div className="w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
         <div>
-          <p className="text-gray-600 text-center">
+          <p className="text-black text-center font-medium">
             Click on user to preview their profile
           </p>
         </div>
