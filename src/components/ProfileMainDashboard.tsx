@@ -16,8 +16,8 @@ const ProfileMainDashboard: React.FC = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-screen p-4 lg:p-6 bg-white">
       {/* Left Card - Profile Section */}
-      <div className="w-full lg:w-[40%] xl:w-[35%] 2xl:w-[30%] flex-shrink-0">
-        <div className="rounded-3xl border border-pink-300 bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] shadow-2xl w-full h-[870px] flex flex-col p-4 md:p-6">
+      <div className="w-full lg:w-[50%]  flex-shrink-0">
+        <div className="rounded-3xl border border-[#7ecfa7] bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] shadow-2xl w-full h-[870px] flex flex-col p-4 md:p-6">
           {/* Top Section: Name, Username, Tabs, Paragraphs, Image */}
           <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 p-0 md:p-4 pb-0">
             {/* Left: Info */}
@@ -90,11 +90,11 @@ const ProfileMainDashboard: React.FC = () => {
 
       {/* Right Section - Scrollable Templates */}
       <div className="flex-1 overflow-y-auto pr-0 lg:pr-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 pb-10">
+        <div className="flex flex-col gap-4 md:gap-6 pb-10">
           <h2 className="text-2xl font-bold sticky top-0 bg-white z-10 py-4 col-span-full">Templates</h2>
           
           {/* Template Card 1 */}
-          <div className="rounded-3xl bg-black w-full h-full p-4 md:p-6 text-white flex flex-col">
+          <div className="rounded-3xl bg-black max-w-[380px] h-full p-4 md:p-6 text-white flex flex-col">
             {/* Header Row */}
             <div className="flex flex-col md:flex-row justify-between items-start mb-4 gap-2 md:gap-0">
               <div>
@@ -166,7 +166,7 @@ const ProfileMainDashboard: React.FC = () => {
 
           {/* Template Card 2 */}
           <div
-            className="relative rounded-3xl border-2 border-pink-500 bg-[#4d2c0c] w-full h-full flex flex-col overflow-hidden"
+            className="max-w-[380px] rounded-3xl border-2 border-pink-500 bg-[#4d2c0c] w-full h-full flex flex-col overflow-hidden"
             style={{
               backgroundImage: `url('/assets/flame-bg.png')`,
               backgroundSize: 'cover',
@@ -216,11 +216,11 @@ const ProfileMainDashboard: React.FC = () => {
           </div>
 
           {/* Template Card 3 */}
-          <div
+          {/* <div
             className="relative rounded-3xl border-2 border-pink-500 bg-gradient-to-br from-[#7a3c0f] via-[#a83279] to-[#42275a] w-full h-full flex flex-col items-center"
             style={{ minHeight: '400px' }}
           >
-            {/* Profile Image */}
+            
             <div className="flex justify-center mt-8">
               <img
                 src={alexjamesimage}
@@ -229,19 +229,19 @@ const ProfileMainDashboard: React.FC = () => {
               />
             </div>
             
-            {/* Name and Username */}
+           
             <div className="flex flex-col items-center mt-4">
               <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">Alex James</h1>
               <p className="text-white/80 -mt-1 mb-2 text-sm md:text-base">@Alexjames</p>
             </div>
             
-            {/* Tabs */}
+           
             <div className="flex gap-2 bg-white rounded-full p-1 w-fit mx-auto mb-6">
               <button className="px-4 py-1 rounded-full bg-gradient-to-r from-orange-400 via-pink-500 to-fuchsia-500 text-white font-semibold text-sm">Shots</button>
               <button className="px-4 py-1 rounded-full text-gray-700 font-semibold text-sm">Media</button>
             </div>
-            
-            {/* Social Icons */}
+             
+           
             <div className="flex justify-center gap-3 mb-6">
               <a href="#" className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white text-xl shadow-lg"><FaFacebook /></a>
               <a href="#" className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-orange-400 text-white text-xl shadow-lg"><FaInstagram /></a>
@@ -250,13 +250,12 @@ const ProfileMainDashboard: React.FC = () => {
               <a href="#" className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white text-xl shadow-lg"><FaWhatsapp /></a>
             </div>
             
-            {/* Share Button */}
             <div className="w-full px-6 mt-auto mb-6">
               <button className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-orange-400 via-pink-500 to-fuchsia-500 text-white rounded-full shadow-lg hover:opacity-90 transition">
                 Share profile
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
