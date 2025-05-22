@@ -1,6 +1,5 @@
 import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaSearchengin } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { MdMessage } from "react-icons/md";
@@ -8,8 +7,14 @@ import { FaChartLine } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { IoIosSettings } from "react-icons/io";
 import logo from "../../assets/Biogramlogo.png";
-import { Input } from "../../components/ui/input";
-import { Button } from "../ui/button";
+import Search from "../../assets/menue/search.svg";
+import Profile from "../../assets/menue/profile.svg";
+import Editeprofile from "../../assets/menue/editprofile.svg";
+import Message from "../../assets/menue/message.svg";
+import Analytics from "../../assets/menue/analytics.svg";
+import Notification from "../../assets/menue/notification.svg";
+import Setting from "../../assets/menue/setting.svg";
+import { profile } from "console";
 // import { Button } from "../components/ui/button";
 
 interface LayoutProps {
@@ -48,7 +53,6 @@ const Layout = ({ children }: LayoutProps) => {
   if (shouldHideSidebar) {
     return <div className="min-h-screen bg-gray-50">{children}</div>;
   }
-
   return (
     <div className="flex h-screen relative bg-gray-50">
       {/* Overlay for mobile */}
@@ -60,10 +64,15 @@ const Layout = ({ children }: LayoutProps) => {
       )}
 
       {/* Sidebar */}
-      <div
-        className={`fixed top-0 left-0 h-full w-[280px] bg-[#e6f8f0] py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
+      {/* <div
+        className={`fixed top-0 left-0 min-h-screen w-[280px] bg-[#e6f8f0] py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full shadow-2xl"} 
           md:translate-x-0 md:relative md:w-64 md:shadow-none`}
+      > */}
+      <div
+        className={`fixed top-0 left-0 min-h-screen w-[280px] bg-[#e6f8f0] py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full shadow-2xl"} 
+        md:translate-x-0 md:relative md:w-64 md:shadow-none md:min-h-screen`}
       >
         {/* Close Button (small screens) */}
         <div className="flex justify-end -mt-2 -mr-2 md:hidden">
@@ -95,49 +104,91 @@ const Layout = ({ children }: LayoutProps) => {
           <nav className="flex flex-col gap-5 mt-7 ">
             <Link to="/maindashboard">
               <SidebarItem
-                icon={<FaSearchengin />}
+                icon={
+                  <img
+                    src={Search}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Search"
                 active={location.pathname === "/maindashboard"}
               />
             </Link>
             <Link to="/profile">
               <SidebarItem
-                icon={<IoPerson />}
+                icon={
+                  <img
+                    src={Profile}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Profile"
                 active={location.pathname === "/profile"}
               />
             </Link>
             <Link to="/edit-profile">
               <SidebarItem
-                icon={<CiEdit />}
+                icon={
+                  <img
+                    src={Editeprofile}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Edit Profile"
                 active={location.pathname === "/edit-profile"}
               />
             </Link>
             <Link to="/messages">
               <SidebarItem
-                icon={<MdMessage />}
+                icon={
+                  <img
+                    src={Message}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Messages"
                 active={location.pathname === "/messages"}
               />
             </Link>
             <Link to="/analytics">
               <SidebarItem
-                icon={<FaChartLine />}
+                icon={
+                  <img
+                    src={Analytics}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Analytics"
                 active={location.pathname === "/analytics"}
               />
             </Link>
             <Link to="/notifications">
               <SidebarItem
-                icon={<IoIosNotifications />}
+                icon={
+                  <img
+                    src={Notification}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Notifications"
                 active={location.pathname === "/notifications"}
               />
             </Link>
             <Link to="/settings">
               <SidebarItem
-                icon={<IoIosSettings />}
+                icon={
+                  <img
+                    src={Setting}
+                    alt="Search"
+                    className="w-[36px] h-[36px]"
+                  />
+                }
                 label="Settings"
                 active={location.pathname === "/settings"}
               />
@@ -146,15 +197,15 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         {/* User Profile at bottom */}
-        <div className="flex items-center gap-3 p-3 mt-6 bg-white bg-opacity-50 rounded-xl">
+        <div className="flex items-center gap-3 p-3 mt-6 bg-opacity-50 rounded-xl">
           <img
             src="https://i.pravatar.cc/300"
             alt="Profile"
-            className="w-10 h-10 rounded-full ring-2 ring-black"
+            className="w-[50px] h-[50px] rounded-full ring-2 ring-black"
           />
           <div>
-            <p className="font-semibold text-sm">Alex James</p>
-            <p className="text-xs text-gray-500">@AlexJames</p>
+            <p className="text-[20px] font-bold text-black">Alex James</p>
+            <p className="text-[13px] font-normal text-black">@AlexJames</p>
           </div>
         </div>
       </div>
@@ -184,8 +235,6 @@ const Layout = ({ children }: LayoutProps) => {
               </svg>
             </button>
 
-           
-
             {/* Dummy div to balance hamburger and search */}
             <div className="w-10 md:hidden"></div>
           </div>
@@ -209,14 +258,23 @@ const SidebarItem = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer text-sm transition-colors
+      className={`text-[24px] font-normal flex items-center gap-3 p-2 rounded-lg cursor-pointer text-sm transition-colors
         ${
           active
-            ? "text-black font-semibold bg-white bg-opacity-50"
+            ? "text-[#53886C] bg-opacity-50"
             : "text-gray-700 hover:bg-white hover:bg-opacity-30"
         }`}
     >
-      <span className="text-lg">{icon}</span>
+      <span
+        className={`text-lg ${active ? "text-black" : "text-white"}`}
+        style={{
+          filter: active
+            ? "invert(39%) sepia(33%) saturate(628%) hue-rotate(100deg) brightness(91%) contrast(87%)"
+            : "brightness(0)",
+        }}
+      >
+        {icon}
+      </span>
       {label}
     </div>
   );
