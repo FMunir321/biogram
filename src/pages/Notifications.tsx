@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Notifications = () => {
-  const [activeTab, setActiveTab] = useState<'today' | 'yesterday' | 'this-week'>('today');
+  const [activeTab, setActiveTab] = useState<
+    "today" | "yesterday" | "this-week"
+  >("today");
 
   // Sample notification data
   const notifications = [
@@ -11,7 +13,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png"
+      avatar: "/src/assets/aleximage.png",
     },
     {
       id: 2,
@@ -19,7 +21,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png"
+      avatar: "/src/assets/aleximage.png",
     },
     {
       id: 3,
@@ -27,7 +29,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png"
+      avatar: "/src/assets/aleximage.png",
     },
     {
       id: 4,
@@ -35,7 +37,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png"
+      avatar: "/src/assets/aleximage.png",
     },
     {
       id: 5,
@@ -43,8 +45,8 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png"
-    }
+      avatar: "/src/assets/aleximage.png",
+    },
   ];
 
   return (
@@ -52,34 +54,42 @@ const Notifications = () => {
       <div className="bg-white rounded-[32px] p-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-4">Notifications</h1>
-          
+          <h1 className="text-[36px] font-bold text-black mb-4">
+            Notifications
+          </h1>
+
           {/* Tabs */}
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <button
-              onClick={() => setActiveTab('today')}
+              onClick={() => setActiveTab("today")}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
-                ${activeTab === 'today' 
-                  ? 'bg-[#98e6c3] text-white' 
-                  : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
+                ${
+                  activeTab === "today"
+                    ? "bg-gradient-to-r from-[#7ecfa7] to-[#578e71] text-white"
+                    : "border-1 border-[#7ecfa7] bg-[#dff3e9] text-gray-600 hover:bg-pink-100"
+                }`}
             >
               Today
             </button>
             <button
-              onClick={() => setActiveTab('yesterday')}
+              onClick={() => setActiveTab("yesterday")}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
-                ${activeTab === 'yesterday' 
-                  ? 'bg-[#98e6c3] text-white' 
-                  : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
+                ${
+                  activeTab === "yesterday"
+                    ? "bg-gradient-to-r from-[#7ecfa7] to-[#578e71] text-white"
+                    : "border-1 border-[#7ecfa7] bg-[#dff3e9] text-gray-600 hover:bg-pink-100"
+                }`}
             >
               Yesterday
             </button>
             <button
-              onClick={() => setActiveTab('this-week')}
+              onClick={() => setActiveTab("this-week")}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors
-                ${activeTab === 'this-week' 
-                  ? 'bg-[#98e6c3] text-white' 
-                  : 'bg-pink-50 text-gray-600 hover:bg-pink-100'}`}
+                ${
+                  activeTab === "this-week"
+                    ? "bg-gradient-to-r from-[#7ecfa7] to-[#578e71] text-white"
+                    : "border-1 border-[#7ecfa7] bg-[#dff3e9] text-gray-600 hover:bg-pink-100"
+                }`}
             >
               This week
             </button>
@@ -88,8 +98,9 @@ const Notifications = () => {
 
         {/* List */}
         <div className="space-y-2">
+          <h1 className="text-[24px] text-black font-medium">List</h1>
           {notifications.map((notification) => (
-            <div 
+            <div
               key={notification.id}
               className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] hover:from-[#c1e4d3] hover:to-[#b0d8c5] transition-colors cursor-pointer"
             >
@@ -97,17 +108,25 @@ const Notifications = () => {
                 <img
                   src={notification.avatar}
                   alt={notification.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-[110px] h-[110px] rounded-full object-cover"
                 />
                 <div>
-                  <div className="flex items-center gap-1">
-                    <span className="font-bold">{notification.name}</span>
-                    <span className="text-gray-500 text-sm">{notification.username}</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[36px] font-bold text-black">
+                      {notification.name}
+                    </span>
+                    <span className="text-[16px] font-normal text-black">
+                      {notification.username}
+                    </span>
+                    <p className="text-[16px] font-normal text-black">
+                      {notification.message}
+                    </p>
                   </div>
-                  <p className="text-gray-600 text-sm">{notification.message}</p>
                 </div>
               </div>
-              <span className="text-sm text-gray-500">{notification.date}</span>
+              <span className="text-[20px] font-medium text-black">
+                {notification.date}
+              </span>
             </div>
           ))}
         </div>
@@ -116,4 +135,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications; 
+export default Notifications;
