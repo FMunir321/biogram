@@ -7,7 +7,10 @@ import { MdMessage } from "react-icons/md";
 import { FaChartLine } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { IoIosSettings } from "react-icons/io";
-import logo from "../../assets/Biogramlogo.png"
+import logo from "../../assets/Biogramlogo.png";
+import { Input } from "../../components/ui/input";
+import { Button } from "../ui/button";
+// import { Button } from "../components/ui/button";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
   // Routes where sidebar should be hidden
-  const hideSidebarRoutes = ['/SocialMedia', '/AddSocialMediaUploadPicture'];
+  const hideSidebarRoutes = ["/SocialMedia", "/AddSocialMediaUploadPicture"];
   const shouldHideSidebar = hideSidebarRoutes.includes(location.pathname);
 
   // Close sidebar when screen size changes to desktop
@@ -29,16 +32,16 @@ const Layout = ({ children }: LayoutProps) => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Prevent body scroll when mobile sidebar is open
   useEffect(() => {
     if (sidebarOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [sidebarOpen]);
 
@@ -68,65 +71,75 @@ const Layout = ({ children }: LayoutProps) => {
             className="p-2 rounded-full hover:bg-pink-200 transition-colors"
             onClick={() => setSidebarOpen(false)}
           >
-            <svg className="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6 text-pink-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         <div className="flex-1">
           <Link to="/maindashboard">
-          <img src={logo} alt="BiogramLogo" className="h-10 sm:h-12" />
+            <img src={logo} alt="BiogramLogo" className="h-10 sm:h-12" />
           </Link>
 
           <nav className="flex flex-col gap-5 mt-7 ">
             <Link to="/maindashboard">
-              <SidebarItem 
-                icon={<FaSearchengin />} 
-                label="Search" 
-                active={location.pathname === '/maindashboard'} 
+              <SidebarItem
+                icon={<FaSearchengin />}
+                label="Search"
+                active={location.pathname === "/maindashboard"}
               />
             </Link>
             <Link to="/profile">
-              <SidebarItem 
-                icon={<IoPerson />} 
-                label="Profile" 
-                active={location.pathname === '/profile'} 
+              <SidebarItem
+                icon={<IoPerson />}
+                label="Profile"
+                active={location.pathname === "/profile"}
               />
             </Link>
             <Link to="/edit-profile">
-              <SidebarItem 
-                icon={<CiEdit />}    
-                label="Edit Profile" 
-                active={location.pathname === '/edit-profile'} 
+              <SidebarItem
+                icon={<CiEdit />}
+                label="Edit Profile"
+                active={location.pathname === "/edit-profile"}
               />
             </Link>
             <Link to="/messages">
-              <SidebarItem 
-                icon={<MdMessage />} 
-                label="Messages" 
-                active={location.pathname === '/messages'} 
+              <SidebarItem
+                icon={<MdMessage />}
+                label="Messages"
+                active={location.pathname === "/messages"}
               />
             </Link>
             <Link to="/analytics">
-              <SidebarItem 
-                icon={<FaChartLine />} 
-                label="Analytics" 
-                active={location.pathname === '/analytics'} 
+              <SidebarItem
+                icon={<FaChartLine />}
+                label="Analytics"
+                active={location.pathname === "/analytics"}
               />
             </Link>
             <Link to="/notifications">
-              <SidebarItem 
-                icon={<IoIosNotifications />} 
-                label="Notifications" 
-                active={location.pathname === '/notifications'} 
+              <SidebarItem
+                icon={<IoIosNotifications />}
+                label="Notifications"
+                active={location.pathname === "/notifications"}
               />
             </Link>
             <Link to="/settings">
-              <SidebarItem 
-                icon={<IoIosSettings />} 
-                label="Settings" 
-                active={location.pathname === '/settings'} 
+              <SidebarItem
+                icon={<IoIosSettings />}
+                label="Settings"
+                active={location.pathname === "/settings"}
               />
             </Link>
           </nav>
@@ -156,24 +169,22 @@ const Layout = ({ children }: LayoutProps) => {
               className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               onClick={() => setSidebarOpen(true)}
             >
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
 
-            {/* Searchbar */}
-            <div className="flex justify-center flex-1 md:justify-center px-4">
-              <div className="flex items-center bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-full p-1 w-full max-w-md shadow-md">
-                <input
-                  type="text"
-                  placeholder="Search Person name here"
-                  className="px-4 py-2 flex-1 rounded-l-full outline-none text-sm w-full min-w-0 bg-white"
-                />
-                <button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
-                  Search
-                </button>
-              </div>
-            </div>
+           
 
             {/* Dummy div to balance hamburger and search */}
             <div className="w-10 md:hidden"></div>
@@ -181,9 +192,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         {/* Page Content */}
-        <div>
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
@@ -201,9 +210,10 @@ const SidebarItem = ({
   return (
     <div
       className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer text-sm transition-colors
-        ${active 
-          ? "text-black font-semibold bg-white bg-opacity-50" 
-          : "text-gray-700 hover:bg-white hover:bg-opacity-30"
+        ${
+          active
+            ? "text-black font-semibold bg-white bg-opacity-50"
+            : "text-gray-700 hover:bg-white hover:bg-opacity-30"
         }`}
     >
       <span className="text-lg">{icon}</span>

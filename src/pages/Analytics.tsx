@@ -98,6 +98,29 @@ const Analytics = () => {
     },
   };
 
+  const stats = [
+    {
+      label: "My Deeplinks",
+      value: "5/25",
+      change: "Active Links",
+    },
+    {
+      label: "Shield Protection",
+      value: "4/5",
+      change: "Protected Links",
+    },
+    {
+      label: "April analytics",
+      value: "7.889",
+      change: "Visitors in April 2025",
+    },
+    {
+      label: "All Time Analytics",
+      value: "7.889",
+      change: "Total Visitors",
+    },
+  ];
+
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2 md:p-4">
       <div
@@ -106,39 +129,25 @@ const Analytics = () => {
       >
         {/* Header */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl font-bold mb-2">Analytics</h1>
-          <p className="text-gray-600">Track your account growth and engagement</p>
+          <h1 className="text-[36px] font-bold mb-2 text-black">Overview</h1>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4">
-            <h3 className="text-lg font-semibold mb-2">Followers</h3>
-            <p className="text-3xl font-bold">1.2K</p>
-            <p className="text-green-500 text-sm mt-2">+12% this week</p>
-          </div>
-
-          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4">
-            <h3 className="text-lg font-semibold mb-2">Following</h3>
-            <p className="text-3xl font-bold">845</p>
-            <p className="text-green-500 text-sm mt-2">+5% this week</p>
-          </div>
-
-          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4">
-            <h3 className="text-lg font-semibold mb-2">Posts</h3>
-            <p className="text-3xl font-bold">242</p>
-            <p className="text-green-500 text-sm mt-2">+8% this week</p>
-          </div>
-
-          <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4">
-            <h3 className="text-lg font-semibold mb-2">Engagement</h3>
-            <p className="text-3xl font-bold">15.8%</p>
-            <p className="text-green-500 text-sm mt-2">+3% this week</p>
-          </div>
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4"
+            >
+              <h3 className="text-[20px] font-medium mb-2 text-[#3C3C3C]">{stat.label}</h3>
+              <p className="text-[64px] font-semibold text-[#3C3C3C] text-center">{stat.value}</p>
+              <p className="text-[16px] font-normal text-[#3C3C3C] mt-2 text-center">{stat.change}</p>
+            </div>
+          ))}
         </div>
 
         {/* Graph Section */}
-        <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 md:p-6">
+        <div className="bg-[#f1f8f4] rounded-2xl p-4 md:p-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
               <h3 className="text-lg font-semibold mb-1">Growth Overview</h3>

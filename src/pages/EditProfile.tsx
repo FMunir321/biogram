@@ -7,7 +7,27 @@ const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const sections = [
+    {
+      heading: "Link",
+      title: "Custom Links",
+      subtitle: "Link section",
+      image: "/src/assets/Link.png",
+      onClick: () => setIsCustomLinksOpen(true),
+    },
+    {
+      heading: "Streaming",
+      title: "Spotify",
+      subtitle: "Music section",
+      image: "/src/assets/Spotify.png",
+    },
+    {
+      heading: "E commerce",
+      title: "New Merch",
+      subtitle: "Merch section",
+      image: "/src/assets/Shopingbag.png",
+    },
+  ];
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -28,7 +48,10 @@ const EditProfile = () => {
       <div className="block md:hidden">
         <div
           className="bg-white rounded-[32px] p-4"
-          style={{ backgroundImage: `url(${bground})`, backgroundSize: "cover" }}
+          style={{
+            backgroundImage: `url(${bground})`,
+            backgroundSize: "cover",
+          }}
         >
           <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-[24px] p-4">
             <div className="text-center">
@@ -76,21 +99,29 @@ const EditProfile = () => {
                       <p className="text-sm text-gray-500">Link section</p>
                     </div>
                   </div>
-                  <button className="text-2xl font-bold text-gray-500">+</button>
+                  <button className="text-2xl font-bold text-gray-500">
+                    +
+                  </button>
                 </div>
 
                 {/* Spotify */}
                 <div className="bg-white rounded-xl p-3 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                      <img src="/src/assets/Spotify.png" alt="Spotify" className="w-5 h-5" />
+                      <img
+                        src="/src/assets/Spotify.png"
+                        alt="Spotify"
+                        className="w-5 h-5"
+                      />
                     </div>
                     <div>
                       <p className="font-medium">Spotify</p>
                       <p className="text-sm text-gray-500">Music section</p>
                     </div>
                   </div>
-                  <button className="text-2xl font-bold text-gray-500">+</button>
+                  <button className="text-2xl font-bold text-gray-500">
+                    +
+                  </button>
                 </div>
 
                 {/* New Merch */}
@@ -104,7 +135,9 @@ const EditProfile = () => {
                       <p className="text-sm text-gray-500">Merch section</p>
                     </div>
                   </div>
-                  <button className="text-2xl font-bold text-gray-500">+</button>
+                  <button className="text-2xl font-bold text-gray-500">
+                    +
+                  </button>
                 </div>
               </div>
             </div>
@@ -115,12 +148,16 @@ const EditProfile = () => {
       {/* Desktop View */}
       <div
         className="hidden md:block h-screen overflow-hidden rounded-[32px] p-6"
-        style={{ backgroundImage: `url(${bground})`, backgroundSize: "cover", backgroundRepeat: "no-repeat" }}
+        style={{
+          backgroundImage: `url(${bground})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
       >
         <div className="flex flex-col">
           <div className="flex flex-row gap-20 w-full">
             {/* Left Side - Profile Image */}
-            <div className="sticky top-6 flex-shrink-0 w-[300px] h-[550px]">
+            <div className="sticky top-6 flex-shrink-0 max-w-[300px] h-[550px] bg-[#dff3e9] border-2 rounded-[24px] border-[#7ecfa7]">
               <div className="relative w-full h-full bg-gradient-to-b from-[#e6f8f0] to-[#e6f8f0] rounded-[24px] p-6">
                 <div>
                   <h1 className="text-2xl font-bold">Alex James</h1>
@@ -135,7 +172,7 @@ const EditProfile = () => {
 
                 <button
                   onClick={handleUploadClick}
-                  className="absolute bottom-6 left-6 right-6 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-4 rounded-full font-medium text-center cursor-pointer"
+                  className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-4 pb-2 rounded-full font-medium text-center cursor-pointer"
                 >
                   Add Photo
                 </button>
@@ -153,54 +190,42 @@ const EditProfile = () => {
             <div className="flex-1 pb-6">
               <h2 className="text-xl font-semibold mb-4">Add Content</h2>
               <p className="text-gray-600 text-sm mb-6">
-                Interact with the menu elements below. Let's first create profile elements on the left to open dynamic support page and set them.
+                Interact with the menu elements below. Let's first create
+                profile elements on the left to open dynamic support page and
+                set them.
               </p>
 
               <div className="flex flex-col space-y-4">
-                {/* Custom Links */}
-                <div
-                  className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
-                  onClick={() => setIsCustomLinksOpen(true)}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-lg">
-                      🔗
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-white">Custom Links</h3>
-                      <p className="text-sm text-white/90">Link section</p>
-                    </div>
-                  </div>
-                  <button className="text-2xl font-bold text-white hover:text-gray-700">+</button>
-                </div>
+                {sections.map((section, index) => (
+                  <div>
+                    <h1>{section.heading}</h1>
+                  <div
+                    key={index}
+                    className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
+                    onClick={section.onClick}
+                  >
+                    
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={section.image}
+                        alt={section.title}
+                      />
 
-                {/* Spotify */}
-                <div className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <img src="/src/assets/Spotify.png" alt="Spotify" className="w-5 h-5" />
+                      <div>
+                        <h3 className="font-medium text-white">
+                          {section.title}
+                        </h3>
+                        <p className="text-sm text-white/90">
+                          {section.subtitle}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-medium text-white">Spotify</h3>
-                      <p className="text-sm text-white/90">Music section</p>
-                    </div>
+                    <button className="text-2xl font-bold text-white hover:text-gray-700">
+                      +
+                    </button>
                   </div>
-                  <button className="text-2xl font-bold text-white hover:text-gray-700">+</button>
-                </div>
-
-                {/* New Merch */}
-                <div className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-lg">
-                      🛍️
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-white">New Merch</h3>
-                      <p className="text-sm text-white/90">Merch section</p>
-                    </div>
                   </div>
-                  <button className="text-2xl font-bold text-white hover:text-gray-700">+</button>
-                </div>
+                ))}
               </div>
             </div>
           </div>

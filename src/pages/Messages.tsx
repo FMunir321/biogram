@@ -1,39 +1,40 @@
+import { Button } from "@/components/ui/button";
 import bground from "../assets/lightbg.png";
+import { Input } from "@/components/ui/input";
 
 const Messages = () => {
   return (
-    <div className="w-full max-w-[1300px] mx-auto p-2 md:p-4">
-      <div
-        className="bg-white rounded-[32px] p-4 md:p-6 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${bground})`,
-        }}
-      >
-        {/* Header */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl font-bold mb-4">Message</h1>
-          {/* Search Bar */}
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="w-full max-w-md bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-full p-1">
-              <input
-                type="text"
-                placeholder="Search Person name here"
-                className="w-full px-4 py-2 bg-white rounded-full outline-none text-sm"
-              />
-            </div>
-            <button className="w-full sm:w-auto bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white px-6 py-2 rounded-full text-sm font-medium">
-              Search
-            </button>
-          </div>
+    <div
+      className="flex flex-col md:flex-row justify-center h-full  bg-cover bg-center"
+      style={{ backgroundImage: `url(${bground})` }}
+    >
+      <div className="w-[50%] p-5">
+        <h1 className="text-[32px] font-bold text-black">Message</h1>
+        {/* Searchbar */}
+        <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
+          <Input
+            type="text"
+            placeholder="Search Person name here"
+            className="py-7 m-1 text-[20px] font-medium border-0 focus:border-0 focus:ring-0 focus-visible:ring-0 outline-none shadow-none"
+          />
+          <Button className="py-7 px-9 m-1 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white rounded-full text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
+            Search
+          </Button>
         </div>
+        <div className="mt-9">
+          <p className="text-20px font-medium text-center text-black">No conversation yet</p>
+        </div>
+      </div>
 
-        {/* Message Content */}
-        <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4">
-          <p className="text-gray-600 mb-4">No conversation yet</p>
-          <p className="text-gray-400 text-sm">Select a conversation to start chat</p>
+      <div className="w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
+        <div>
+          <p className="text-black text-center font-medium">
+            Select a conversation to start chat
+          </p>
         </div>
       </div>
     </div>
+
   );
 };
 
