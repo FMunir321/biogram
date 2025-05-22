@@ -4,7 +4,6 @@ import videoImg from "../assets/videoshoot.jpg";
 import { FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaTiktok } from "react-icons/fa";
 import PhoneMockup from "../components/PhoneMockup";
 
-// SocialLinks.tsx
 const SocialLinks = () => (
   <div className="flex space-x-3 mt-2">
     {[FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaTiktok].map((Icon, i) => (
@@ -14,22 +13,6 @@ const SocialLinks = () => (
         size={20}
       />
     ))}
-  </div>
-);
-
-const ArtistImage = () => (
-  <img
-    src={image}
-    alt="Artist"
-    className="w-full h-60 object-cover rounded-xl"
-  />
-);
-
-const ArtistOverlay = ({ name, username }: { name: string; username?: string }) => (
-  <div className="relative z-10 p-3 bg-gradient-to-t from-black/80 to-transparent w-full rounded-b-xl -mt-16">
-    <h3 className="text-lg font-semibold text-white">{name}</h3>
-    {username && <p className="text-xs text-white/70">{username}</p>}
-    <SocialLinks />
   </div>
 );
 
@@ -55,8 +38,10 @@ const TourDatesAndArtistCard = () => (
     </div>
     <div className="flex-1 pr-4 mt-12">
       <h2 className="text-2xl font-bold mb-6">Tour Dates</h2>
-      {[{ date: "21", month: "Jun", venue: "Kaseya Center", city: "Miami FL", time: "8PM" },
-        { date: "26", month: "Jun", venue: "T-Mobile Arena", city: "Las Vegas", time: "10AM" }].map((item, i) => (
+      {[
+        { date: "21", month: "Jun", venue: "Kaseya Center", city: "Miami FL", time: "8PM" },
+        { date: "26", month: "Jun", venue: "T-Mobile Arena", city: "Las Vegas", time: "10AM" }
+      ].map((item, i) => (
         <div key={i} className="flex items-center gap-4 bg-[#bcf3d8] rounded-xl px-4 py-3 mb-4">
           <div className="text-center">
             <div className="text-xl font-bold">{item.date}</div>
@@ -74,8 +59,11 @@ const TourDatesAndArtistCard = () => (
       ))}
     </div>
     <div className="w-1/2 mt-6 md:mt-0 flex flex-col justify-end items-center">
-      <ArtistImage />
-      <ArtistOverlay name="John Doe" username="john.doe" />
+      <PhoneMockup
+        image={miamiImg}
+        name="Chan Ja HO"
+        username="Chan567.com"
+      />
     </div>
   </div>
 );
@@ -89,7 +77,7 @@ const ProductsCard = () => (
     <div className="grid grid-cols-1 gap-4 z-10">
       {[
         { name: "Red Jersey", price: "$250.00" },
-        { name: "Sweets", price: "$50.99" },
+        { name: "Sweets", price: "$50.99" }
       ].map((item, idx) => (
         <div key={idx} className="flex items-center bg-white rounded-xl shadow p-3 gap-4 w-full">
           <img
@@ -104,8 +92,12 @@ const ProductsCard = () => (
         </div>
       ))}
     </div>
-    <div className="absolute bottom-4 right-4 w-[45%] min-w-[200px] z-10">
-      <ArtistProfileCard />
+    <div className="absolute bottom-4 right-4 z-10">
+      <PhoneMockup
+        image={videoImg}
+        name="Michal James"
+        username="MJames123.com"
+      />
     </div>
   </div>
 );
@@ -148,12 +140,16 @@ const MusicPlayerCard = () => (
         <SocialLinks />
       </div>
     </div>
-    <div className="absolute bottom-4 right-4 w-[45%] min-w-[200px] z-0">
-      <ArtistProfileCard />
+    <div className="absolute bottom-4 right-4 z-0">
+      <PhoneMockup
+        image={image}
+        name="Max James"
+        username="MJames.com"
+      />
     </div>
   </div>
 );
-// Appointment Scheduler Card (with images)
+
 const AppointmentSchedulerCard = () => (
   <div className="bg-white rounded-2xl border shadow p-6 flex flex-col h-full relative overflow-hidden w-full max-w-[610px]">
     <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-3 py-1 rounded-r-full font-semibold z-20">
@@ -162,77 +158,67 @@ const AppointmentSchedulerCard = () => (
     <div className="flex flex-col justify-center items-center h-full mt-12">
       <h2 className="text-2xl font-bold mb-2 text-[#1f1f1f]">Appointment Scheduler</h2>
       <p className="text-gray-600 text-sm mb-4">Book your photoshoots and video shoots easily!</p>
+
       <div className="w-full space-y-4">
-        <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={miamiImg} alt="Miami" className="w-10 h-10 object-cover rounded-lg" />
-            <span className="font-semibold">Photoshoot in Miami</span>
+        {/* Card 1 */}
+        <div
+          className="relative rounded-xl overflow-hidden h-28 flex items-center justify-between px-4 text-white"
+          style={{
+            backgroundImage: `url(${miamiImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="relative z-10 flex justify-between items-center w-full">
+            <div className="flex flex-col">
+              <span className="font-semibold text-lg">Photoshoot in Miami</span>
+              <span className="text-xs text-white/90">2 Hours – $500</span>
+            </div>
           </div>
-          <span className="text-xs text-gray-700">2 Hours – $500</span>
         </div>
-        <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={videoImg} alt="Video Shoot" className="w-10 h-10 object-cover rounded-lg" />
-            <span className="font-semibold">Video Shoot in Miami</span>
+
+        {/* Card 2 */}
+        <div
+          className="relative rounded-xl overflow-hidden h-28 flex items-center justify-between px-4 text-white"
+          style={{
+            backgroundImage: `url(${videoImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="relative z-10 flex justify-between items-center w-full">
+            <div className="flex flex-col">
+              <span className="font-semibold text-lg">Video Shoot in Miami</span>
+              <span className="text-xs text-white/90">1.5 Hours – $400</span>
+            </div>
           </div>
-          <span className="text-xs text-gray-700">2 Hours – $1999</span>
         </div>
       </div>
     </div>
   </div>
 );
 
-// Example for a card with mockup on the right
-const CardWithMockupRight = () => (
-  <div className="flex flex-row items-center justify-between bg-white rounded-xl p-6">
-    <div className="flex-1">
-      {/* Your card content here */}
-    </div>
-    <PhoneMockup
-      image={miamiImg}
-      name="Chan Ja HO"
-      username="Chan567.com"
-      className="ml-8"
-    />
-  </div>
-);
 
-// Example for a card with mockup on the left
-const CardWithMockupLeft = () => (
-  <div className="flex flex-row items-center justify-between bg-white rounded-xl p-6">
-    <PhoneMockup
-      image={image}
-      name="Max James"
-      username="MJames.com"
-      className="mr-8"
-    />
-    <div className="flex-1">
-      {/* Your card content here */}
+const ArtistShowcase = () => (
+  <div className="container mx-auto p-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <TourDatesAndArtistCard />
+      <ProductsCard />
+      <MusicPlayerCard />
+      <AppointmentSchedulerCard />
     </div>
   </div>
 );
-
-const ArtistShowcase = () => {
-  return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Top row */}
-        <TourDatesAndArtistCard />
-        <ProductsCard />
-        {/* Bottom row */}
-        <MusicPlayerCard />
-        <AppointmentSchedulerCard />
-      </div>
-    </div>
-  );
-};
 
 export {
+  SocialLinks,
+  ArtistProfileCard,
   TourDatesAndArtistCard,
   ProductsCard,
   MusicPlayerCard,
-  ArtistProfileCard,
-  SocialLinks,
+  AppointmentSchedulerCard,
 };
 
 export default ArtistShowcase;
