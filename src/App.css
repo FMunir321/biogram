@@ -1,6 +1,5 @@
-
 * body {
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 #root {
@@ -45,3 +44,18 @@
 .read-the-docs {
   color: #888;
 }
+
+/******************************/
+/*** Css for Toggle button ***/
+/******************************/
+
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #68d391;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #68d391;
+}
+
+/******************************/

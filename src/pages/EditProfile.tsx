@@ -2,11 +2,14 @@ import { useState, useRef } from "react";
 import characterImg from "../assets/aleximage.png";
 import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../assets/lightbg.png";
+import Greaterthen from "../assets/greaterthen.png";
+import Thumbnail from "../assets/thumbnail.svg";
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isBioEnabled, setIsBioEnabled] = useState(false);
   const sections = [
     {
       heading: "Link",
@@ -147,47 +150,317 @@ const EditProfile = () => {
 
       {/* Desktop View */}
       <div
-        className="hidden md:block h-screen overflow-hidden rounded-[32px] p-6"
+        className="hidden md:block  rounded-[32px] p-6"
         style={{
           backgroundImage: `url(${bground})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-20 w-full">
+        
+          <div className="flex flex-col lg:flex-row lg:gap-5 2xl:gap-20 w-full">
             {/* Left Side - Profile Image */}
-            <div className="sticky top-6 flex-shrink-0 max-w-[300px] h-[550px] bg-[#dff3e9] border-2 rounded-[24px] border-[#7ecfa7]">
-              <div className="relative w-full h-full bg-gradient-to-b from-[#e6f8f0] to-[#e6f8f0] rounded-[24px] p-6">
-                <div>
-                  <h1 className="text-2xl font-bold">Alex James</h1>
-                  <p className="text-gray-600 text-sm">@Alexjames</p>
+            {/* add this css below div for scroll bar  max-h-[calc(100vh-48px)] */}
+            <div className="flex flex-col gap-4 w-[500px] h-full max-h-[calc(100vh-48px)]  overflow-y-auto pr-2">
+              {/* Add photo card */}
+              <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
+                <div className="rounded-[24px] p-6">
+                  <div>
+                    <h1 className="text-2xl font-bold">Alex James</h1>
+                    <p className="text-gray-600 text-sm">@Alexjames</p>
+                  </div>
+
+                  <img
+                    src={imageToShow}
+                    alt="Profile character"
+                    className="w-full h-[400px] object-contain mt-4"
+                  />
+
+                  <button
+                    onClick={handleUploadClick}
+                    className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-4 pb-2 rounded-full font-medium text-center cursor-pointer"
+                  >
+                    Add Photo
+                  </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                    className="hidden"
+                  />
                 </div>
+              </div>
 
-                <img
-                  src={imageToShow}
-                  alt="Profile character"
-                  className="w-full h-[400px] object-contain mt-4"
-                />
+              {/* Bio card */}
+              <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
+                <div className="">
+                  <div className="flex items-center justify-between rounded-[24px] p-6">
+                    <label
+                      htmlFor="bio-toggle"
+                      className="text-[32px] font-bold text-black"
+                    >
+                      Bio
+                    </label>
+                    <label
+                      htmlFor="bio-toggle"
+                      className="relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        id="bio-toggle"
+                        className="sr-only"
+                        checked={isBioEnabled}
+                        onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      />
+                      <div
+                        className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                          isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                          isBioEnabled
+                            ? "translate-x-6 bg-[#72bb96]"
+                            : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                    </label>
+                  </div>
+                  <div className="flex flex-col md:flex-row items-center justify-between pb-6 px-6">
+                    <p className="text-[16px] font-normal text-black">
+                      Add Bio to your profile
+                    </p>
+                    <img
+                      src={Greaterthen}
+                      alt="greater than"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+              </div>
 
-                <button
-                  onClick={handleUploadClick}
-                  className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-4 pb-2 rounded-full font-medium text-center cursor-pointer"
-                >
-                  Add Photo
-                </button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                  className="hidden"
-                />
+              {/* Featured Links card*/}
+              <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
+                <div className="rounded-[24px] p-6">
+                  {/* Toggle Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <label
+                      htmlFor="bio-toggle"
+                      className="text-[32px] font-bold text-black"
+                    >
+                      Featured Links
+                    </label>
+                    <label
+                      htmlFor="bio-toggle"
+                      className="relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        id="bio-toggle"
+                        className="sr-only"
+                        checked={isBioEnabled}
+                        onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      />
+                      <div
+                        className={`block w-14 h-8 rounded-full transition-colors duration-300 ${
+                          isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 ${
+                          isBioEnabled ? "translate-x-6" : ""
+                        }`}
+                      ></div>
+                    </label>
+                  </div>
+
+                  {/* Big Thumbnail Section */}
+                  <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                    <img
+                      src={Thumbnail}
+                      alt="Big Thumbnail"
+                      className="object-contain h-20 mb-2"
+                    />
+                    <p className="text-[16px] font-normal text-white">
+                      Add Big Thumbnail link
+                    </p>
+                  </div>
+
+                  {/* Small Thumbnail Grid */}
+                  <div className="flex flex-col md:flex-row w-full gap-4 m-2">
+                    {[1, 2].map((_, idx) => (
+                      <div
+                        key={idx}
+                        className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                      >
+                        <img
+                          src={Thumbnail}
+                          alt={`Small Thumbnail ${idx + 1}`}
+                          className="object-contain h-16 mb-2"
+                        />
+                        <p className="text-[16px] font-normal text-white text-center">
+                          Add Small Thumbnail link
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={handleUploadClick}
+                    className="w-full mx-2 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-4 pb-2 rounded-full font-medium text-center cursor-pointer"
+                  >
+                    Add Photo
+                  </button>
+                </div>
+              </div>
+
+              {/* Merch card */}
+              <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
+                <div className="">
+                  <div className="flex items-center justify-between rounded-[24px] p-6">
+                    <label
+                      htmlFor="bio-toggle"
+                      className="text-[32px] font-bold text-black"
+                    >
+                      Merch (0 Items)
+                    </label>
+                    <label
+                      htmlFor="bio-toggle"
+                      className="relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        id="bio-toggle"
+                        className="sr-only"
+                        checked={isBioEnabled}
+                        onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      />
+                      <div
+                        className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                          isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                          isBioEnabled
+                            ? "translate-x-6 bg-[#72bb96]"
+                            : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                    </label>
+                  </div>
+                  <div className="flex flex-col md:flex-row items-center justify-between pb-6 px-6">
+                    <p className="text-[16px] font-normal text-[#EA00FF]">
+                      Manage Merch
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gallery card */}
+              <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
+                <div className="rounded-[24px] p-6">
+                  {/* Toggle Header */}
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="bio-toggle"
+                      className="text-[32px] font-bold text-black"
+                    >
+                      Gallery
+                    </label>
+                    <label
+                      htmlFor="bio-toggle"
+                      className="relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        id="bio-toggle"
+                        className="sr-only"
+                        checked={isBioEnabled}
+                        onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      />
+                      <div
+                        className={`block w-14 h-8 rounded-full transition-colors duration-300 ${
+                          isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 ${
+                          isBioEnabled ? "translate-x-6" : ""
+                        }`}
+                      ></div>
+                    </label>
+                  </div>
+                  <div className="flex flex-col md:flex-row items-center justify-between mb-5">
+                    <p className="text-[16px] font-normal text-black">
+                      Add Bio to your profile
+                    </p>
+                  </div>
+                  {/* Small Thumbnail Grid */}
+                  <div className="flex flex-col md:flex-row w-[50%] gap-4 m-2">
+                    <div className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                      <img
+                        src={Thumbnail}
+                        alt={`Small Thumbnail `}
+                        className="object-contain h-16 mb-2"
+                      />
+                      <p className="text-[16px] font-normal text-white text-center">
+                        Add Small Thumbnail link
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Shouts/ Media */}
+              <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
+                <div className="">
+                  <div className="flex items-center justify-between rounded-[24px] p-6">
+                    <label
+                      htmlFor="bio-toggle"
+                      className="text-[32px] font-bold text-black"
+                    >
+                      Shouts/ Media
+                    </label>
+                    <label
+                      htmlFor="bio-toggle"
+                      className="relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        id="bio-toggle"
+                        className="sr-only"
+                        checked={isBioEnabled}
+                        onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      />
+                      <div
+                        className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                          isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                      <div
+                        className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                          isBioEnabled
+                            ? "translate-x-6 bg-[#72bb96]"
+                            : "bg-[#d1d5db]"
+                        }`}
+                      ></div>
+                    </label>
+                  </div>
+                  <div className="flex flex-col items-center justify-between pb-6 px-6">
+                    <h1 className="text-[40px] font-bold text-black">
+                      No shouts yet!
+                    </h1>
+                    <p className="text-[11px] font-normal text-black">
+                      Shouts posted by alex james will apperar here
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Right Side - Add Content */}
-            <div className="flex-1 pb-6">
+            <div className="flex-1 pb-6 overflow-y-auto h-full">
               <h2 className="text-xl font-semibold mb-4">Add Content</h2>
               <p className="text-gray-600 text-sm mb-6">
                 Interact with the menu elements below. Let's first create
@@ -199,36 +472,32 @@ const EditProfile = () => {
                 {sections.map((section, index) => (
                   <div>
                     <h1>{section.heading}</h1>
-                  <div
-                    key={index}
-                    className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
-                    onClick={section.onClick}
-                  >
-                    
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={section.image}
-                        alt={section.title}
-                      />
+                    <div
+                      key={index}
+                      className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
+                      onClick={section.onClick}
+                    >
+                      <div className="flex items-center gap-3">
+                        <img src={section.image} alt={section.title} />
 
-                      <div>
-                        <h3 className="font-medium text-white">
-                          {section.title}
-                        </h3>
-                        <p className="text-sm text-white/90">
-                          {section.subtitle}
-                        </p>
+                        <div>
+                          <h3 className="font-medium text-white">
+                            {section.title}
+                          </h3>
+                          <p className="text-sm text-white/90">
+                            {section.subtitle}
+                          </p>
+                        </div>
                       </div>
+                      <button className="text-2xl font-bold text-white hover:text-gray-700">
+                        +
+                      </button>
                     </div>
-                    <button className="text-2xl font-bold text-white hover:text-gray-700">
-                      +
-                    </button>
-                  </div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          
         </div>
       </div>
 
