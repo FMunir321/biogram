@@ -1,6 +1,8 @@
 import image from "../assets/flowers.png";
 import miamiImg from "../assets/miami.jpg";
 import videoImg from "../assets/videoshoot.jpg";
+import dish from "../assets/dish.png";
+import redjersy from "../assets/redjersy.png";
 import { FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaTiktok } from "react-icons/fa";
 import PhoneMockup from "../components/PhoneMockup";
 
@@ -69,21 +71,27 @@ const TourDatesAndArtistCard = () => (
 );
 
 const ProductsCard = () => (
-  <div className="bg-[#bcf3d8] shadow rounded-2xl p-8 flex flex-col h-full relative overflow-hidden w-full max-w-[610px]">
+  <div className="bg-[#dcfaeb] shadow rounded-[20px] p-8 flex flex-col relative overflow-hidden w-[562px] h-[466px]">
     <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-3 py-1 rounded-r-full font-semibold z-10">
       Coming Soon: Sell Products & Services
     </div>
+
     <h2 className="text-2xl font-bold mb-6 text-[#1f1f1f] mt-8">Your Products</h2>
-    <div className="grid grid-cols-1 gap-4 z-10">
+
+    <div className="grid grid-cols-1 gap-4 z-10 ">
       {[
-        { name: "Red Jersey", price: "$250.00" },
-        { name: "Sweets", price: "$50.99" }
+        { name: "Red Jersey", price: "$250.00", image: redjersy},
+        { name: "Sweets", price: "$50.99", image: dish}
       ].map((item, idx) => (
-        <div key={idx} className="flex items-center bg-white rounded-xl shadow p-3 gap-4 w-full">
+        <div
+          key={idx}
+         className="flex items-center bg-white shadow p-3 gap-4"
+  style={{ width: '355px', height: '99px', borderRadius: '10px' }}
+        >
           <img
-            src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=80&q=80"
+            src={item.image}
             alt={item.name}
-            className="w-12 h-12 object-cover rounded"
+            className="h-full w-[80px] object-cover rounded-l-[10px]"
           />
           <div>
             <p className="font-semibold text-black">{item.name}</p>
@@ -92,6 +100,7 @@ const ProductsCard = () => (
         </div>
       ))}
     </div>
+
     <div className="absolute bottom-4 right-4 z-10">
       <PhoneMockup
         image={videoImg}
@@ -103,21 +112,21 @@ const ProductsCard = () => (
 );
 
 const MusicPlayerCard = () => (
-  <div className="bg-white rounded-2xl border shadow p-6 flex flex-col h-full relative overflow-hidden w-full max-w-[610px]">
+ <div className="bg-[#dcfaeb] shadow rounded-[20px] p-8 flex flex-col relative overflow-hidden w-[562px] h-[466px]">
     <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-3 py-1 rounded-r-full font-semibold z-20">
       Add Your Music
     </div>
-    <div className="flex flex-col justify-between mt-12 z-10">
-      <div className="flex items-center bg-white shadow-md rounded-lg p-3 mb-4 w-[65%]">
+    <div className="flex flex-col justify-between mt-13 z-10">
+      <div className="flex items-center bg-white shadow-md rounded-full p-3 mb-4 w-[74%] mt-15">
         <img
-          src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=80&q=80"
+          src={image}
           alt="Track Cover"
           className="w-10 h-10 object-cover rounded"
         />
         <p className="ml-4 text-sm text-black">Stream "Hype" on all platforms!</p>
       </div>
-      <div className="bg-blue-900 p-4 rounded-lg shadow-md w-[65%]">
-        <div className="flex items-center mb-2">
+      <div className="bg-[#081439] p-4 rounded-lg shadow-md w-[74%] mt-2">
+        <div className="flex items-center mb-2 " >
           <img
             src={image}
             alt="Artist"
@@ -151,45 +160,48 @@ const MusicPlayerCard = () => (
 );
 
 const AppointmentSchedulerCard = () => (
-  <div className="bg-white rounded-2xl border shadow p-6 flex flex-col h-full relative overflow-hidden w-full max-w-[610px]">
-    <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-3 py-1 rounded-r-full font-semibold z-20">
+  <div className="bg-white rounded-[20px] shadow-lg p-6 flex flex-col md:flex-row relative overflow-hidden w-[562px] h-[466px]">
+    <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
       Coming Soon: Appointment Scheduler
     </div>
-    <div className="flex flex-col justify-center items-center h-full mt-12">
-      <h2 className="text-2xl font-bold mb-2 text-[#1f1f1f]">Appointment Scheduler</h2>
-      <p className="text-gray-600 text-sm mb-4">Book your photoshoots and video shoots easily!</p>
-
-      <div className="w-full space-y-4">
-        {/* Card 1 */}
-        <div
-          className="relative rounded-xl overflow-hidden h-28 flex items-center justify-between px-4 text-white"
-          style={{
-            backgroundImage: `url(${miamiImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div className="relative z-10 flex justify-between items-center w-full">
-            <div className="flex flex-col">
+    <div className="flex flex-row w-full h-full mt-12">
+      {/* Phone mockup on the left */}
+      <div className="flex-shrink-0 flex items-center justify-center mr-6">
+        <PhoneMockup
+          image={image}
+          name="Max James"
+          username="MJames.com"
+        />
+      </div>
+      {/* Appointment cards on the right */}
+      <div className="flex-1 flex flex-col justify-center">
+        <div className="w-full space-y-4">
+          {/* Card 1 */}
+          <div
+            className="relative rounded-xl overflow-hidden h-28 flex items-center px-4 text-white"
+            style={{
+              backgroundImage: `url(${miamiImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="relative z-10 flex flex-col">
               <span className="font-semibold text-lg">Photoshoot in Miami</span>
               <span className="text-xs text-white/90">2 Hours – $500</span>
             </div>
           </div>
-        </div>
-
-        {/* Card 2 */}
-        <div
-          className="relative rounded-xl overflow-hidden h-28 flex items-center justify-between px-4 text-white"
-          style={{
-            backgroundImage: `url(${videoImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div className="relative z-10 flex justify-between items-center w-full">
-            <div className="flex flex-col">
+          {/* Card 2 */}
+          <div
+            className="relative rounded-xl overflow-hidden h-28 flex items-center px-4 text-white"
+            style={{
+              backgroundImage: `url(${videoImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="relative z-10 flex flex-col">
               <span className="font-semibold text-lg">Video Shoot in Miami</span>
               <span className="text-xs text-white/90">1.5 Hours – $400</span>
             </div>
@@ -199,7 +211,6 @@ const AppointmentSchedulerCard = () => (
     </div>
   </div>
 );
-
 
 const ArtistShowcase = () => (
   <div className="container mx-auto p-4">
