@@ -69,7 +69,7 @@ const EditProfile = () => {
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
       {/* Mobile View */}
-      <div className="block md:hidden">
+      <div className="hidden">
         <div
           className="bg-white rounded-[32px] p-4"
           style={{
@@ -171,18 +171,18 @@ const EditProfile = () => {
 
       {/* Desktop View */}
       <div
-        className="hidden md:block  rounded-[32px] p-6"
+        className="rounded-[32px] p-6"
         style={{
           backgroundImage: `url(${bground})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
       >
-
         <div className="flex flex-col lg:flex-row lg:gap-5 2xl:gap-20 w-full">
           {/* Left Side - Profile Image */}
           {/* add this css below div for scroll bar  max-h-[calc(100vh-48px)] */}
-          <div className="flex flex-col gap-4 w-[500px] h-full max-h-[calc(100vh-48px)]  overflow-y-auto pr-2">
+          <div className="flex flex-col gap-4 md:w-[500px] h-auto md:h-full md:max-h-[calc(100vh-48px)] md:overflow-y-auto pr-2">
+
             {/* Add photo card */}
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="rounded-[24px] p-6">
@@ -568,7 +568,7 @@ const EditProfile = () => {
           </div>
 
           {/* Right Side - Add Content */}
-          <div className="flex-1 pb-6 overflow-y-auto h-full">
+          <div className="flex-1 pb-6 h-auto md:max-h-[calc(100vh-48px)] md:overflow-y-auto">
             <h2 className="text-xl font-semibold mb-4">Add Content</h2>
             <p className="text-gray-600 text-sm mb-6">
               Interact with the menu elements below. Let's first create
