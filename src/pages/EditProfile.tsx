@@ -8,12 +8,21 @@ import Call from "../assets/edit-profile/call.svg";
 import Map from "../assets/edit-profile/map.svg";
 import Mail from "../assets/edit-profile/mail.svg";
 import { Input } from "@/components/ui/input";
+import * as Dialog from "@radix-ui/react-dialog";
+
+const colors = [
+  "#7ecfa7", "#548a6e", "#f87171", "#fbbf24", "#34d399",
+  "#60a5fa", "#a78bfa", "#f472b6", "#c084fc", "#fb923c",
+  "#4ade80", "#facc15", "#3b82f6"
+];
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isBioEnabled, setIsBioEnabled] = useState(false);
+  const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(true);
+  const [selectedColor, setSelectedColor] = useState("");
   const sections = [
     {
       heading: "Link",
@@ -246,7 +255,7 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-4" onClick={() => setIsBigThumbnailOpen(true)}>
                   <label
 
                     className="text-[32px] font-bold text-black"
@@ -582,7 +591,111 @@ const EditProfile = () => {
         isOpen={isCustomLinksOpen}
         onClose={() => setIsCustomLinksOpen(false)}
       />
+      <Dialog.Root open={isBigThumbnailOpen} onOpenChange={setIsBigThumbnailOpen}>
+        <Dialog.Portal >
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            {/* Cross Icon */}
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
+              Add Big Thumbnail link
+            </Dialog.Title>
+            {/* Modal body content here */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  type="text"
+                  placeholder="Enter title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">URL</p>
+                <Input
+                  type="text"
+                  placeholder="Enter URL"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Image (Optional)</p>
+                <Input
+                  type="text"
+                  placeholder="Upload thumbnail"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Background</p>
+                <div className="h-8">
+                  {selectedColor ? (
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-8 h-8 rounded-full border-2 border-white"
+                        style={{ backgroundColor: selectedColor }}
+                        title={selectedColor}
+                      ></div>
+                      <span className="text-white text-sm">{selectedColor}</span>
+                    </div>
+
+                  ) : (
+                    <div className="text-white">No color selected</div>
+                  )}
+                </div>
+                <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border-1 border-white rounded-lg p-2 shadow-lg">
+                  <p className="text-white mb-1">Present Colors</p>
+                  <div className="flex flex-wrap gap-2 ">
+                    {colors.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedColor(color)}
+                        className="w-8 h-8 rounded-full border-1 hover:border-white transition-colors duration-200"
+                        style={{ backgroundColor: color }}
+                        title={color}
+                      ></button>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Preview</p>
+                <Input
+                  type="text"
+                  placeholder="Your Title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+            </div>
+            <div className="mt-6">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                onClick={() => setIsBigThumbnailOpen(false)}
+              >
+                Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
+
+
   );
 };
 
