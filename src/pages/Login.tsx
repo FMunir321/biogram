@@ -50,41 +50,44 @@ const Login = () => {
 
           {/* Login Form */}
           <form className="space-y-5 sm:space-y-6">
-           {/* Email or Phone Number Field */}
-<div className="relative pt-5">
-  <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
-    Email or Phone Number
-  </label>
-  <input
-    type="text"
-    placeholder="Enter here"
-    className="w-full h-10 sm:h-12 px-4 sm:px-5 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
-  />
-</div>
+            {/* Email or Phone Number Field */}
+            <div className="relative pt-5">
+              <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
+                Email or Phone Number
+              </label>
+              <input
+                type="text"
+                placeholder="Enter here"
+                className="w-full h-10 sm:h-12 px-4 sm:px-5 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
+              />
+            </div>
 
-{/* Password Field */}
-<div className="relative pt-5">
-  <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
-    Password
-  </label>
-  <div className="relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      placeholder="Enter here"
-      className="w-full h-10 sm:h-12 px-4 sm:px-5 pr-10 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
-    />
-    <button
-      type="button"
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#98e6c3]"
-      onClick={() => setShowPassword((v) => !v)}
-      tabIndex={-1}
-      aria-label={showPassword ? "Hide password" : "Show password"}
-    >
-      {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
-    </button>
-  </div>
-</div>
-
+            {/* Password Field */}
+            <div className="relative pt-5">
+              <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter here"
+                  className="w-full h-10 sm:h-12 px-4 sm:px-5 pr-10 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#98e6c3]"
+                  onClick={() => setShowPassword((v) => !v)}
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOffIcon size={20} />
+                  ) : (
+                    <EyeIcon size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
 
             <div className="flex items-start space-x-2.5 mt-20">
               <input
@@ -96,12 +99,9 @@ const Login = () => {
                 htmlFor="terms"
                 className="text-xs text-[#666666] leading-5"
               >
-                By checking the box and tapping continue, you acknowledge that you
-                have read the{" "}
-                <Link
-                  to="/privacy-policy"
-                  className="text-[#1A1A1A] font-bold"
-                >
+                By checking the box and tapping continue, you acknowledge that
+                you have read the{" "}
+                <Link to="/privacy-policy" className="text-[#1A1A1A] font-bold">
                   privacy Policy
                 </Link>{" "}
                 and agree to the{" "}
@@ -116,8 +116,10 @@ const Login = () => {
               </button>
             </Link>
             <div className="text-center mt-4">
-              <span className="text-xs font-medium text-[#53886C]">Don't have an account? </span>
-              <Link to="/signup" className="text-[#53886C] text-xs font-bold" >
+              <span className="text-xs font-medium text-[#53886C]">
+                Don't have an account?{" "}
+              </span>
+              <Link to="/signup" className="text-[#53886C] text-xs font-bold">
                 Signup
               </Link>
             </div>

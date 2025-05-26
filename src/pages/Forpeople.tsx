@@ -4,7 +4,7 @@ import Navbar from "../components/business/navbar/Navbar";
 import RealTimeAnalyticsHero from "../components/RealTimeAnalyticsHero";
 import ArtistShowcase from "./ArtistShowcase";
 // import GoGreenSection from "@/components/GoGreenSection";
-import LinkInBio from "../components/linkInBio/LinkInBio";
+// import LinkInBio from "../components/linkInBio/LinkInBio";
 import BiogramProfile from "./BiogramProfile";
 import BiogramShoutPage from "./BiogramShoutPage";
 import BiogramPricing from "./BiogramPrincing";
@@ -18,7 +18,7 @@ const Forpeople = () => {
       <Navbar />
       <BiogramLandingPage />
       <ChooseBiogram />
-      <LinkInBio />
+      {/* <LinkInBio /> */}
       <RealTimeAnalyticsHero />
       <ArtistShowcase />
      
