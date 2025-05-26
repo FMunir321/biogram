@@ -48,13 +48,13 @@ const AddSocialMedia = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Social Networks Card */}
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center mb-1">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Social Networks
               </h2>
@@ -94,7 +94,7 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-xl rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-xl rounded-[20px] border-none w-full h-[150px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
@@ -133,7 +133,7 @@ const AddSocialMedia = () => {
 
           {/* Music Card */}
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
@@ -175,7 +175,7 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
@@ -194,7 +194,7 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
@@ -213,7 +213,7 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
