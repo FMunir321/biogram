@@ -22,7 +22,7 @@ interface AddSocialMediaPopupProps {
 }
 
 const AddSocialMediapopup = ({
-  icon,
+  // icon,
   platformName,
   isOpen,
   onClose,

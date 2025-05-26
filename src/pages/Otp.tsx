@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import Ballsimage from "../assets/e8f1a93c8d73686570bd39568d669322.png";
 // import toprectangle from "../assets/Rectangle68.png";
 
-
 const Otp = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -109,30 +108,30 @@ const Otp = () => {
             Enter verification code
           </p>
 
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center px-4 mb-4">
             <InputOTP maxLength={6} className="gap-1 sm:gap-2">
-              <InputOTPGroup className="gap-1 sm:gap-2">
+              <InputOTPGroup className="gap-1 sm:gap-2 overflow-visible">
                 {[0, 1, 2, 3, 4, 5].map((index) => (
-                 <InputOTPSlot
-                 key={index}
-                 index={index}
-                 className="w-[86px] h-[86px] rounded-[20px] border border-transparent bg-[linear-gradient(97.29deg,rgba(126,207,167,0.25)_13.65%,rgba(83,136,108,0.25)_90.87%)] [border-image:linear-gradient(97.29deg,#7ECFA7_13.65%,#53886C_90.87%)] [border-image-slice:1] text-center text-[24px] font-poppins"
-               />
+                  <InputOTPSlot
+                    key={index}
+                    index={index}
+                    className="w-[86px] h-[86px] rounded-[20px] border border-[#7ECFA7] bg-[linear-gradient(97.29deg,rgba(126,207,167,0.25)_13.65%,rgba(83,136,108,0.25)_90.87%)] [border-image:linear-gradient(97.29deg,#7ECFA7_13.65%,#53886C_90.87%)] [border-image-slice:1] text-center text-[24px] font-poppins"
+                  />
                 ))}
               </InputOTPGroup>
             </InputOTP>
           </div>
 
           <p className="text-center font-poppins font-normal text-[16px] leading-[100%] text-[#1b1b1a] my-8">
-  It usually takes a few seconds to receive the code. If you don't received the code.{" "}
-  <Link
-    to="/SocialMedia"
-    className="text-[#53886C] font-bold text-[20px] font-poppins leading-[100%] hover:underline"
-  >
-    Resend
-  </Link>
-</p>
-
+            It usually takes a few seconds to receive the code. If you don't
+            received the code.{" "}
+            <Link
+              to="/SocialMedia"
+              className="text-[#53886C] font-bold text-[20px] font-poppins leading-[100%] hover:underline"
+            >
+              Resend
+            </Link>
+          </p>
         </div>
       </div>
     </div>
