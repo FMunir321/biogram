@@ -8,12 +8,29 @@ import Call from "../assets/edit-profile/call.svg";
 import Map from "../assets/edit-profile/map.svg";
 import Mail from "../assets/edit-profile/mail.svg";
 import { Input } from "@/components/ui/input";
+import * as Dialog from "@radix-ui/react-dialog";
+
+const colors = [
+  "#7ecfa7", "#548a6e", "#f87171", "#fbbf24", "#34d399",
+  "#60a5fa", "#a78bfa", "#f472b6", "#c084fc", "#fb923c",
+  "#4ade80", "#facc15", "#3b82f6"
+];
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isBioEnabled, setIsBioEnabled] = useState(false);
+  const [featureLinkToggle, setFeatureLinkToggle] = useState(false);
+  const [merchToggle, setMerchToggle] = useState(false);
+  const [galleryToggle, setGalleryToggle] = useState(false);
+  const [contactToggle, setContactToggle] = useState(false);
+  const [shoutsToggle, setShoutsToggle] = useState(false);
+  const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
+  const [isaddMultiLink, setIsAddMultiLink] = useState(false);
+  const [isaddMerch, setIsAddMerch] = useState(false);
+  const [activeTab, setActiveTab] = useState('Solid');
+  const [selectedColor, setSelectedColor] = useState("");
   const sections = [
     {
       heading: "Link",
@@ -52,7 +69,7 @@ const EditProfile = () => {
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
       {/* Mobile View */}
-      <div className="block md:hidden">
+      <div className="hidden">
         <div
           className="bg-white rounded-[32px] p-4"
           style={{
@@ -154,18 +171,18 @@ const EditProfile = () => {
 
       {/* Desktop View */}
       <div
-        className="hidden md:block  rounded-[32px] p-6"
+        className="rounded-[32px] p-6"
         style={{
           backgroundImage: `url(${bground})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
       >
-
         <div className="flex flex-col lg:flex-row lg:gap-5 2xl:gap-20 w-full">
           {/* Left Side - Profile Image */}
           {/* add this css below div for scroll bar  max-h-[calc(100vh-48px)] */}
-          <div className="flex flex-col gap-4 w-[500px] h-full max-h-[calc(100vh-48px)]  overflow-y-auto pr-2">
+          <div className="flex flex-col gap-4 md:w-[500px] h-auto md:h-full md:max-h-[calc(100vh-48px)] md:overflow-y-auto pr-2">
+
             {/* Add photo card */}
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="rounded-[24px] p-6">
@@ -246,7 +263,8 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
-                <div className="flex items-center justify-between mb-4">
+
+                <div className="flex items-center justify-between rounded-[24px]">
                   <label
 
                     className="text-[32px] font-bold text-black"
@@ -261,22 +279,24 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      checked={featureLinkToggle}
+                      onChange={() => setFeatureLinkToggle(!featureLinkToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                         }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 ${isBioEnabled ? "translate-x-6" : ""
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
                         }`}
                     ></div>
                   </label>
                 </div>
 
                 {/* Big Thumbnail Section */}
-                <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]" onClick={() => setIsBigThumbnailOpen(true)}>
                   <img
                     src={Thumbnail}
                     alt="Big Thumbnail"
@@ -292,6 +312,14 @@ const EditProfile = () => {
                   {[1, 2].map((_, idx) => (
                     <div
                       key={idx}
+                      onClick={() => {
+                        if (idx === 0) {
+                          setIsAddMultiLink(true);
+                        }
+                        else {
+                          setIsAddMerch(true);
+                        }
+                      }}
                       className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
                     >
                       <img
@@ -332,15 +360,15 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      checked={merchToggle}
+                      onChange={() => setMerchToggle(!merchToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                         }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
                         ? "translate-x-6 bg-[#72bb96]"
                         : "bg-[#d1d5db]"
                         }`}
@@ -359,7 +387,7 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between rounded-[24px]">
                   <label
 
                     className="text-[32px] font-bold text-black"
@@ -374,15 +402,17 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      checked={galleryToggle}
+                      onChange={() => setGalleryToggle(!galleryToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                         }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 ${isBioEnabled ? "translate-x-6" : ""
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
                         }`}
                     ></div>
                   </label>
@@ -412,7 +442,7 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between rounded-[24px]">
                   <label
 
                     className="text-[32px] font-bold text-black"
@@ -427,15 +457,17 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      checked={contactToggle}
+                      onChange={() => setContactToggle(!contactToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                         }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 ${isBioEnabled ? "translate-x-6" : ""
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
                         }`}
                     ></div>
                   </label>
@@ -508,15 +540,15 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      checked={shoutsToggle}
+                      onChange={() => setShoutsToggle(!shoutsToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                         }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
                         ? "translate-x-6 bg-[#72bb96]"
                         : "bg-[#d1d5db]"
                         }`}
@@ -536,7 +568,7 @@ const EditProfile = () => {
           </div>
 
           {/* Right Side - Add Content */}
-          <div className="flex-1 pb-6 overflow-y-auto h-full">
+          <div className="flex-1 pb-6 h-auto md:max-h-[calc(100vh-48px)] md:overflow-y-auto">
             <h2 className="text-xl font-semibold mb-4">Add Content</h2>
             <p className="text-gray-600 text-sm mb-6">
               Interact with the menu elements below. Let's first create
@@ -582,7 +614,304 @@ const EditProfile = () => {
         isOpen={isCustomLinksOpen}
         onClose={() => setIsCustomLinksOpen(false)}
       />
+
+      {/* Modals */}
+      <Dialog.Root open={isBigThumbnailOpen} onOpenChange={setIsBigThumbnailOpen}>
+        <Dialog.Portal >
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            {/* Cross Icon */}
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
+              Add Big Thumbnail link
+            </Dialog.Title>
+            {/* Modal body content here */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  type="text"
+                  placeholder="Enter title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">URL</p>
+                <Input
+                  type="text"
+                  placeholder="Enter URL"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Image (Optional)</p>
+                <Input
+                  type="text"
+                  placeholder="Upload thumbnail"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between">
+                  <p className="text-white">Background</p>
+
+                  <div
+                    className="p-[2px] rounded-full inline-block bg-white"
+
+                  >
+                    <div
+                      className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full"
+                      style={{
+                        backgroundClip: 'padding-box',
+                      }}
+                    >
+                      <button
+                        onClick={() => setActiveTab('Solid')}
+                        className={`px-2 rounded-full  text-[20px] font-normal transition-all duration-200 ${activeTab === 'Solid'
+                          ? 'bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white'
+                          : 'hover:bg-white/10'
+                          }`}
+                      >
+                        Solid
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('Gradient')}
+                        className={`px-2 rounded-full  text-[20px] font-normal transition-all duration-200 ${activeTab === 'Gradient'
+                          ? 'bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white'
+                          : 'hover:bg-white/10'
+                          }`}
+                      >
+                        Gradient
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+                <div className="h-8">
+                  {selectedColor ? (
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-8 h-8 rounded-full border-2 border-white"
+                        style={{ backgroundColor: selectedColor }}
+                        title={selectedColor}
+                      ></div>
+                      <span className="text-white text-sm">{selectedColor}</span>
+                    </div>
+
+                  ) : (
+                    <div className="text-white">No color selected</div>
+                  )}
+                </div>
+                <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border-1 border-white rounded-lg p-2 shadow-lg">
+                  <p className="text-white mb-1">Present Colors</p>
+                  <div className="flex flex-wrap gap-2 ">
+                    {colors.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedColor(color)}
+                        className="w-8 h-8 rounded-full border-1 hover:border-white transition-colors duration-200"
+                        style={{ backgroundColor: color }}
+                        title={color}
+                      ></button>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Preview</p>
+                <Input
+                  type="text"
+                  placeholder="Your Title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+            </div>
+            <div className="mt-6">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                onClick={() => setIsBigThumbnailOpen(false)}
+              >
+                Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={isaddMultiLink} onOpenChange={setIsAddMultiLink}>
+        <Dialog.Portal >
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            {/* Cross Icon */}
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
+              Add Multi link
+            </Dialog.Title>
+            {/* Modal body content here */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Embed Link</p>
+                <Input
+                  type="text"
+                  placeholder="Embed link"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  type="text"
+                  placeholder="title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Cover</p>
+                <div className=" py-6 border shadow-lg border-white rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                  <img
+                    src={Thumbnail}
+                    alt="Big Thumbnail"
+                    className="object-contain h-20 mb-2"
+                  />
+                  <p className="text-[16px] font-normal text-white">
+                    Upload thumbnail Photo
+                  </p>
+                  <p className="text-[12px] font-normal text-white text-center">Use a size that’s at least 500 x 500 pixels and 10 MB or less</p>
+                </div>
+              </div>
+
+            </div>
+            <div className="mt-6">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                onClick={() => setIsBigThumbnailOpen(false)}
+              >
+                Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
+        <Dialog.Portal >
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            {/* Cross Icon */}
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
+              Add Multi link
+            </Dialog.Title>
+            {/* Modal body content here */}
+            <div className="flex flex-col gap-3">
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Select Type</p>
+                <select
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[16px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border text-white"
+                >
+                  <option value="" disabled selected>
+                    Choose type
+                  </option>
+                  <option value="youtube">YouTube</option>
+                  <option value="vimeo">Vimeo</option>
+                  <option value="spotify">Spotify</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Embed Link</p>
+                <Input
+                  type="text"
+                  placeholder="Embed link"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  type="text"
+                  placeholder="title"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">$USD</p>
+                <Input
+                  type="text"
+                  placeholder="Payment"
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Cover</p>
+                <div className=" py-6 border shadow-lg border-white rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                  <img
+                    src={Thumbnail}
+                    alt="Big Thumbnail"
+                    className="object-contain h-20 mb-2"
+                  />
+                  <p className="text-[16px] font-normal text-white">
+                    Upload thumbnail Photo
+                  </p>
+                  <p className="text-[12px] font-normal text-white text-center">Use a size that’s at least 500 x 500 pixels and 10 MB or less</p>
+                </div>
+              </div>
+
+            </div>
+            <div className="mt-6">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                onClick={() => setIsBigThumbnailOpen(false)}
+              >
+                Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
+
+
   );
 };
 

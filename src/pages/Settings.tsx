@@ -1,6 +1,7 @@
  import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import Greaterthen from "../assets/greaterthen.png";
+import bground from "../assets/lightbg.png";
 
 const menuItems = [
   { key: "personal-info", label: "Personal Info" },
@@ -21,8 +22,9 @@ const Settings = () => {
   const [activeMenu, setActiveMenu] = useState("personal-info");
 
   return (
-    <div className="w-full mx-auto p-2 md:p-4">
-      <div className="bg-white rounded-[32px] p-4 md:p-6">
+    <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
+      style={{ backgroundImage: `url(${bground})` }}>
+      <div className=" rounded-[32px] p-4 md:p-6 bg-white/40 bg-cover h-full">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side - Settings Menu */}
           <div className="w-full lg:w-[300px] lg:flex-shrink-0">
@@ -43,10 +45,9 @@ const Settings = () => {
                 <button
                   key={item.key}
                   className={`w-full flex items-center justify-between p-4 rounded-xl text-left transition 
-                    ${
-                      activeMenu === item.key
-                        ? "bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3]"
-                        : "hover:bg-gray-50"
+                    ${activeMenu === item.key
+                      ? "bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3]"
+                      : "hover:bg-gray-50"
                     }`}
                   onClick={() => setActiveMenu(item.key)}
                 >

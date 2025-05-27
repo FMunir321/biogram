@@ -48,13 +48,13 @@ const AddSocialMedia = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Social Networks Card */}
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 h-auto min-h-0 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center mb-1">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Social Networks
               </h2>
@@ -94,13 +94,13 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-xl rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 h-auto min-h-0 bg-[#FFFFFF40] backdrop-blur-xl rounded-[20px] border-none w-full"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Business
               </h2>
@@ -110,7 +110,7 @@ const AddSocialMedia = () => {
                 className=" object-contain"
               />
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1 mb-2">
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
                 <img
                   src={whatsappimage}
@@ -133,13 +133,13 @@ const AddSocialMedia = () => {
 
           {/* Music Card */}
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-auto min-h-0"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Music
               </h2>
@@ -149,7 +149,7 @@ const AddSocialMedia = () => {
                 className=" object-contain"
               />
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1 mb-2">
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
                 <img
                   src={applemusicimage}
@@ -175,7 +175,7 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-auto min-h-0"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
@@ -194,13 +194,13 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-auto min-h-0"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Gaming
               </h2>
@@ -213,13 +213,13 @@ const AddSocialMedia = () => {
           </Card>
 
           <Card
-            className="p-4 md:p-6 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[150px]"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full h-[100px]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
-            <div className="flex justify-between items-center mb-4 md:mb-6">
+            <div className="flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-semibold text-white">
                 Lifestyle
               </h2>

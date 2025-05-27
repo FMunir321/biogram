@@ -81,14 +81,14 @@ const AddSocialMediapopup = ({
             <div className="flex gap-2 justify-center mt-6">
               <Button
                 onClick={onClose}
-                className="w-[200px] text-[20px] py-7 border-1 border-[#aeaeae] rounded-full bg-gray-200/80 backdrop-blur-sm text-black hover:bg-gray-300 cursor-pointer"
+                className="w-[200px] text-[20px] py-7 border-1 border-[#aeaeae] rounded-lg bg-gray-200/80 backdrop-blur-sm text-black hover:bg-gray-300 cursor-pointer"
               >
                 Cancel
               </Button>
               <Link to="/AddSocialMediaUploadPicture">
                 <Button
                   onClick={handleSave}
-                  className="w-[200px] py-7 text-[20px] rounded-full  bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"
+                  className="w-[200px] py-7 text-[20px] rounded-lg bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"
                 >
                   Save
                 </Button>
