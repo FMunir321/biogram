@@ -350,7 +350,7 @@ const ArtistShowcase = () => (
           </div>
 
           {/* Image Column */}
-          <div className="z-0">
+          <div className="z-0 xl:mt-[45px] 2xl:mt-[155px]">
             <img
               src={Mobilefram}
               alt="Artist"
