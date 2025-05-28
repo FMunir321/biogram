@@ -60,7 +60,7 @@ export default function RealTimeAnalyticsHero() {
         </div>
       </div>
       <div>
-        <div className="flex flex-col lg:flex-row items-center mt-[300px] px-4 md:ml-[90px] gap-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between mt-[300px] px-4 md:ml-[90px] gap-8">
           <div>
             {/* Instagram & Tiktok Card */}
             <div className=" flex flex-col gap-5 md:gap-0">
@@ -123,7 +123,7 @@ export default function RealTimeAnalyticsHero() {
             </div>
           </div>
           {/* Location Stats Card */}
-          <div className="w-[90vw] max-w-xs sm:max-w-sm md:max-w-xs bg-white/20 p-3 rounded-xl shadow-lg overflow-hidden">
+          <div className="w-[90vw] 2xl:mr-[100px] max-w-xs sm:max-w-sm md:max-w-xs bg-white/20 p-3 rounded-xl shadow-lg overflow-hidden">
             <img
               src={map}
               alt="World Map"
