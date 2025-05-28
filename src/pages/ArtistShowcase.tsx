@@ -238,7 +238,7 @@ const AppointmentSchedulerCard = () => (
 const ArtistShowcase = () => (
   <>
     <div className="container p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
-      <div className="flex flex-col md:flex-row shadow-2xl gap-4 md:gap-0 lg:w-[60%] lg:h-[422px] ">
+      <div className="flex flex-col md:flex-row shadow-2xl gap-4 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
         <div className="md:w-[50%]">
           <p className="top-4 mt-5 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
             Coming Soon: Add your Tickets
@@ -301,7 +301,7 @@ const ArtistShowcase = () => (
         </div>
       </div>
 
-      <div className="flex flex-col shadow-2xl lg:w-[40%] h-full bg-[#e4f4ec]">
+      <div className="flex flex-col shadow-2xl lg:w-[40%] lg:h-[422px] xl:h-[531px] 2xl:h-[640px] bg-[#e4f4ec]">
         <p className="mt-5 p-0 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
           Coming Soon: Sell Products & Services
         </p>
