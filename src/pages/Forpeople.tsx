@@ -7,7 +7,7 @@ import ArtistShowcase from "./ArtistShowcase";
 // import LinkInBio from "../components/linkInBio/LinkInBio";
 import BiogramProfile from "./BiogramProfile";
 import BiogramShoutPage from "./BiogramShoutPage";
-import BiogramPricing from "./BiogramPrincing";
+import BiogramPricing from "./BiogramPricing";
 // import JoinTheFamilySection from "./JoinFamily";
 import Footer from "@/components/footer/Footer";
 import ProfileCard from "./ProfileCard";

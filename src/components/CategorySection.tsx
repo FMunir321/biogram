@@ -1,7 +1,7 @@
 import React from "react";
 import { FaChevronDown } from "react-icons/fa"; // Import dropdown icon
 
-const CategorySection: React.FC<{ title: string; children: React.ReactNode }> = ({
+const CategorySection: React.FC<{ title: string; children?: React.ReactNode }> = ({
   title,
   children,
 }) => (

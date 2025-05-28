@@ -106,26 +106,17 @@ const BiogramProfile: React.FC = () => {
 
               {/* Payment Section */}
               <CategorySection title="Payment">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+                
               </CategorySection>
 
               {/* Gaming Section */}
               <CategorySection title="Gaming">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+                
               </CategorySection>
 
               {/* Lifestyle Section */}
               <CategorySection title="Lifestyle">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+              
               </CategorySection>
             </div>
           </div>

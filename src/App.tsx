@@ -11,7 +11,7 @@ import AddSocialMediaPictureUpload from "./pages/AddSocialMediaPictureUpload";
 
 import ArtistShowcase from "./pages/ArtistShowcase";
 // import GoGreenSection from "./components/GoGreenSection";
-import BiogramPricing from "./pages/BiogramPrincing";
+import BiogramPricing from "./pages/BiogramPricing";
 import MainDashboard from "./components/maindashboard/MainDashboard";
 import Profile from "./components/maindashboard/Profile";
 import EditProfile from "./pages/EditProfile";
