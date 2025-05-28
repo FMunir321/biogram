@@ -3,7 +3,13 @@ import miamiImg from "../assets/miami.jpg";
 import videoImg from "../assets/videoshoot.jpg";
 import dish from "../assets/dish.png";
 import redjersy from "../assets/redjersy.png";
-import { FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaTiktok } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaTwitter,
+  FaSpotify,
+  FaYoutube,
+  FaTiktok,
+} from "react-icons/fa";
 import PhoneMockup from "../components/PhoneMockup";
 
 const SocialLinks = () => (
@@ -41,10 +47,25 @@ const TourDatesAndArtistCard = () => (
     <div className="flex-1 pr-4 mt-12">
       <h2 className="text-2xl font-bold mb-6">Tour Dates</h2>
       {[
-        { date: "21", month: "Jun", venue: "Kaseya Center", city: "Miami FL", time: "8PM" },
-        { date: "26", month: "Jun", venue: "T-Mobile Arena", city: "Las Vegas", time: "10AM" }
+        {
+          date: "21",
+          month: "Jun",
+          venue: "Kaseya Center",
+          city: "Miami FL",
+          time: "8PM",
+        },
+        {
+          date: "26",
+          month: "Jun",
+          venue: "T-Mobile Arena",
+          city: "Las Vegas",
+          time: "10AM",
+        },
       ].map((item, i) => (
-        <div key={i} className="flex items-center gap-4 bg-[#bcf3d8] rounded-xl px-4 py-3 mb-4">
+        <div
+          key={i}
+          className="flex items-center gap-4 bg-[#bcf3d8] rounded-xl px-4 py-3 mb-4"
+        >
           <div className="text-center">
             <div className="text-xl font-bold">{item.date}</div>
             <div className="text-xs">{item.month} 2025</div>
@@ -55,17 +76,15 @@ const TourDatesAndArtistCard = () => (
           </div>
           <div className="ml-auto text-right">
             <div className="text-xs">{item.time}</div>
-            <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs mt-1 inline-block">Tickets</span>
+            <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs mt-1 inline-block">
+              Tickets
+            </span>
           </div>
         </div>
       ))}
     </div>
     <div className="w-1/2 mt-6 md:mt-0 flex flex-col justify-end items-center">
-      <PhoneMockup
-        image={miamiImg}
-        name="Chan Ja HO"
-        username="Chan567.com"
-      />
+      <PhoneMockup image={miamiImg} name="Chan Ja HO" username="Chan567.com" />
     </div>
   </div>
 );
@@ -76,17 +95,19 @@ const ProductsCard = () => (
       Coming Soon: Sell Products & Services
     </div>
 
-    <h2 className="text-2xl font-bold mb-6 text-[#1f1f1f] mt-8">Your Products</h2>
+    <h2 className="text-2xl font-bold mb-6 text-[#1f1f1f] mt-8">
+      Your Products
+    </h2>
 
     <div className="grid grid-cols-1 gap-4 z-10 ">
       {[
-        { name: "Red Jersey", price: "$250.00", image: redjersy},
-        { name: "Sweets", price: "$50.99", image: dish}
+        { name: "Red Jersey", price: "$250.00", image: redjersy },
+        { name: "Sweets", price: "$50.99", image: dish },
       ].map((item, idx) => (
         <div
           key={idx}
-         className="flex items-center bg-white shadow p-3 gap-4"
-  style={{ width: '355px', height: '99px', borderRadius: '10px' }}
+          className="flex items-center bg-white shadow p-3 gap-4"
+          style={{ width: "355px", height: "99px", borderRadius: "10px" }}
         >
           <img
             src={item.image}
@@ -112,7 +133,7 @@ const ProductsCard = () => (
 );
 
 const MusicPlayerCard = () => (
- <div className="bg-[#dcfaeb] shadow rounded-[20px] p-8 flex flex-col relative overflow-hidden w-[562px] h-[466px]">
+  <div className="bg-[#dcfaeb] shadow rounded-[20px] p-8 flex flex-col relative overflow-hidden w-[562px] h-[466px]">
     <div className="absolute top-4 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-3 py-1 rounded-r-full font-semibold z-20">
       Add Your Music
     </div>
@@ -123,10 +144,12 @@ const MusicPlayerCard = () => (
           alt="Track Cover"
           className="w-10 h-10 object-cover rounded"
         />
-        <p className="ml-4 text-sm text-black">Stream "Hype" on all platforms!</p>
+        <p className="ml-4 text-sm text-black">
+          Stream "Hype" on all platforms!
+        </p>
       </div>
       <div className="bg-[#081439] p-4 rounded-lg shadow-md w-[74%] mt-2">
-        <div className="flex items-center mb-2 " >
+        <div className="flex items-center mb-2 ">
           <img
             src={image}
             alt="Artist"
@@ -150,11 +173,7 @@ const MusicPlayerCard = () => (
       </div>
     </div>
     <div className="absolute bottom-4 right-4 z-0">
-      <PhoneMockup
-        image={image}
-        name="Max James"
-        username="MJames.com"
-      />
+      <PhoneMockup image={image} name="Max James" username="MJames.com" />
     </div>
   </div>
 );
@@ -167,11 +186,7 @@ const AppointmentSchedulerCard = () => (
     <div className="flex flex-row w-full h-full mt-12">
       {/* Phone mockup on the left */}
       <div className="flex-shrink-0 flex items-center justify-center mr-6">
-        <PhoneMockup
-          image={image}
-          name="Max James"
-          username="MJames.com"
-        />
+        <PhoneMockup image={image} name="Max James" username="MJames.com" />
       </div>
       {/* Appointment cards on the right */}
       <div className="flex-1 flex flex-col justify-center">
@@ -202,7 +217,9 @@ const AppointmentSchedulerCard = () => (
           >
             <div className="absolute inset-0 bg-black/40"></div>
             <div className="relative z-10 flex flex-col">
-              <span className="font-semibold text-lg">Video Shoot in Miami</span>
+              <span className="font-semibold text-lg">
+                Video Shoot in Miami
+              </span>
               <span className="text-xs text-white/90">1.5 Hours – $400</span>
             </div>
           </div>
@@ -213,14 +230,39 @@ const AppointmentSchedulerCard = () => (
 );
 
 const ArtistShowcase = () => (
-  <div className="container mx-auto p-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <TourDatesAndArtistCard />
-      <ProductsCard />
-      <MusicPlayerCard />
-      <AppointmentSchedulerCard />
+  <> 
+    <div className="container p-5 flex flex-col md:flex-row mx-auto gap-4 my-5 ">
+      <div className="flex flex-row shadow-2xl">
+        <div className="">
+          <p className="top-4 p-0 left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
+            Coming Soon: Add your Tickets
+          </p>
+          <div className="p-5">
+            <h1 className="text-[40px] font-extrabold text-black">Tour Dates</h1>
+            <div className="">
+              <div className="border-1 border-[#7ecfa7] rounded-lg px-5 bg-[#d8e8e0]">
+                <p className="text-[20px] font-medium text-[#2D2D2D] border-b border-dotted border-[#3A3A3A]"><span className="text-[40px] font-bold">21 </span>jun 2025</p>
+                <p className="text-[20px] font-medium text-[#2D2D2D]">Kaseya Center</p>
+                <p className="text-[14px] font-normal text-[#2D2D2D]">Miami,FL</p>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          
+        </div>
+        <div className="p-5">right side</div>
+      </div>
+      <div>2nd div</div>
     </div>
-  </div>
+  </>
+  // <div className="container mx-auto p-4">
+  //   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  //     <TourDatesAndArtistCard />
+  //     <ProductsCard />
+  //     <MusicPlayerCard />
+  //     <AppointmentSchedulerCard />
+  //   </div>
+  // </div>
 );
 
 export {
