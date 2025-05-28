@@ -72,8 +72,6 @@ const cardVariants = {
 const ChooseBiogram: React.FC = () => {
   return (
     <div className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-visible">
-      
-
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Heading */}
         <h2 className="text-[96px] leading-[106.56px] font-extrabold font-poppins text-black max-w-[921px]">
@@ -87,76 +85,78 @@ const ChooseBiogram: React.FC = () => {
         </p>
 
         {/* Cards Section */}
-        <motion.div
-          className="flex gap-6"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 18,
-            ease: "linear",
-          }}
-        >
-          {[...people, ...people].map((person, index) => (
-            <motion.div
-              key={index}
-              className={`w-60 h-[360px] bg-white rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white flex-shrink-0 ${person.rotation}`}
-              whileHover={{
-                scale: 1.07,
-                boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
-                zIndex: 2,
-              }}
-              variants={cardVariants}
-              initial="hidden"
-              animate="visible"
-              custom={index}
-            >
-              {/* Role Ribbon */}
-              <div
-                className="absolute top-0 left-0 px-4 py-2 text-white font-semibold text-sm rounded-br-2xl z-10"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #98e6c3 0%, #4a725f 100%)",
-                  borderTopLeftRadius: "1.5rem",
-                  letterSpacing: "1px",
+        <div className="overflow-x-hidden">
+          <motion.div
+            className="flex gap-6"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 18,
+              ease: "linear",
+            }}
+          >
+            {[...people, ...people].map((person, index) => (
+              <motion.div
+                key={index}
+                className={`w-60 h-[360px] bg-white rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white flex-shrink-0 ${person.rotation}`}
+                whileHover={{
+                  scale: 1.07,
+                  boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
+                  zIndex: 2,
                 }}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={index}
               >
-                {person.role}
-              </div>
-
-              {/* Card Image */}
-              <div className="w-full h-1/2 flex items-center justify-center overflow-hidden rounded-t-3xl bg-white">
-                <img
-                  src={person.imagePath}
-                  alt={person.name}
-                  className="max-h-full max-w-full object-cover"
-                  style={{ aspectRatio: "1/1" }}
-                />
-              </div>
-
-              {/* Info */}
-              <div className="p-4 text-left bg-gradient-to-r from-[#98e6c3] to-[#4a725f] bg-opacity-90 h-1/2 flex flex-col justify-end rounded-b-3xl">
-                <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow">
-                  {person.name}
-                </h3>
-                <p className="text-md text-white font-medium mb-3 drop-shadow">
-                  {person.tag}
-                </p>
-                <div className="flex gap-2 mt-auto">
-                  {[FaInstagram, FaFacebookF, FaTwitter, FaWhatsapp, FaTiktok].map((Icon, i) => (
-                    <span
-                      key={i}
-                      className="bg-white rounded-full p-1.5 shadow flex items-center justify-center"
-                      style={{ color: socialColors[i] }}
-                    >
-                      <Icon size={20} />
-                    </span>
-                  ))}
+                {/* Role Ribbon */}
+                <div
+                  className="absolute top-0 left-0 px-4 py-2 text-white font-semibold text-sm rounded-br-2xl z-10"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #98e6c3 0%, #4a725f 100%)",
+                    borderTopLeftRadius: "1.5rem",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {person.role}
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+
+                {/* Card Image */}
+                <div className="w-full h-1/2 flex items-center justify-center overflow-hidden rounded-t-3xl bg-white">
+                  <img
+                    src={person.imagePath}
+                    alt={person.name}
+                    className="max-h-full max-w-full object-cover"
+                    style={{ aspectRatio: "1/1" }}
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="p-4 text-left bg-gradient-to-r from-[#98e6c3] to-[#4a725f] bg-opacity-90 h-1/2 flex flex-col justify-end rounded-b-3xl">
+                  <h3 className="text-2xl font-extrabold text-white mb-1 drop-shadow">
+                    {person.name}
+                  </h3>
+                  <p className="text-md text-white font-medium mb-3 drop-shadow">
+                    {person.tag}
+                  </p>
+                  <div className="flex gap-2 mt-auto">
+                    {[FaInstagram, FaFacebookF, FaTwitter, FaWhatsapp, FaTiktok].map((Icon, i) => (
+                      <span
+                        key={i}
+                        className="bg-white rounded-full p-1.5 shadow flex items-center justify-center"
+                        style={{ color: socialColors[i] }}
+                      >
+                        <Icon size={20} />
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
