@@ -45,7 +45,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             {/* Signup Section */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-gradient-to-r from-orange-100 to-pink-100 w-full">
+            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-white w-full">
               <input
                 type="text"
                 placeholder="Biogram/Your name"

@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2';
+import analyticsframe from "../assets/Rectangle 1776.png";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import bground from "../assets/lightbg.png";
-
+import WorldAnalyticsMap from "../components/WorldAnalyticsMap";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,37 +23,37 @@ ChartJS.register(
 );
 
 const Analytics = () => {
-  const labels = ['Mar 18', 'Mar 25', 'Apr 1', 'Apr 8', 'Apr 15', 'Apr 17'];
+  const labels = ['2025-04-10', '2025-04-11', '2025-04-12', '2025-04-13', '2025-04-14', '2025-04-15', '2025-04-16', '2025-04-17'];
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'anyshare',
+        label: '@orylans',
         data: [1200, 1900, 2400, 2800, 3100, 3300],
         borderColor: '#3B82F6',
         tension: 0.4,
       },
       {
-        label: '@oneshare',
+        label: '@Saekolove',
         data: [800, 1500, 1800, 2200, 2600, 2900],
         borderColor: '#22C55E',
         tension: 0.4,
       },
       {
-        label: '@cry',
+        label: '@Ory',
         data: [600, 900, 1200, 1100, 900, 800],
         borderColor: '#06B6D4',
         tension: 0.4,
       },
       {
-        label: '@cryshare',
+        label: '@Orylann',
         data: [400, 800, 1000, 1400, 1600, 1800],
         borderColor: '#EF4444',
         tension: 0.4,
       },
       {
-        label: '@waki',
+        label: '@Vikii',
         data: [200, 500, 700, 600, 500, 400],
         borderColor: '#EC4899',
         tension: 0.4,
@@ -77,6 +78,9 @@ const Analytics = () => {
         mode: 'index' as const,
         intersect: false,
       },
+      background: {
+        color: "transparent"
+      }
     },
     scales: {
       y: {
@@ -145,22 +149,38 @@ const Analytics = () => {
             </div>
           ))}
         </div>
-
+        {/* Map Section */}
+        <div className="relative bg-[#f1f8f4 rounded-2xl p-4 md:p-6 mb-8">
+          <WorldAnalyticsMap />
+        </div>
         {/* Graph Section */}
-        <div className="bg-[#f1f8f4] rounded-2xl p-4 md:p-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-1">Growth Overview</h3>
-              <p className="text-sm text-gray-600">7,889 Total Visitors</p>
+        <div className="relative bg-[#f1f8f4] rounded-2xl p-4 md:p-6 overflow-hidden">
+          {/* Chart Frame as background */}
+          <img
+            src={analyticsframe}
+            alt="Analytics Frame"
+            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+            style={{ borderRadius: "1rem" }}
+          />
+          <div className="relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-1">
+                  7.889 <span className='text-lg font-'>Visitors</span>
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Visits on your deeplinks from 2025-03-18 00:00 to 2025-04-17 23:59 (UTC)
+                </p>
+              </div>
+              <select className="mt-2 md:mt-0 bg-[#c7efdb] px-4 py-2 rounded-full text-sm border border-gray-200">
+                <option>Last 30 Days</option>
+                <option>Last 7 Days</option>
+                <option>Last 24 Hours</option>
+              </select>
             </div>
-            <select className="mt-2 md:mt-0 bg-white px-4 py-2 rounded-full text-sm border border-gray-200">
-              <option>Last 30 Days</option>
-              <option>Last 7 Days</option>
-              <option>Last 24 Hours</option>
-            </select>
-          </div>
-          <div className="w-full h-[300px]">
-            <Line options={options} data={data} />
+            <div className="w-full h-[300px]">
+              <Line options={options} data={data} />
+            </div>
           </div>
         </div>
       </div>

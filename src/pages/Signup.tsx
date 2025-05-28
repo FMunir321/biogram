@@ -258,12 +258,12 @@ const Signup = () => {
                         </span>
                       </label>
                     </div>
-                    <button
-                      type="submit"
-                      className="block w-full h-[44px] sm:h-[52px] text-white rounded-full text-base font-medium text-center leading-[44px] sm:leading-[52px] hover:opacity-90 bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
-                    >
-                      Continue
-                    </button>
+                  <Link
+                    to="/otp"
+                    className="block w-full h-[52px] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90 bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
+                  >
+                    Continue
+                  </Link>
                     <p className="text-center text-sm text-gray-500">
                       Already have an account?{" "}
                       <Link to="/login" className="text-[#53886C] hover:underline">
