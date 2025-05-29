@@ -13,7 +13,7 @@ const SocialIcon: React.FC<{ imageSrc?: string; backgroundColor?: string }> = ({
     }}
   >
     {imageSrc ? (
-      <img src={imageSrc} alt="Social Icon" className="w-8 h-8" />
+      <img src={imageSrc} alt="Social Icon" className="" />
     ) : (
       <div className="text-white text-xl">No Image</div>
     )}

@@ -29,7 +29,7 @@ const BiogramProfile: React.FC = () => {
       }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left section (8 columns) */}
           <div className="lg:col-span-8">
             <div className="mb-8">
@@ -45,7 +45,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             {/* Signup Section */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-white w-full">
+            <div className="mt-[90px] flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-white w-full">
               <input
                 type="text"
                 placeholder="Biogram/Your name"
@@ -124,7 +124,7 @@ const BiogramProfile: React.FC = () => {
           {/* Right section (4 columns) */}
           <div className="lg:col-span-4">
             <div className="mb-8">
-              <h3 className="text-white text-lg md:text-xl mb-2">Link</h3>
+              <h3 className="text-white text-lg md:text-[24px] font-semibold mb-2">Link</h3>
               <LinkCard
                 title="Custom links"
                 subtitle="Link section"
@@ -134,7 +134,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-white text-lg md:text-xl mb-2">Streaming</h3>
+              <h3 className="text-white text-lg md:text-[24px] font-semibold mb-2">Streaming</h3>
               <LinkCard
                 title="Spotify"
                 subtitle="View Spotify"
@@ -144,7 +144,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-white text-lg md:text-xl mb-2">E commerce</h3>
+              <h3 className="text-white text-lg md:text-[24px] font-semibold mb-2">E commerce</h3>
               <LinkCard
                 title="New Merch"
                 subtitle="Merch section"
@@ -154,7 +154,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-white text-lg md:text-xl mb-2">
+              <h3 className="text-white text-lg md:text-[24px] font-semibold mb-2">
                 Video Contents
               </h3>
               <LinkCard
@@ -166,7 +166,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-white text-lg md:text-xl mb-2">
+              <h3 className="text-white text-lg md:text-[24px] font-semibold mb-2">
                 Booking & Appointments
               </h3>
               <LinkCard
