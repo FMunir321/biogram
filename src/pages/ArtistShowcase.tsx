@@ -43,7 +43,7 @@ const ArtistShowcase = () => {
   return (
     <>
       <div className="container p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
-        <div className="flex flex-col md:flex-row shadow-2xl gap-4 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
+        <div className="flex flex-col md:flex-row shadow-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
           <div className="md:w-[50%]">
             <p className="top-4 mt-5 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
               Coming Soon: Add your Tickets
@@ -113,7 +113,7 @@ const ArtistShowcase = () => {
               <img
                 src={Mobilefram} // <-- your content image
                 alt="Content"
-                className="absolute w-full object-cover top-[-15px]"
+                className="absolute w-full object-cover top-[-23px] md:top-[-6px] xl:top-[-15px]"
               />
               {/* Overlay Text */}
               <div className="absolute bottom-[2%]  w-[80%]">
@@ -195,14 +195,14 @@ const ArtistShowcase = () => {
                 <img
                   src={Products}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] rounded-t-[50px] 2xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
                 {/* Content Image inside the frame */}
                 <img
                   src={Mobileframesm} // <-- your content image
                   alt="Content"
-                  className="absolute w-full object-cover top-[-7px]"
+                  className="absolute w-full object-cover top-[-5px] md:top-[-8px] lg:top-[-1px] xl:top-[-7px]"
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
@@ -275,14 +275,14 @@ const ArtistShowcase = () => {
                 <img
                   src={Musicbg}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] rounded-t-[40px] xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
                 {/* Content Image inside the frame */}
                 <img
                   src={Mobileframesm} // <-- your content image
                   alt="Content"
-                  className="absolute w-full object-cover top-[-7px]"
+                  className="absolute w-full object-cover top-[0px] 2xl:top-[-7px]"
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
@@ -324,14 +324,14 @@ const ArtistShowcase = () => {
                 <img
                   src={Appointment}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] 2xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
                 {/* Content Image inside the frame */}
                 <img
                   src={Mobilefram} // <-- your content image
                   alt="Content"
-                  className="absolute w-full object-cover top-[-15px]"
+                  className="absolute w-full object-cover top-[-7px] sm:top-[-8px] md:top-[-13px] lg:top-[-9px] xl:top-[-12px]"
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
