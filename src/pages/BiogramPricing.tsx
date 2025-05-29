@@ -9,6 +9,7 @@ import {
 } from "../components/ui/card";
 import Badge from "../components/ui/Badge";
 import logo from "../assets/Biogramlogo.png";
+import mybackground from "../assets/pricingbg.png";
 
 type PlanFeature = {
   name: string;
@@ -34,15 +35,20 @@ interface PricingCardProps {
 const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
   return (
     <Card
-      className={`relative border rounded-[46px] h-full w-full bg-gradient-to-r from-orange-50/15 to-pink-50/15 border-[1px] border-transparent border-gradient-to-r from-orange-500 to-pink-500`}
+      className={`border border-gray-300 rounded-[46px] h-full w-[433px] bg-[#b5efd2] shadow-lg`}
+      style={{
+        height: "600px",
+        width: "433px",
+        borderWidth: "1px",
+        borderRadius: "46px",
+        backgroundColor: "transparent",
+      }}
     >
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold text-center">{plan.title}</CardTitle>
         <div className="flex justify-center items-center mt-2">
-          <span className={`text-5xl font-bold ${plan.priceColor || "text-orange-500"}`}>
-            {plan.price}
-          </span>
-          <span className="text-lg font-medium">$/mo</span>
+          <span className="text-5xl font-bold text-[#7ECFA7]">{plan.price}</span>
+          <span className="text-lg font-medium text-black">$/mo</span>
         </div>
         <CardDescription className="text-center text-sm mt-2">
           {plan.description}
@@ -52,7 +58,12 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
         <ul className="space-y-3">
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              {feature.link ? (
+              {feature.name === "Up to" ? (
+                
+                <div className="bg-[#7ECFA7] text-white px-3 py-1 rounded-md text-sm font-medium">
+                 25 Links
+                </div>
+              ) : feature.link ? (
                 <div className="w-full">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">{feature.name}</span>
@@ -87,17 +98,23 @@ interface PricingTableProps {
 
 const PricingTable: React.FC<PricingTableProps> = ({ plans }) => {
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
-      <div className="mb-8 flex items-center gap-4">
-        <img src={logo} alt="Biogram Logo" className="h-10 sm:h-12" />
-        
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {plans.map((plan, index) => (
-          <div key={index} className="flex">
-            <PricingCard plan={plan} />
-          </div>
-        ))}
+    <div
+      className="w-full bg-cover bg-center py-12"
+      style={{
+         backgroundImage: `url(${mybackground})`,
+      }}
+    >
+      <div className="w-full max-w-6xl mx-auto px-4">
+        <div className="mb-8">
+          <img src={logo} alt="Biogram Logo" className="h-10 sm:h-12" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+          {plans.map((plan, index) => (
+            <div key={index} className="flex justify-center">
+              <PricingCard plan={plan} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -108,48 +125,44 @@ const BiogramPricing = () => {
     {
       title: "Starter",
       price: 0,
-      description: "Create a beautiful page, share all your projects and open instagram audience",
+      description:
+        "Create a beautiful page, share all your projects and open instagram audience",
       features: [
         { name: "Deeplink Technology" },
         { name: "Landing Page" },
         { name: "Unlimited Content" },
         { name: "Beautiful Designs" },
       ],
-      bgColor: "bg-orange-50",
-      priceColor: "text-orange-500",
     },
     {
       title: "Creator",
       price: 9,
-      description: "Send links directly to your page, protect your social accounts and collaborate content",
+      description:
+        "Send links directly to your page, protect your social accounts and collaborate content",
       features: [
         { name: "Everything in Starter" },
         { name: "Direct Link" },
-        { name: "Shield Protection", description: "Learn more", link: true },
-        { name: "Geo Filter", description: "Learn more", link: true },
+        { name: "Shield Protection", description: "Learn more",},
+        { name: "Geo Filter", description: "Learn more",},
         { name: "Link Analytics" },
         { name: "Clicks Tracking" },
         { name: "Engagement Boost" },
       ],
-      bgColor: "bg-rose-50",
-      priceColor: "text-rose-500",
     },
     {
       title: "Agency",
       price: 49,
-      description: "Manage all your creators from in one place & maximize your traffic and content",
+      description:
+        "Manage all your creators from in one place & maximize your traffic and content",
       features: [
         { name: "Everything in Creator" },
-        { name: "Up to 25 Links" },
-        { name: "Shields for 5 Links", description: "Learn more", link: true },
+        { name: "Up to" }, // Ye feature ab "Up to 25 Links" styled div ban gaya hai
+        { name: "Shields for 5 Links", description: "Learn more" },
         { name: "All-in-One Dashboard" },
         { name: "Custom Tracking" },
         { name: "White-Label Experience" },
         { name: "VIP Telegram Support" },
       ],
-      bgColor: "bg-orange-50",
-      priceColor: "text-orange-500",
-      linkText: "up to 25 Links",
     },
   ];
 

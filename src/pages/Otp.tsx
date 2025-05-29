@@ -108,9 +108,9 @@ const Otp = () => {
             Enter verification code
           </p>
 
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center px-4 mb-4">
             <InputOTP maxLength={6} className="gap-1 sm:gap-2">
-              <InputOTPGroup className="gap-1 sm:gap-2">
+              <InputOTPGroup className="gap-1 sm:gap-2 overflow-visible">
                 {[0, 1, 2, 3, 4, 5].map((index) => (
                   <div key={index} className="rounded-[20px] overflow-hidden border border-[#7ECFA7] [border-image:linear-gradient(97.29deg,#7ECFA7_13.65%,#53886C_90.87%)] [border-image-slice:1]">
                   <InputOTPSlot

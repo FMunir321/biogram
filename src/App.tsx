@@ -11,7 +11,7 @@ import AddSocialMediaPictureUpload from "./pages/AddSocialMediaPictureUpload";
 
 import ArtistShowcase from "./pages/ArtistShowcase";
 // import GoGreenSection from "./components/GoGreenSection";
-import BiogramPricing from "./pages/BiogramPrincing";
+import BiogramPricing from "./pages/BiogramPricing";
 import MainDashboard from "./components/maindashboard/MainDashboard";
 import Profile from "./components/maindashboard/Profile";
 import EditProfile from "./pages/EditProfile";
@@ -20,16 +20,15 @@ import Analytics from "./pages/Analytics";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import FeaturedLinkForm from "./components/FeaturedLinkForm";
-import AddMultiLink from "./components/AddMultiLink"
+import AddMultiLink from "./components/AddMultiLink";
 import AddMerch from "./components/AddMerge";
 import ProfileLink from "./components/ProfileLink";
 import ProfileMainDashboard from "./components/ProfileMainDashboard";
-import LinkInBio from "./components/linkInBio/LinkInBio";
+// import LinkInBio from "./components/linkInBio/LinkInBio";
 import Started from "./components/Started";
 import StartNow from "./components/StartNow";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-
 
 // Wrapper component for routes that need the layout
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -50,7 +49,7 @@ const App = () => {
         <Route path="/startnow" element={<StartNow />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Forpeople />} />
-        <Route path="/linkinbio" element={<LinkInBio />} />
+        {/* <Route path="/linkinbio" element={<LinkInBio />} /> */}
         <Route path="/Otp" element={<Otp />} />
         <Route path="/pricing" element={<BiogramPricing />} />
         {/* <Route path="/gogreensection" element={<GoGreenSection />} /> */}
@@ -58,7 +57,10 @@ const App = () => {
         <Route path="/addmultilink" element={<AddMultiLink />} />
         <Route path="/addmerge" element={<AddMerch />} />
         <Route path="/profilelink" element={<ProfileLink />} />
-        <Route path="/profilemaindashboard" element={<ProfileMainDashboard />} />
+        <Route
+          path="/profilemaindashboard"
+          element={<ProfileMainDashboard />}
+        />
         <Route path="/started" element={<Started />} />
         <Route path="/login" element={<Login />} />
         {/* Protected Routes - With Layout */}

@@ -6,7 +6,7 @@ const LinkCard: React.FC<{
   imageSrc: string;
   icon?: React.ReactNode; // Optional icon prop
 }> = ({ title, subtitle, imageSrc, icon }) => (
-  <div className=" bg-white/60 backdrop-blur-lg bg-opacity-5 p-4 rounded-xl flex items-center gap-4 mb-4 shadow-lg">
+  <div className="bg-white/20 backdrop-blur-2xl p-4 rounded-xl flex items-center gap-4 mb-4 shadow-xl">
     <div className=" rounded-lg w-12 h-12 flex items-center justify-center">
       <img src={imageSrc} alt={`${title} icon`} className="w-8 h-8" />
     </div>

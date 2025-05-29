@@ -1,14 +1,19 @@
 import React from 'react';
 import profileImage from '../assets/Proof.png';
-
+import logo from '../assets/loginlogo.png';
 const BiogramShoutPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
       {/* Biogram Text */}
         
-
+ {/* Logo Positioned Absolutely */}
+    <img
+  src={logo}
+  alt="Biogram Logo"
+  className="absolute top-8 left-8 w-[200px] h-auto object-contain z-30"
+/>
       
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10 mt-16">
+      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center z-10 mt-25">
         {/* Left Content - No changes as requested */}
         <div>
           <h1 className="text-7xl  font-bold text-black ">

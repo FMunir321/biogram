@@ -3,7 +3,7 @@ import CategorySection from "../components/CategorySection";
 import LinkCard from "@/components/LinkCard";
 import { Button } from "../components/ui/button";
 import { FaPlus } from "react-icons/fa";
-import { Input } from "../../components/ui/input";
+// import { Input } from "../../components/ui/input";
 // Import images from src/assets
 import FacebookImage from "../assets/Facebook.png";
 import InstagramImage from "../assets/Instagram.png";
@@ -45,7 +45,7 @@ const BiogramProfile: React.FC = () => {
             </div>
 
             {/* Signup Section */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-gradient-to-r from-orange-100 to-pink-100 w-full">
+            <div className="mt-6 flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-white w-full">
               <input
                 type="text"
                 placeholder="Biogram/Your name"
@@ -106,26 +106,17 @@ const BiogramProfile: React.FC = () => {
 
               {/* Payment Section */}
               <CategorySection title="Payment">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+                
               </CategorySection>
 
               {/* Gaming Section */}
               <CategorySection title="Gaming">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+                
               </CategorySection>
 
               {/* Lifestyle Section */}
               <CategorySection title="Lifestyle">
-                <SocialIcon
-                  imageSrc={AppleImage}
-                  backgroundColor="bg-pink-500"
-                />
+              
               </CategorySection>
             </div>
           </div>

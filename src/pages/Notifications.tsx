@@ -13,7 +13,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png",
+      avatar: "/src/assets/Sam.jpg",
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png",
+      avatar: "/src/assets/Sam.jpg",
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png",
+      avatar: "/src/assets/Sam.jpg",
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png",
+      avatar: "/src/assets/Sam.jpg",
     },
     {
       id: 5,
@@ -45,7 +45,7 @@ const Notifications = () => {
       username: "@samkeer",
       message: "And 1000 others just joined biogram",
       date: "Jun 21",
-      avatar: "/src/assets/aleximage.png",
+      avatar: "/src/assets/Sam.jpg",
     },
   ];
 

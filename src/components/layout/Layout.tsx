@@ -1,11 +1,11 @@
 import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IoPerson } from "react-icons/io5";
-import { CiEdit } from "react-icons/ci";
-import { MdMessage } from "react-icons/md";
-import { FaChartLine } from "react-icons/fa";
-import { IoIosNotifications } from "react-icons/io";
-import { IoIosSettings } from "react-icons/io";
+// import { IoPerson } from "react-icons/io5";
+// import { CiEdit } from "react-icons/ci";
+// import { MdMessage } from "react-icons/md";
+// import { FaChartLine } from "react-icons/fa";
+// import { IoIosNotifications } from "react-icons/io";
+// import { IoIosSettings } from "react-icons/io";
 import logo from "../../assets/Biogramlogo.png";
 import Search from "../../assets/menue/search.svg";
 import Profile from "../../assets/menue/profile.svg";
@@ -14,7 +14,7 @@ import Message from "../../assets/menue/message.svg";
 import Analytics from "../../assets/menue/analytics.svg";
 import Notification from "../../assets/menue/notification.svg";
 import Setting from "../../assets/menue/setting.svg";
-import { profile } from "console";
+// import { profile } from "console";
 // import { Button } from "../components/ui/button";
 
 interface LayoutProps {
