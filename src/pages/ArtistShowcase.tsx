@@ -4,7 +4,11 @@ import videoImg from "../assets/videoshoot.jpg";
 import dish from "../assets/dish.png";
 import redjersy from "../assets/redjersy.png";
 import Mobilefram from "../assets/realtimeanalytics/mobilefram.png";
+import Mobileframesm from "../assets/realtimeanalytics/mobileframesm.png";
 import Tickets from "../assets/realtimeanalytics/tickets.png";
+import Products from "../assets/realtimeanalytics/products.png";
+import Musicbg from "../assets/realtimeanalytics/musicbg.png";
+import Appointment from "../assets/realtimeanalytics/appoinment.png";
 import Sweet from "../assets/realtimeanalytics/sweet.png";
 import Stream from "../assets/realtimeanalytics/stream.png";
 import Music from "../assets/realtimeanalytics/music.png";
@@ -25,6 +29,7 @@ import {
 import PhoneMockup from "../components/PhoneMockup";
 import CategorySection from "@/components/CategorySection";
 import SocialIcon from "@/components/SocialIcon";
+import App from "@/App";
 
 const ArtistShowcase = () => {
   const socialIcons = [
@@ -124,8 +129,6 @@ const ArtistShowcase = () => {
                       style={{
                         background:
                           "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
-                        width: "63px",
-                        height: "58px",
                       }}
                     >
                       <img src={icon.src} alt={icon.alt} />
@@ -140,10 +143,10 @@ const ArtistShowcase = () => {
           <p className="mt-5 p-0 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
             Coming Soon: Sell Products & Services
           </p>
-          <div className="flex flex-row justify-between items-center mt-5 relative">
+          <div className="flex flex-row justify-between h-full mt-5 relative">
             {/* Card Column - overlaps image and is vertically centered */}
-            <div className="z-10 -mr-20">
-              <div className="flex flex-col gap-4 pl-2">
+            <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
+              <div className="flex flex-col gap-4 pl-[30px] w-[280px]">
                 {/* First card */}
                 <div className="flex flex-row items-center bg-white shadow-md rounded-lg">
                   <div>
@@ -185,12 +188,44 @@ const ArtistShowcase = () => {
             </div>
 
             {/* Image Column */}
-            <div className="z-0 xl:mt-[45px] 2xl:mt-[155px]">
-              <img
-                src={Mobilefram}
-                alt="Artist"
-                className="w-full h-auto object-cover rounded-xl shadow-md"
-              />
+            <div className="px-5 md:w-[60%] lg:mt-[65px] self-end">
+              <div className="relative self-end w-full flex justify-center items-center">
+                {/* Mobile Frame */}
+
+                <img
+                  src={Products}
+                  alt="Mobile Frame"
+                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                />
+
+                {/* Content Image inside the frame */}
+                <img
+                  src={Mobileframesm} // <-- your content image
+                  alt="Content"
+                  className="absolute w-full object-cover top-[-7px]"
+                />
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
+                  <h3 className="text-white text-[32px] font-extrabold">
+                    Chan Ja HO
+                  </h3>
+                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <div className="flex flex-row gap-2 mt-2">
+                    {socialIcons.map((icon, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-[30px] flex items-center justify-center"
+                        style={{
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                        }}
+                      >
+                        <img src={icon.src} alt={icon.alt} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -233,12 +268,44 @@ const ArtistShowcase = () => {
             </div>
 
             {/* Image Column */}
-            <div className="z-0">
-              <img
-                src={Mobilefram}
-                alt="Artist"
-                className="w-full h-auto object-cover rounded-xl shadow-md"
-              />
+            <div className="px-5 md:w-[50%] lg:mt-[65px]">
+              <div className="relative w-full flex justify-center items-center">
+                {/* Mobile Frame */}
+
+                <img
+                  src={Musicbg}
+                  alt="Mobile Frame"
+                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                />
+
+                {/* Content Image inside the frame */}
+                <img
+                  src={Mobileframesm} // <-- your content image
+                  alt="Content"
+                  className="absolute w-full object-cover top-[-7px]"
+                />
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
+                  <h3 className="text-white text-[32px] font-extrabold">
+                    Chan Ja HO
+                  </h3>
+                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <div className="flex flex-row gap-2 mt-2">
+                    {socialIcons.map((icon, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-[30px] flex items-center justify-center"
+                        style={{
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                        }}
+                      >
+                        <img src={icon.src} alt={icon.alt} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -250,12 +317,44 @@ const ArtistShowcase = () => {
 
           <div className="flex flex-row justify-between items-center mt-5 relative">
             {/* Image Column */}
-            <div className=" pl-5">
-              <img
-                src={Mobilefram}
-                alt="Artist"
-                className="w-full h-auto object-cover rounded-xl shadow-md"
-              />
+            <div className="px-5 md:w-[50%] lg:mt-[65px]">
+              <div className="relative w-full flex justify-center items-center">
+                {/* Mobile Frame */}
+
+                <img
+                  src={Appointment}
+                  alt="Mobile Frame"
+                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+                />
+
+                {/* Content Image inside the frame */}
+                <img
+                  src={Mobilefram} // <-- your content image
+                  alt="Content"
+                  className="absolute w-full object-cover top-[-15px]"
+                />
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
+                  <h3 className="text-white text-[32px] font-extrabold">
+                    Chan Ja HO
+                  </h3>
+                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <div className="flex flex-row gap-2 mt-2">
+                    {socialIcons.map((icon, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-[30px] flex items-center justify-center"
+                        style={{
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                        }}
+                      >
+                        <img src={icon.src} alt={icon.alt} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
             {/* Card Column - overlaps image and is vertically centered */}
             <div className=" p-3">
