@@ -1,7 +1,4 @@
-import image from "../assets/flowers.png";
-import miamiImg from "../assets/miami.jpg";
-import videoImg from "../assets/videoshoot.jpg";
-import dish from "../assets/dish.png";
+
 import redjersy from "../assets/redjersy.png";
 import Mobilefram from "../assets/realtimeanalytics/mobilefram.png";
 import Mobileframesm from "../assets/realtimeanalytics/mobileframesm.png";
@@ -19,17 +16,6 @@ import InstagramImage from "../assets/Instagram.png";
 import TwitterImage from "../assets/twitter.png";
 import TiktokImage from "../assets/TikTok.png";
 import WhatsappImage from "../assets/Whatsapp.png";
-import {
-  FaInstagram,
-  FaTwitter,
-  FaSpotify,
-  FaYoutube,
-  FaTiktok,
-} from "react-icons/fa";
-import PhoneMockup from "../components/PhoneMockup";
-import CategorySection from "@/components/CategorySection";
-import SocialIcon from "@/components/SocialIcon";
-import App from "@/App";
 
 const ArtistShowcase = () => {
   const socialIcons = [
@@ -43,21 +29,21 @@ const ArtistShowcase = () => {
   return (
     <>
       <div className="container p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
-        <div className="flex flex-col md:flex-row shadow-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
+        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
           <div className="md:w-[50%]">
-            <p className="top-4 mt-5 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
+            <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
               Coming Soon: Add your Tickets
             </p>
             <div className="pl-5">
-              <h1 className="text-[40px] font-extrabold text-black">
+              <h1 className="text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
                 Tour Dates
               </h1>
 
               {/* Vertical stack with alternating alignments */}
-              <div className="flex flex-col gap-4 mt-5">
+              <div className=" flex flex-col items-center gap-4">
                 {/* First card - align left */}
-                <div className="self-start w-[250px]">
-                  <div className="border border-[#7ecfa7] rounded-lg px-5 bg-[#d8e8e0]">
+                <div className="self-start flex flex-row items-center">
+                  <div className="border w-[250px] border-[#7ecfa7]  rounded-[20px] px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
                         <span className="text-[40px] font-bold">21 </span>jun
@@ -74,12 +60,18 @@ const ArtistShowcase = () => {
                       Miami, FL
                     </p>
                   </div>
+                  <div className="max-w-[81px] -ml-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                    Tickets
+                  </div>
                 </div>
 
                 {/* Second card - align right */}
-                <div className="self-end w-[250px]">
-                  <div className="border border-[#7ecfa7] rounded-lg px-5 bg-[#d8e8e0]">
-                    <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A]">
+                <div className="md:self-end  flex flex-row items-center">
+                  <div className="z-10 max-w-[81px] -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                    Tickets
+                  </div>
+                  <div className="z-2 border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0] ">
+                    <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A] ml-[20px]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
                         <span className="text-[40px] font-bold">26 </span>jun
                         2025
@@ -88,10 +80,10 @@ const ArtistShowcase = () => {
                         10PM
                       </p>
                     </div>
-                    <p className="text-[20px] font-medium text-[#2D2D2D]">
+                    <p className="text-[20px] font-medium text-[#2D2D2D] ml-[20px]">
                       T-Mobile Arena
                     </p>
-                    <p className="text-[14px] font-normal text-[#2D2D2D]">
+                    <p className="text-[14px] font-normal text-[#2D2D2D] ml-[20px]">
                       Las Vegas
                     </p>
                   </div>
@@ -99,7 +91,7 @@ const ArtistShowcase = () => {
               </div>
             </div>
           </div>
-          <div className="px-5 md:w-[50%] lg:mt-[65px]">
+          <div className="px-5 md:w-[50%] lg:mt-[53px] xl:mt-[65px]">
             <div className="relative w-full flex justify-center items-center">
               {/* Mobile Frame */}
 
@@ -139,11 +131,11 @@ const ArtistShowcase = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col shadow-2xl lg:w-[40%] lg:h-[422px] xl:h-[531px] 2xl:h-[640px] bg-[#e4f4ec]">
-          <p className="mt-5 p-0 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
+        <div className="flex flex-col lg:w-[40%] lg:h-[422px] xl:h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
+          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Coming Soon: Sell Products & Services
           </p>
-          <div className="flex flex-row justify-between h-full mt-5 relative">
+          <div className="flex flex-row justify-between h-full xl:h-[464px] 2xl:h-[578px] mt-5 relative">
             {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
               <div className="flex flex-col gap-4 pl-[30px] w-[280px]">
@@ -188,7 +180,7 @@ const ArtistShowcase = () => {
             </div>
 
             {/* Image Column */}
-            <div className="px-5 md:w-[60%] lg:mt-[65px] self-end">
+            <div className="px-5 md:w-[60%] xl:mt-[65px] self-end">
               <div className="relative self-end w-full flex justify-center items-center">
                 {/* Mobile Frame */}
 
@@ -207,9 +199,9 @@ const ArtistShowcase = () => {
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
                   <h3 className="text-white text-[32px] font-extrabold">
-                    Chan Ja HO
+                    Michal James
                   </h3>
-                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <p className="text-white text-[14px]">@ MJames123.com</p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
                       <div
@@ -232,11 +224,12 @@ const ArtistShowcase = () => {
       </div>
 
       <div className="container p-5 flex flex-col lg:flex-row items-center mx-auto gap-4 my-5 ">
-        <div className="flex flex-col shadow-2xl lg:w-[40%] h-full bg-[#e4f4ec]">
-          <p className="mt-5 p-0 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
+        {/* <div className="flex flex-col lg:w-[40%] h-full lg:h-[430px] xl:h-[575px] 2xl:h-[740px] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"></div> */}
+        <div className="flex flex-col lg:w-[40%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
+          <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Add Your Music
           </p>
-          <div className="flex flex-row justify-between items-center mt-5 relative">
+          <div className="flex flex-row justify-between  items-center mt-5 relative">
             {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 -mr-25">
               <div className="flex flex-col gap-4 pl-2">
@@ -287,9 +280,9 @@ const ArtistShowcase = () => {
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
                   <h3 className="text-white text-[32px] font-extrabold">
-                    Chan Ja HO
+                    Arcangel
                   </h3>
-                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <p className="text-white text-[14px]">@ Arcangel.com</p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
                       <div
@@ -310,8 +303,8 @@ const ArtistShowcase = () => {
           </div>
         </div>
 
-        <div className="flex flex-col shadow-2xl lg:w-[60%] h-full bg-[]">
-          <p className="mt-5 p-0 max-w-[300px] left-0 bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-xs px-4 py-1 rounded-r-full font-semibold z-10">
+        <div className="flex flex-col lg:w-[60%] h-full shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
+          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Coming Soon: Appointment Scheduler
           </p>
 
@@ -336,7 +329,7 @@ const ArtistShowcase = () => {
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
                   <h3 className="text-white text-[32px] font-extrabold">
-                    Chan Ja HO
+                    Max James
                   </h3>
                   <p className="text-white text-[14px]">June 21, 2025</p>
                   <div className="flex flex-row gap-2 mt-2">
