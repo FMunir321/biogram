@@ -1,4 +1,3 @@
-
 import redjersy from "../assets/redjersy.png";
 import Mobilefram from "../assets/realtimeanalytics/mobilefram.png";
 import Mobileframesm from "../assets/realtimeanalytics/mobileframesm.png";
@@ -229,9 +228,9 @@ const ArtistShowcase = () => {
           <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Add Your Music
           </p>
-          <div className="flex flex-row justify-between  items-center mt-5 relative">
+          <div className="flex flex-row justify-between xl:mt-11 items-center relative">
             {/* Card Column - overlaps image and is vertically centered */}
-            <div className="z-10 -mr-25">
+            <div className="z-10 -mr-25 w-[60%]">
               <div className="flex flex-col gap-4 pl-2">
                 {/* First card */}
                 <div className="flex flex-row items-center bg-white shadow-md rounded-full">
@@ -261,7 +260,7 @@ const ArtistShowcase = () => {
             </div>
 
             {/* Image Column */}
-            <div className="px-5 md:w-[50%] lg:mt-[65px]">
+            <div className="px-5 md:w-[60%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
                 {/* Mobile Frame */}
 
@@ -308,7 +307,7 @@ const ArtistShowcase = () => {
             Coming Soon: Appointment Scheduler
           </p>
 
-          <div className="flex flex-row justify-between items-center mt-5 relative">
+          <div className="flex flex-row justify-between items-center relative">
             {/* Image Column */}
             <div className="px-5 md:w-[50%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
@@ -353,21 +352,29 @@ const ArtistShowcase = () => {
             <div className=" p-3">
               <div className="flex flex-col gap-4 pl-2">
                 {/* First card */}
-                <div className="">
+                <div className="relative">
                   <img
                     src={Photshoot}
                     alt="Artist"
                     className=" object-cover rounded-xl"
                   />
+                  <div className="absolute bottom-0 right-0 p-2 text-white">
+                    <p className="text-[20px] font-bold">Photoshoot in miami</p>
+                    <p className="text-[14px] font-normal text-right">2 Hours -$500</p>
+                  </div>
                 </div>
 
                 {/* Second card */}
-                <div className="">
+                <div className="relative">
                   <img
                     src={Videoshoot}
                     alt="Artist"
                     className=" object-cover rounded-xl"
                   />
+                   <div className="absolute top-0 left-0 p-2 text-white">
+                    <p className="text-[20px] font-bold">Video Shoot in miami</p>
+                    <p className="text-[14px] font-normal">2 Hours -$1999</p>
+                  </div>
                 </div>
               </div>
             </div>
