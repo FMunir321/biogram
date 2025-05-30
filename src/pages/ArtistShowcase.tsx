@@ -27,7 +27,7 @@ const ArtistShowcase = () => {
 
   return (
     <>
-      <div className="container p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
+      <div className="container  p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
         <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
           <div className="md:w-[50%]">
             <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
