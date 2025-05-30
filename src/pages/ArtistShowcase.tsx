@@ -90,7 +90,7 @@ const ArtistShowcase = () => {
               </div>
             </div>
           </div>
-          <div className="px-5 md:w-[50%] lg:mt-[53px] xl:mt-[65px]">
+          <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
             <div className="relative w-full flex justify-center items-center">
               {/* Mobile Frame */}
 
@@ -228,7 +228,7 @@ const ArtistShowcase = () => {
           <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Add Your Music
           </p>
-          <div className="flex flex-row justify-between xl:mt-11 items-center relative">
+          <div className="flex flex-row justify-between mt-5 lg:mt-0 xl:mt-11 items-center relative">
             {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 -mr-25 w-[60%]">
               <div className="flex flex-col gap-4 pl-2">
@@ -307,7 +307,7 @@ const ArtistShowcase = () => {
             Coming Soon: Appointment Scheduler
           </p>
 
-          <div className="flex flex-row justify-between items-center relative">
+          <div className="flex flex-row justify-between items-center mt-5 lg:mt-0 relative">
             {/* Image Column */}
             <div className="px-5 md:w-[50%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
