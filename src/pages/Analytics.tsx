@@ -1,4 +1,4 @@
-import { Line } from 'react-chartjs-2';
+import { Line } from "react-chartjs-2";
 import analyticsframe from "../assets/Rectangle 1776.png";
 import {
   Chart as ChartJS,
@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 import bground from "../assets/lightbg.png";
 import WorldAnalyticsMap from "../components/WorldAnalyticsMap";
 ChartJS.register(
@@ -23,70 +23,122 @@ ChartJS.register(
 );
 
 const Analytics = () => {
-  const labels = ['2025-04-10', '2025-04-11', '2025-04-12', '2025-04-13', '2025-04-14', '2025-04-15', '2025-04-16', '2025-04-17'];
+  const labels = [
+    "2025-04-10",
+    "2025-04-11",
+    "2025-04-12",
+    "2025-04-13",
+    "2025-04-14",
+    "2025-04-15",
+    "2025-04-16",
+    "2025-04-17",
+  ];
 
+  // Fixed: Ensure all datasets have 8 data points to match 8 labels
   const data = {
     labels,
     datasets: [
       {
-        label: '@orylans',
-        data: [1200, 1900, 2400, 2800, 3100, 3300],
-        borderColor: '#3B82F6',
+        label: "@orylans",
+        data: [20, 300, 400, 800, 300, 300, 500, 600],
+        borderColor: "#3B82F6",
+        backgroundColor: "rgba(59, 130, 246, 0.1)",
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#3B82F6",
+        pointBorderWidth: 2,
+        fill: false,
       },
       {
-        label: '@Saekolove',
-        data: [800, 1500, 1800, 2200, 2600, 2900],
-        borderColor: '#22C55E',
+        label: "@Saekolove",
+        data: [20, 500, 800, 200, 600, 800, 300, 200],
+        borderColor: "#22C55E",
+        backgroundColor: "rgba(34, 197, 94, 0.1)",
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#22C55E",
+        pointBorderWidth: 2,
+        fill: false,
       },
       {
-        label: '@Ory',
-        data: [600, 900, 1200, 1100, 900, 800],
-        borderColor: '#06B6D4',
+        label: "@Ory",
+        data: [20, 800, 200, 100, 600, 800, 750, 700],
+        borderColor: "#06B6D4",
+        backgroundColor: "rgba(6, 182, 212, 0.1)",
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#06B6D4",
+        pointBorderWidth: 2,
+        fill: false,
       },
       {
-        label: '@Orylann',
-        data: [400, 800, 1000, 1400, 1600, 1800],
-        borderColor: '#EF4444',
+        label: "@Orylann",
+        data: [40, 300, 200, 400, 600, 800, 200, 100],
+        borderColor: "#EF4444",
+        backgroundColor: "rgba(239, 68, 68, 0.1)",
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#EF4444",
+        pointBorderWidth: 2,
+        fill: false,
       },
       {
-        label: '@Vikii',
-        data: [200, 500, 700, 600, 500, 400],
-        borderColor: '#EC4899',
+        label: "@Vikii",
+        data: [30, 500, 700, 600, 500, 400, 350, 300],
+        borderColor: "#EC4899",
+        backgroundColor: "rgba(236, 72, 153, 0.1)",
         tension: 0.4,
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: "#EC4899",
+        pointBorderWidth: 2,
+        fill: false,
       },
     ],
   };
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
-        align: 'start' as const,
+        position: "top" as const,
+        align: "start" as const,
         labels: {
           boxWidth: 8,
           usePointStyle: true,
-          pointStyle: 'circle',
+          pointStyle: "circle",
         },
       },
       tooltip: {
-        mode: 'index' as const,
+        mode: "index" as const,
         intersect: false,
       },
       background: {
-        color: "transparent"
-      }
+        color: "transparent",
+      },
     },
     scales: {
       y: {
+      
         beginAtZero: true,
+        max:800,
+        // If you want specific ticks, uncomment and use the following:
+        ticks: {
+          stepSize: 200,
+          min: 0,
+          max: 800,
+        },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)',
+          color: "rgba(0, 0, 0, 0.05)",
         },
       },
       x: {
@@ -96,8 +148,8 @@ const Analytics = () => {
       },
     },
     interaction: {
-      mode: 'nearest' as const,
-      axis: 'x' as const,
+      mode: "nearest" as const,
+      axis: "x" as const,
       intersect: false,
     },
   };
@@ -143,14 +195,20 @@ const Analytics = () => {
               key={stat.label}
               className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4"
             >
-              <h3 className="text-[20px] font-medium mb-2 text-[#3C3C3C]">{stat.label}</h3>
-              <p className="text-[64px] font-semibold text-[#3C3C3C] text-center">{stat.value}</p>
-              <p className="text-[16px] font-normal text-[#3C3C3C] mt-2 text-center">{stat.change}</p>
+              <h3 className="text-[20px] font-medium mb-2 text-[#3C3C3C]">
+                {stat.label}
+              </h3>
+              <p className="text-[64px] font-semibold text-[#3C3C3C] text-center">
+                {stat.value}
+              </p>
+              <p className="text-[16px] font-normal text-[#3C3C3C] mt-2 text-center">
+                {stat.change}
+              </p>
             </div>
           ))}
         </div>
         {/* Map Section */}
-        <div className="relative bg-[#f1f8f4 rounded-2xl p-4 md:p-6 mb-8">
+        <div className="relative bg-[#f1f8f4 rounded-2xl p-4 md:p-6">
           <WorldAnalyticsMap />
         </div>
         {/* Graph Section */}
@@ -163,13 +221,17 @@ const Analytics = () => {
             style={{ borderRadius: "1rem" }}
           />
           <div className="relative z-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
               <div>
-                <h3 className="text-lg font-semibold mb-1">
-                  7.889 <span className='text-lg font-'>Visitors</span>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  7,889{" "}
+                  <span className="text-xl font-medium text-gray-600">
+                    Visitors
+                  </span>
                 </h3>
-                <p className="text-sm text-gray-600">
-                  Visits on your deeplinks from 2025-03-18 00:00 to 2025-04-17 23:59 (UTC)
+                <p className="text-sm text-black">
+                  Visits on your deeplinks from 2025-03-18 00:00 to 2025-04-17
+                  23:59 (UTC)
                 </p>
               </div>
               <select className="mt-2 md:mt-0 bg-[#c7efdb] px-4 py-2 rounded-full text-sm border border-gray-200">

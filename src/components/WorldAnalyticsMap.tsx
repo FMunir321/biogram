@@ -1,6 +1,6 @@
 // components/WorldAnalyticsMap.tsx
 import React from 'react';
-import map from '../assets/vector.png';
+import map from '../assets/Vector.svg';
 
 const WorldAnalyticsMap = () => {
   return (
@@ -35,11 +35,11 @@ const WorldAnalyticsMap = () => {
       </div>
 
       {/* Continent Labels */}
-      <div className="absolute top-[10%] left-[40%] text-green-800 font-semibold text-lg text-center">
+      <div className="absolute top-[12%] left-[20%] text-green-800 font-semibold text-lg text-center">
         America <div className="text-sm font-normal">(10%)</div>
       </div>
 
-      <div className="absolute top-[45%] left-[45%] text-green-800 font-semibold text-lg text-center">
+      <div className="absolute bottom-[45%] left-[45%] text-green-800 font-semibold text-lg text-center">
         Europe <div className="text-sm font-normal">(10%)</div>
       </div>
 
