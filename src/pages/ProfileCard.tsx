@@ -18,7 +18,7 @@ import mock5 from "../assets/fire.png";
 
 const ProfileCard = () => {
   return (
-    <div className="bg-white py-16 px-6 md:px-12 flex flex-col items-center text-center">
+    <div className="max-w-[1280px] mx-auto bg-white py-16 px-6 md:px-12 flex flex-col items-center text-center">
       <h2 className="text-3xl md:text-4xl font-bold max-w-2xl">
         Design Your Link That’s Truly You
       </h2>
@@ -29,7 +29,7 @@ const ProfileCard = () => {
       </p>
 
       {/* Preview Cards */}
-      <div className="relative mt-16 flex justify-center items-center w-full max-w-3xl">
+      <div className=" relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
         {/* Background Cards */}
         <div className="absolute -left-40 mb-[500px]">
           <div className="absolute -left-16 w-80 h-[500px] bg-black rounded-lg">

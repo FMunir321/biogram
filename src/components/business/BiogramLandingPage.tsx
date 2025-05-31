@@ -34,23 +34,23 @@ const HeroSection: React.FC = () => {
     //     backgroundSize: "cover", // image ko container ke size ke according scale karega    // image ko center karega
     //   }}
     // >
-    <div className="min-h-[90vh] sm:min-h-[90vh] md:min-h-[30vh] lg:min-h-[30vh] xl:min-h-[90vh] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-      <div className="flex flex-col md:flex-row justify-between items-center">
+    <div className="max-w-[1280px] mx-auto min-h-[90vh] sm:min-h-[90vh] md:min-h-[30vh] lg:min-h-[30vh] xl:min-h-[90vh] px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <div className="flex flex-col lg:flex-row justify-between items-center">
         {/* Left Column: Text & Form */}
         <div className="w-full md:w-[60%] z-10">
-          <h1 className="font-poppins font-extrabold text-[32px] sm:text-[48px] md:text-[80px] lg:text-[110px] leading-[1.1] tracking-tight text-black">
+          <h1 className="text-[32px] sm:text-[45px] md:text-[80px] lg:text-[100px] text-center lg:text-left font-poppins font-extrabold leading-[1.1] tracking-tight text-black">
             One link,
-            <br className="hidden sm:block" />
+            <br className="hidden sm:block text-center lg:text-left " />
             Endless possibilities.
           </h1>
 
-          <p className="font-poppins font-medium text-base sm:text-lg md:text-xl leading-relaxed tracking-normal text-black max-w-[670px] mt-4 mb-8">
+          <p className="text-center text-[16px] md:text[20px] font-poppins font-medium sm:text-lg md:text-xl leading-relaxed tracking-normal text-black max-w-[670px] mt-4 mb-8">
             Biogram puts your entire digital world in one smart link. From
             socials to stores, content to contact — bring everything together in
             one sleek, shareable place. One link. Zero limits.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-[#cbeede] w-full md:w-[655px]">
+          <div className="flex flex-row items-center sm:gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-[#cbeede] w-full lg:w-[655px]">
             <FloatingLabelInput
               label="Biogram / Your name"
               value={username}
@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
             />
 
             <Button
-              className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-lg px-6 py-3 rounded-full font-poppins w-full sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none h-[60px] transition duration-200 cursor-pointer"
+              className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-lg px-6 py-3 rounded-full font-poppins sm:w-full sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none h-[60px] transition duration-200 cursor-pointer"
               onClick={handleSignupWithName}
             >
               Signup Free

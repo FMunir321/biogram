@@ -71,14 +71,14 @@ const cardVariants = {
 
 const ChooseBiogram: React.FC = () => {
   return (
-    <div className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-visible">
-      <div className="max-w-7xl mx-auto relative z-20">
+    <div className="relative py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-visible max-w-[1280px] mx-auto">
+      <div className="max-w-7xl mx-auto relative z-20 text-center lg:text-left">
         {/* Heading */}
-        <h2 className="text-[96px] leading-[106.56px] font-extrabold font-poppins text-black max-w-[921px]">
+        <h2 className="text-[32px] sm:text-[45px] md:text-[80px] lg:text-[100px] lg:leading-[106.56px] font-extrabold font-poppins text-black max-w-[921px]">
           Connect Smarter <br /> with Biogram
         </h2>
 
-        <p className="text-[20px] leading-[20px] font-medium font-poppins text-gray-700 max-w-[1072px] mb-12 mt-12">
+        <p className="text-[16px] md:text[20px] leading-[20px] font-medium font-poppins text-gray-700 max-w-[1072px] mb-12 mt-12">
           Whether you're an individual or a growing enterprise, Biogram helps
           you turn everyday digital interactions into lasting relationships and
           real-world results.
