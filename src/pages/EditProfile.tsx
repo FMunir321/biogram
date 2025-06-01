@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
-import characterImg from "../assets/aleximage.png";
+import characterImg from "../../public/assets/aleximage.png";
 import CustomLinksTab from "../components/CustomLinksTab";
-import bground from "../assets/lightbg.png";
-import Greaterthen from "../assets/greaterthen.png";
-import Thumbnail from "../assets/edit-profile/thumbnail.svg";
-import Call from "../assets/edit-profile/call.svg";
-import Map from "../assets/edit-profile/map.svg";
-import Mail from "../assets/edit-profile/mail.svg";
+import bground from "../../public/assets/lightbg.png";
+import Greaterthen from "../../public/assets/greaterthen.png";
+import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
+import Call from "../../public/assets/edit-profile/call.svg";
+import Map from "../../public/assets/edit-profile/map.svg";
+import Mail from "../../public/assets/edit-profile/mail.svg";
 import { Input } from "@/components/ui/input";
 import * as Dialog from "@radix-ui/react-dialog";
 

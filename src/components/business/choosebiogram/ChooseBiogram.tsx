@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import user1 from "../../../assets/Rectangle79.jpg";
-import user2 from "../../../assets/Rectangle80.jpg";
-import user3 from "../../../assets/Rectangle77.jpg";
-import user4 from "../../../assets/Rectangle76.jpg";
-import user5 from "../../../assets/Rectangle78.jpg";
+import user1 from "../../../../public/assets/Rectangle79.jpg";
+import user2 from "../../../../public/assets/Rectangle80.jpg";
+import user3 from "../../../../public/assets/Rectangle77.jpg";
+import user4 from "../../../../public/assets/Rectangle76.jpg";
+import user5 from "../../../../public/assets/Rectangle78.jpg";
 
 import {
   FaInstagram,

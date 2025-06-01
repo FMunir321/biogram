@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import profile from "../assets/aleximage.png";
+import profile from "../../public/assets/aleximage.png";
 import { TbExternalLink } from "react-icons/tb";
 
 const ProfileLink = () => {

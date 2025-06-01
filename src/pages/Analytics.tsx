@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import analyticsframe from "../assets/Rectangle 1776.png";
+import analyticsframe from "../../public/assets/Rectangle 1776.png";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import bground from "../assets/lightbg.png";
+import bground from "../../public/assets/lightbg.png";
 import WorldAnalyticsMap from "../components/WorldAnalyticsMap";
 ChartJS.register(
   CategoryScale,

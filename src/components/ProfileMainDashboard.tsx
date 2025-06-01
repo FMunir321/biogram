@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
 import { FaYoutube, FaTwitter, FaTiktok, FaInstagram, FaWhatsapp, FaFacebook } from "react-icons/fa";
-import alexjamesimage from "../assets/aleximage.png";
+import alexjamesimage from "../../public/assets/aleximage.png";
 
 const socialIcons = [
   { icon: <FaYoutube />, color: "text-red-500", name: "YouTube" },

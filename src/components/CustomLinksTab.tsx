@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import characterImg from "../assets/aleximage.png";
+import characterImg from "../../public/assets/aleximage.png";
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 

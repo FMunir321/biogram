@@ -1,7 +1,7 @@
 import { Button } from "../components/ui/button";
-import alexjamesimage from "../assets/aleximage.png";
-import rightsideemojiimage from "../assets/rightsidegoldenicon.png";
-import camerapicture from "../assets/camerapic.png";
+import alexjamesimage from "../../public/assets/aleximage.png";
+import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
+import camerapicture from "../../public/assets/camerapic.png";
 import { Link } from "react-router-dom";
 
 const AddSocialMediaPictureUpload = () => {

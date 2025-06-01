@@ -1,8 +1,8 @@
 import { Button } from "../../components/ui/button";
 import { Link } from "react-router-dom";
-import characterImg from "../../assets/aleximage.png";
+import characterImg from "../../../public/assets/aleximage.png";
 import { useState } from "react";
-import bground from "../../assets/lightbg.png";
+import bground from "../../../public/assets/lightbg.png";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<"shouts" | "media">("shouts");

@@ -11,7 +11,7 @@ import {
   MessageCircle,
   ArrowUpRight,
 } from "lucide-react";
-// import bground from "../assets/lightbg.png";
+// import bground from "../../public/assets/lightbg.png";
 
 const features = [
   {
