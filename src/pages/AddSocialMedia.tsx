@@ -25,11 +25,11 @@ const AddSocialMedia = () => {
       {/* Left Section */}
       <div className="w-full lg:w-1/2 p-2">
         <div className="mb-4 md:mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 md:mb-4 leading-tight">
+          <h1 className="text-[25px] sm:text-[40px] lg:text-[64px] font-semibold text-white mb-2 md:mb-4 leading-tight">
             <span className="block">Add your social</span>
             <span className="block">media</span>
           </h1>
-          <p className="text-base md:text-xl text-white">
+          <p className="text-[16px] md:text[24px] text-medium text-white">
             Connect your online presence in one place
           </p>
         </div>
@@ -55,7 +55,7 @@ const AddSocialMedia = () => {
             }}
           >
             <div className="flex justify-between items-center mb-1">
-              <h2 className="text-xl md:text-2xl font-semibold text-white">
+              <h2 className="text-[18px] md:text[24px] md:text-[32px] font-semibold text-white">
                 Social Networks
               </h2>
 
@@ -101,7 +101,7 @@ const AddSocialMedia = () => {
             }}
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-xl md:text-2xl font-semibold text-white">
+              <h2 className="text-[18px] md:text[24px] md:text-[32px] font-semibold text-white">
                 Business
               </h2>
               <img
@@ -140,7 +140,7 @@ const AddSocialMedia = () => {
             }}
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-xl md:text-2xl font-semibold text-white">
+              <h2 className="text-[18px] md:text[24px] md:text-[32px] font-semibold text-white">
                 Music
               </h2>
               <img
@@ -182,7 +182,7 @@ const AddSocialMedia = () => {
             }}
           >
             <div className="flex justify-between items-center mb-4 md:mb-6">
-              <h2 className="text-xl md:text-2xl font-semibold text-white">
+              <h2 className="text-[18px] md:text[24px] md:text-[32px] font-semibold text-white">
                 Payment
               </h2>
               <img
@@ -233,7 +233,7 @@ const AddSocialMedia = () => {
         </div>
 
         <Button
-          className="w-full mt-4 md:mt-6 bg-white text-black text-[36px] py-10 rounded-[50px] hover:bg-white hover:text-black cursor-pointer"
+          className="w-full mt-4 md:mt-6 bg-white text-black text-[18px] md:text[24px] md:text-[36px] py-10 rounded-[50px] hover:bg-white hover:text-black cursor-pointer"
           onClick={() => setIsPopupOpen(true)}
         >
           Continue
