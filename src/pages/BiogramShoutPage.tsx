@@ -7,6 +7,8 @@ const BiogramShoutPage: React.FC = () => {
       {/* Biogram Text */}
 
       {/* Logo Positioned Absolutely */}
+
+      
       <img
         src={logo}
         alt="Biogram Logo"
@@ -35,7 +37,7 @@ const BiogramShoutPage: React.FC = () => {
 
         {/* Right Content - Adjusted profile image positioning */}
         <div className="relative flex justify-center md:justify-end sm:-ml-[100px] lg:-ml-[50px]">
-          <div className="bg-[#e1f2e8] p-4 sm:p-6 rounded-2xl shadow-md w-[500px] h-[500px] ">
+          <div className="bg-[#e1f2e8] p-4 sm:p-6 rounded-2xl shadow-md w-full sm:w-[500px] h-[500px] ">
 
             <div className="text-center text-base sm:text-lg font-semibold mb-4 text-white bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-4 rounded-2xl relative">
               <select className='absolute left-4 top-7 -translate-y-1/2 rotate-90 text-white bg-transparent border-none outline-none' />
@@ -45,7 +47,7 @@ const BiogramShoutPage: React.FC = () => {
 
             <div className="grid grid-cols-7 gap-8 text-center text-sm font-medium mb-2">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                <div key={day} className='bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white w-[55px] h-[54px] flex items-center justify-center rounded-[10px]'>{day}</div>
+                <div key={day} className='bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white w-full sm:w-[55px] sm:h-[54px] aspect-square flex items-center justify-center rounded-[5px] sm:rounded-[10px] text-xs sm:text-sm'>{day}</div>
               ))}
               {Array.from({ length: 30 }, (_, i) => i + 1).map((date) => (
                 <div
