@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import Smilinggirl from "../assets/Smilinggirl.png";
-import JoinfamilyImage from "../assets/Join the Family.png";
-import bearedperson from "../assets/bearedperson.png";
-import blueperson from "../assets/blueperson.png";
-import casual from "../assets/casual.png";
-import beachperson from "../assets/beachperson.png";
-import mountains from "../assets/mountains.png";
-import desert from "../assets/desert.png";
-import flowers from "../assets/flowers.png";
-import friends from "../assets/friends.png";
-import personworking from "../assets/personworking.png";
-import bicycle from "../assets/bicycle.png";
-import land from "../assets/land.png";
-import joker from "../assets/joker.png";
-import dancing from "../assets/dancing.png";
+import Smilinggirl from "../../public/assets/Smilinggirl.png";
+import JoinfamilyImage from "../../public/assets/Join the Family.png";
+import bearedperson from "../../public/assets/bearedperson.png";
+import blueperson from "../../public/assets/blueperson.png";
+import casual from "../../public/assets/casual.png";
+import beachperson from "../../public/assets/beachperson.png";
+import mountains from "../../public/assets/mountains.png";
+import desert from "../../public/assets/desert.png";
+import flowers from "../../public/assets/flowers.png";
+import friends from "../../public/assets/friends.png";
+import personworking from "../../public/assets/personworking.png";
+import bicycle from "../../public/assets/bicycle.png";
+import land from "../../public/assets/land.png";
+import joker from "../../public/assets/joker.png";
+import dancing from "../../public/assets/dancing.png";
 
 type ImageGridItem = {
   src: string;

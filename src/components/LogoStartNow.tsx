@@ -1,7 +1,7 @@
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import BiogramLogo1 from "../assets/Biogramlogo.png";
-import BiogramLogo2 from "../assets/Biogramlogo2.png";
+import BiogramLogo1 from "../../public/assets/Biogramlogo.png";
+import BiogramLogo2 from "../../public/assets/Biogramlogo2.png";
 
 interface LogoStartNowProps {
   variant?: "default" | "alt";

@@ -1,6 +1,6 @@
 import React from 'react';
-import profileImage from '../assets/Proof.png';
-import logo from '../assets/loginlogo.png';
+import profileImage from '../../public/assets/Proof.png';
+import logo from '../../public/assets/loginlogo.png';
 const BiogramShoutPage: React.FC = () => {
   return (
     <div className="max-w-[1280px] mx-auto min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
