@@ -5,10 +5,10 @@ import { Input } from "../ui/input";
 const MainDashboard = () => {
   return (
     <div
-      className="flex flex-col md:flex-row justify-center h-full  bg-cover bg-center"
+      className="flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bground})` }}
     >
-      <div className="w-[50%] p-5">
+      <div className="w-full md:w-[50%] p-5">
         {/* Searchbar */}
         <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
           <Input
@@ -22,13 +22,14 @@ const MainDashboard = () => {
         </div>
       </div>
 
-      <div className="w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
-        <div>
-          <p className="text-black text-center font-medium">
+      <div className="w-full md:w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
+        <div className="text-center px-4">
+          <p className="text-black font-medium">
             Click on user to preview their profile
           </p>
         </div>
       </div>
+
     </div>
   );
 };
