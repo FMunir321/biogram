@@ -110,7 +110,7 @@ export default function RealTimeAnalyticsHero() {
               </div>
               {/* Main Content Area */}
               <div className="  w-full flex flex-col md:text-left ">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight max-w-4xl">
+                <h1 className="text-[25px] sm:text-[40px] lg:text-[64px] font-extrabold leading-tight max-w-4xl">
                   <span className="text-white block">Know your audience,</span>
                   <span className="text-white block">
                     grow your reach at no cost
@@ -125,7 +125,7 @@ export default function RealTimeAnalyticsHero() {
                 alt="World Map"
                 className="w-full object-contain mb-3"
               />
-              <div className="flex justify-between text-[20px] font-medium ">
+              <div className="flex justify-between text-[16px] md:text[20px] font-medium ">
                 <span>List</span>
                 <div className="flex flex-row gap-5">
                   <span>Country</span>
@@ -137,7 +137,7 @@ export default function RealTimeAnalyticsHero() {
                 <div className="flex items-center gap-5 bg-white/20 rounded-lg px-2 py-3">
                   <img src={usaFlag} alt="USA Flag" className=" rounded-full" />
                   <div>
-                    <p className="text-[20px] font-semibold">America</p>
+                    <p className="text-[16px] md:text[20px] font-semibold">America</p>
                     <p className="text-[10px] font-medium">800K View</p>
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export default function RealTimeAnalyticsHero() {
                 <div className="flex items-center gap-5 bg-white/20 rounded-lg px-2 py-3">
                   <img src={usaFlag} alt="USA Flag" className=" rounded-full" />
                   <div>
-                    <p className="text-[20px] font-semibold">Los Angeles</p>
+                    <p className="text-[16px] md:text[20px] font-semibold">Los Angeles</p>
                     <p className="text-[10px] font-medium">50K View</p>
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export default function RealTimeAnalyticsHero() {
                     className=" rounded-full"
                   />
                   <div>
-                    <p className="text-[20px] font-semibold">Paris</p>
+                    <p className="text-[16px] md:text[20px] font-semibold">Paris</p>
                     <p className="text-[10px] font-medium">10K View</p>
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export default function RealTimeAnalyticsHero() {
             </div>
           </div>
           <div className="px-4 md:px-20 text-center lg:text-left">
-            <p className="text-[24px] font-medium text-white mt-4">
+            <p className="text-[16px] md:text[24px] font-medium text-white mt-4">
               With Biogram, your profile is always online and lightning fast.
               Get detailed, real-time analytics showing where your clicks come
               from whether it’s hundreds or millions.
@@ -180,7 +180,7 @@ export default function RealTimeAnalyticsHero() {
                   placeholder="Biogram/your name"
                   className="flex-grow px-4 sm:px-6 text-black outline-none placeholder-gray-500 text-sm bg-transparent"
                 />
-                <button className="px-6 sm:px-8 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-full text-white">
+                <button className="text-[16px] md:text[20px] px-6 sm:px-8 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-full text-white">
                   Signup Free
                 </button>
               </div>
