@@ -307,7 +307,7 @@ const ArtistShowcase = () => {
             Coming Soon: Appointment Scheduler
           </p>
 
-          <div className="flex flex-row justify-between items-center mt-5 lg:mt-0 relative">
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">
             {/* Image Column */}
             <div className="px-5 md:w-[50%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
@@ -327,10 +327,10 @@ const ArtistShowcase = () => {
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[32px] font-extrabold">
+                  <h3 className="text-white text-[16px] md:text[24px] font-extrabold">
                     Max James
                   </h3>
-                  <p className="text-white text-[14px]">June 21, 2025</p>
+                  <p className="text-white text-[12px] md:text-[14px]">June 21, 2025</p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
                       <div
@@ -359,8 +359,8 @@ const ArtistShowcase = () => {
                     className=" object-cover rounded-xl"
                   />
                   <div className="absolute bottom-0 right-0 p-2 text-white">
-                    <p className="text-[20px] font-bold">Photoshoot in miami</p>
-                    <p className="text-[14px] font-normal text-right">2 Hours -$500</p>
+                    <p className="text-[16px] md:text[24px]font-bold">Photoshoot in miami</p>
+                    <p className="text-[12px] md:text-[14px] font-normal text-right">2 Hours -$500</p>
                   </div>
                 </div>
 
@@ -372,8 +372,8 @@ const ArtistShowcase = () => {
                     className=" object-cover rounded-xl"
                   />
                    <div className="absolute top-0 left-0 p-2 text-white">
-                    <p className="text-[20px] font-bold">Video Shoot in miami</p>
-                    <p className="text-[14px] font-normal">2 Hours -$1999</p>
+                    <p className="text-[16px] md:text[24px] font-bold">Video Shoot in miami</p>
+                    <p className="text-[12px] md:text-[14px] font-normal">2 Hours -$1999</p>
                   </div>
                 </div>
               </div>
