@@ -78,7 +78,7 @@ const ChooseBiogram: React.FC = () => {
           Connect Smarter <br /> with Biogram
         </h2>
 
-        <p className="text-[16px] md:text[20px] leading-[20px] font-medium font-poppins text-gray-700 max-w-[1072px] mb-12 mt-12">
+        <p className="text-[16px] md:text[20px] leading-[20px] font-medium font-poppins text-gray-700 max-w-[1072px] my-5 lg:my-12">
           Whether you're an individual or a growing enterprise, Biogram helps
           you turn everyday digital interactions into lasting relationships and
           real-world results.

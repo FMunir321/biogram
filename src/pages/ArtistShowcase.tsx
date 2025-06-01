@@ -34,7 +34,7 @@ const ArtistShowcase = () => {
               Coming Soon: Add your Tickets
             </p>
             <div className="pl-5">
-              <h1 className="text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
+              <h1 className="text-[20px] md:text[30px] md:text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
                 Tour Dates
               </h1>
 

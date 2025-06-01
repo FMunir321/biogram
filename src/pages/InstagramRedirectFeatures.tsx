@@ -79,14 +79,15 @@ const features = [
 export default function InstagramRedirectFeatures() {
   return (
     <div
+    className="max-w-[1280px] mx-auto px-4"
       // className="max-w-8xl mx-auto px-4 py-10 rounded-3xl bg-cover bg-center bg-no-repeat"
       // style={{ backgroundImage: `url(${bground})` }}
     >
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
+      <h1 className="text-[25px] sm:text-[40px] lg:text-[55px] font-extrabold text-center lg:text-left mb-4 text-black">
         All in one solution to drive traffic away from <br className="hidden md:block" />
         <span className="text-primary">instagram’s in-app browser</span>
       </h1>
-      <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+      <p className=" text-black mb-10 max-w-2xl mx-auto text-[16px] md:text[24px] font-medium text-center lg:text-left">
         Create your loading page or choose to instantly redirect your fans to any website with our deeplink & Shield protection technology.
       </p>
 
@@ -95,8 +96,8 @@ export default function InstagramRedirectFeatures() {
           <Card key={index} className="h-full bg-[#def5e9] rounded-[40px] shadow-md">
             <CardContent className="flex flex-col gap-2 p-6 items-center justify-center">
               <Icon className="h-6 w-6 text-primary mx-auto" />
-              <h3 className="font-semibold text-lg text-center">{title}</h3>
-              <p className="text-sm text-muted-foreground text-center">{description}</p>
+              <h3 className="text-[16px] md:text[24px] font-bold text-center">{title}</h3>
+              <p className="text-[13px] md:text[16px] text-muted-foreground text-center">{description}</p>
             </CardContent>
           </Card>
         ))}
