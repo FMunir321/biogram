@@ -212,7 +212,7 @@ const Analytics = () => {
           <WorldAnalyticsMap />
         </div>
         {/* Graph Section */}
-        <div className="relative bg-[#f1f8f4] rounded-2xl p-4 md:p-6 overflow-hidden">
+        <div className="relative bg-[#f1f8f4] rounded-2xl p-4 md:p-6 overflow-hidden border border-[#7cc5a1]">
           {/* Chart Frame as background
           <img
             src={analyticsframe}
