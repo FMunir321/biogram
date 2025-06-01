@@ -34,7 +34,7 @@ const BiogramShoutPage: React.FC = () => {
         </div>
 
         {/* Right Content - Adjusted profile image positioning */}
-        <div className="relative flex justify-center md:justify-end -ml-[100px] lg:-ml-[50px]">
+        <div className="relative flex justify-center md:justify-end sm:-ml-[100px] lg:-ml-[50px]">
           <div className="bg-[#e1f2e8] p-4 sm:p-6 rounded-2xl shadow-md w-[500px] h-[500px] ">
 
             <div className="text-center text-base sm:text-lg font-semibold mb-4 text-white bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-4 rounded-2xl relative">
@@ -65,7 +65,7 @@ const BiogramShoutPage: React.FC = () => {
           <img
             src={profileImage}
             alt="profile"
-            className="absolute w-[180px] h-[250px] rounded-xl shadow-lg border-4 border-white object-cover"
+            className="absolute hidden sm:block w-[180px] h-[250px] rounded-xl shadow-lg border-4 border-white object-cover"
             style={{
               bottom: "34px",
               right: "-100px",
