@@ -1,4 +1,4 @@
-import map from '../assets/Vector.svg';
+import map from '../../public/assets/Vector.svg';
 
 const WorldAnalyticsMap = () => {
   return (

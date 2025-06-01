@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import earth from "../assets/Earth.png";
-import lightbg from "../assets/lightbg.png";
+import earth from "../../public/assets/Earth.png";
+import lightbg from "../../public/assets/lightbg.png";
 import { Link } from "react-router-dom";
 
 const GoGreenSection: React.FC = () => {

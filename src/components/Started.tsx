@@ -1,8 +1,8 @@
 import { useState } from "react";
 // import DropDown from "./DropDown";
-import bground from "../assets/Rectangle67.png";
+import bground from "../../public/assets/Rectangle67.png";
 import { Link } from "react-router-dom";
-import AnalyticsImage from "../assets/Analytics 2.png";
+import AnalyticsImage from "../../public/assets/Analytics 2.png";
 import LogoStartNow from "./LogoStartNow";
 
 const Started = () => {

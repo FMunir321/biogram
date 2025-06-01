@@ -1,11 +1,11 @@
 import { useState } from "react";
-import world from "../assets/world.png";
+import world from "../../public/assets/world.png";
 import { Link } from "react-router-dom";
-import map from "../assets/Vector.png";
-import Instagram from "../assets/Instagram.png";
-import TikTok from "../assets/TikTok.png";
-import franceFlag from "../assets/france.png";
-import usaFlag from "../assets/united states.png";
+import map from "../../public/assets/Vector.png";
+import Instagram from "../../public/assets/Instagram.png";
+import TikTok from "../../public/assets/TikTok.png";
+import franceFlag from "../../public/assets/france.png";
+import usaFlag from "../../public/assets/united states.png";
 
 export default function RealTimeAnalyticsHero() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function RealTimeAnalyticsHero() {
           <div className="absolute top-[12%] right-[32%] text-xs font-semibold hidden sm:block">
             Asia (40%)
           </div>
-          <div className="absolute top-[35%] left-[15%] text-xs font-semibold hidden sm:block">
+          <div className="absolute top-[35%] left-[15%] text-xs font-semibold hidden md:block">
             Africa (05%)
           </div>
           <div className="absolute top-[5%] left-[20%] text-xs font-semibold hidden sm:block">
@@ -63,7 +63,7 @@ export default function RealTimeAnalyticsHero() {
               {/* Instagram & Tiktok Card */}
               <div className=" flex flex-col gap-5 lg:gap-0 md:ml-[50px]">
                 {/* Instagram Card */}
-                <div className=" md:flex justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/20">
+                <div className=" flex justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/20">
                   <div className="flex flex-row items-center gap-4">
                     <img
                       src={Instagram}
@@ -86,7 +86,7 @@ export default function RealTimeAnalyticsHero() {
                 </div>
 
                 {/* TikTok Card */}
-                <div className=" md:flex lg:ml-[30%] lg:mt-[-30px] justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/30">
+                <div className=" flex lg:ml-[30%] lg:mt-[-30px] justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/30">
                   <div className="flex flex-row items-center gap-4">
                     <img
                       src={TikTok}

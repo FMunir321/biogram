@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Add this if you're using Link
 import Title from '../linkInBio/Title';
 import GridLayout from '../linkInBio/GridLayout';
-import myBg from "../../assets/my-background.png";
+import myBg from "../../../public/assets/my-background.png";
 
 const LinkInBio: React.FC = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

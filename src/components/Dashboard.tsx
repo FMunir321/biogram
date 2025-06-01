@@ -1,5 +1,5 @@
 import { Card, CardContent } from "../components/ui/card";
-import map from "../assets/map-sample.png";
+import map from "../../public/assets/map-sample.png";
 
 const Dashboard = () => {
   return (

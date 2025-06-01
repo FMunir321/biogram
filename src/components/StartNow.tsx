@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import logo from "../assets/Biogramlogo2.png";
+import logo from "../../public/assets/Biogramlogo2.png";
 import { FiChevronDown } from "react-icons/fi";
 
 const StartNow = () => {

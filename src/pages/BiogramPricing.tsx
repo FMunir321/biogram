@@ -8,8 +8,8 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import Badge from "../components/ui/Badge";
-import logo from "../assets/Biogramlogo.png";
-import mybackground from "../assets/pricingbg.png";
+import logo from "../../public/assets/Biogramlogo.png";
+import mybackground from "../../public/assets/pricingbg.png";
 
 type PlanFeature = {
   name: string;

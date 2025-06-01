@@ -8,10 +8,10 @@ import {
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
-import toppopuppic from "../../assets/toppopuppic.png";
-import centerpopuppic from "../../assets/centerpopupoic.png";
-import bottompopuppic from "../../assets/bottompopuppic.png";
-import Facebook from "../../assets/facebook_icon.png";
+import toppopuppic from "../../../public/assets/toppopuppic.png";
+import centerpopuppic from "../../../public/assets/centerpopupoic.png";
+import bottompopuppic from "../../../public/assets/bottompopuppic.png";
+import Facebook from "../../../public/assets/facebook_icon.png";
 import { Link } from "react-router-dom";
 
 interface AddSocialMediaPopupProps {

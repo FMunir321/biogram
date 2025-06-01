@@ -1,4 +1,4 @@
-import bground from "../../assets/lightbg.png"; // ✅ Adjust the path if needed
+import bground from "../../../public/assets/lightbg.png"; // ✅ Adjust the path if needed
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 

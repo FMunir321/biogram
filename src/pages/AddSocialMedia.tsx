@@ -1,20 +1,20 @@
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import facebookimage from "../assets/Facebook.png";
-import instagramimage from "../assets/Instagram.png";
-import twitterimage from "../assets/Twitter.png";
-import tiktokimage from "../assets/TikTok.png";
-import whatsappimage from "../assets/Whatsapp.png";
-import linkedinimage from "../assets/Linkedin.png";
-import skypeimage from "../assets/Skype.png";
-import applemusicimage from "../assets/AppleMusic.png";
-import soundcloudimage from "../assets/Soundcloud.png";
-import spotifyimage from "../assets/Spotify.png";
-import alexjamesimage from "../assets/aleximage.png";
-import Dropdown from "../assets/dropdown.png";
+import facebookimage from "../../public/assets/Facebook.png";
+import instagramimage from "../../public/assets/Instagram.png";
+import twitterimage from "../../public/assets/Twitter.png";
+import tiktokimage from "../../public/assets/TikTok.png";
+import whatsappimage from "../../public/assets/Whatsapp.png";
+import linkedinimage from "../../public/assets/Linkedin.png";
+import skypeimage from "../../public/assets/Skype.png";
+import applemusicimage from "../../public/assets/AppleMusic.png";
+import soundcloudimage from "../../public/assets/Soundcloud.png";
+import spotifyimage from "../../public/assets/Spotify.png";
+import alexjamesimage from "../../public/assets/aleximage.png";
+import Dropdown from "../../public/assets/dropdown.png";
 
-import rightsideemojiimage from "../assets/rightsidegoldenicon.png";
+import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 

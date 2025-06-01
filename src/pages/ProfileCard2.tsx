@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
-import mock2 from "../assets/good.png";
-import mock3 from "../assets/mock2.png";
-import avatar from "../assets/mock3.png";
-import mock5 from "../assets/fire.png";
+import mock2 from "../../public/assets/good.png";
+import mock3 from "../../public/assets/mock2.png";
+import avatar from "../../public/assets/mock3.png";
+import mock5 from "../../public/assets/fire.png";
 
 import {
   FaInstagram,
