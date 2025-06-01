@@ -8,8 +8,8 @@ const Messages = () => {
       className="flex flex-col md:flex-row justify-center h-full  bg-cover bg-center"
       style={{ backgroundImage: `url(${bground})` }}
     >
-      <div className="w-[50%] p-5">
-        <h1 className="text-[32px] font-bold text-black">Message</h1>
+      <div className="w-full md:w-[50%] p-5">
+        <h1 className="text-[32px] font-bold text-black mb-3 md:mb-0">Message</h1>
         {/* Searchbar */}
         <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
           <Input
@@ -26,7 +26,7 @@ const Messages = () => {
         </div>
       </div>
 
-      <div className="w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
+      <div className="w-full md:w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
         <div>
           <p className="text-black text-center font-medium">
             Select a conversation to start chat
