@@ -8,6 +8,35 @@ import groupBg from "../assets/group.png";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    emailOrPhone: "",
+    password: ""
+  });
+  const [focusedField, setFocusedField] = useState({
+    emailOrPhone: false,
+    password: false
+  });
+
+  const handleInputChange = (name, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFocus = (fieldName) => {
+    setFocusedField(prev => ({
+      ...prev,
+      [fieldName]: true
+    }));
+  };
+
+  const handleBlur = (fieldName) => {
+    setFocusedField(prev => ({
+      ...prev,
+      [fieldName]: false
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-white">
@@ -51,42 +80,64 @@ const Login = () => {
           {/* Login Form */}
           <form className="space-y-5 sm:space-y-6">
             {/* Email or Phone Number Field */}
-            <div className="relative pt-5">
-              <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
-                Email or Phone Number
-              </label>
+            <div className="relative">
               <input
                 type="text"
-                placeholder="Enter here"
-                className="w-full h-10 sm:h-12 px-4 sm:px-5 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
+                id="emailOrPhone"
+                value={formData.emailOrPhone}
+                onChange={(e) => handleInputChange("emailOrPhone", e.target.value)}
+                onFocus={() => handleFocus("emailOrPhone")}
+                onBlur={() => handleBlur("emailOrPhone")}
+                className="w-full h-12 px-4 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
+                placeholder={!focusedField.emailOrPhone && !formData.emailOrPhone ? "Email or Phone Number" : ""}
               />
+              <label
+                htmlFor="emailOrPhone"
+                className={`absolute left-3 transition-all duration-200 pointer-events-none bg-white px-1 ${
+                  focusedField.emailOrPhone || formData.emailOrPhone
+                    ? '-top-2 text-xs text-[#98e6c3] font-medium'
+                    : 'opacity-0'
+                }`}
+              >
+                Email or Phone Number
+              </label>
             </div>
 
             {/* Password Field */}
-            <div className="relative pt-5">
-              <label className="absolute left-4 top-1 text-xs sm:text-sm font-medium text-[#666666] bg-white px-1 pointer-events-none z-10">
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                onFocus={() => handleFocus("password")}
+                onBlur={() => handleBlur("password")}
+                className="w-full h-12 px-4 pr-12 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
+                placeholder={!focusedField.password && !formData.password ? "Password" : ""}
+              />
+              <label
+                htmlFor="password"
+                className={`absolute left-3 transition-all duration-200 pointer-events-none bg-white px-1 ${
+                  focusedField.password || formData.password
+                    ? '-top-2 text-xs text-[#98e6c3] font-medium'
+                    : 'opacity-0'
+                }`}
+              >
                 Password
               </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter here"
-                  className="w-full h-10 sm:h-12 px-4 sm:px-5 pr-10 rounded-[10px] border border-[#E5E5E5] text-xs sm:text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-pink-200 bg-white"
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#98e6c3]"
-                  onClick={() => setShowPassword((v) => !v)}
-                  tabIndex={-1}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? (
-                    <EyeOffIcon size={20} />
-                  ) : (
-                    <EyeIcon size={20} />
-                  )}
-                </button>
-              </div>
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#98e6c3]"
+                onClick={() => setShowPassword((v) => !v)}
+                tabIndex={-1}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOffIcon size={20} />
+                ) : (
+                  <EyeIcon size={20} />
+                )}
+              </button>
             </div>
 
             <div className="flex items-start space-x-2.5 mt-20">

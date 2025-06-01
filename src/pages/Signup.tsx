@@ -16,6 +16,8 @@ import groupBg from "../assets/group.png";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  
+  
 
   return (
     <div className="min-h-screen bg-white">
@@ -117,8 +119,9 @@ const Signup = () => {
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="Email or Phone Number"
+                        placeholder="Enter here"
                         autoComplete="email"
+                        aria-label="Email or Phone Number"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
@@ -131,8 +134,9 @@ const Signup = () => {
                         type="text"
                         id="fullName"
                         name="fullName"
-                        placeholder="Full Name"
+                        placeholder="Enter here"
                         autoComplete="name"
+                        aria-label="Full Name"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
@@ -207,14 +211,14 @@ const Signup = () => {
                         type="text"
                         id="username"
                         name="username"
-                        placeholder="Username"
+                        placeholder="Enter here"
                         autoComplete="username"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
                     {/* Password */}
-                    <fieldset className="relative pt-3 bg-[#F8F8F8] border border-black rounded-[10px] sm:rounded-[14px] px-4 pb-2">
-                      <legend className="absolute left-4 -top-3 bg-[#F8F8F8] px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
+                    <fieldset className="relative pt-3">
+                      <legend className="absolute left-4 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
                         Password
                       </legend>
                       <div className="relative">
@@ -222,15 +226,17 @@ const Signup = () => {
                           type={showPassword ? "text" : "password"}
                           id="password"
                           name="password"
-                          placeholder="Password"
-                          autoComplete="current-password"
-                          className="w-full h-[36px] sm:h-[40px] bg-transparent focus:outline-none"
+                          placeholder="Enter here"
+                          autoComplete="new-password"
+                          aria-label="Password"
+                          className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
-                          tabIndex={-1}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          tabIndex={0}
                         >
                           {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
                         </button>
@@ -282,10 +288,11 @@ const Signup = () => {
                       </legend>
                       <Input
                         type="email"
-                        id="email"
+                        id="businessEmail"
                         name="email"
-                        placeholder="Email or Phone Number"
+                        placeholder="Enter here"
                         autoComplete="email"
+                        aria-label="Email or Phone Number"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
@@ -296,10 +303,11 @@ const Signup = () => {
                       </legend>
                       <Input
                         type="text"
-                        id="fullName"
+                        id="businessFullName"
                         name="fullName"
-                        placeholder="Full Name"
+                        placeholder="Enter here"
                         autoComplete="name"
+                        aria-label="Full Name"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
@@ -309,27 +317,39 @@ const Signup = () => {
                         Date of Birth
                       </legend>
                       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                        <Input
-                          id="birthDay"
-                          name="birthDay"
-                          placeholder="Day"
-                          autoComplete="bday-day"
-                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                        />
-                        <Input
-                          id="birthMonth"
-                          name="birthMonth"
-                          placeholder="Month"
-                          autoComplete="bday-month"
-                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                        />
-                        <Input
-                          id="birthYear"
-                          name="birthYear"
-                          placeholder="Year"
-                          autoComplete="bday-year"
-                          className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                        />
+                        <fieldset className="relative">
+                          <legend className="absolute left-2 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
+                            Day
+                          </legend>
+                          <Input
+                            id="birthDay"
+                            name="birthDay"
+                            autoComplete="bday-day"
+                            className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                          />
+                        </fieldset>
+                        <fieldset className="relative">
+                          <legend className="absolute left-2 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
+                            Month
+                          </legend>
+                          <Input
+                            id="birthMonth"
+                            name="birthMonth"
+                            autoComplete="bday-month"
+                            className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                          />
+                        </fieldset>
+                        <fieldset className="relative">
+                          <legend className="absolute left-2 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
+                            Year
+                          </legend>
+                          <Input
+                            id="birthYear"
+                            name="birthYear"
+                            autoComplete="bday-year"
+                            className="h-[52px] rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                          />
+                        </fieldset>
                       </div>
                     </fieldset>
                     {/* Username */}
@@ -341,30 +361,31 @@ const Signup = () => {
                         type="text"
                         id="username"
                         name="username"
-                        placeholder="Username"
                         autoComplete="username"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
                     {/* Password */}
-                    <fieldset className="relative pt-3 bg-[#F8F8F8] border border-black rounded-[10px] sm:rounded-[14px] px-4 pb-2">
-                      <legend className="absolute left-4 -top-3 bg-[#F8F8F8] px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
+                    <fieldset className="relative pt-3">
+                      <legend className="absolute left-4 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
                         Password
                       </legend>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          id="password"
+                          id="businessPassword"
                           name="password"
-                          placeholder="Password"
-                          autoComplete="current-password"
-                          className="w-full h-[36px] sm:h-[40px] rounded-[10px] sm:rounded-[14px] border-black bg-[#F8F8F8] px-4 pr-12 focus:border-black focus:ring-black"
+                          placeholder="Enter here"
+                          autoComplete="new-password"
+                          aria-label="Password"
+                          className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                          tabIndex={-1}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          tabIndex={0}
                         >
                           {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
                         </button>
