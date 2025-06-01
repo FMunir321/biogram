@@ -58,7 +58,7 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0  bg-opacity-50 z-30 md:hidden"
+          className="z-30 fixed inset-0 bg-opacity-50 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -70,9 +70,10 @@ const Layout = ({ children }: LayoutProps) => {
           md:translate-x-0 md:relative md:w-64 md:shadow-none`}
       > */}
       <div
-        className={`fixed top-0 left-0 min-h-screen w-[280px] bg-[#e6f8f0] py-4 px-6 flex flex-col justify-between transform transition-all duration-300 ease-in-out z-40
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full shadow-2xl"} 
-        md:translate-x-0 md:relative md:w-64 md:shadow-none md:min-h-screen`}
+        className={`fixed top-0 left-0 h-screen w-[280px] bg-[#e6f8f0] px-6 py-4 flex flex-col overflow-y-auto z-40
+  transform transition-all duration-300 ease-in-out
+  ${sidebarOpen ? "translate-x-0" : "-translate-x-full shadow-2xl"}
+  md:translate-x-0 md:relative md:w-64 md:shadow-none`}
       >
         {/* Close Button (small screens) */}
         <div className="flex justify-end -mt-2 -mr-2 md:hidden">
@@ -81,7 +82,7 @@ const Layout = ({ children }: LayoutProps) => {
             onClick={() => setSidebarOpen(false)}
           >
             <svg
-              className="w-6 h-6 text-pink-600"
+              className="w-6 h-6 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -102,7 +103,7 @@ const Layout = ({ children }: LayoutProps) => {
           </Link>
 
           <nav className="flex flex-col gap-5 mt-7 ">
-            <Link to="/maindashboard">
+            <Link to="/maindashboard" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -115,7 +116,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/maindashboard"}
               />
             </Link>
-            <Link to="/profile">
+            <Link to="/profile" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -128,7 +129,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/profile"}
               />
             </Link>
-            <Link to="/edit-profile">
+            <Link to="/edit-profile" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -141,7 +142,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/edit-profile"}
               />
             </Link>
-            <Link to="/messages">
+            <Link to="/messages" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -154,7 +155,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/messages"}
               />
             </Link>
-            <Link to="/analytics">
+            <Link to="/analytics" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -167,7 +168,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/analytics"}
               />
             </Link>
-            <Link to="/notifications">
+            <Link to="/notifications" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -213,8 +214,9 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Main Content */}
       <div className="flex-1 min-w-0 overflow-auto">
         {/* Top Bar */}
-        <div className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-gray-100 px-4 py-4 md:px-6 z-50">
-          <div className="flex justify-between items-center max-w-6xl mx-auto">
+        <div className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-gray-100 px-4 py-4 md:px-6 z-10">
+          <div className="relative z-10 flex justify-between items-center max-w-6xl mx-auto">
+
             {/* Hamburger Button (small screens) */}
             <button
               className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -259,10 +261,9 @@ const SidebarItem = ({
   return (
     <div
       className={`text-[24px] font-normal flex items-center gap-3 p-2 rounded-lg cursor-pointer text-sm transition-colors
-        ${
-          active
-            ? "text-[#53886C] bg-opacity-50"
-            : "text-gray-700 hover:bg-white hover:bg-opacity-30"
+        ${active
+          ? "text-[#53886C] bg-opacity-50"
+          : "text-gray-700 hover:bg-white hover:bg-opacity-30"
         }`}
     >
       <span
