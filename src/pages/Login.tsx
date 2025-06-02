@@ -17,21 +17,21 @@ const Login = () => {
     password: false
   });
 
-  const handleInputChange = (name, value) => {
+  const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleFocus = (fieldName) => {
+  const handleFocus = (fieldName: string) => {
     setFocusedField(prev => ({
       ...prev,
       [fieldName]: true
     }));
   };
 
-  const handleBlur = (fieldName) => {
+  const handleBlur = (fieldName: string) => {
     setFocusedField(prev => ({
       ...prev,
       [fieldName]: false

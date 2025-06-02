@@ -36,20 +36,20 @@ const EditProfile = () => {
       heading: "Link",
       title: "Custom Links",
       subtitle: "Link section",
-      image: "/public/assets/Link.png",
+      image: "/assets/Link.png",
       onClick: () => setIsCustomLinksOpen(true),
     },
     {
       heading: "Streaming",
       title: "Spotify",
       subtitle: "Music section",
-      image: "/public/assets/Spotify.png",
+      image: "/assets/Spotify.png",
     },
     {
       heading: "E commerce",
       title: "New Merch",
       subtitle: "Merch section",
-      image: "/public/assets/Shopingbag.png",
+      image: "/assets/Shopingbag.png",
     },
   ];
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -12,4 +12,15 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "./src/components"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1000, // Increase the warning limit to 1000kb
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'], // Split vendor chunks
+          // Add more manual chunks as needed
+        },
+      },
+    },
+  },
 });

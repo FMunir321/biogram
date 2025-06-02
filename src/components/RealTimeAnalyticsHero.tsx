@@ -1,6 +1,6 @@
 import { useState } from "react";
 import world from "../../public/assets/world.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import map from "../../public/assets/Vector.png";
 import Instagram from "../../public/assets/Instagram.png";
 import TikTok from "../../public/assets/TikTok.png";
@@ -9,6 +9,23 @@ import usaFlag from "../../public/assets/united states.png";
 
 export default function RealTimeAnalyticsHero() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleSignup = () => {
+    try {
+      navigate('/signup', { state: { username: username.trim() } });
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Fallback to regular navigation if state passing fails
+      navigate('/signup');
+    }
+  };
+
   return (
     <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white p-4 flex flex-col justify-between overflow-x-hidden">
       <div className="relative max-w-[1280px] mx-auto ">
@@ -170,17 +187,24 @@ export default function RealTimeAnalyticsHero() {
             <p className="text-[16px] md:text[24px] font-medium text-white mt-4">
               With Biogram, your profile is always online and lightning fast.
               Get detailed, real-time analytics showing where your clicks come
-              from whether it’s hundreds or millions.
+              from whether it's hundreds or millions.
             </p>
 
             <div className="mt-5 w-full flex flex-col sm:flex-row  mx-auto lg:mx-0 gap-3 md:max-w-lg">
-              <div className="flex w-full overflow-hidden rounded-full bg-white h-[50px] sm:h-[60px] shadow-lg">
+              <div className="flex w-full overflow-hidden rounded-full bg-white h-[50px] sm:h-[60px] shadow-lg relative">
                 <input
                   type="text"
                   placeholder="Biogram/your name"
-                  className="flex-grow px-4 sm:px-6 text-black outline-none placeholder-gray-500 text-sm bg-transparent"
+                  value={username}
+                  onChange={handleUsernameChange}
+                  className="flex-grow px-4 sm:px-6 text-black outline-none placeholder-gray-500 text-sm bg-transparent w-full h-full border-none focus:ring-0 focus:outline-none"
+                  style={{ WebkitAppearance: 'none' }}
                 />
-                <button className="text-[16px] md:text[20px] px-6 sm:px-8 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-full text-white">
+                <button 
+                  onClick={handleSignup}
+                  type="button"
+                  className="text-[16px] md:text[20px] px-6 sm:px-8 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-full text-white cursor-pointer relative z-10 h-full"
+                >
                   Signup Free
                 </button>
               </div>
