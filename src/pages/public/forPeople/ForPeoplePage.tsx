@@ -2,7 +2,7 @@ import BiogramLandingPage from "../../../components/forPeople/BiogramLandingPage
 import ChooseBiogram from "../../../components/forPeople/choosebiogram/ChooseBiogram";
 import Navbar from "../../../components/forPeople/navbar/Navbar";
 import RealTimeAnalyticsHero from "../../../components/forPeople/realTimeAnalyticsHero/RealTimeAnalyticsHero";
-import ArtistShowcase from "../../artistShowcase/ArtistShowcasePage";
+import ArtistShowcase from "../../../components/forPeople/artistShowcase/ArtistShowcase";
 import BiogramProfile from "../../../components/forPeople/biogramProfile/BiogramProfile";
 import BiogramShoutPage from "../../../components/BiogramShout";
 import BiogramPricing from "../../../components/forPeople/biogramPricing/BiogramPricing";

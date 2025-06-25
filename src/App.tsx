@@ -9,7 +9,6 @@ import BiogramShoutPage from "./pages/BiogramShout/BiogramShoutPage";
 import Forpeople from "./pages/public/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "./pages/public/signup/AddSocialMediaPictureUploadPage";
 
-import ArtistShowcase from "./pages/artistShowcase/ArtistShowcasePage";
 import MainDashboard from "./pages/mainDashboard/MainDashboardPage";
 import Profile from "./pages/mainDashboard/ProfilePage";
 import EditProfile from "./pages/mainDashboard/EditProfilePage";
@@ -83,10 +82,7 @@ const App = () => {
           path="/biogram-shout"
           element={<ProtectedRoute element={<BiogramShoutPage />} />}
         />
-        <Route
-          path="/artist-showcase"
-          element={<ProtectedRoute element={<ArtistShowcase />} />}
-        />
+ 
         <Route
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}
