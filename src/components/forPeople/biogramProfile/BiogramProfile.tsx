@@ -1,7 +1,7 @@
-import SocialIcon from "../components/SocialIcon";
-import CategorySection from "../components/CategorySection";
+import SocialIcon from "../../../components/SocialIcon";
+import CategorySection from "../../../components/CategorySection";
 import LinkCard from "@/components/LinkCard";
-import { Button } from "../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { FaPlus } from "react-icons/fa";
 // import { Input } from "../../components/ui/input";
 // Import images from src/assets

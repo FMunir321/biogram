@@ -4,7 +4,7 @@ import Layout from "./components/layout/Layout";
 import AddSocialMedia from "./pages/public/signup/SocialMediaPage";
 import Otp from "./pages/public/signup/OtpPage";
 
-import BiogramProfile from "./pages/biogramProfile/BiogramProfilePage";
+
 import BiogramShoutPage from "./pages/BiogramShout/BiogramShoutPage";
 import Forpeople from "./pages/public/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "./pages/public/signup/AddSocialMediaPictureUploadPage";
@@ -81,10 +81,7 @@ const App = () => {
           path="/add-social-media-upload-picture"
           element={<ProtectedRoute element={<AddSocialMediaPictureUpload />} />}
         />
-        <Route
-          path="/biogram-profile"
-          element={<ProtectedRoute element={<BiogramProfile />} />}
-        />
+
         <Route
           path="/biogram-shout"
           element={<ProtectedRoute element={<BiogramShoutPage />} />}

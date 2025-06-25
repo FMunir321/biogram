@@ -1,14 +1,11 @@
-import BiogramLandingPage from "../../../components/business/BiogramLandingPage";
-import ChooseBiogram from "../../../components/business/choosebiogram/ChooseBiogram";
-import Navbar from "../../../components/business/navbar/Navbar";
-import RealTimeAnalyticsHero from "../../../components/RealTimeAnalyticsHero";
+import BiogramLandingPage from "../../../components/forPeople/BiogramLandingPage";
+import ChooseBiogram from "../../../components/forPeople/choosebiogram/ChooseBiogram";
+import Navbar from "../../../components/forPeople/navbar/Navbar";
+import RealTimeAnalyticsHero from "../../../components/forPeople/realTimeAnalyticsHero/RealTimeAnalyticsHero";
 import ArtistShowcase from "../../artistShowcase/ArtistShowcasePage";
-// import GoGreenSection from "@/components/GoGreenSection";
-// import LinkInBio from "../components/linkInBio/LinkInBio";
-import BiogramProfile from "../../../components/BiogramProfile";
+import BiogramProfile from "../../../components/forPeople/biogramProfile/BiogramProfile";
 import BiogramShoutPage from "../../../components/BiogramShout";
 import BiogramPricing from "../../../components/BiogramPricing";
-// import JoinTheFamilySection from "./JoinFamily";
 import Footer from "@/components/footer/Footer";
 import ProfileCard from "../../../components/ProfileCard";
 import InstagramRedirectFeatures from "../../../components/AddSocialMediaPictureUpload";
@@ -18,16 +15,12 @@ const Forpeople = () => {
       <Navbar />
       <BiogramLandingPage />
       <ChooseBiogram />
-      {/* <LinkInBio /> */}
       <RealTimeAnalyticsHero />
       <ArtistShowcase />
-     
        <BiogramProfile />
        <BiogramShoutPage />
        <ProfileCard />
        <InstagramRedirectFeatures />
-      {/* <GoGreenSection /> */}
-      {/* <JoinTheFamilySection /> */}
       <BiogramPricing />
       <Footer />
     </div>
