@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import imageleftsideimage from "../../../public/assets/image20.png";
-import imageleftsideimage2 from "../../../public/assets/image19.png";
-import logo from "../../../public/assets/loginlogo.png";
-import groupBg from "../../../public/assets/group.png";
+import imageleftsideimage from "../../public/assets/image20.png";
+import imageleftsideimage2 from "../../public/assets/image19.png";
+import logo from "../../public/assets/loginlogo.png";
+import groupBg from "../../public/assets/group.png";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -161,7 +161,7 @@ const Login = () => {
                 </Link>
               </label>
             </div>
-            <Link to="/maindashboard">
+            <Link to="/main-dashboard">
               <button className="w-full h-10 sm:h-12 mt-4 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer transition-all">
                 Continue
               </button>

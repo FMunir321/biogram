@@ -86,7 +86,7 @@ const AddSocialMediapopup = ({
               >
                 Cancel
               </Button>
-              <Link to="/AddSocialMediaUploadPicture">
+              <Link to="/add-social-media-upload-picture">
                 <Button
                   onClick={handleSave}
                   className="w-[100px] md:w-[200px] py-7 text-[18px] md:text[24px] lg:text-[32px] rounded-lg bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"

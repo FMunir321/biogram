@@ -101,7 +101,7 @@ const FeaturedLinkForm: React.FC = () => {
             {title || "Your Title"}
           </div>
         </div>
-        <Link to="/addmultilink">
+        <Link to="/add-multi-link">
         <button 
           type="submit" 
           className="w-full bg-white text-black py-2 rounded mt-4"

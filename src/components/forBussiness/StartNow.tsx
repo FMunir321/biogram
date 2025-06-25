@@ -11,7 +11,7 @@ const StartNow = () => {
         <Link to="/">
           <img src={logo} alt="Biogram Logo" className="h-10 sm:h-12 mt-10" />
         </Link>
-        <Link to="/maindashboard">
+        <Link to="/main-dashboard">
           <Button className="bg-white hover:bg-white/90 font-medium py-6 px-8 rounded-md text-sm cursor-pointer mt-2">
             <p className="bg-gradient-to-r from-[#7ECFA7] to-[#53886C] bg-clip-text text-transparent text-xl">
               Start Now
@@ -105,7 +105,7 @@ const StartNow = () => {
 
         {/* Centered Button */}
         <div className="pt-2 flex justify-center items-center">
-          <Link to="/maindashboard" className="w-full max-w-md">
+          <Link to="/main-dashboard" className="w-full max-w-md">
             <Button className="w-full bg-white hover:bg-white/90 font-medium py-8 rounded-full">
               <p className="text-xl bg-gradient-to-r from-[#7ECFA7] to-[#53886C] bg-clip-text text-transparent">
                 Get Started

@@ -53,23 +53,24 @@ const App = () => {
         <Route path="/Otp" element={<Otp />} />
         <Route path="/pricing" element={<BiogramPricing />} />
         {/* <Route path="/gogreensection" element={<GoGreenSection />} /> */}
-        <Route path="/featuredlinkform" element={<FeaturedLinkForm />} />
-        <Route path="/addmultilink" element={<AddMultiLink />} />
-        <Route path="/addmerge" element={<AddMerch />} />
-        <Route path="/profilelink" element={<ProfileLink />} />
+       {/* /featured-link-form */}
+        <Route path="/featured-link-form" element={<FeaturedLinkForm />} />
+        <Route path="/add-multi-link" element={<AddMultiLink />} />
+        <Route path="/add-merge" element={<AddMerch />} />
+        <Route path="/profile-link" element={<ProfileLink />} />
         <Route
-          path="/profilemaindashboard"
+          path="/profile-main-dashboard"
           element={<ProfileMainDashboard />}
         />
         <Route path="/started" element={<Started />} />
         <Route path="/login" element={<Login />} />
         {/* Protected Routes - With Layout */}
         <Route
-          path="/maindashboard"
+          path="/main-dashboard"
           element={<ProtectedRoute element={<MainDashboard />} />}
         />
         <Route
-          path="/SocialMedia"
+          path="/social-media"
           element={<ProtectedRoute element={<AddSocialMedia />} />}
         />
         <Route
@@ -77,7 +78,7 @@ const App = () => {
           element={<ProtectedRoute element={<Analytics />} />}
         />
         <Route
-          path="/AddSocialMediaUploadPicture"
+          path="/add-social-media-upload-picture"
           element={<ProtectedRoute element={<AddSocialMediaPictureUpload />} />}
         />
         <Route
@@ -89,7 +90,7 @@ const App = () => {
           element={<ProtectedRoute element={<BiogramShoutPage />} />}
         />
         <Route
-          path="/artistshowcase"
+          path="/artist-showcase"
           element={<ProtectedRoute element={<ArtistShowcase />} />}
         />
         <Route

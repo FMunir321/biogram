@@ -260,7 +260,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Featured Links</h2>
-                <Link to="/featuredlinkform">
+                <Link to="/featured-link-form">
                   <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] font-medium py-1.5 px-4 rounded-md text-sm cursor-pointer">
                     Start Now
                   </Button>

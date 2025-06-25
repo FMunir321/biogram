@@ -128,7 +128,7 @@ const Otp = () => {
             It usually takes a few seconds to receive the code. If you don't
             received the code.{" "}
             <Link
-              to="/SocialMedia"
+              to="/social-media"
               className="text-[#53886C] font-bold text-base sm:text-lg md:text-xl font-poppins leading-[140%] hover:underline"
             >
               Resend

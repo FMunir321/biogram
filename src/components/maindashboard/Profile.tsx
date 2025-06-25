@@ -36,7 +36,7 @@ const Profile = () => {
               </div>
 
               {/* Footer Button */}
-              <Link to="/profilemaindashboard">
+              <Link to="/profile-main-dashboard">
                 <Button className="bg-white hover:bg-gray-50 text-black font-medium rounded-full px-6 md:px-8 py-3 md:py-5 text-[36px] md:text-base cursor-pointer">
                   Create Your Profile
                 </Button>
