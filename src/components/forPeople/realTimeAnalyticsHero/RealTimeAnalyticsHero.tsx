@@ -1,11 +1,11 @@
 import { useState } from "react";
-import world from "../../public/assets/world.png";
+import world from "../../../../public/assets/world.png";
 import { Link } from "react-router-dom";
-import map from "../../public/assets/Vector.png";
-import Instagram from "../../public/assets/Instagram.png";
-import TikTok from "../../public/assets/TikTok.png";
-import franceFlag from "../../public/assets/france.png";
-import usaFlag from "../../public/assets/united states.png";
+import map from "../../../../public/assets/Vector.png";
+import Instagram from "../../../../public/assets/Instagram.png";
+import TikTok from "../../../../public/assets/TikTok.png";
+import franceFlag from "../../../../public/assets/france.png";
+import usaFlag from "../../../../public/assets/united states.png";
 
 export default function RealTimeAnalyticsHero() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

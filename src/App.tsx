@@ -10,8 +10,6 @@ import Forpeople from "./pages/public/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "./pages/public/signup/AddSocialMediaPictureUploadPage";
 
 import ArtistShowcase from "./pages/artistShowcase/ArtistShowcasePage";
-// import GoGreenSection from "./components/GoGreenSection";
-import BiogramPricing from "./pages/biogramPricing/BiogramPricingPage";
 import MainDashboard from "./pages/mainDashboard/MainDashboardPage";
 import Profile from "./pages/mainDashboard/ProfilePage";
 import EditProfile from "./pages/mainDashboard/EditProfilePage";
@@ -51,8 +49,7 @@ const App = () => {
         <Route path="/" element={<Forpeople />} />
         {/* <Route path="/linkinbio" element={<LinkInBio />} /> */}
         <Route path="/Otp" element={<Otp />} />
-        <Route path="/pricing" element={<BiogramPricing />} />
-        {/* <Route path="/gogreensection" element={<GoGreenSection />} /> */}
+
        {/* /featured-link-form */}
         <Route path="/featured-link-form" element={<FeaturedLinkForm />} />
         <Route path="/add-multi-link" element={<AddMultiLink />} />

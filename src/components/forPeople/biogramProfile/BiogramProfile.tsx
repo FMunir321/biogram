@@ -5,20 +5,20 @@ import { Button } from "../../../components/ui/button";
 import { FaPlus } from "react-icons/fa";
 // import { Input } from "../../components/ui/input";
 // Import images from src/assets
-import FacebookImage from "../../public/assets/Facebook.png";
-import InstagramImage from "../../public/assets/Instagram.png";
-import TwitterImage from "../../public/assets/twitter.png";
-import TiktokImage from "../../public/assets/TikTok.png";
-import WhatsappImage from "../../public/assets/Whatsapp.png";
-import LinkedinImage from "../../public/assets/Linkedin.png";
-import SkypeImage from "../../public/assets/Skype.png";
-import AppleImage from "../../public/assets/AppleMusic.png";
-import SoundcloudImage from "../../public/assets/Soundcloud.png";
-import SpotifyImage from "../../public/assets/Spotify.png";
-import LinkImage from "../../public/assets/Link.png";
-import ShoppingImage from "../../public/assets/Shopingbag.png";
-import YoutubeImage from "../../public/assets/Youtube.png";
-import CalendarImage from "../../public/assets/Calender.png";
+import FacebookImage from "../../../../public/assets/Facebook.png";
+import InstagramImage from "../../../../public/assets/Instagram.png";
+import TwitterImage from "../../../../public/assets/twitter.png";
+import TiktokImage from "../../../../public/assets/TikTok.png";
+import WhatsappImage from "../../../../public/assets/Whatsapp.png";
+import LinkedinImage from "../../../../public/assets/Linkedin.png";
+import SkypeImage from "../../../../public/assets/Skype.png";
+import AppleImage from "../../../../public/assets/AppleMusic.png";
+import SoundcloudImage from "../../../../public/assets/Soundcloud.png";
+import SpotifyImage from "../../../../public/assets/Spotify.png";
+import LinkImage from "../../../../public/assets/Link.png";
+import ShoppingImage from "../../../../public/assets/Shopingbag.png";
+import YoutubeImage from "../../../../public/assets/Youtube.png";
+import CalendarImage from "../../../../public/assets/Calender.png";
 
 const BiogramProfile: React.FC = () => {
   return (

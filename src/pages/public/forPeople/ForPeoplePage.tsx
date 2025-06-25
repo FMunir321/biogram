@@ -5,10 +5,10 @@ import RealTimeAnalyticsHero from "../../../components/forPeople/realTimeAnalyti
 import ArtistShowcase from "../../artistShowcase/ArtistShowcasePage";
 import BiogramProfile from "../../../components/forPeople/biogramProfile/BiogramProfile";
 import BiogramShoutPage from "../../../components/BiogramShout";
-import BiogramPricing from "../../../components/BiogramPricing";
+import BiogramPricing from "../../../components/forPeople/biogramPricing/BiogramPricing";
 import Footer from "@/components/footer/Footer";
-import ProfileCard from "../../../components/ProfileCard";
-import InstagramRedirectFeatures from "../../../components/AddSocialMediaPictureUpload";
+import ProfileCard from "../../../components/forPeople/profileCard/ProfileCard";
+import InstagramRedirectFeatures from "../../../components/forPeople/instagramRedirectFeatures/InstagramRedirectFeatures";
 const Forpeople = () => {
   return (
     <div>

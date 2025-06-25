@@ -6,10 +6,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
-import Badge from "../components/ui/Badge";
-import logo from "../../public/assets/Biogramlogo.png";
-import mybackground from "../../public/assets/pricingbg.png";
+} from "../../../components/ui/card";
+import Badge from "../../../components/ui/Badge";
+import logo from "../../../../public/assets/Biogramlogo.png";
+import mybackground from "../../../../public/assets/pricingbg.png";
 
 type PlanFeature = {
   name: string;

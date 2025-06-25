@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 
-import mock2 from "../../public/assets/good.png";
-import mock3 from "../../public/assets/mock2.png";
+import mock2 from "../../../../public/assets/good.png";
+import mock3 from "../../../../public/assets/mock2.png";
 
-import avatar from "../../public/assets/mock3.png";
+import avatar from "../../../../public/assets/mock3.png";
 
 import {
   FaInstagram,
@@ -14,7 +14,7 @@ import {
   FaSpotify,
   FaTwitter,
 } from "react-icons/fa";
-import mock5 from "../../public/assets/fire.png";
+import mock5 from "../../../../public/assets/fire.png";
 
 const ProfileCard = () => {
   return (
