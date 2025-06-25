@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 
-import AddSocialMedia from "./pages/AddSocialMedia";
-import Otp from "./pages/Otp";
+import AddSocialMedia from "./pages/signup/SocialMediaPage";
+import Otp from "./pages/signup/OtpPage";
 
 import BiogramProfile from "./pages/BiogramProfile";
 import BiogramShoutPage from "./pages/BiogramShoutPage";
-import Forpeople from "./pages/Forpeople";
+import Forpeople from "./pages/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "./pages/AddSocialMediaPictureUpload";
 
 import ArtistShowcase from "./pages/ArtistShowcase";
@@ -25,9 +25,9 @@ import AddMerch from "./components/AddMerge";
 import ProfileLink from "./components/ProfileLink";
 import ProfileMainDashboard from "./components/ProfileMainDashboard";
 // import LinkInBio from "./components/linkInBio/LinkInBio";
-import Started from "./components/Started";
-import StartNow from "./components/StartNow";
-import Signup from "./pages/Signup";
+import Started from "./pages/forBussiness/StartedPage";
+import StartNow from "./pages/forBussiness/StartNow";
+import Signup from "./pages/signup/SignUpPage";
 import Login from "./pages/Login";
 
 // Wrapper component for routes that need the layout
