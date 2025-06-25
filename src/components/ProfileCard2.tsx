@@ -4,8 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-cards";
+// import "swiper/css";
+// import "swiper/css/effect-cards";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

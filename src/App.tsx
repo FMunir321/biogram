@@ -4,14 +4,14 @@ import Layout from "./components/layout/Layout";
 import AddSocialMedia from "./pages/signup/SocialMediaPage";
 import Otp from "./pages/signup/OtpPage";
 
-import BiogramProfile from "./pages/BiogramProfile";
-import BiogramShoutPage from "./pages/BiogramShoutPage";
+import BiogramProfile from "./pages/biogramProfile/BiogramProfilePage";
+import BiogramShoutPage from "./pages/BiogramShout/BiogramShoutPage";
 import Forpeople from "./pages/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "./pages/signup/AddSocialMediaPictureUploadPage";
 
-import ArtistShowcase from "./pages/ArtistShowcase";
+import ArtistShowcase from "./pages/artistShowcase/ArtistShowcasePage";
 // import GoGreenSection from "./components/GoGreenSection";
-import BiogramPricing from "./pages/BiogramPricing";
+import BiogramPricing from "./pages/biogramPricing/BiogramPricingPage";
 import MainDashboard from "./pages/mainDashboard/MainDashboardPage";
 import Profile from "./pages/mainDashboard/ProfilePage";
 import EditProfile from "./pages/mainDashboard/EditProfilePage";
