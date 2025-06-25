@@ -11,8 +11,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import bground from "../../public/assets/lightbg.png";
-import WorldAnalyticsMap from "../components/WorldAnalyticsMap";
+import bground from "../../../public/assets/lightbg.png";
+import WorldAnalyticsMap from "../../components/WorldAnalyticsMap";
 ChartJS.register(
   CategoryScale,
   LinearScale,

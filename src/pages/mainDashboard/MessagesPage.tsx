@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import bground from "../../public/assets/lightbg.png";
+import bground from "../../../public/assets/lightbg.png";
 import { Input } from "@/components/ui/input";
 
 const Messages = () => {

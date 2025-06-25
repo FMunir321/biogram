@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import imageleftsideimage from "../../public/assets/image20.png";
-import imageleftsideimage2 from "../../public/assets/image19.png";
-import logo from "../../public/assets/loginlogo.png";
-import groupBg from "../../public/assets/group.png";
+import imageleftsideimage from "../../../public/assets/image20.png";
+import imageleftsideimage2 from "../../../public/assets/image19.png";
+import logo from "../../../public/assets/loginlogo.png";
+import groupBg from "../../../public/assets/group.png";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,21 +17,21 @@ const Login = () => {
     password: false
   });
 
-  const handleInputChange = (name, value) => {
+  const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleFocus = (fieldName) => {
+  const handleFocus = (fieldName: string) => {
     setFocusedField(prev => ({
       ...prev,
       [fieldName]: true
     }));
   };
 
-  const handleBlur = (fieldName) => {
+  const handleBlur = (fieldName: string) => {
     setFocusedField(prev => ({
       ...prev,
       [fieldName]: false

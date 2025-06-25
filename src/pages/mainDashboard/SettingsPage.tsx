@@ -1,7 +1,7 @@
  import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import Greaterthen from "../../public/assets/greaterthen.png";
-import bground from "../../public/assets/lightbg.png";
+import Greaterthen from "../../../public/assets/greaterthen.png";
+import bground from "../../../public/assets/lightbg.png";
 
 const menuItems = [
   { key: "personal-info", label: "Personal Info" },

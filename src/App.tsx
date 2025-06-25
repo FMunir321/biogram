@@ -7,18 +7,18 @@ import Otp from "./pages/signup/OtpPage";
 import BiogramProfile from "./pages/BiogramProfile";
 import BiogramShoutPage from "./pages/BiogramShoutPage";
 import Forpeople from "./pages/forPeople/ForPeoplePage";
-import AddSocialMediaPictureUpload from "./pages/AddSocialMediaPictureUpload";
+import AddSocialMediaPictureUpload from "./pages/signup/AddSocialMediaPictureUploadPage";
 
 import ArtistShowcase from "./pages/ArtistShowcase";
 // import GoGreenSection from "./components/GoGreenSection";
 import BiogramPricing from "./pages/BiogramPricing";
-import MainDashboard from "./components/maindashboard/MainDashboard";
-import Profile from "./components/maindashboard/Profile";
-import EditProfile from "./pages/EditProfile";
-import Messages from "./pages/Messages";
-import Analytics from "./pages/Analytics";
-import Notifications from "./pages/Notifications";
-import Settings from "./pages/Settings";
+import MainDashboard from "./pages/mainDashboard/MainDashboardPage";
+import Profile from "./pages/mainDashboard/ProfilePage";
+import EditProfile from "./pages/mainDashboard/EditProfilePage";
+import Messages from "./pages/mainDashboard/MessagesPage";
+import Analytics from "./pages/mainDashboard/AnalyticsPage";
+import Notifications from "./pages/mainDashboard/NotificationsPage";
+import Settings from "./pages/mainDashboard/SettingsPage";
 import FeaturedLinkForm from "./components/FeaturedLinkForm";
 import AddMultiLink from "./components/AddMultiLink";
 import AddMerch from "./components/AddMerge";
@@ -28,7 +28,7 @@ import ProfileMainDashboard from "./components/ProfileMainDashboard";
 import Started from "./pages/forBussiness/StartedPage";
 import StartNow from "./pages/forBussiness/StartNow";
 import Signup from "./pages/signup/SignUpPage";
-import Login from "./pages/Login";
+import Login from "./pages/Login/LoginPage";
 
 // Wrapper component for routes that need the layout
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
