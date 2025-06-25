@@ -1,4 +1,4 @@
-import Started from "@/components/Started"
+import Started from "../../components/forBussiness/Started";
 const ForBussiness = () => {
   return (
     <div>

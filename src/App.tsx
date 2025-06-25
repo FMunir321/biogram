@@ -26,7 +26,7 @@ import ProfileLink from "./components/ProfileLink";
 import ProfileMainDashboard from "./components/ProfileMainDashboard";
 // import LinkInBio from "./components/linkInBio/LinkInBio";
 import Started from "./pages/forBussiness/StartedPage";
-import StartNow from "./pages/forBussiness/StartNow";
+import StartNow from "./pages/forBussiness/StartNowPage";
 import Signup from "./pages/signup/SignUpPage";
 import Login from "./pages/Login/LoginPage";
 
