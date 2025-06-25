@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 
-import AddSocialMedia from "./pages/signup/SocialMediaPage";
-import Otp from "./pages/signup/OtpPage";
+import AddSocialMedia from "./pages/public/signup/SocialMediaPage";
+import Otp from "./pages/public/signup/OtpPage";
 
 import BiogramProfile from "./pages/biogramProfile/BiogramProfilePage";
 import BiogramShoutPage from "./pages/BiogramShout/BiogramShoutPage";
-import Forpeople from "./pages/forPeople/ForPeoplePage";
-import AddSocialMediaPictureUpload from "./pages/signup/AddSocialMediaPictureUploadPage";
+import Forpeople from "./pages/public/forPeople/ForPeoplePage";
+import AddSocialMediaPictureUpload from "./pages/public/signup/AddSocialMediaPictureUploadPage";
 
 import ArtistShowcase from "./pages/artistShowcase/ArtistShowcasePage";
 // import GoGreenSection from "./components/GoGreenSection";
@@ -25,10 +25,10 @@ import AddMerch from "./components/AddMerge";
 import ProfileLink from "./components/ProfileLink";
 import ProfileMainDashboard from "./components/ProfileMainDashboard";
 // import LinkInBio from "./components/linkInBio/LinkInBio";
-import Started from "./pages/forBussiness/StartedPage";
-import StartNow from "./pages/forBussiness/StartNowPage";
-import Signup from "./pages/signup/SignUpPage";
-import Login from "./pages/Login/LoginPage";
+import Started from "./pages/public/forBussiness/StartedPage";
+import StartNow from "./pages/public/forBussiness/StartNowPage";
+import Signup from "./pages/public/signup/SignUpPage";
+import Login from "./pages/public/Login/LoginPage";
 
 // Wrapper component for routes that need the layout
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (

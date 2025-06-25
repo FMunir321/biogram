@@ -1,4 +1,4 @@
-import AddSocialMediaPictureUpload from '../../components/AddSocialMediaPictureUpload';
+import AddSocialMediaPictureUpload from '../../../components/AddSocialMediaPictureUpload';
 const AddSocialMediaPictureUploadPage = () => {
   return (
     <div>

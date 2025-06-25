@@ -1,4 +1,4 @@
-import Otp from "../../components/Otp";
+import Otp from "../../../components/Otp";
 
 const OtpPage = () => {
   return (
