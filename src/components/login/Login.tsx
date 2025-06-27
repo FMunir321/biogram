@@ -10,31 +10,31 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     emailOrPhone: "",
-    password: ""
+    password: "",
   });
   const [focusedField, setFocusedField] = useState({
     emailOrPhone: false,
-    password: false
+    password: false,
   });
 
   const handleInputChange = (name: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleFocus = (fieldName: string) => {
-    setFocusedField(prev => ({
+    setFocusedField((prev) => ({
       ...prev,
-      [fieldName]: true
+      [fieldName]: true,
     }));
   };
 
   const handleBlur = (fieldName: string) => {
-    setFocusedField(prev => ({
+    setFocusedField((prev) => ({
       ...prev,
-      [fieldName]: false
+      [fieldName]: false,
     }));
   };
 
@@ -85,18 +85,24 @@ const Login = () => {
                 type="text"
                 id="emailOrPhone"
                 value={formData.emailOrPhone}
-                onChange={(e) => handleInputChange("emailOrPhone", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("emailOrPhone", e.target.value)
+                }
                 onFocus={() => handleFocus("emailOrPhone")}
                 onBlur={() => handleBlur("emailOrPhone")}
                 className="w-full h-12 px-4 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
-                placeholder={!focusedField.emailOrPhone && !formData.emailOrPhone ? "Email or Phone Number" : ""}
+                placeholder={
+                  !focusedField.emailOrPhone && !formData.emailOrPhone
+                    ? "Email or Phone Number"
+                    : ""
+                }
               />
               <label
                 htmlFor="emailOrPhone"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none bg-white px-1 ${
                   focusedField.emailOrPhone || formData.emailOrPhone
-                    ? '-top-2 text-xs text-[#98e6c3] font-medium'
-                    : 'opacity-0'
+                    ? "-top-2 text-xs text-[#98e6c3] font-medium"
+                    : "opacity-0"
                 }`}
               >
                 Email or Phone Number
@@ -113,14 +119,16 @@ const Login = () => {
                 onFocus={() => handleFocus("password")}
                 onBlur={() => handleBlur("password")}
                 className="w-full h-12 px-4 pr-12 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
-                placeholder={!focusedField.password && !formData.password ? "Password" : ""}
+                placeholder={
+                  !focusedField.password && !formData.password ? "Password" : ""
+                }
               />
               <label
                 htmlFor="password"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none bg-white px-1 ${
                   focusedField.password || formData.password
-                    ? '-top-2 text-xs text-[#98e6c3] font-medium'
-                    : 'opacity-0'
+                    ? "-top-2 text-xs text-[#98e6c3] font-medium"
+                    : "opacity-0"
                 }`}
               >
                 Password
