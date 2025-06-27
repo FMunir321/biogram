@@ -43,7 +43,7 @@ const ProfileLink = () => {
           To protect your social account, Shield Protection provides an additional layer of security.{" "}
           <a href="#" className="text-blue-600 underline">How Shield Protection Works?</a>
         </p>
-       <Link to="/main-dashboard">
+       <Link to="/search">
         <button className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white font-semibold py-2 rounded-full hover:opacity-90 transition cursor-pointer">
           View Profile
         </button>

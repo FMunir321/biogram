@@ -98,12 +98,12 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         <div className="flex-1">
-          <Link to="/main-dashboard">
+          <Link to="/search">
             <img src={logo} alt="BiogramLogo" className="h-10 sm:h-12" />
           </Link>
 
           <nav className="flex flex-col gap-5 mt-7 ">
-            <Link to="/main-dashboard" onClick={() => setSidebarOpen(false)}>
+            <Link to="/search" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -113,7 +113,7 @@ const Layout = ({ children }: LayoutProps) => {
                   />
                 }
                 label="Search"
-                active={location.pathname === "/main-dashboard"}
+                active={location.pathname === "/search"}
               />
             </Link>
             <Link to="/profile" onClick={() => setSidebarOpen(false)}>

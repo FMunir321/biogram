@@ -1,6 +1,6 @@
 import MainDashboard from "@/components/maindashboard/MainDashboard"
 
-const MainDashboardPage = () => {
+const SearchPage = () => {
   return (
     <div>
         <MainDashboard/>
@@ -8,4 +8,4 @@ const MainDashboardPage = () => {
   )
 }
 
-export default MainDashboardPage
+export default SearchPage

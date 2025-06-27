@@ -210,7 +210,7 @@ const AddSocialMediaPictureUpload = () => {
         <Button className="bg-[#aaceba] text-white p-6 rounded-[50px] hover:bg-white/30 text-lg font-semibold w-auto lg:w-[500px] cursor-pointer">
           Back
         </Button>
-        <Link to="/main-dashboard">
+        <Link to="/search">
           <Button className="bg-white text-black p-6 rounded-[50px] hover:bg-white/90 text-lg font-semibold w-auto lg:w-[500px] cursor-pointer">
             Finish Setup
           </Button>

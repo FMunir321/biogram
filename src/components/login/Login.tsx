@@ -169,7 +169,7 @@ const Login = () => {
                 </Link>
               </label>
             </div>
-            <Link to="/main-dashboard">
+            <Link to="/search">
               <button className="w-full h-10 sm:h-12 mt-4 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer transition-all">
                 Continue
               </button>

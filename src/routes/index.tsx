@@ -6,7 +6,6 @@ import AddSocialMedia from "../pages/public/signup/SocialMediaPage";
 import Otp from "../pages/public/signup/OtpPage";
 import Forpeople from "../pages/public/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "../pages/public/signup/AddSocialMediaPictureUploadPage";
-import MainDashboard from "../pages/mainDashboard/MainDashboardPage";
 import Profile from "../pages/mainDashboard/ProfilePage";
 import EditProfile from "../pages/mainDashboard/EditProfilePage";
 import Messages from "../pages/mainDashboard/MessagesPage";
@@ -22,6 +21,8 @@ import Started from "../pages/public/forBussiness/StartedPage";
 import StartNow from "../pages/public/forBussiness/StartNowPage";
 import Signup from "../pages/public/signup/SignUpPage";
 import Login from "../pages/public/Login/LoginPage";
+// import  searchpage  from "../pages/mainDashboard/SearchPage.tsx";
+import SearchPage from "../pages/mainDashboard/SearchPage";
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
   <Layout>{children}</Layout>
@@ -48,7 +49,7 @@ const RoutesComponent = () => {
       <Route path="/profile-main-dashboard" element={<ProfileMainDashboard />} />
 
       {/* Protected Routes */}
-      <Route path="/main-dashboard" element={<ProtectedRoute element={<MainDashboard />} />} />
+      <Route path="/search" element={<ProtectedRoute element={<SearchPage  />} />} />
       <Route path="/social-media" element={<ProtectedRoute element={<AddSocialMedia />} />} />
       <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
       <Route path="/add-social-media-upload-picture" element={<ProtectedRoute element={<AddSocialMediaPictureUpload />} />} />
