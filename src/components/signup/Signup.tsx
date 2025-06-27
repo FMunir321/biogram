@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
+import axios from "axios";
+// ...existing code...
 import { Input } from "../../components/ui/input";
 import logo from "../../../public/assets/Biogramlogo.png";
 
@@ -13,16 +16,88 @@ import RightImage from "../../../public/assets/RightImage.png";
 import LeftImage from "../../../public/assets/LeftImage.png";
 import { Link } from "react-router-dom";
 import groupBg from "../../../public/assets/group.png";
+// import api  from "../../api/axios"
 
+
+
+// ...existing code...
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  
-  
+  const [personalForm, setPersonalForm] = useState({
+    email: "",
+    fullName: "",
+    birthDay: "",
+    birthMonth: "",
+    birthYear: "",
+    username: "",
+    password: "",
+    termsAgreement: false,
+  });
+  const [error, setError] = useState("");
+
+  // Handle input changes
+  const handlePersonalChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    setPersonalForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    }));
+  };
+
+  // Handle personal form submit
+  const handlePersonalSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    const {
+      email,
+      fullName,
+      birthDay,
+      birthMonth,
+      birthYear,
+      username,
+      password,
+      termsAgreement,
+    } = personalForm;
+    if (
+      !email ||
+      !fullName ||
+      !birthDay ||
+      !birthMonth ||
+      !birthYear ||
+      !username ||
+      !password ||
+      !termsAgreement
+    ) {
+      setError("All fields are required and you must agree to the terms.");
+      return;
+    }
+    try {
+      const dateOfBirth = `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`;
+      const payload = {
+        email,
+        fullName,
+       dateOfBirth,
+        username,
+        password,
+      };
+  await axios.post("http://localhost:5000/api/auth/signup", payload, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+      window.location.href = "/otp";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Signup failed");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
       <div className="flex flex-col lg:flex-row items-stretch min-h-screen">
-        {/* Left Image - Hidden on md and sm screens */}
+        {/* Left Image */}
         <div className="hidden lg:block w-[300px] xl:w-[400px] h-screen overflow-hidden relative">
           <img
             src={LeftImage}
@@ -30,17 +105,15 @@ const Signup = () => {
             className="absolute w-[180px] xl:w-[322px] h-[600px] xl:h-[1063px] -top-4 xl:-top-[21px] left-2 xl:left-8"
           />
         </div>
-
-        {/* Center Form - Responsive */}
+        {/* Center Form */}
         <div className="flex-1 flex flex-col justify-center px-2 sm:px-4 md:px-8 py-6 w-full max-w-2xl mx-auto">
           {/* Decorative Lines */}
           <div className="flex items-center justify-center gap-1 mb-6">
             <div className="w-16 sm:w-20 h-1.5 rounded-lg bg-gradient-to-r from-[#7ECFA7] to-[#53886C]" />
             <div className="w-16 sm:w-20 h-1.5 rounded-lg bg-[#D9D9D9]" />
           </div>
-
           <div className="rounded-[16px] sm:rounded-[20px] p-2 sm:p-4 md:p-8 relative overflow-hidden shadow-sm bg-white">
-            {/* Background Image only for the card */}
+            {/* Background Image */}
             <img
               src={groupBg}
               alt=""
@@ -109,7 +182,11 @@ const Signup = () => {
                 </div>
                 {/* PERSONAL TAB */}
                 <TabsContent value="personal" className="space-y-4">
-                  <form className="space-y-4">
+                  <form className="space-y-4" onSubmit={handlePersonalSubmit}>
+                    {/* Error Message */}
+                    {error && (
+                      <div className="text-red-600 text-sm text-center">{error}</div>
+                    )}
                     {/* Email */}
                     <fieldset className="relative pt-3">
                       <legend className="absolute left-4 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
@@ -120,9 +197,12 @@ const Signup = () => {
                         id="email"
                         name="email"
                         placeholder="Enter here"
+                        onChange={handlePersonalChange}
                         autoComplete="email"
                         aria-label="Email or Phone Number"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        required
+                        value={personalForm.email}
                       />
                     </fieldset>
                     {/* Full Name */}
@@ -135,9 +215,12 @@ const Signup = () => {
                         id="fullName"
                         name="fullName"
                         placeholder="Enter here"
+                        onChange={handlePersonalChange}
                         autoComplete="name"
                         aria-label="Full Name"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                        required
+                        value={personalForm.fullName}
                       />
                     </fieldset>
                     {/* Date of Birth */}
@@ -154,6 +237,9 @@ const Signup = () => {
                             background:
                               'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
                           }}
+                          required
+                          value={personalForm.birthDay}
+                          onChange={handlePersonalChange}
                         >
                           <option value="">Day</option>
                           {[...Array(31)].map((_, i) => (
@@ -170,6 +256,9 @@ const Signup = () => {
                             background:
                               'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
                           }}
+                          required
+                          value={personalForm.birthMonth}
+                          onChange={handlePersonalChange}
                         >
                           <option value="">Month</option>
                           {[
@@ -189,6 +278,9 @@ const Signup = () => {
                             background:
                               'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
                           }}
+                          required
+                          value={personalForm.birthYear}
+                          onChange={handlePersonalChange}
                         >
                           <option value="">Year</option>
                           {Array.from({ length: 100 }, (_, i) => {
@@ -212,7 +304,10 @@ const Signup = () => {
                         id="username"
                         name="username"
                         placeholder="Enter here"
+                        onChange={handlePersonalChange}
                         autoComplete="username"
+                        required
+                        value={personalForm.username}
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black bg-[#F8F8F8] px-4 focus:border-black focus:ring-black"
                       />
                     </fieldset>
@@ -227,18 +322,27 @@ const Signup = () => {
                           id="password"
                           name="password"
                           placeholder="Enter here"
+                          onChange={handlePersonalChange}
                           autoComplete="new-password"
                           aria-label="Password"
                           className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
+                          required
+                          value={personalForm.password}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
                           tabIndex={0}
                         >
-                          {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+                          {showPassword ? (
+                            <EyeOffIcon size={20} />
+                          ) : (
+                            <EyeIcon size={20} />
+                          )}
                         </button>
                       </div>
                     </fieldset>
@@ -250,6 +354,8 @@ const Signup = () => {
                           id="termsAgreement"
                           name="termsAgreement"
                           className="mt-1 rounded border-gray-300"
+                          checked={personalForm.termsAgreement}
+                          onChange={handlePersonalChange}
                         />
                         <span>
                           By checking the box and signing continue, you
@@ -264,22 +370,24 @@ const Signup = () => {
                         </span>
                       </label>
                     </div>
-                  <Link
-                    to="/otp"
-                    className="block w-full h-[52px] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90 bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
-                  >
-                    Continue
-                  </Link>
+                    <button
+                      type="submit"
+                      className="block w-full h-[52px] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90 bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
+                    >
+                      Continue
+                    </button>
                     <p className="text-center text-sm text-gray-500">
                       Already have an account?{" "}
-                      <Link to="/login" className="text-[#53886C] hover:underline">
+                      <Link
+                        to="/login"
+                        className="text-[#53886C] hover:underline"
+                      >
                         Login
                       </Link>
                     </p>
                   </form>
                 </TabsContent>
-                {/* BUSINESS TAB (repeat similar structure for consistency) */}
-                <TabsContent value="business" className="space-y-4">
+                             <TabsContent value="business" className="space-y-4">
                   <form className="space-y-4">
                     {/* Email */}
                     <fieldset className="relative pt-3">
@@ -291,10 +399,12 @@ const Signup = () => {
                         id="businessEmail"
                         name="email"
                         placeholder="Enter here"
+                        onChange={handlePersonalChange}
                         autoComplete="email"
                         aria-label="Email or Phone Number"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                      />
+                     
+                     />
                     </fieldset>
                     {/* Full Name */}
                     <fieldset className="relative pt-3">
@@ -376,6 +486,7 @@ const Signup = () => {
                           id="businessPassword"
                           name="password"
                           placeholder="Enter here"
+                          onChange={handlePersonalChange}
                           autoComplete="new-password"
                           aria-label="Password"
                           className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
@@ -384,10 +495,16 @@ const Signup = () => {
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
                           tabIndex={0}
                         >
-                          {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+                          {showPassword ? (
+                            <EyeOffIcon size={20} />
+                          ) : (
+                            <EyeIcon size={20} />
+                          )}
                         </button>
                       </div>
                     </fieldset>
@@ -421,18 +538,20 @@ const Signup = () => {
                     </button>
                     <p className="text-center text-sm text-gray-500">
                       Already have an account?{" "}
-                      <Link to="/login" className="text-[#53886C] hover:underline">
+                      <Link
+                        to="/login"
+                        className="text-[#53886C] hover:underline"
+                      >
                         Login
                       </Link>
                     </p>
                   </form>
-                </TabsContent>
+                </TabsContent>   {/* BUSINESS TAB (not implemented) */}
               </Tabs>
             </div>
           </div>
         </div>
-
-        {/* Right Image - Hidden on md and sm screens */}
+        {/* Right Image */}
         <div className="hidden lg:block w-[300px] xl:w-[400px] h-screen overflow-hidden relative">
           <img
             src={RightImage}
@@ -446,3 +565,6 @@ const Signup = () => {
 };
 
 export default Signup;
+// ...existing code...
+
+
