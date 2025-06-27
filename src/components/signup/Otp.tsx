@@ -2,11 +2,11 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "../components/ui/input-otp";
+} from "../../components/ui/input-otp";
 import { Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 // import otppicrectangle from "../../public/assets/Rectangle677.png";
-import Ballsimage from "../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
+import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
 // import toprectangle from "../../public/assets/Rectangle68.png";
 
 const Otp = () => {

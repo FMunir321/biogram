@@ -3,16 +3,16 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../components/ui/tabs";
-import { Input } from "../components/ui/input";
-import logo from "../../public/assets/Biogramlogo.png";
+} from "../../components/ui/tabs";
+import { Input } from "../../components/ui/input";
+import logo from "../../../public/assets/Biogramlogo.png";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
-import RightImage from "../../public/assets/RightImage.png";
-import LeftImage from "../../public/assets/LeftImage.png";
+import RightImage from "../../../public/assets/RightImage.png";
+import LeftImage from "../../../public/assets/LeftImage.png";
 import { Link } from "react-router-dom";
-import groupBg from "../../public/assets/group.png";
+import groupBg from "../../../public/assets/group.png";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
