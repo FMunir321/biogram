@@ -4,7 +4,7 @@ import {
   InputOTPSlot,
 } from "../../components/ui/input-otp";
 import { Mail } from "lucide-react";
-import { Link, useLocation , useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
 import { useState } from "react";
 import api from "@/service/api";
@@ -14,7 +14,6 @@ const Otp = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Always show the email from signup (passed via state)
   const email = location.state?.email || "unknown@gmail.com";
   const userId = location.state?.userId || "";
   const [otp, setOtp] = useState("");
@@ -22,16 +21,13 @@ const Otp = () => {
   const payload = {
     userId: userId,
     otp: otp,
-  }
+  };
 
   const handleVerifyOtp = async () => {
     try {
-      const response = await api.post(
-        "/api/auth/verify-signup", payload
-      );
+      const response = await api.post("/api/auth/verify-signup", payload);
       console.log("Verification Success:", response.data);
- navigate("/login"); 
-      // Optional: redirect user after success
+      navigate("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(

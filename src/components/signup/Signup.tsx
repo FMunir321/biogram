@@ -441,7 +441,7 @@ const Signup = () => {
                       />
                     </fieldset>
                     {/* Date of Birth */}
-                    <fieldset className="relative pt-3">
+                    <fieldset className="relative pt-5">
                       <legend className="absolute left-4 -top-3 bg-white px-2 text-sm font-medium text-gray-700 z-10 pointer-events-none">
                         Date of Birth
                       </legend>
