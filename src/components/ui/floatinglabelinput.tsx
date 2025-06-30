@@ -1,5 +1,12 @@
-import { useState } from "react";
+
 import { cn } from "../../lib/utils";
+
+interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    label: string;
+    value: string | number;
+    onChange: React.ChangeEventHandler<HTMLInputElement>;
+    className?: string;
+}
 
 export function FloatingLabelInput({
     label,
@@ -8,7 +15,7 @@ export function FloatingLabelInput({
     type = "text",
     className,
     ...props
-}) {
+}: FloatingLabelInputProps) {
     const hasValue = Boolean(value && value.toString().length > 0);
     return (
         <div className="relative w-full">

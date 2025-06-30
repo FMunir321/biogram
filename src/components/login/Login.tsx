@@ -1,19 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import imageleftsideimage from "../../../public/assets/image20.png";
 import imageleftsideimage2 from "../../../public/assets/image19.png";
 import logo from "../../../public/assets/loginlogo.png";
 import groupBg from "../../../public/assets/group.png";
+import api from "@/service/api";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    emailOrPhone: "",
+    identifier: "", // ✅ use 'identifier' to match backend
     password: "",
   });
   const [focusedField, setFocusedField] = useState({
-    emailOrPhone: false,
+    identifier: false,
     password: false,
   });
 
@@ -38,6 +40,24 @@ const Login = () => {
     }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/api/auth/login", {
+        identifier: formData.identifier, // ✅ match backend
+        password: formData.password,
+      });
+
+      console.log("Login Success:", response.data);
+      alert("Login successful!");
+      navigate("/search");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Login Error:", error.response?.data || error.message);
+      alert("Login failed. Please check your credentials.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-white">
       {/* Left Section (Images) */}
@@ -58,14 +78,12 @@ const Login = () => {
 
       {/* Right Section (Login Form) */}
       <div className="w-full md:w-1/2 flex items-center justify-center min-h-screen relative overflow-hidden bg-white">
-        {/* Background Image */}
         <img
           src={groupBg}
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none z-0"
         />
         <div className="w-full max-w-[420px] px-4 sm:px-6 mx-auto relative z-10">
-          {/* Logo */}
           <div className="text-center mb-10 sm:mb-14">
             <img
               src={logo}
@@ -77,30 +95,26 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Login Form */}
-          <form className="space-y-5 sm:space-y-6">
-            {/* Email or Phone Number Field */}
+          <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
             <div className="relative">
               <input
                 type="text"
-                id="emailOrPhone"
-                value={formData.emailOrPhone}
-                onChange={(e) =>
-                  handleInputChange("emailOrPhone", e.target.value)
-                }
-                onFocus={() => handleFocus("emailOrPhone")}
-                onBlur={() => handleBlur("emailOrPhone")}
+                id="identifier"
+                value={formData.identifier}
+                onChange={(e) => handleInputChange("identifier", e.target.value)}
+                onFocus={() => handleFocus("identifier")}
+                onBlur={() => handleBlur("identifier")}
                 className="w-full h-12 px-4 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
                 placeholder={
-                  !focusedField.emailOrPhone && !formData.emailOrPhone
+                  !focusedField.identifier && !formData.identifier
                     ? "Email or Phone Number"
                     : ""
                 }
               />
               <label
-                htmlFor="emailOrPhone"
+                htmlFor="identifier"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none bg-white px-1 ${
-                  focusedField.emailOrPhone || formData.emailOrPhone
+                  focusedField.identifier || formData.identifier
                     ? "-top-2 text-xs text-[#98e6c3] font-medium"
                     : "opacity-0"
                 }`}
@@ -109,7 +123,6 @@ const Login = () => {
               </label>
             </div>
 
-            {/* Password Field */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -140,11 +153,7 @@ const Login = () => {
                 tabIndex={-1}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? (
-                  <EyeOffIcon size={20} />
-                ) : (
-                  <EyeIcon size={20} />
-                )}
+                {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
               </button>
             </div>
 
@@ -154,10 +163,7 @@ const Login = () => {
                 id="terms"
                 className="mt-1 h-4 w-4 rounded border-[#E5E5E5] text-[#98e6c3] focus:ring-[#98e6c3]"
               />
-              <label
-                htmlFor="terms"
-                className="text-xs text-[#666666] leading-5"
-              >
+              <label htmlFor="terms" className="text-xs text-[#666666] leading-5">
                 By checking the box and tapping continue, you acknowledge that
                 you have read the{" "}
                 <Link to="/privacy-policy" className="text-[#1A1A1A] font-bold">
@@ -169,11 +175,14 @@ const Login = () => {
                 </Link>
               </label>
             </div>
-            <Link to="/search">
-              <button className="w-full h-10 sm:h-12 mt-4 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer transition-all">
-                Continue
-              </button>
-            </Link>
+
+            <button
+              type="submit"
+              className="w-full h-10 sm:h-12 mt-4 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer transition-all"
+            >
+              Continue
+            </button>
+
             <div className="text-center mt-4">
               <span className="text-xs font-medium text-[#53886C]">
                 Don't have an account?{" "}

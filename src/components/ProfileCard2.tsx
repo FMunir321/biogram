@@ -1,5 +1,5 @@
 // ProfileCard.jsx
-import React from "react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCards } from "swiper/modules";
 
@@ -35,7 +35,7 @@ const ProfileCard = () => {
         modules={[EffectCards]}
         className="swiper"
       >
-        {[mock2, mock3, mock5].map((imgSrc, index) => (
+        {[mock2, mock3, mock5].map((_imgSrc, index) => (
           <SwiperSlide key={index}>
             {index == 0 ? (
               <Card className="w-110 bg-black text-white rounded-2xl shadow-xl relative">

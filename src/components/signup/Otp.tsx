@@ -4,19 +4,55 @@ import {
   InputOTPSlot,
 } from "../../components/ui/input-otp";
 import { Mail } from "lucide-react";
-import { Link } from "react-router-dom";
-// import otppicrectangle from "../../public/assets/Rectangle677.png";
+import { Link, useLocation , useNavigate} from "react-router-dom";
 import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
-// import toprectangle from "../../public/assets/Rectangle68.png";
+import { useState } from "react";
+import api from "@/service/api";
+import axios from "axios";
 
 const Otp = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Always show the email from signup (passed via state)
+  const email = location.state?.email || "unknown@gmail.com";
+  const userId = location.state?.userId || "";
+  const [otp, setOtp] = useState("");
+
+  const payload = {
+    userId: userId,
+    otp: otp,
+  }
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await api.post(
+        "/api/auth/verify-signup", payload
+      );
+      console.log("Verification Success:", response.data);
+ navigate("/login"); 
+      // Optional: redirect user after success
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Verification Error:",
+          error.response?.data || error.message
+        );
+      } else if (error instanceof Error) {
+        console.error("Verification Error:", error.message);
+      } else {
+        console.error("Verification Error:", error);
+      }
+      alert("Invalid OTP or Server Error");
+    }
+  };
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0"
           style={{
-            // backgroundImage: `url(${otppicrectangle})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.8,
@@ -24,11 +60,9 @@ const Otp = () => {
             bottom: "-80px",
           }}
         />
-
         <div
           className="absolute inset-0"
           style={{
-            // backgroundImage: `url(${toprectangle})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.8,
@@ -51,7 +85,6 @@ const Otp = () => {
             left: "-30px",
           }}
         />
-
         <div
           className="absolute bottom-0 right-0 w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-1/3 hidden sm:block"
           style={{
@@ -68,7 +101,6 @@ const Otp = () => {
       </div>
 
       <div className="relative z-10 flex min-h-screen flex-col items-center mt-4 sm:mt-8 px-4">
-        {/* Decorative Lines */}
         <div className="flex items-center justify-center gap-[4px] mb-4 sm:mb-6">
           <div className="w-[60px] sm:w-[78px] h-[4px] sm:h-[6px] rounded-[8px]">
             <div
@@ -95,10 +127,10 @@ const Otp = () => {
           </div>
           <div className="text-center sm:text-left">
             <p className="text-[#000000] font-poppins font-normal text-lg sm:text-xl md:text-2xl leading-[120%] tracking-[0] my-2">
-              We are sent a 6-digit verification code to
+              We sent a 6-digit verification code to
             </p>
             <p className="font-poppins font-bold text-xl sm:text-2xl md:text-3xl leading-[120%] tracking-[0] text-[#000000] break-all">
-              Jamesmax13243@gmail.com
+              {email}
             </p>
           </div>
         </div>
@@ -109,12 +141,19 @@ const Otp = () => {
           </p>
 
           <div className="flex justify-center mb-4">
-            <InputOTP maxLength={6} className="gap-1 sm:gap-2">
+            <InputOTP
+              maxLength={6}
+              className="gap-1 sm:gap-2"
+              value={otp}
+              onChange={(value) => setOtp(value)}
+            >
               <InputOTPGroup className="gap-1 sm:gap-2 overflow-visible">
                 {[0, 1, 2, 3, 4, 5].map((index) => (
-                  <div key={index} className="rounded-[20px] overflow-hidden border border-[#7ECFA7] [border-image:linear-gradient(97.29deg,#7ECFA7_13.65%,#53886C_90.87%)] [border-image-slice:1]">
+                  <div
+                    key={index}
+                    className="rounded-[20px] overflow-hidden border border-[#7ECFA7] [border-image:linear-gradient(97.29deg,#7ECFA7_13.65%,#53886C_90.87%)] [border-image-slice:1]"
+                  >
                     <InputOTPSlot
-                      key={index}
                       index={index}
                       className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[86px] md:h-[86px] rounded-[20px] bg-[linear-gradient(97.29deg,rgba(126,207,167,0.25)_13.65%,rgba(83,136,108,0.25)_90.87%)] text-center text-lg sm:text-xl md:text-2xl font-poppins"
                     />
@@ -124,9 +163,18 @@ const Otp = () => {
             </InputOTP>
           </div>
 
+          <div className="flex justify-center">
+            <button
+              onClick={handleVerifyOtp}
+              className="bg-[#53886C] text-white px-6 py-2 rounded-md font-semibold mt-2 hover:bg-[#446e58]"
+            >
+              Verify OTP
+            </button>
+          </div>
+
           <p className="text-center font-poppins font-normal text-sm sm:text-base leading-[140%] text-[#1b1b1a] my-6 sm:my-8">
             It usually takes a few seconds to receive the code. If you don't
-            received the code.{" "}
+            receive the code.{" "}
             <Link
               to="/social-media"
               className="text-[#53886C] font-bold text-base sm:text-lg md:text-xl font-poppins leading-[140%] hover:underline"

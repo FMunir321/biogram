@@ -5,7 +5,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
-import axios from "axios";
+
 // ...existing code...
 import { Input } from "../../components/ui/input";
 import logo from "../../../public/assets/Biogramlogo.png";
@@ -14,11 +14,9 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import RightImage from "../../../public/assets/RightImage.png";
 import LeftImage from "../../../public/assets/LeftImage.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import groupBg from "../../../public/assets/group.png";
-// import api  from "../../api/axios"
-
-
+import api from "../../service/api";
 
 // ...existing code...
 const Signup = () => {
@@ -34,6 +32,7 @@ const Signup = () => {
     termsAgreement: false,
   });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   // Handle input changes
   const handlePersonalChange = (
@@ -42,7 +41,8 @@ const Signup = () => {
     const { name, value, type } = e.target;
     setPersonalForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -74,21 +74,29 @@ const Signup = () => {
       return;
     }
     try {
-      const dateOfBirth = `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`;
+      const dateOfBirth = `${birthYear}-${String(birthMonth).padStart(
+        2,
+        "0"
+      )}-${String(birthDay).padStart(2, "0")}`;
       const payload = {
         email,
         fullName,
-       dateOfBirth,
+        dateOfBirth,
         username,
         password,
       };
-  await axios.post("http://localhost:5000/api/auth/signup", payload, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-      window.location.href = "/otp";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response = await api.post("/api/auth/signup", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      navigate("/otp", {
+        state: {
+          email: response.data.email, 
+          userId: response.data.userId,
+        },
+      }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err?.response?.data?.message || "Signup failed");
     }
@@ -185,7 +193,9 @@ const Signup = () => {
                   <form className="space-y-4" onSubmit={handlePersonalSubmit}>
                     {/* Error Message */}
                     {error && (
-                      <div className="text-red-600 text-sm text-center">{error}</div>
+                      <div className="text-red-600 text-sm text-center">
+                        {error}
+                      </div>
                     )}
                     {/* Email */}
                     <fieldset className="relative pt-3">
@@ -235,7 +245,7 @@ const Signup = () => {
                           className="w-full h-[36px] sm:h-[40px] rounded-[5px] px-2 text-sm text-gray-800 border border-black"
                           style={{
                             background:
-                              'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
+                              "linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)",
                           }}
                           required
                           value={personalForm.birthDay}
@@ -254,7 +264,7 @@ const Signup = () => {
                           className="w-full h-[36px] sm:h-[40px] rounded-[5px] px-2 text-sm text-gray-800 border border-black"
                           style={{
                             background:
-                              'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
+                              "linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)",
                           }}
                           required
                           value={personalForm.birthMonth}
@@ -262,8 +272,18 @@ const Signup = () => {
                         >
                           <option value="">Month</option>
                           {[
-                            'January', 'February', 'March', 'April', 'May', 'June',
-                            'July', 'August', 'September', 'October', 'November', 'December'
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December",
                           ].map((month, index) => (
                             <option key={index + 1} value={index + 1}>
                               {month}
@@ -276,7 +296,7 @@ const Signup = () => {
                           className="w-full h-[36px] sm:h-[40px] rounded-[5px] px-2 text-sm text-gray-800 border border-black"
                           style={{
                             background:
-                              'linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)',
+                              "linear-gradient(97.29deg, rgba(126, 207, 167, 0.25) 13.65%, rgba(83, 136, 108, 0.25) 90.87%)",
                           }}
                           required
                           value={personalForm.birthYear}
@@ -387,7 +407,7 @@ const Signup = () => {
                     </p>
                   </form>
                 </TabsContent>
-                             <TabsContent value="business" className="space-y-4">
+                <TabsContent value="business" className="space-y-4">
                   <form className="space-y-4">
                     {/* Email */}
                     <fieldset className="relative pt-3">
@@ -403,8 +423,7 @@ const Signup = () => {
                         autoComplete="email"
                         aria-label="Email or Phone Number"
                         className="w-full h-[44px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] border-black px-4 focus:border-black focus:ring-black"
-                     
-                     />
+                      />
                     </fieldset>
                     {/* Full Name */}
                     <fieldset className="relative pt-3">
@@ -546,7 +565,8 @@ const Signup = () => {
                       </Link>
                     </p>
                   </form>
-                </TabsContent>   {/* BUSINESS TAB (not implemented) */}
+                </TabsContent>{" "}
+                {/* BUSINESS TAB (not implemented) */}
               </Tabs>
             </div>
           </div>
@@ -566,5 +586,3 @@ const Signup = () => {
 
 export default Signup;
 // ...existing code...
-
-
