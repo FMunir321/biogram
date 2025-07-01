@@ -50,7 +50,13 @@ const Login = () => {
 
       console.log("Login Success:", response.data);
       alert("Login successful!");
-      navigate("/search");
+      navigate("/otp",{
+        state : {
+          userId: response.data.userId, 
+        }
+      });
+
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login Error:", error.response?.data || error.message);

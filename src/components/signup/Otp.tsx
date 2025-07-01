@@ -9,6 +9,7 @@ import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.
 import { useState } from "react";
 import api from "@/service/api";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Otp = () => {
   const location = useLocation();
@@ -25,9 +26,12 @@ const Otp = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const response = await api.post("/api/auth/verify-signup", payload);
+      const response = await api.post("/api/auth/verify-otp", payload);
+      const token = response.data.token;
+
+      Cookies.set("token", token, { expires: 1 });
       console.log("Verification Success:", response.data);
-      navigate("/login");
+      navigate("/social-media");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
