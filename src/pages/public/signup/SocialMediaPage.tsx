@@ -4,7 +4,6 @@ const SocialMediaPage = () => {
   return (
     <div>
         <AddSocialMedia/>
-
     </div>
   )
 }

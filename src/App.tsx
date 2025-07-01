@@ -5,11 +5,11 @@
 // import Otp from "./pages/public/signup/OtpPage";
 
 
-// import BiogramShoutPage from "./pages/BiogramShout/BiogramShoutPage";
+// // import BiogramShoutPage from "./pages/public/";
 // import Forpeople from "./pages/public/forPeople/ForPeoplePage";
 // import AddSocialMediaPictureUpload from "./pages/public/signup/AddSocialMediaPictureUploadPage";
 
-// import MainDashboard from "./pages/mainDashboard/MainDashboardPage";
+// import MainDashboard from "./pages/mainDashboard/SearchPage";
 // import Profile from "./pages/mainDashboard/ProfilePage";
 // import EditProfile from "./pages/mainDashboard/EditProfilePage";
 // import Messages from "./pages/mainDashboard/MessagesPage";
@@ -78,10 +78,10 @@
 //           element={<ProtectedRoute element={<AddSocialMediaPictureUpload />} />}
 //         />
 
-//         <Route
+//         {/* <Route
 //           path="/biogram-shout"
 //           element={<ProtectedRoute element={<BiogramShoutPage />} />}
-//         />
+//         /> */}
  
 //         <Route
 //           path="/profile"

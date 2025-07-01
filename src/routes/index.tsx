@@ -46,18 +46,45 @@ const RoutesComponent = () => {
       <Route path="/add-multi-link" element={<AddMultiLink />} />
       <Route path="/add-merge" element={<AddMerch />} />
       <Route path="/profile-link" element={<ProfileLink />} />
-      <Route path="/profile-main-dashboard" element={<ProfileMainDashboard />} />
-
+      <Route
+        path="/profile-main-dashboard"
+        element={<ProfileMainDashboard />}
+      />
+      <Route path="/social-media" element={<AddSocialMedia />} />
+      <Route
+        path="/add-social-media-upload-picture"
+        element={<AddSocialMediaPictureUpload />}
+      />
       {/* Protected Routes */}
-      <Route path="/search" element={<ProtectedRoute element={<SearchPage  />} />} />
-      <Route path="/social-media" element={<ProtectedRoute element={<AddSocialMedia />} />} />
-      <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
-      <Route path="/add-social-media-upload-picture" element={<ProtectedRoute element={<AddSocialMediaPictureUpload />} />} />
-      <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-      <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
-      <Route path="/messages" element={<ProtectedRoute element={<Messages />} />} />
-      <Route path="/notifications" element={<ProtectedRoute element={<Notifications />} />} />
-      <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
+      <Route
+        path="/search"
+        element={<ProtectedRoute element={<SearchPage />} />}
+      />
+      {/* <Route path="/social-media" element={<ProtectedRoute element={<AddSocialMedia />} />} /> */}
+      <Route
+        path="/analytics"
+        element={<ProtectedRoute element={<Analytics />} />}
+      />{" "}
+      <Route
+        path="/profile"
+        element={<ProtectedRoute element={<Profile />} />}
+      />
+      <Route
+        path="/edit-profile"
+        element={<ProtectedRoute element={<EditProfile />} />}
+      />
+      <Route
+        path="/messages"
+        element={<ProtectedRoute element={<Messages />} />}
+      />
+      <Route
+        path="/notifications"
+        element={<ProtectedRoute element={<Notifications />} />}
+      />
+      <Route
+        path="/settings"
+        element={<ProtectedRoute element={<Settings />} />}
+      />
     </Routes>
   );
 };
