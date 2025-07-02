@@ -19,6 +19,7 @@ import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
@@ -68,6 +69,21 @@ const AddSocialMedia = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    const token = Cookies.get("token");
+    try {
+      await axios.delete(`http://localhost:5000/api/social-links/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // remove from UI
+      setLinks((prevLinks) => prevLinks.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Error deleting link:", error);
+    }
+  };
+
   useEffect(() => {
     fetchLinks();
   }, []);
@@ -100,11 +116,11 @@ const AddSocialMedia = () => {
         <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-white shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-lg font-semibold text-gray-700">Platform</h1>
-            <div className="flex gap-4">
-              <button className="bg-blue-500 text-white px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
+            <div className=" hidden gap-4">
+              <button className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
                 Edit All
               </button>
-              <button className="bg-red-500 text-white px-4 py-1.5 rounded-md hover:bg-red-600 transition">
+              <button className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-1.5 rounded-md hover:bg-red-600 transition">
                 Delete All
               </button>
             </div>
@@ -118,7 +134,7 @@ const AddSocialMedia = () => {
             >
               <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 w-full ">
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h1 className="text-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] font-semibold text-800 mb-2">
                     {item.platform}
                   </h1>
                 </div>
@@ -137,11 +153,14 @@ const AddSocialMedia = () => {
                   </p>
 
                   <div className="flex gap-3">
-                    <button className="flex items-center gap-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                    <button className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
                       <FaRegEdit />
                       Edit
                     </button>
-                    <button className="flex items-center gap-1 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                    <button
+                      className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                      onClick={() => handleDelete(item._id)}
+                    >
                       <MdDelete />
                       Delete
                     </button>
@@ -343,13 +362,14 @@ const AddSocialMedia = () => {
             </div>
           </Card>
         </div>
-
-        <Button
-          className="w-full mt-4 md:mt-6 bg-white text-black text-[18px] md:text[24px] md:text-[36px] py-10 rounded-[50px] hover:bg-white hover:text-black cursor-pointer"
-          // onClick={() => setIsPopupOpen(true)}
-        >
-          Continue
-        </Button>
+        <Link to="/add-social-media-upload-picture">
+          <Button
+            className="w-full mt-4 md:mt-6 bg-white text-black text-[18px] md:text[24px] md:text-[36px] py-10 rounded-[50px] hover:bg-white hover:text-black cursor-pointer"
+            // onClick={() => setIsPopupOpen(true)}
+          >
+            Continue
+          </Button>
+        </Link>
 
         {/* Popup Component */}
         <AddSocialMediapopup
