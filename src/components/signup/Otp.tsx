@@ -31,7 +31,11 @@ const Otp = () => {
 
       Cookies.set("token", token, { expires: 1 });
       console.log("Verification Success:", response.data);
-      navigate("/social-media");
+      navigate("/social-media", {
+        state: {
+          userId: response.data.userId,
+        },
+      });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(

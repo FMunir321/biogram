@@ -11,8 +11,7 @@ import { useState } from "react";
 import toppopuppic from "../../../public/assets/toppopuppic.png";
 import centerpopuppic from "../../../public/assets/centerpopupoic.png";
 import bottompopuppic from "../../../public/assets/bottompopuppic.png";
-import Facebook from "../../../public/assets/facebook_icon.png";
-import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface AddSocialMediaPopupProps {
   icon: string;
@@ -22,17 +21,46 @@ interface AddSocialMediaPopupProps {
 }
 
 const AddSocialMediapopup = ({
-  // icon,
+  icon,
   platformName,
   isOpen,
   onClose,
 }: AddSocialMediaPopupProps) => {
   const [url, setUrl] = useState("");
 
-  const handleSave = () => {
-    console.log(`Saving ${platformName} URL:`, url);
+  // const handleSave = () => {
+  //   console.log(`Saving ${platformName} URL:`, url);
+  //   onClose();
+  // };
+
+ const handleSave = async () => {
+  try {
+    const userId = "6863d58717d64db350c48a19";
+
+    if (!userId || !platformName || !url) {
+      console.error("Missing required data.");
+      return;
+    }
+
+    const response = await axios.post(
+      "http://localhost:5000/api/social-links",
+      {
+        userId,
+        platform: platformName,
+        url,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    console.log("Response:", response.data);
     onClose();
-  };
+  } catch (error) {
+    console.error("Error saving social link:", error);
+  }
+};
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -57,10 +85,14 @@ const AddSocialMediapopup = ({
         <div className="relative z-10">
           <DialogHeader className="text-center">
             <div className="mx-auto mb-4">
-              <img src={Facebook} alt={platformName} className="w-39 h-39" />
+              <img
+                src={icon}
+                alt={platformName}
+                className="w-20 h-20 mx-auto"
+              />
             </div>
             <DialogTitle className="text-[20px] md:text[30px] md:text-[40px] font-bold mb-4 text-center">
-              Add your Facebook URL
+              Add your {platformName} URL
             </DialogTitle>
             <DialogDescription className="text-center">
               {/* Enter your Facebook profile URL to add it to your linkme profile */}
@@ -69,7 +101,6 @@ const AddSocialMediapopup = ({
 
           <div className="space-y-4">
             <div className="flex justify-center md:justify-start w-full p-[2px] rounded-full">
-
               <Input
                 type="text"
                 placeholder="Paste URL Here"
@@ -86,17 +117,15 @@ const AddSocialMediapopup = ({
               >
                 Cancel
               </Button>
-              <Link to="/add-social-media-upload-picture">
-                <Button
-                  onClick={handleSave}
-                  className="w-[100px] md:w-[200px] py-7 text-[18px] md:text[24px] lg:text-[32px] rounded-lg bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"
-                >
-                  Save
-                </Button>
-              </Link>
+
+              <Button
+                onClick={handleSave}
+                className="w-[100px] md:w-[200px] py-7 text-[18px] md:text[24px] lg:text-[32px] rounded-lg bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white hover:opacity-90 cursor-pointer"
+              >
+                Save
+              </Button>
             </div>
           </div>
-
         </div>
       </DialogContent>
     </Dialog>

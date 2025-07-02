@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -14,12 +15,26 @@ import spotifyimage from "../../public/assets/Spotify.png";
 import alexjamesimage from "../../public/assets/aleximage.png";
 import Dropdown from "../../public/assets/dropdown.png";
 
+
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const [selectedPlatform, setSelectedPlatform] = useState({
+    name: "",
+    icon: "",
+  });
+
+  const openPopup = (name: string, icon: string) => {
+    setSelectedPlatform({ name, icon });
+    setIsPopupOpen(true);
+  };
+
+ 
+
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
       {/* Left Section */}
@@ -48,48 +63,43 @@ const AddSocialMedia = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Social Networks Card */}
           <Card
-            className="px-4 h-auto min-h-0 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full"
+            className="px-4 bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] border-none w-full"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
             }}
           >
             <div className="flex justify-between items-center mb-1">
-              <h2 className="text-[18px] md:text[24px] md:text-[32px] font-semibold text-white">
+              <h2 className="text-[18px] md:text-[32px] font-semibold text-white">
                 Social Networks
               </h2>
-
-              <img
-                src={Dropdown}
-                alt="Alex James Character"
-                className=" object-contain"
-              />
+              <img src={Dropdown} alt="Dropdown" className="object-contain" />
             </div>
-            <div className="flex gap-1">
-              <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img
-                  src={facebookimage}
-                  alt="Facebook"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img
-                  src={instagramimage}
-                  alt="Instagram"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img
-                  src={twitterimage}
-                  alt="Twitter"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img src={tiktokimage} alt="TikTok" className="w-full h-full" />
-              </div>
+            <div className="flex gap-2 flex-wrap">
+              <img
+                src={facebookimage}
+                alt="Facebook"
+                className="w-[40px] h-[40px] cursor-pointer"
+                onClick={() => openPopup("Facebook", facebookimage)}
+              />
+              <img
+                src={instagramimage}
+                alt="Instagram"
+                className="w-[40px] h-[40px] cursor-pointer"
+                onClick={() => openPopup("Instagram", instagramimage)}
+              />
+              <img
+                src={twitterimage}
+                alt="Twitter"
+                className="w-[40px] h-[40px] cursor-pointer"
+                onClick={() => openPopup("Twitter", twitterimage)}
+              />
+              <img
+                src={tiktokimage}
+                alt="TikTok"
+                className="w-[40px] h-[40px] cursor-pointer"
+                onClick={() => openPopup("TikTok", tiktokimage)}
+              />
             </div>
           </Card>
 
@@ -116,6 +126,7 @@ const AddSocialMedia = () => {
                   src={whatsappimage}
                   alt="WhatsApp"
                   className="w-full h-full"
+                  onClick={() => openPopup("WhatsApp", whatsappimage)}
                 />
               </div>
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
@@ -123,10 +134,13 @@ const AddSocialMedia = () => {
                   src={linkedinimage}
                   alt="LinkedIn"
                   className="w-full h-full"
+                  onClick={() => openPopup("Linkedin", linkedinimage)}
                 />
               </div>
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img src={skypeimage} alt="Skype" className="w-full h-full" />
+                <img src={skypeimage} alt="Skype" className="w-full h-full"
+                            onClick={() => openPopup("Skype",skypeimage )}
+                />
               </div>
             </div>
           </Card>
@@ -155,6 +169,7 @@ const AddSocialMedia = () => {
                   src={applemusicimage}
                   alt="Apple Music"
                   className="w-full h-full"
+                  onClick={() => openPopup("Music", applemusicimage)}
                 />
               </div>
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
@@ -162,6 +177,7 @@ const AddSocialMedia = () => {
                   src={soundcloudimage}
                   alt="Soundcloud"
                   className="w-full h-full"
+                  onClick={() => openPopup("SoundCloud", soundcloudimage)}
                 />
               </div>
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
@@ -169,6 +185,7 @@ const AddSocialMedia = () => {
                   src={spotifyimage}
                   alt="Spotify"
                   className="w-full h-full"
+                  onClick={() => openPopup("Spotify", spotifyimage)}
                 />
               </div>
             </div>
@@ -234,15 +251,15 @@ const AddSocialMedia = () => {
 
         <Button
           className="w-full mt-4 md:mt-6 bg-white text-black text-[18px] md:text[24px] md:text-[36px] py-10 rounded-[50px] hover:bg-white hover:text-black cursor-pointer"
-          onClick={() => setIsPopupOpen(true)}
+          // onClick={() => setIsPopupOpen(true)}
         >
           Continue
         </Button>
 
         {/* Popup Component */}
         <AddSocialMediapopup
-          icon={facebookimage}
-          platformName="Facebook"
+          icon={selectedPlatform.icon}
+          platformName={selectedPlatform.name}
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
         />

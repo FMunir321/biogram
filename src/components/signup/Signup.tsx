@@ -91,6 +91,7 @@ const Signup = () => {
         },
       });
 
+          localStorage.setItem("userId", response.data.userId);
       navigate("/otp", {
         state: {
           email: response.data.email, 
