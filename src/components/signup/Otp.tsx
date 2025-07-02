@@ -26,16 +26,16 @@ const Otp = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const response = await api.post("/api/auth/verify-otp", payload);
+      const response = await api.post("/api/auth/verify-otp", payload );
       const token = response.data.token;
+      const userId = response.data.userId;
+
+
 
       Cookies.set("token", token, { expires: 1 });
+      localStorage.setItem("userId", userId);
       console.log("Verification Success:", response.data);
-      navigate("/social-media", {
-        state: {
-          userId: response.data.userId,
-        },
-      });
+      navigate("/social-media");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
@@ -142,7 +142,7 @@ const Otp = () => {
         <div className="w-full max-w-md px-4">
           <p className="text-center mb-4 sm:mb-6 my-6 sm:my-8 font-poppins font-medium text-lg sm:text-xl md:text-2xl leading-[120%] tracking-[0]">
             Enter verification code
-          </p>
+          </p> 
 
           <div className="flex justify-center mb-4">
             <InputOTP
