@@ -14,14 +14,26 @@ import soundcloudimage from "../../public/assets/Soundcloud.png";
 import spotifyimage from "../../public/assets/Spotify.png";
 import alexjamesimage from "../../public/assets/aleximage.png";
 import Dropdown from "../../public/assets/dropdown.png";
-
+import { FaRegEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 
+type SocialLink = {
+  _id: string;
+  platform: string;
+  url: string;
+  // add other properties if needed
+};
+
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [links, setLinks] = useState<SocialLink[]>([]);
 
   const [selectedPlatform, setSelectedPlatform] = useState({
     name: "",
@@ -33,7 +45,32 @@ const AddSocialMedia = () => {
     setIsPopupOpen(true);
   };
 
- 
+  const fetchLinks = async () => {
+    const userId = localStorage.getItem("userId");
+    const token = Cookies.get("token");
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/social-links/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            userId: userId,
+          },
+        }
+      );
+
+      setLinks(response.data);
+    } catch (error) {
+      console.error("Error fetching links:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
@@ -58,6 +95,61 @@ const AddSocialMedia = () => {
           <Button className="rounded-full bg-[linear-gradient(to_right,_#98e6c3,_#4a725f)] text-white md:px-8 md:py-5 whitespace-nowrap mr-3">
             Search
           </Button>
+        </div>
+
+        <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-white shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-lg font-semibold text-gray-700">Platform</h1>
+            <div className="flex gap-4">
+              <button className="bg-blue-500 text-white px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
+                Edit All
+              </button>
+              <button className="bg-red-500 text-white px-4 py-1.5 rounded-md hover:bg-red-600 transition">
+                Delete All
+              </button>
+            </div>
+          </div>
+          <hr className="mb-4 border-gray-300" />
+
+          {links.map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center justify-between mb-3"
+            >
+              <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 w-full ">
+                <div>
+                  <h1 className="text-lg font-semibold text-gray-800 mb-2">
+                    {item.platform}
+                  </h1>
+                </div>
+
+                <hr className="mb-4 border-gray-300" />
+                <div className="flex justify-between gap-2 ">
+                  <p className="text-gray-700 mb-4 break-all">
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      {item.url}
+                    </a>
+                  </p>
+
+                  <div className="flex gap-3">
+                    <button className="flex items-center gap-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                      <FaRegEdit />
+                      Edit
+                    </button>
+                    <button className="flex items-center gap-1 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                      <MdDelete />
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -138,8 +230,11 @@ const AddSocialMedia = () => {
                 />
               </div>
               <div className="rounded-full flex items-center justify-center cursor-pointer w-[40px] h-[40px]">
-                <img src={skypeimage} alt="Skype" className="w-full h-full"
-                            onClick={() => openPopup("Skype",skypeimage )}
+                <img
+                  src={skypeimage}
+                  alt="Skype"
+                  className="w-full h-full"
+                  onClick={() => openPopup("Skype", skypeimage)}
                 />
               </div>
             </div>

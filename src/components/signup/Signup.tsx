@@ -91,13 +91,9 @@ const Signup = () => {
         },
       });
 
-          localStorage.setItem("userId", response.data.userId);
-      navigate("/otp", {
-        state: {
-          email: response.data.email, 
-          userId: response.data.userId,
-        },
-      }); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    localStorage.setItem("userId", response.data.userId);
+      navigate("/otp");
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err?.response?.data?.message || "Signup failed");
     }

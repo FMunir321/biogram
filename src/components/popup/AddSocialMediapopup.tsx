@@ -12,6 +12,8 @@ import toppopuppic from "../../../public/assets/toppopuppic.png";
 import centerpopuppic from "../../../public/assets/centerpopupoic.png";
 import bottompopuppic from "../../../public/assets/bottompopuppic.png";
 import axios from "axios";
+import Cookies from "js-cookie"; 
+
 
 interface AddSocialMediaPopupProps {
   icon: string;
@@ -28,17 +30,16 @@ const AddSocialMediapopup = ({
 }: AddSocialMediaPopupProps) => {
   const [url, setUrl] = useState("");
 
-  // const handleSave = () => {
-  //   console.log(`Saving ${platformName} URL:`, url);
-  //   onClose();
-  // };
 
- const handleSave = async () => {
+const handleSave = async () => {
   try {
-    const userId = "6863d58717d64db350c48a19";
+    const userId = localStorage.getItem("userId");
+    const token = Cookies.get("token");
+    const fixedPlatform = platformName?.toLowerCase();
+    const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
 
-    if (!userId || !platformName || !url) {
-      console.error("Missing required data.");
+    if (!userId || !fixedPlatform || !fixedUrl || !token) {
+      console.error("Missing required data or token.");
       return;
     }
 
@@ -46,10 +47,13 @@ const AddSocialMediapopup = ({
       "http://localhost:5000/api/social-links",
       {
         userId,
-        platform: platformName,
-        url,
+        platform: fixedPlatform,
+        url: fixedUrl,
       },
       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
       }
     );
@@ -57,9 +61,17 @@ const AddSocialMediapopup = ({
     console.log("Response:", response.data);
     onClose();
   } catch (error) {
-    console.error("Error saving social link:", error);
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Error saving social link:",
+        error.response?.data || error.message
+      );
+    } else {
+      console.error("Error saving social link:", error);
+    }
   }
 };
+
 
 
   return (

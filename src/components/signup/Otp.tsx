@@ -16,40 +16,40 @@ const Otp = () => {
   const navigate = useNavigate();
 
   const email = location.state?.email || "unknown@gmail.com";
-  const userId = location.state?.userId || "";
+  // const userId = location.state?.userId || "";
   const [otp, setOtp] = useState("");
 
-  const payload = {
-    userId: userId,
-    otp: otp,
-  };
 
   const handleVerifyOtp = async () => {
-    try {
-      const response = await api.post("/api/auth/verify-otp", payload );
-      const token = response.data.token;
-      const userId = response.data.userId;
+  try {
+    // Get userId from localStorage (not set)
+    const userId = localStorage.getItem("userId");
 
+    const payload = {
+      userId: userId,
+      otp: otp,
+    };
 
+    const response = await api.post("/api/auth/verify-otp", payload);
+    const token = response.data.token;
 
-      Cookies.set("token", token, { expires: 1 });
-      localStorage.setItem("userId", userId);
-      console.log("Verification Success:", response.data);
-      navigate("/social-media");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Verification Error:",
-          error.response?.data || error.message
-        );
-      } else if (error instanceof Error) {
-        console.error("Verification Error:", error.message);
-      } else {
-        console.error("Verification Error:", error);
-      }
-      alert("Invalid OTP or Server Error");
+    Cookies.set("token", token, { expires: 1 });
+    console.log("Verification Success:", response.data);
+    navigate("/social-media");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Verification Error:",
+        error.response?.data || error.message
+      );
+    } else if (error instanceof Error) {
+      console.error("Verification Error:", error.message);
+    } else {
+      console.error("Verification Error:", error);
     }
-  };
+    alert("Invalid OTP or Server Error");
+  }
+};
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -142,7 +142,7 @@ const Otp = () => {
         <div className="w-full max-w-md px-4">
           <p className="text-center mb-4 sm:mb-6 my-6 sm:my-8 font-poppins font-medium text-lg sm:text-xl md:text-2xl leading-[120%] tracking-[0]">
             Enter verification code
-          </p> 
+          </p>
 
           <div className="flex justify-center mb-4">
             <InputOTP

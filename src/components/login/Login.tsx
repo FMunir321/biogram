@@ -44,19 +44,15 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post("/api/auth/login", {
-        identifier: formData.identifier, // ✅ match backend
+        identifier: formData.identifier, 
         password: formData.password,
       });
+       const userId = response.data.userId;
+       localStorage.setItem("userId", userId);
 
       console.log("Login Success:", response.data);
       alert("Login successful!");
-      navigate("/otp",{
-        state : {
-          userId: response.data.userId, 
-        }
-      });
-
-
+      navigate("/otp");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login Error:", error.response?.data || error.message);
