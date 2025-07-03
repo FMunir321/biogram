@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
-
 import { Button } from "../components/ui/button";
 import alexjamesimage from "../../public/assets/aleximage.png";
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import camerapicture from "../../public/assets/camerapic.png";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useRef, ChangeEvent } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
+import { useEffect } from "react";
+import api from "@/service/api";
 
 const AddSocialMediaPictureUpload = () => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -18,6 +16,8 @@ const AddSocialMediaPictureUpload = () => {
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const navigate = useNavigate();
+  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
@@ -30,7 +30,7 @@ const AddSocialMediaPictureUpload = () => {
     if (selectedFile && selectedFile.type.startsWith("image/")) {
       const imageUrl = URL.createObjectURL(selectedFile);
       setPreview(imageUrl);
-      setFile(selectedFile); // Set file but don't upload yet
+      setFile(selectedFile);
     } else {
       alert("Please select a valid image file");
     }
@@ -48,8 +48,8 @@ const AddSocialMediaPictureUpload = () => {
     setUploading(true);
     try {
       const token = Cookies.get("token");
-      await axios.patch(
-        "http://localhost:5000/api/user/profile-image",
+      await api.patch(
+        "/api/user/profile-image",
         formData,
         {
           headers: {
@@ -58,7 +58,7 @@ const AddSocialMediaPictureUpload = () => {
           },
         }
       );
-      navigate("/search"); // Navigate after successful upload
+      navigate("/search");
     } catch (err: any) {
       setError(
         err.response?.data?.message || err.message || "Image upload failed"
@@ -67,6 +67,13 @@ const AddSocialMediaPictureUpload = () => {
       setUploading(false);
     }
   };
+
+  useEffect(() => {
+    const savedFullName = localStorage.getItem("fullName");
+    const savedUsername = localStorage.getItem("username");
+    if (savedFullName) setFullName(savedFullName);
+    if (savedUsername) setUsername(savedUsername);
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 items-center justify-center">
@@ -163,9 +170,9 @@ const AddSocialMediaPictureUpload = () => {
                 <div className="flex flex-col md:hidden w-full">
                   <div className="mb-6">
                     <h2 className="text-3xl font-bold text-white mb-1">
-                      Alex James
+                      {fullName}
                     </h2>
-                    <p className="text-lg text-white/90">@Alexjames</p>
+                    <p className="text-lg text-white/90">@{username}</p>
                   </div>
 
                   <div className="flex flex-col gap-4 mb-6 w-full">
@@ -210,9 +217,9 @@ const AddSocialMediaPictureUpload = () => {
                 <div className="hidden md:block relative">
                   <div className="relative z-10">
                     <h2 className="text-5xl font-bold text-white mb-1">
-                      Alex James
+                      {fullName}
                     </h2>
-                    <p className="text-xl text-white/90 mb-6">@Alexjames</p>
+                    <p className="text-xl text-white/90 mb-6">@{username}</p>
 
                     <div className="space-y-4 max-w-[242px]">
                       {[1, 2].map((_, idx) => (

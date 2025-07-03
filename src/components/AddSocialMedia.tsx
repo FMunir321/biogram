@@ -16,7 +16,6 @@ import alexjamesimage from "../../public/assets/aleximage.png";
 import Dropdown from "../../public/assets/dropdown.png";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -24,6 +23,7 @@ import { Link } from "react-router-dom";
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
+import api from "@/service/api";
 
 type SocialLink = {
   _id: string;
@@ -35,6 +35,8 @@ type SocialLink = {
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [links, setLinks] = useState<SocialLink[]>([]);
+    const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
 
   const [selectedPlatform, setSelectedPlatform] = useState({
     name: "",
@@ -51,7 +53,7 @@ const AddSocialMedia = () => {
     const token = Cookies.get("token");
 
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `http://localhost:5000/api/social-links/${userId}`,
         {
           headers: {
@@ -69,10 +71,18 @@ const AddSocialMedia = () => {
     }
   };
 
+
+    useEffect(() => {
+    const savedFullName = localStorage.getItem("fullName");
+    const savedUsername = localStorage.getItem("username");
+    if (savedFullName) setFullName(savedFullName);
+    if (savedUsername) setUsername(savedUsername);
+  }, []);
+
   const handleDelete = async (id: string) => {
     const token = Cookies.get("token");
     try {
-      await axios.delete(`http://localhost:5000/api/social-links/${id}`, {
+      await api.delete(`/api/social-links/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,9 +123,9 @@ const AddSocialMedia = () => {
           </Button>
         </div>
 
-        <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-white shadow-sm">
+        <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-lg font-semibold text-gray-700">Platform</h1>
+            <h1 className="text-4xl font-semibold text-white">Platform</h1>
             <div className=" hidden gap-4">
               <button className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-1.5 rounded-md hover:bg-blue-600 transition">
                 Edit All
@@ -132,9 +142,9 @@ const AddSocialMedia = () => {
               key={item._id}
               className="flex items-center justify-between mb-3"
             >
-              <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 w-full ">
+              <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] shadow-md rounded-lg p-4 border border-gray-200 w-full ">
                 <div>
-                  <h1 className="text-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] font-semibold text-800 mb-2">
+                  <h1 className="text-white text-3xl font-semibold text-800 mb-2">
                     {item.platform}
                   </h1>
                 </div>
@@ -434,12 +444,10 @@ const AddSocialMedia = () => {
             <div className="p-4 relative">
               {/* Mobile Layout - Only visible on sm screens */}
               <div className="flex flex-col md:hidden w-full">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-1">
-                    Alex James
-                  </h2>
-                  <p className="text-lg text-white/90">@Alexjames</p>
-                </div>
+    <div className="mb-6">
+      <h2 className="text-3xl font-bold text-white mb-1">{fullName}</h2>
+      <p className="text-lg text-white/90">@{username}</p>
+    </div>
 
                 <div className="flex flex-col gap-4 mb-6 w-full">
                   <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
@@ -489,9 +497,9 @@ const AddSocialMedia = () => {
               <div className="hidden md:block relative">
                 <div className="relative z-10">
                   <h2 className="text-5xl font-bold text-white mb-1">
-                    Alex James
+                    {fullName}
                   </h2>
-                  <p className="text-xl text-white/90 mb-6">@Alexjames</p>
+                  <p className="text-xl text-white/90 mb-6">{username}</p>
 
                   <div className="space-y-4 max-w-[242px]">
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">

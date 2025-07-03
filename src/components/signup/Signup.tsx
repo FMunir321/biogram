@@ -91,9 +91,12 @@ const Signup = () => {
         },
       });
 
-    localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("email", response.data.email || email);
+      localStorage.setItem("username", response.data.username || username);
+      localStorage.setItem("fullName", response.data.fullName || fullName);
       navigate("/otp");
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err?.response?.data?.message || "Signup failed");
     }

@@ -13,6 +13,7 @@ import centerpopuppic from "../../../public/assets/centerpopupoic.png";
 import bottompopuppic from "../../../public/assets/bottompopuppic.png";
 import axios from "axios";
 import Cookies from "js-cookie"; 
+import api from "@/service/api";
 
 
 interface AddSocialMediaPopupProps {
@@ -43,8 +44,8 @@ const handleSave = async () => {
       return;
     }
 
-    const response = await axios.post(
-      "http://localhost:5000/api/social-links",
+    const response = await api.post(
+      "/api/social-links",
       {
         userId,
         platform: fixedPlatform,

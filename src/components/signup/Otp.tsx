@@ -4,52 +4,54 @@ import {
   InputOTPSlot,
 } from "../../components/ui/input-otp";
 import { Mail } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
 import { useState } from "react";
 import api from "@/service/api";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const Otp = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-
-  const email = location.state?.email || "unknown@gmail.com";
-  // const userId = location.state?.userId || "";
   const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
 
   const handleVerifyOtp = async () => {
-  try {
-    // Get userId from localStorage (not set)
-    const userId = localStorage.getItem("userId");
+    try {
+      const userId = localStorage.getItem("userId");
+      const payload = {
+        userId: userId,
+        otp: otp,
+      };
 
-    const payload = {
-      userId: userId,
-      otp: otp,
-    };
+      const response = await api.post("/api/auth/verify-otp", payload);
+      const token = response.data.token;
 
-    const response = await api.post("/api/auth/verify-otp", payload);
-    const token = response.data.token;
-
-    Cookies.set("token", token, { expires: 1 });
-    console.log("Verification Success:", response.data);
-    navigate("/social-media");
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(
-        "Verification Error:",
-        error.response?.data || error.message
-      );
-    } else if (error instanceof Error) {
-      console.error("Verification Error:", error.message);
-    } else {
-      console.error("Verification Error:", error);
+      Cookies.set("token", token, { expires: 1 });
+      console.log("Verification Success:", response.data);
+      navigate("/social-media");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Verification Error:",
+          error.response?.data || error.message
+        );
+      } else if (error instanceof Error) {
+        console.error("Verification Error:", error.message);
+      } else {
+        console.error("Verification Error:", error);
+      }
+      alert("Invalid OTP or Server Error");
     }
-    alert("Invalid OTP or Server Error");
-  }
-};
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
