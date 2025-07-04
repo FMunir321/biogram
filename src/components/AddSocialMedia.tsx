@@ -142,7 +142,7 @@ const AddSocialMedia = () => {
               key={item._id}
               className="flex items-center justify-between mb-3"
             >
-              <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] shadow-md rounded-lg p-4 border border-gray-200 w-full ">
+              <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] shadow-md p-4 border border-gray-200 w-full">
                 <div>
                   <h1 className="text-white text-3xl font-semibold text-800 mb-2">
                     {item.platform}

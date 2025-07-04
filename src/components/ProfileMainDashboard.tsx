@@ -9,7 +9,7 @@ const socialIcons = [
   { icon: <FaTwitter />, color: "text-blue-400", name: "Twitter" },
   { icon: <FaTiktok />, color: "text-black", name: "TikTok" },
   { icon: <FaInstagram />, color: "text-pink-500", name: "Instagram" },
-  { icon: <FaWhatsapp />, color: "text-green-500", name: "WhatsApp" },
+  { icon: <FaWhatsapp />, color: "text-green-500", name: "WhatsApp" }, 
 ];
 
 const ProfileMainDashboard: React.FC = () => {
