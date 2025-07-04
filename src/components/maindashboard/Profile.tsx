@@ -93,24 +93,70 @@ import group from "../../../public/assets/boys333.png";
 import biogram from "../../../public/Biogram.png";
 import image from "../../../public/assets/Earth.png";
 import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
+
+type UserData = {
+  fullName: string;
+  username: string;
+  profileImage: string;
+};
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("shouts");
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = Cookies.get("token");
+        const userId = localStorage.getItem("userId");
+
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)]">
+    <div className="flex p-4  flex-col items-center justify-center min-h-screen ">
       <div
-        className="relative bg-cover bg-center bg-no-repeat text-white rounded-xl text-center h-[640px] shadow-2xl w-full max-w-md"
-        style={{ backgroundImage: `url(${group})` }}
-      >
-        <div className="absolute inset-0 flex flex-col items-center justify-center mt-60   rounded-xl">
-          <h2 className="text-2xl font-bold">Saif Ali</h2>
-          <p className="text-sm text-gray-200 mt-1">@saifali23</p>
-          <div>
-            <img src={biogram} alt="Biogram Logo" className="w-16 h-18 mt-4 " />
-          </div>
-          <div>
-            <div className="flex gap-2">
+        className="relative bg-cover       bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
+        style={{
+          backgroundImage: userData?.profileImage
+            ? `url("http://localhost:5000${userData.profileImage}")`
+            : `url("${group}")`,
+        }}
+      ></div>
+
+      <div className="inset-0  flex flex-col items-center justify-center mt-[-150px] z-10">
+        <h2 className="text-2xl text-white font-bold">
+          {userData?.fullName || "Loading..."}
+        </h2>
+        <p className="text-sm text-gray-200 mt-1">
+          @{userData?.username || "username"}
+        </p>
+        <div className="hidden">
+          <img src={biogram} alt="Biogram Logo" className="w-16 h-18 mt-4 " />
+        </div>
+      </div>
+
+      <div className="  bg-black w-[550px] ">
+        <div className="flex flex-col items-center justify-center p-22">
+          <div className="justify-center items-center">
+            <div className="flex gap-2 justify-center ">
               <button
                 className={`px-4 py-2 ${
                   activeTab === "shouts" ? " text-white" : "text-blue-500"
@@ -129,25 +175,27 @@ const Profile = () => {
               </button>
             </div>
             <div>
-              <img
-                src={image}
-                alt="Earth"
-                className="w-14 ml-16 justify-center h-14 mt-4 "
-              />
+              <div className="flex justify-center items-center mt-4">
+                <img src={image} alt="Earth" className="w-14  h-14 mt-4 " />
+              </div>
 
               {activeTab === "shouts" && (
-                <div>
-                  <h1>No Shouts Yet!</h1>
-                  <h6>Shouts posted by Saif Ali</h6>
-                  <p>will appear here </p>
+                <div className="text-center justify-center">
+                  <h1 className="text-white font-bold text-4xl">
+                    No Shouts Yet!
+                  </h1>
+                  <h6 className="text-gray-300">Shouts posted by Saif Ali</h6>
+                  <p className="text-gray-300">will appear here </p>
                 </div>
               )}
 
               {activeTab === "media" && (
-                <div>
-                  <h1>No Media Yet!</h1>
-                  <h6>Shouts with media posted</h6>
-                  <p>by Saif Ali will appear here</p>
+                <div className="text-center  justify-center">
+                  <h1 className="text-white font-bold text-4xl">
+                    No Media Yet!
+                  </h1>
+                  <h6 className="text-gray-300 ">Shouts with media posted</h6>
+                  <p className="text-gray-300 ">by Saif Ali will appear here</p>
                 </div>
               )}
             </div>
