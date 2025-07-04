@@ -9,12 +9,33 @@ import Map from "../../public/assets/edit-profile/map.svg";
 import Mail from "../../public/assets/edit-profile/mail.svg";
 import { Input } from "@/components/ui/input";
 import * as Dialog from "@radix-ui/react-dialog";
-
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import api from "@/service/api";
+// import "../App.css";
+import { FaRegImage } from "react-icons/fa6";
+import "../components/EditProfile.css";
 const colors = [
-  "#7ecfa7", "#548a6e", "#f87171", "#fbbf24", "#34d399",
-  "#60a5fa", "#a78bfa", "#f472b6", "#c084fc", "#fb923c",
-  "#4ade80", "#facc15", "#3b82f6"
+  "#7ecfa7",
+  "#548a6e",
+  "#f87171",
+  "#fbbf24",
+  "#34d399",
+  "#60a5fa",
+  "#a78bfa",
+  "#f472b6",
+  "#c084fc",
+  "#fb923c",
+  "#4ade80",
+  "#facc15",
+  "#3b82f6",
 ];
+
+type UserData = {
+  fullName: string;
+  username: string;
+  profileImage: string;
+};
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
@@ -28,9 +49,17 @@ const EditProfile = () => {
   const [shoutsToggle, setShoutsToggle] = useState(false);
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
+  const [isAddBio, setIsAddBio] = useState(false);
   const [isaddMerch, setIsAddMerch] = useState(false);
-  const [activeTab, setActiveTab] = useState('Solid');
+  const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [bioText, setBioText] = useState(""); // 1. Add state for bio
+  const [isBioUpdating, setIsBioUpdating] = useState(false);
+  const [bigThumbTitle, setBigThumbTitle] = useState("");
+  const [bigThumbUrl, setBigThumbUrl] = useState("");
+  const [bigThumbImage, setBigThumbImage] = useState("");
+
   const sections = [
     {
       heading: "Link",
@@ -52,11 +81,68 @@ const EditProfile = () => {
       image: "/public/assets/Shopingbag.png",
     },
   ];
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const imageToShow = uploadedImg || characterImg;
+
+  const [bigThumbPreview, setBigThumbPreview] = useState<string | null>(null);
+
+  // Update your file input handler for the thumbnail:
+  const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedImg(imageUrl);
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBigThumbPreview(reader.result as string);
+      setBigThumbImage(""); // Clear text input if using image
+    };
+    reader.readAsDataURL(file);
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = Cookies.get("token");
+        const userId = localStorage.getItem("userId");
+
+        const response = await api.get(`/api/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const [isUploading, setIsUploading] = useState(false);
+  // ...existing code...
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const token = Cookies.get("token");
+      // const userId = localStorage.getItem("userId");
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const response = await api.patch(`/api/user/profile-image`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setUserData(response.data);
+      setUploadedImg(null);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      // Optionally show error to user
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -64,17 +150,87 @@ const EditProfile = () => {
     fileInputRef.current?.click();
   };
 
-  const imageToShow = uploadedImg || characterImg;
+  const handleBioUpdate = async () => {
+    setIsBioUpdating(true);
+    try {
+      const token = Cookies.get("token");
+      await api.patch(
+        "/api/user/bio",
+        { bio: bioText },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsAddBio(false); // Close modal on success
+      // Optionally, update userData state here if you want to reflect the new bio immediately
+    } catch (error) {
+      console.error("Error updating bio:", error);
+      // Optionally show error to user
+    } finally {
+      setIsBioUpdating(false);
+    }
+  };
+
+  const [bigThumbType, setBigThumbType] = useState("");
+
+  // Update your handler to use bigThumbType and add validation:
+  const handleAddBigThumbnail = async (
+    title: string,
+    url: string,
+    thumbnailImage: string,
+    type: string,
+    background: string
+  ) => {
+    // Validation
+    if (!title || !url || !type) {
+      alert("Title, URL, and Thumbnail Type are required.");
+      return;
+    }
+    setIsBioUpdating(true);
+    try {
+      const token = Cookies.get("token");
+      await api.post(
+        "/api/thumbnails",
+        {
+          title,
+          url,
+          thumbnailImage,
+          type,
+          background,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsBigThumbnailOpen(false); // Close modal on success
+      // Reset fields
+      setBigThumbTitle("");
+      setBigThumbUrl("");
+      setBigThumbImage("");
+      setBigThumbPreview(null);
+      setBigThumbType("");
+      setSelectedColor("");
+    } catch (error) {
+      console.error("Error adding big thumbnail:", error);
+      alert("Failed to add thumbnail. Please try again.");
+    } finally {
+      setIsBioUpdating(false);
+    }
+  };
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
       {/* Mobile View */}
+
       <div className="hidden">
         <div
           className="bg-white rounded-[32px] p-4"
           style={{
-            backgroundImage: `url(${bground})`,
-            backgroundSize: "cover",
+            backgroundImage: `url("${bground}")`,
           }}
         >
           <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-[24px] p-4">
@@ -99,8 +255,12 @@ const EditProfile = () => {
                   className="hidden"
                 />
               </div>
-              <h1 className="text-xl font-bold mb-1">Alex James</h1>
-              <p className="text-gray-600 text-sm">@Alexjames</p>
+              <h1 className="text-xl font-bold mb-1">
+                {userData?.fullName || "Full Name"}
+              </h1>
+              <p className="text-gray-600 text-sm">
+                @{userData?.username || "username"}
+              </p>
             </div>
           </div>
 
@@ -173,26 +333,30 @@ const EditProfile = () => {
       <div
         className="rounded-[32px] p-6"
         style={{
-          backgroundImage: `url(${bground})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
+          backgroundImage: `url("${bground}")`,
         }}
       >
         <div className="flex flex-col lg:flex-row lg:gap-5 2xl:gap-20 w-full">
           {/* Left Side - Profile Image */}
           {/* add this css below div for scroll bar  max-h-[calc(100vh-48px)] */}
           <div className="flex flex-col gap-4 md:w-[500px] h-auto md:h-full md:max-h-[calc(100vh-48px)] md:overflow-y-auto pr-2">
-
             {/* Add photo card */}
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="rounded-[24px] p-6">
                 <div>
-                  <h1 className="text-2xl font-bold">Alex James</h1>
-                  <p className="text-gray-600 text-sm">@Alexjames</p>
+                  <h1 className="text-xl font-bold mb-1">
+                    {userData?.fullName || "Full Name"}
+                  </h1>
+                  <p className="text-gray-600 text-sm">
+                    @{userData?.username || "username"}
+                  </p>
                 </div>
-
                 <img
-                  src={imageToShow}
+                  src={
+                    userData?.profileImage
+                      ? `http://localhost:5000${userData.profileImage}`
+                      : "/default-profile.png"
+                  }
                   alt="Profile character"
                   className="w-full h-[400px] object-contain mt-4"
                 />
@@ -200,8 +364,9 @@ const EditProfile = () => {
                 <button
                   onClick={handleUploadClick}
                   className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                  disabled={isUploading}
                 >
-                  Add Photo
+                  {isUploading ? "Uploading..." : "Add Photo"}
                 </button>
                 <input
                   type="file"
@@ -217,16 +382,10 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Bio
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -235,18 +394,23 @@ const EditProfile = () => {
                       onChange={() => setIsBioEnabled(!isBioEnabled)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        isBioEnabled
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
-                <div className="flex flex-col md:flex-row items-center justify-between pb-6 px-6">
+                <div
+                  className="flex flex-col md:flex-row items-center justify-between pb-6 px-6"
+                  onClick={() => setIsAddBio(true)}
+                >
                   <p className="text-[16px] font-normal text-black">
                     Add Bio to your profile
                   </p>
@@ -265,16 +429,10 @@ const EditProfile = () => {
                 {/* Toggle Header */}
 
                 <div className="flex items-center justify-between rounded-[24px]">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Featured Links
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -283,20 +441,37 @@ const EditProfile = () => {
                       onChange={() => setFeatureLinkToggle(!featureLinkToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        featureLinkToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
 
                 {/* Big Thumbnail Section */}
-                <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]" onClick={() => setIsBigThumbnailOpen(true)}>
+
+                <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
+                  <img
+                    src={Thumbnail}
+                    alt="Big Thumbnail"
+                    className="object-contain h-20 mb-2"
+                  />
+                  <p className="text-[16px] font-normal text-white">
+                    Add Big Thumbnail link
+                  </p>
+                </div>
+
+                <div
+                  className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                  onClick={() => setIsBigThumbnailOpen(true)}
+                >
                   <img
                     src={Thumbnail}
                     alt="Big Thumbnail"
@@ -315,8 +490,7 @@ const EditProfile = () => {
                       onClick={() => {
                         if (idx === 0) {
                           setIsAddMultiLink(true);
-                        }
-                        else {
+                        } else {
                           setIsAddMerch(true);
                         }
                       }}
@@ -346,16 +520,10 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Merch (0 Items)
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -364,14 +532,16 @@ const EditProfile = () => {
                       onChange={() => setMerchToggle(!merchToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        merchToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -388,16 +558,10 @@ const EditProfile = () => {
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
                 <div className="flex items-center justify-between rounded-[24px]">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Gallery
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -406,14 +570,16 @@ const EditProfile = () => {
                       onChange={() => setGalleryToggle(!galleryToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        galleryToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -443,16 +609,10 @@ const EditProfile = () => {
               <div className="rounded-[24px] p-6">
                 {/* Toggle Header */}
                 <div className="flex items-center justify-between rounded-[24px]">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Contact info
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -461,14 +621,16 @@ const EditProfile = () => {
                       onChange={() => setContactToggle(!contactToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        contactToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        contactToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -526,16 +688,10 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
-                  <label
-
-                    className="text-[32px] font-bold text-black"
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Shouts/ Media
                   </label>
-                  <label
-
-                    className="relative cursor-pointer"
-                  >
+                  <label className="relative cursor-pointer">
                     <input
                       type="checkbox"
                       id="bio-toggle"
@@ -544,14 +700,16 @@ const EditProfile = () => {
                       onChange={() => setShoutsToggle(!shoutsToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        shoutsToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -571,23 +729,20 @@ const EditProfile = () => {
           <div className="flex-1 pb-6 h-auto md:max-h-[calc(100vh-48px)] md:overflow-y-auto">
             <h2 className="text-xl font-semibold mb-4">Add Content</h2>
             <p className="text-gray-600 text-sm mb-6">
-              Interact with the menu elements below. Let's first create
-              profile elements on the left to open dynamic support page and
-              set them.
+              Interact with the menu elements below. Let's first create profile
+              elements on the left to open dynamic support page and set them.
             </p>
 
             <div className="flex flex-col space-y-4">
               {sections.map((section, index) => (
-                <div>
+                <div key={index}>
                   <h1>{section.heading}</h1>
                   <div
-                    key={index}
                     className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
                     onClick={section.onClick}
                   >
                     <div className="flex items-center gap-3">
                       <img src={section.image} alt={section.title} />
-
                       <div>
                         <h3 className="font-medium text-white">
                           {section.title}
@@ -605,7 +760,6 @@ const EditProfile = () => {
               ))}
             </div>
           </div>
-
         </div>
       </div>
 
@@ -616,137 +770,222 @@ const EditProfile = () => {
       />
 
       {/* Modals */}
-      <Dialog.Root open={isBigThumbnailOpen} onOpenChange={setIsBigThumbnailOpen}>
-        <Dialog.Portal >
+
+      <Dialog.Root
+        open={isBigThumbnailOpen}
+        onOpenChange={setIsBigThumbnailOpen}
+      >
+        <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
-            {/* Cross Icon */}
-            <Dialog.Close asChild>
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
-              >
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
-                </svg>
-              </button>
-            </Dialog.Close>
-            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
-              Add Big Thumbnail link
-            </Dialog.Title>
-            {/* Modal body content here */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Title</p>
-                <Input
-                  type="text"
-                  placeholder="Enter title"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">URL</p>
-                <Input
-                  type="text"
-                  placeholder="Enter URL"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Image (Optional)</p>
-                <Input
-                  type="text"
-                  placeholder="Upload thumbnail"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <p className="text-white">Background</p>
-
-                  <div
-                    className="p-[2px] rounded-full inline-block bg-white"
-
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 h-[630px] w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white shadow-lg focus:outline-none flex flex-col">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4 rounded-t-2xl flex justify-between items-center">
+              <Dialog.Title className="text-2xl font-bold text-white">
+                Add Big Thumbnail link
+              </Dialog.Title>
+              <Dialog.Close asChild>
+                <button
+                  className="text-white hover:text-gray-300 focus:outline-none"
+                  aria-label="Close"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
                   >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 6l12 12M6 18L18 6"
+                    />
+                  </svg>
+                </button>
+              </Dialog.Close>
+            </div>
+
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide  bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4">
+              <div className="flex flex-col gap-3">
+                {/* Title Input */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-white">Title</p>
+                  <Input
+                    type="text"
+                    placeholder="Enter title"
+                    value={bigThumbTitle}
+                    onChange={(e) => setBigThumbTitle(e.target.value)}
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                  />
+                </div>
+                {/* URL Input */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-white">URL</p>
+                  <Input
+                    type="text"
+                    placeholder="Enter URL"
+                    value={bigThumbUrl}
+                    onChange={(e) => setBigThumbUrl(e.target.value)}
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                  />
+                </div>
+
+                {/* Image Upload */}
+                <div className="flex flex-col gap-1">
+                  <div>
+                    <h1 className="text-2xl text-white">
+                      Image/icon(optional)
+                    </h1>
                     <div
-                      className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full"
-                      style={{
-                        backgroundClip: 'padding-box',
-                      }}
+                      className="flex gap-3 cursor-pointer"
+                      onClick={() => fileInputRef.current?.click()}
                     >
-                      <button
-                        onClick={() => setActiveTab('Solid')}
-                        className={`px-2 rounded-full  text-[20px] font-normal transition-all duration-200 ${activeTab === 'Solid'
-                          ? 'bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white'
-                          : 'hover:bg-white/10'
-                          }`}
-                      >
-                        Solid
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('Gradient')}
-                        className={`px-2 rounded-full  text-[20px] font-normal transition-all duration-200 ${activeTab === 'Gradient'
-                          ? 'bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white'
-                          : 'hover:bg-white/10'
-                          }`}
-                      >
-                        Gradient
-                      </button>
+                      <FaRegImage className="text-3xl text-white" />
+                      <p className="text-2xl text-white">Uploads thumbnail</p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={handleBigThumbFileChange}
+                        className="hidden"
+                      />
                     </div>
-
                   </div>
                 </div>
-                <div className="h-8">
-                  {selectedColor ? (
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-8 h-8 rounded-full border-2 border-white"
-                        style={{ backgroundColor: selectedColor }}
-                        title={selectedColor}
-                      ></div>
-                      <span className="text-white text-sm">{selectedColor}</span>
-                    </div>
 
-                  ) : (
-                    <div className="text-white">No color selected</div>
-                  )}
+                {/* Thumbnail Type */}
+                <div className="flex flex-col gap-1">
+                  <p className="text-white">Thumbnail Type</p>
+                  <select
+                    value={bigThumbType}
+                    onChange={(e) => setBigThumbType(e.target.value)}
+                    className="flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border text-white"
+                  >
+                    <option value="" disabled>
+                      Select thumbnail type
+                    </option>
+                    <option className="bg-green-300" value="big">
+                      Big Thumbnail
+                    </option>
+                    <option className="bg-green-300" value="small">
+                      Small Thumbnail
+                    </option>
+                    <option className="bg-green-300" value="none">
+                      No Thumbnail
+                    </option>
+                  </select>
                 </div>
-                <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border-1 border-white rounded-lg p-2 shadow-lg">
-                  <p className="text-white mb-1">Present Colors</p>
-                  <div className="flex flex-wrap gap-2 ">
-                    {colors.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedColor(color)}
-                        className="w-8 h-8 rounded-full border-1 hover:border-white transition-colors duration-200"
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      ></button>
-                    ))}
+                {/* Color Picker */}
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-between">
+                    <p className="text-white">Background</p>
+                    <div className="p-[2px] rounded-full inline-block bg-white">
+                      <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
+                        <button
+                          onClick={() => setActiveTab("Solid")}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
+                            activeTab === "Solid"
+                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                              : "hover:bg-white/10"
+                          }`}
+                        >
+                          Solid
+                        </button>
+                        <button
+                          onClick={() => setActiveTab("Gradient")}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
+                            activeTab === "Gradient"
+                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                              : "hover:bg-white/10"
+                          }`}
+                        >
+                          Gradient
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
+                  {/* Color Info */}
+                  <div className="h-8">
+                    {selectedColor ? (
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-8 h-8 rounded-full border-2 border-white"
+                          style={{ backgroundColor: selectedColor }}
+                          title={selectedColor}
+                        ></div>
+                        <span className="text-white text-sm">
+                          {selectedColor}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="text-white">No color selected</div>
+                    )}
+                  </div>
+
+                  {/* Color Options */}
+                  <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border border-white rounded-lg p-2 shadow-lg">
+                    <p className="text-white mb-1">Present Colors</p>
+                    <div className="flex flex-wrap gap-2">
+                      {colors.map((color, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedColor(color)}
+                          className="w-8 h-8 rounded-full border hover:border-white transition-colors duration-200"
+                          style={{ backgroundColor: color }}
+                          title={color}
+                        ></button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
+            {/* Footer with Preview and Button */}
+            <div className="px-6 py-4 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] rounded-b-2xl flex flex-col gap-3">
               <div className="flex flex-col gap-1">
                 <p className="text-white">Preview</p>
-                <Input
-                  type="text"
-                  placeholder="Your Title"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
+                <div
+                  className="py-24 border shadow-lg border-white rounded-lg flex items-center justify-center"
+                  style={{
+                    background:
+                      selectedColor && activeTab === "Solid"
+                        ? selectedColor
+                        : "linear-gradient(to right, #7ecfa7, #53886c)",
+                  }}
+                >
+                  {bigThumbPreview ? (
+                    <img
+                      src={bigThumbPreview}
+                      alt="Thumbnail Preview"
+                      className="h-32 object-contain rounded-lg"
+                    />
+                  ) : bigThumbImage ? (
+                    <img
+                      src={bigThumbImage}
+                      alt="Thumbnail Preview"
+                      className="h-32 object-contain rounded-lg"
+                      onError={(e) => (e.currentTarget.style.display = "none")}
+                    />
+                  ) : null}
+                </div>
               </div>
-
-            </div>
-            <div className="mt-6">
               <button
                 className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
-                onClick={() => setIsBigThumbnailOpen(false)}
+                onClick={() =>
+                  handleAddBigThumbnail(
+                    bigThumbTitle,
+                    bigThumbUrl,
+                    bigThumbPreview || bigThumbImage,
+                    bigThumbType,
+                    selectedColor
+                  )
+                }
+                disabled={isBioUpdating}
               >
-                Add
+                {isBioUpdating ? "Adding..." : "Add"}
               </button>
             </div>
           </Dialog.Content>
@@ -754,7 +993,7 @@ const EditProfile = () => {
       </Dialog.Root>
 
       <Dialog.Root open={isaddMultiLink} onOpenChange={setIsAddMultiLink}>
-        <Dialog.Portal >
+        <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
           <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
             {/* Cross Icon */}
@@ -763,8 +1002,18 @@ const EditProfile = () => {
                 className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
                 aria-label="Close"
               >
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
                 </svg>
               </button>
             </Dialog.Close>
@@ -802,10 +1051,12 @@ const EditProfile = () => {
                   <p className="text-[16px] font-normal text-white">
                     Upload thumbnail Photo
                   </p>
-                  <p className="text-[12px] font-normal text-white text-center">Use a size that’s at least 500 x 500 pixels and 10 MB or less</p>
+                  <p className="text-[12px] font-normal text-white text-center">
+                    Use a size that’s at least 500 x 500 pixels and 10 MB or
+                    less
+                  </p>
                 </div>
               </div>
-
             </div>
             <div className="mt-6">
               <button
@@ -819,8 +1070,8 @@ const EditProfile = () => {
         </Dialog.Portal>
       </Dialog.Root>
 
-      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
-        <Dialog.Portal >
+      <Dialog.Root open={isAddBio} onOpenChange={setIsAddBio}>
+        <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
           <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
             {/* Cross Icon */}
@@ -829,8 +1080,72 @@ const EditProfile = () => {
                 className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
                 aria-label="Close"
               >
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
+              Add Bio Link
+            </Dialog.Title>
+            {/* Modal body content here */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Post</p>
+                <textarea
+                  placeholder="Write your post here..."
+                  rows={10}
+                  value={bioText}
+                  onChange={(e) => setBioText(e.target.value)}
+                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                ></textarea>
+              </div>
+            </div>
+            <div className="mt-6">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                onClick={handleBioUpdate}
+                disabled={isBioUpdating}
+              >
+                {isBioUpdating ? "Updating..." : "Add"}
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            {/* Cross Icon */}
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
                 </svg>
               </button>
             </Dialog.Close>
@@ -839,12 +1154,9 @@ const EditProfile = () => {
             </Dialog.Title>
             {/* Modal body content here */}
             <div className="flex flex-col gap-3">
-
               <div className="flex flex-col gap-1">
                 <p className="text-white">Select Type</p>
-                <select
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[16px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border text-white"
-                >
+                <select className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[16px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border text-white">
                   <option value="" disabled selected>
                     Choose type
                   </option>
@@ -893,10 +1205,12 @@ const EditProfile = () => {
                   <p className="text-[16px] font-normal text-white">
                     Upload thumbnail Photo
                   </p>
-                  <p className="text-[12px] font-normal text-white text-center">Use a size that’s at least 500 x 500 pixels and 10 MB or less</p>
+                  <p className="text-[12px] font-normal text-white text-center">
+                    Use a size that’s at least 500 x 500 pixels and 10 MB or
+                    less
+                  </p>
                 </div>
               </div>
-
             </div>
             <div className="mt-6">
               <button
@@ -910,8 +1224,6 @@ const EditProfile = () => {
         </Dialog.Portal>
       </Dialog.Root>
     </div>
-
-
   );
 };
 
