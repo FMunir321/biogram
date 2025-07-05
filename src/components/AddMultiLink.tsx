@@ -73,7 +73,7 @@ const AddMultiLink: React.FC = () => {
               Use a size that's at least 500 x 500 pixels and 10 MB or less
             </p>
           </div>
-       <Link to="/addmerge">
+       <Link to="/add-merge">
           <button 
             type="submit" 
             className="bg-white text-black rounded-lg w-full p-2 hover:bg-white"

@@ -60,7 +60,7 @@ const AddMerch: React.FC = () => {
         </div>
 
         {/* Add Button */}
-        <Link to="/profilelink">
+        <Link to="/profile-link">
         <button className="w-full bg-white text-black font-bold py-3 rounded hover:bg-gray-200 transition">
           Add
         </button>
