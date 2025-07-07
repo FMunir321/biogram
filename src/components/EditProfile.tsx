@@ -476,29 +476,58 @@ const EditProfile = () => {
                   </label>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 w-full">
-                  {bigThumbnails.map((item) => (
-                    <div
-                      key={item._id}
-                      className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
-                    >
-                      <img
-                        src={
-                          item.thumbnailImage
-                            ? item.thumbnailImage.startsWith("data:image")
-                              ? item.thumbnailImage
-                              : `http://localhost:5000${item.thumbnailImage}`
-                            : "/default-thumbnail.png"
-                        }
-                        alt={item.title}
-                        className="object-contain h-48 w-full  mb-2 rounded"
-                      />
+                <div className="w-full space-y-4">
+                  {/* Large Thumbnails - One per row */}
+                  {bigThumbnails
+                    .filter((item) => item.type === "large")
+                    .map((item) => (
+                      <div
+                        key={item._id}
+                        className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                      >
+                        <img
+                          src={
+                            item.thumbnailImage
+                              ? item.thumbnailImage.startsWith("data:image")
+                                ? item.thumbnailImage
+                                : `http://localhost:5000${item.thumbnailImage}`
+                              : "/default-thumbnail.png"
+                          }
+                          alt={item.title}
+                          className="object-contain h-48 w-full mb-2 rounded"
+                        />
+                        <p className="text-[16px] font-normal text-white">
+                          {item.title}
+                        </p>
+                      </div>
+                    ))}
 
-                      <p className="text-[16px] font-normal text-white">
-                        {item.title}
-                      </p>
-                    </div>
-                  ))}
+                  {/* Small Thumbnails - 2 columns */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {bigThumbnails
+                      .filter((item) => item.type === "small")
+                      .map((item) => (
+                        <div
+                          key={item._id}
+                          className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#a0e7b1] to-[#3f7a5a]"
+                        >
+                          <img
+                            src={
+                              item.thumbnailImage
+                                ? item.thumbnailImage.startsWith("data:image")
+                                  ? item.thumbnailImage
+                                  : `http://localhost:5000${item.thumbnailImage}`
+                                : "/default-thumbnail.png"
+                            }
+                            alt={item.title}
+                            className="object-contain h-24 w-24 mb-2 rounded"
+                          />
+                          <p className="text-[14px] font-normal text-white">
+                            {item.title}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
                 </div>
 
                 <div
@@ -625,18 +654,6 @@ const EditProfile = () => {
                   </p>
                 </div>
                 {/* Small Thumbnail Grid */}
-                <div className="flex flex-col md:flex-row w-[50%] gap-4 m-2">
-                  <div className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
-                    <img
-                      src={Thumbnail}
-                      alt={`SmallThumbnail `}
-                      className="object-contain h-16 mb-2"
-                    />
-                    <p className="text-[16px] font-normal text-white text-center">
-                      Add Small Thumbnail link
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -1078,8 +1095,6 @@ const EditProfile = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-
-
     </div>
   );
 };
