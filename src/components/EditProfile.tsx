@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from "react";
 import characterImg from "../../public/assets/aleximage.png";
 import CustomLinksTab from "../components/CustomLinksTab";
@@ -15,6 +16,7 @@ import api from "@/service/api";
 // import "../App.css";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
+import axios from "axios";
 const colors = [
   "#7ecfa7",
   "#548a6e",
@@ -35,6 +37,7 @@ type UserData = {
   fullName: string;
   username: string;
   profileImage: string;
+  thumbnailImage: string;
 };
 
 const EditProfile = () => {
@@ -48,17 +51,22 @@ const EditProfile = () => {
   const [contactToggle, setContactToggle] = useState(false);
   const [shoutsToggle, setShoutsToggle] = useState(false);
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
   const [isAddBio, setIsAddBio] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMerch, setIsAddMerch] = useState(false);
   const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
   const [bioText, setBioText] = useState(""); // 1. Add state for bio
   const [isBioUpdating, setIsBioUpdating] = useState(false);
+  const [bigThumbnails, setBigThumbnails] = useState<any[]>([]);
+  const [bigThumbType, setBigThumbType] = useState("");
   const [bigThumbTitle, setBigThumbTitle] = useState("");
   const [bigThumbUrl, setBigThumbUrl] = useState("");
   const [bigThumbImage, setBigThumbImage] = useState("");
+  const userId = localStorage.getItem("userId");
 
   const sections = [
     {
@@ -81,18 +89,18 @@ const EditProfile = () => {
       image: "/public/assets/Shopingbag.png",
     },
   ];
+
   const imageToShow = uploadedImg || characterImg;
 
   const [bigThumbPreview, setBigThumbPreview] = useState<string | null>(null);
 
-  // Update your file input handler for the thumbnail:
   const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => {
       setBigThumbPreview(reader.result as string);
-      setBigThumbImage(""); // Clear text input if using image
+      setBigThumbImage("");
     };
     reader.readAsDataURL(file);
   };
@@ -117,7 +125,6 @@ const EditProfile = () => {
   }, []);
 
   const [isUploading, setIsUploading] = useState(false);
-  // ...existing code...
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -173,9 +180,6 @@ const EditProfile = () => {
     }
   };
 
-  const [bigThumbType, setBigThumbType] = useState("");
-
-  // Update your handler to use bigThumbType and add validation:
   const handleAddBigThumbnail = async (
     title: string,
     url: string,
@@ -191,8 +195,8 @@ const EditProfile = () => {
     setIsBioUpdating(true);
     try {
       const token = Cookies.get("token");
-      await api.post(
-        "/api/thumbnails",
+      await axios.post(
+        "http://localhost:5000/api/thumbnails",
         {
           title,
           url,
@@ -206,8 +210,7 @@ const EditProfile = () => {
           },
         }
       );
-      setIsBigThumbnailOpen(false); // Close modal on success
-      // Reset fields
+      setIsBigThumbnailOpen(false);
       setBigThumbTitle("");
       setBigThumbUrl("");
       setBigThumbImage("");
@@ -221,6 +224,24 @@ const EditProfile = () => {
       setIsBioUpdating(false);
     }
   };
+
+  useEffect(() => {
+    const fetchBigThumbnails = async () => {
+      try {
+        const token = Cookies.get("token");
+        const res = await axios.get(
+          `http://localhost:5000/api/thumbnails/user/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setBigThumbnails(res.data);
+      } catch (err) {
+        console.error("Error fetching thumbnails:", err);
+      }
+    };
+    fetchBigThumbnails();
+  }, [userId]);
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
@@ -455,17 +476,29 @@ const EditProfile = () => {
                   </label>
                 </div>
 
-                {/* Big Thumbnail Section */}
+                <div className="grid grid-cols-1 gap-4 w-full">
+                  {bigThumbnails.map((item) => (
+                    <div
+                      key={item._id}
+                      className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                    >
+                      <img
+                        src={
+                          item.thumbnailImage
+                            ? item.thumbnailImage.startsWith("data:image")
+                              ? item.thumbnailImage
+                              : `http://localhost:5000${item.thumbnailImage}`
+                            : "/default-thumbnail.png"
+                        }
+                        alt={item.title}
+                        className="object-contain h-48 w-full  mb-2 rounded"
+                      />
 
-                <div className="m-2 py-6 px-4 rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
-                  <img
-                    src={Thumbnail}
-                    alt="Big Thumbnail"
-                    className="object-contain h-20 mb-2"
-                  />
-                  <p className="text-[16px] font-normal text-white">
-                    Add Big Thumbnail link
-                  </p>
+                      <p className="text-[16px] font-normal text-white">
+                        {item.title}
+                      </p>
+                    </div>
+                  ))}
                 </div>
 
                 <div
@@ -483,7 +516,10 @@ const EditProfile = () => {
                 </div>
 
                 {/* Small Thumbnail Grid */}
-                <div className="flex flex-col md:flex-row w-full gap-4 m-2">
+                <div
+                  className="flex flex-col md:flex-row w-full gap-4 m-2"
+                  onClick={() => setIsBigThumbnailOpen(true)}
+                >
                   {[1, 2].map((_, idx) => (
                     <div
                       key={idx}
@@ -593,7 +629,7 @@ const EditProfile = () => {
                   <div className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
                     <img
                       src={Thumbnail}
-                      alt={`Small Thumbnail `}
+                      alt={`SmallThumbnail `}
                       className="object-contain h-16 mb-2"
                     />
                     <p className="text-[16px] font-normal text-white text-center">
@@ -865,14 +901,11 @@ const EditProfile = () => {
                     <option value="" disabled>
                       Select thumbnail type
                     </option>
-                    <option className="bg-green-300" value="big">
-                      Big Thumbnail
+                    <option className="bg-green-300" value="large">
+                      large Thumbnail
                     </option>
                     <option className="bg-green-300" value="small">
                       Small Thumbnail
-                    </option>
-                    <option className="bg-green-300" value="none">
-                      No Thumbnail
                     </option>
                   </select>
                 </div>
@@ -992,84 +1025,6 @@ const EditProfile = () => {
         </Dialog.Portal>
       </Dialog.Root>
 
-      <Dialog.Root open={isaddMultiLink} onOpenChange={setIsAddMultiLink}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
-            {/* Cross Icon */}
-            <Dialog.Close asChild>
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 6l12 12M6 18L18 6"
-                  />
-                </svg>
-              </button>
-            </Dialog.Close>
-            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
-              Add Multi link
-            </Dialog.Title>
-            {/* Modal body content here */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Embed Link</p>
-                <Input
-                  type="text"
-                  placeholder="Embed link"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Title</p>
-                <Input
-                  type="text"
-                  placeholder="title"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Cover</p>
-                <div className=" py-6 border shadow-lg border-white rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
-                  <img
-                    src={Thumbnail}
-                    alt="Big Thumbnail"
-                    className="object-contain h-20 mb-2"
-                  />
-                  <p className="text-[16px] font-normal text-white">
-                    Upload thumbnail Photo
-                  </p>
-                  <p className="text-[12px] font-normal text-white text-center">
-                    Use a size that’s at least 500 x 500 pixels and 10 MB or
-                    less
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
-                onClick={() => setIsBigThumbnailOpen(false)}
-              >
-                Add
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
-
       <Dialog.Root open={isAddBio} onOpenChange={setIsAddBio}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
@@ -1124,105 +1079,7 @@ const EditProfile = () => {
         </Dialog.Portal>
       </Dialog.Root>
 
-      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
-            {/* Cross Icon */}
-            <Dialog.Close asChild>
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 6l12 12M6 18L18 6"
-                  />
-                </svg>
-              </button>
-            </Dialog.Close>
-            <Dialog.Title className="text-2xl font-bold mb-4 text-white">
-              Add Multi link
-            </Dialog.Title>
-            {/* Modal body content here */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Select Type</p>
-                <select className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[16px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border text-white">
-                  <option value="" disabled selected>
-                    Choose type
-                  </option>
-                  <option value="youtube">YouTube</option>
-                  <option value="vimeo">Vimeo</option>
-                  <option value="spotify">Spotify</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
 
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Embed Link</p>
-                <Input
-                  type="text"
-                  placeholder="Embed link"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Title</p>
-                <Input
-                  type="text"
-                  placeholder="title"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">$USD</p>
-                <Input
-                  type="text"
-                  placeholder="Payment"
-                  className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Cover</p>
-                <div className=" py-6 border shadow-lg border-white rounded-lg flex flex-col w-full items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]">
-                  <img
-                    src={Thumbnail}
-                    alt="Big Thumbnail"
-                    className="object-contain h-20 mb-2"
-                  />
-                  <p className="text-[16px] font-normal text-white">
-                    Upload thumbnail Photo
-                  </p>
-                  <p className="text-[12px] font-normal text-white text-center">
-                    Use a size that’s at least 500 x 500 pixels and 10 MB or
-                    less
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
-                onClick={() => setIsBigThumbnailOpen(false)}
-              >
-                Add
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
     </div>
   );
 };
