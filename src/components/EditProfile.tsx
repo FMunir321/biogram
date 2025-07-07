@@ -17,6 +17,7 @@ import api from "@/service/api";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import axios from "axios";
+import { RxCross2 } from "react-icons/rx";
 const colors = [
   "#7ecfa7",
   "#548a6e",
@@ -242,6 +243,19 @@ const EditProfile = () => {
     };
     fetchBigThumbnails();
   }, [userId]);
+
+
+  const handleDelete = async (id: string) => {
+    try {
+      const token = Cookies.get("token");
+      await axios.delete(`http://localhost:5000/api/thumbnails/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setBigThumbnails((prev) => prev.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Error deleting thumbnail:", err);
+    }
+  };
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
@@ -478,6 +492,7 @@ const EditProfile = () => {
 
                 <div className="w-full space-y-4">
                   {/* Large Thumbnails - One per row */}
+
                   {bigThumbnails
                     .filter((item) => item.type === "large")
                     .map((item) => (
@@ -485,6 +500,11 @@ const EditProfile = () => {
                         key={item._id}
                         className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
                       >
+                        <div className="flex justify-end ml-[390px] mt-[-15px]">
+                          <RxCross2 className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition" 
+                           onClick={() => handleDelete(item._id)}
+                          />
+                        </div>
                         <img
                           src={
                             item.thumbnailImage
@@ -511,6 +531,15 @@ const EditProfile = () => {
                           key={item._id}
                           className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#a0e7b1] to-[#3f7a5a]"
                         >
+                          <div className="flex justify-end ml-[190px] mt-[-10px]">
+                            <RxCross2 className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                             onClick={() => handleDelete(item._id)}
+                            />
+                    
+                          </div>
+
+
+
                           <img
                             src={
                               item.thumbnailImage
