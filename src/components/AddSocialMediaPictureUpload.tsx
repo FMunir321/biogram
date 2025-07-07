@@ -4,9 +4,8 @@ import alexjamesimage from "../../public/assets/aleximage.png";
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import camerapicture from "../../public/assets/camerapic.png";
 import { useNavigate } from "react-router-dom";
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 import api from "@/service/api";
 
 const AddSocialMediaPictureUpload = () => {
@@ -48,16 +47,12 @@ const AddSocialMediaPictureUpload = () => {
     setUploading(true);
     try {
       const token = Cookies.get("token");
-      await api.patch(
-        "/api/user/profile-image",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await api.patch("/api/user/profile-image", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
       navigate("/search");
     } catch (err: any) {
       setError(
@@ -76,24 +71,20 @@ const AddSocialMediaPictureUpload = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 items-center justify-center">
+    <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,#98e6c3,#4a725f)] p-4 md:p-6 items-center justify-center">
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
         {/* Left Section */}
         <div className="w-full lg:w-[960px] min-h-[850px] rounded-[32px] p-8 flex flex-col justify-between items-center">
           <div className="flex flex-col items-start">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight text-left">
-              Welcome
-              <br />
-              Alex!
+              Welcome <br /> Alex!
             </h1>
-
             <p className="text-base md:text-xl text-white mb-2 text-left">
               Let's personalize your linkme profile
             </p>
             <p className="text-base md:text-xl text-white font-bold mb-8 text-left">
               Add your profile Picture
             </p>
-
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
               <div className="w-[200px] h-[200px] bg-white/30 rounded-full flex items-center justify-center overflow-hidden">
                 <img
@@ -130,14 +121,14 @@ const AddSocialMediaPictureUpload = () => {
           }}
         >
           <div
-            className="p-4 rounded-[30px] bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)]"
+            className="p-4 rounded-[30px] bg-[linear-gradient(to_bottom_right,#98e6c3,#4a725f)]"
             style={{
               boxShadow: "0px 0px 20.2px 0px #00000040",
               backdropFilter: "blur(21.2px)",
               minHeight: "857px",
             }}
           >
-            <div className="bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] rounded-[32px] md:h-[857px] relative overflow-hidden">
+            <div className="bg-[linear-gradient(to_bottom_right,#98e6c3,#4a725f)] rounded-[32px] md:h-[857px] relative overflow-hidden">
               {/* Tabs */}
               <div className="flex items-end justify-end p-4 min-w-[238px]">
                 <div
@@ -175,23 +166,21 @@ const AddSocialMediaPictureUpload = () => {
                     <p className="text-lg text-white/90">@{username}</p>
                   </div>
 
-                  <div className="flex flex-col gap-4 mb-6 w-full">
-                    {[1, 2].map((_, idx) => (
-                      <div
-                        key={idx}
-                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center"
-                      >
-                        <div className="flex flex-col items-center gap-4">
-                          <img
-                            src={rightsideemojiimage}
-                            alt="Right Side Emoji"
-                            className="w-[64px] h-[64px]"
-                          />
-                          <p className="text-white text-base">No shouts</p>
-                        </div>
+                  {[1, 2].map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center mb-4"
+                    >
+                      <div className="flex flex-col items-center gap-4">
+                        <img
+                          src={rightsideemojiimage}
+                          alt="Right Side Emoji"
+                          className="w-[64px] h-[64px]"
+                        />
+                        <p className="text-white text-base">No shouts</p>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
 
                   <div className="w-full mb-6">
                     <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
