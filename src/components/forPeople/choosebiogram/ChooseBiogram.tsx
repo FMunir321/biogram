@@ -4,13 +4,7 @@ import user2 from "../../../../public/assets/Rectangle80.png";
 import user3 from "../../../../public/assets/Rectangle77.png";
 import user4 from "../../../../public/assets/Rectangle76.png";
 import user5 from "../../../../public/assets/Rectangle78.png";
-import {
-  FaInstagram,
-  FaFacebookF,
-  FaTwitter,
-  FaWhatsapp,
-  FaTiktok
-} from 'react-icons/fa';
+import { FaInstagram, FaFacebookF, FaTwitter, FaWhatsapp, FaTiktok } from 'react-icons/fa';
 
 const people = [
   {
@@ -62,22 +56,16 @@ const ChooseBiogram: React.FC = () => {
           Whether you're an individual or a growing enterprise, Biogram helps you turn everyday digital interactions into lasting relationships and real-world results.
         </p>
 
-        {/* Cards Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 justify-items-center">
+        {/* Horizontal Scrollable Cards Section */}
+        <div className="overflow-x-auto scroll-smooth whitespace-nowrap pb-4">
           {people.map((person, index) => (
             <div
               key={index}
-              className="w-60 h-[360px] bg-white rounded-3xl shadow-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 relative"
+              className="w-60 h-[360px] bg-white rounded-3xl shadow-xl overflow-hidden transform transition-transform duration-300 hover:scale-105 inline-block mx-2"
             >
-              <p className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 w-[100px] text-white absolute top-0 left-0" style={{
-                clipPath: 'polygon(0 0, 90% 0, 100% 100%, 0% 100%)'
-              }}>
+              <p className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 w-[100px] text-white absolute top-0 left-0" style={{ clipPath: 'polygon(0 0, 90% 0, 100% 100%, 0% 100%)' }}>
                 {person.role}
               </p>
-
-              {/* Ribbon */}
-
-              {/* Image */}
               <div
                 className="w-full h-1/2"
                 style={{
@@ -86,9 +74,6 @@ const ChooseBiogram: React.FC = () => {
                   backgroundPosition: 'center',
                 }}
               />
-              
-
-              {/* Info */}
               <div className="p-4 text-center bg-gradient-to-r from-[#98e6c3] to-[#4a725f] bg-opacity-90 h-1/2 flex flex-col justify-center">
                 <h3 className="text-lg font-bold text-white">{person.name}</h3>
                 <p className="text-sm text-white">{person.tag}</p>

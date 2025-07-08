@@ -17,8 +17,29 @@ import {
 import mock5 from "../../../../public/assets/fire.png";
 
 const ProfileCard = () => {
+  const handleFirstCardClick = () => {
+    const firstCard = document.getElementById("first-card");
+    if (firstCard) {
+      firstCard.scrollIntoView({ behavior: "smooth", inline: "center" });
+    } else {
+      console.error("Element not found!");
+    }
+  };
+
   return (
     <div className="hidden lg:block">
+      <style>
+        {`
+          @keyframes slide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+            100% { transform: translateX(0); }
+          }
+          .animate-slide {
+            animation: slide 5s infinite;
+          }
+        `}
+      </style>
       <div className="max-w-[1280px] mx-auto bg-white py-16 px-6 md:px-12 flex flex-col items-center text-center">
         <h2 className="text-3xl md:text-4xl font-bold max-w-2xl">
           Design Your Link That’s Truly You
@@ -30,9 +51,9 @@ const ProfileCard = () => {
         </p>
 
         {/* Preview Cards */}
-        <div className=" relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
+        <div className="relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl animate-slide">
           {/* Background Cards */}
-          <div className="absolute -left-40 mb-[500px]">
+          <div className="absolute -left-40 mb-[500px] hover:cursor-pointer" id="first-card" onClick={handleFirstCardClick}>
             <div className="absolute -left-16 w-80 h-[500px] bg-black rounded-lg">
               <Avatar className="w-48 h-[370px] mx-auto mt-5 ml-5">
                 <AvatarImage src={mock2} alt="Alex James" />
@@ -113,7 +134,6 @@ const ProfileCard = () => {
                 </Button>
 
                 {/* Social Icons Row with Transparent Rectangles */}
-                {/* Social Icons Row with Transparent Rectangles */}
                 <div className="mt-4 flex flex-col gap-2 w-full">
                   {[
                     { Icon: FaInstagram, label: "Instagram" },
@@ -150,7 +170,7 @@ const ProfileCard = () => {
                     return (
                       <div
                         key={idx}
-                        className={`w-10 h-10 scale-150  rounded-md border-2 border-transparent hover:border-pink-400 cursor-pointer flex items-center justify-center ${bgColors[idx]}`}
+                        className={`w-10 h-10 scale-150 rounded-md border-2 border-transparent hover:border-pink-400 cursor-pointer flex items-center justify-center ${bgColors[idx]}`}
                       >
                         <img
                           src={avatar}
