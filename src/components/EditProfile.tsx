@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef } from "react";
+import { useState, useRef,useCallback } from "react";
 import characterImg from "../../public/assets/aleximage.png";
 import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../../public/assets/lightbg.png";
@@ -13,11 +14,10 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import api from "@/service/api";
-// import "../App.css";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
-import axios from "axios";
 import { RxCross2 } from "react-icons/rx";
+import { HiDotsVertical } from "react-icons/hi";
 const colors = [
   "#7ecfa7",
   "#548a6e",
@@ -40,6 +40,10 @@ type UserData = {
   profileImage: string;
   thumbnailImage: string;
 };
+type MerchItem = {
+  _id: string;
+  title: string;
+};
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
@@ -55,7 +59,6 @@ const EditProfile = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
   const [isAddBio, setIsAddBio] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMerch, setIsAddMerch] = useState(false);
   const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
@@ -68,6 +71,19 @@ const EditProfile = () => {
   const [bigThumbUrl, setBigThumbUrl] = useState("");
   const [bigThumbImage, setBigThumbImage] = useState("");
   const userId = localStorage.getItem("userId");
+  const [bigThumbPreview, setBigThumbPreview] = useState<string | null>(null);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [category, setCategory] = useState("");
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [preview, setPreview] = useState("");
+  const [merchData, setMerchData] = useState<MerchItem[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const sections = [
     {
@@ -92,8 +108,6 @@ const EditProfile = () => {
   ];
 
   const imageToShow = uploadedImg || characterImg;
-
-  const [bigThumbPreview, setBigThumbPreview] = useState<string | null>(null);
 
   const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -125,8 +139,6 @@ const EditProfile = () => {
     fetchUser();
   }, []);
 
-  const [isUploading, setIsUploading] = useState(false);
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -134,7 +146,6 @@ const EditProfile = () => {
     setIsUploading(true);
     try {
       const token = Cookies.get("token");
-      // const userId = localStorage.getItem("userId");
       const formData = new FormData();
       formData.append("profileImage", file);
 
@@ -148,7 +159,6 @@ const EditProfile = () => {
       setUploadedImg(null);
     } catch (error) {
       console.error("Error uploading image:", error);
-      // Optionally show error to user
     } finally {
       setIsUploading(false);
     }
@@ -196,8 +206,8 @@ const EditProfile = () => {
     setIsBioUpdating(true);
     try {
       const token = Cookies.get("token");
-      await axios.post(
-        "http://localhost:5000/api/thumbnails",
+      await api.post(
+        "/api/thumbnails",
         {
           title,
           url,
@@ -230,12 +240,9 @@ const EditProfile = () => {
     const fetchBigThumbnails = async () => {
       try {
         const token = Cookies.get("token");
-        const res = await axios.get(
-          `http://localhost:5000/api/thumbnails/user/${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await api.get(`/api/thumbnails/user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setBigThumbnails(res.data);
       } catch (err) {
         console.error("Error fetching thumbnails:", err);
@@ -244,16 +251,119 @@ const EditProfile = () => {
     fetchBigThumbnails();
   }, [userId]);
 
-
   const handleDelete = async (id: string) => {
     try {
       const token = Cookies.get("token");
-      await axios.delete(`http://localhost:5000/api/thumbnails/${id}`, {
+      await api.delete(`/api/thumbnails/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBigThumbnails((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Error deleting thumbnail:", err);
+    }
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("category", category);
+    formData.append("url", url);
+    formData.append("title", title);
+    formData.append("Price", price);
+    if (thumbnail) {
+      formData.append("image", thumbnail);
+    }
+
+    try {
+      const token = Cookies.get("token");
+
+      const res = await api.post("/api/merch", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Uploaded Successfully!");
+      setIsAddMerch(false);
+      fetchMerch(); 
+    } catch (err) {
+      console.error(err);
+      alert("Upload Failed");
+    }
+  };
+
+const fetchMerch = useCallback(async () => {
+  try {
+    const token = Cookies.get("token");
+    const res = await api.get(`/api/merch/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setMerchData(res.data.merch);
+  } catch (err) {
+    console.error("Error fetching merch data:", err);
+  }
+}, [userId]);
+
+useEffect(() => {
+  fetchMerch();
+}, [fetchMerch]);
+
+
+// Function to handle deleting a merch item
+  const handleDeleteMerch = async (merchId: string) => {
+    try {
+      const token = Cookies.get("token");
+
+      const res = await api.delete(`/api/merch/${merchId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Delete response:", res.data);
+      setMerchData((prev) => prev.filter((item) => item._id !== merchId));
+    } catch (err) {
+      console.error("Error deleting merch item:", err);
+    }
+  };
+// Function to handle image selection and upload
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
+      setSelectedImages((prev) => [...prev, file]);
+      setImagePreviews((prev) => [...prev, previewUrl]);
+      handleUpload(file);
+    }
+  };
+// Function to handle image upload
+  const handleUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("galleryImage", file);
+
+    const token = Cookies.get("token");
+
+    try {
+      const response = await api.post("/api/gallery", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Upload success:", response.data);
+    } catch (error) {
+      console.error("Upload failed:", error);
     }
   };
 
@@ -401,7 +511,7 @@ const EditProfile = () => {
                   className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
                   disabled={isUploading}
                 >
-                  {isUploading ? "Uploading..." : "Add Photo"}
+                  {isUploading ? "Uploading..." : ""}
                 </button>
                 <input
                   type="file"
@@ -501,8 +611,9 @@ const EditProfile = () => {
                         className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
                       >
                         <div className="flex justify-end ml-[390px] mt-[-15px]">
-                          <RxCross2 className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition" 
-                           onClick={() => handleDelete(item._id)}
+                          <RxCross2
+                            className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => handleDelete(item._id)}
                           />
                         </div>
                         <img
@@ -532,13 +643,11 @@ const EditProfile = () => {
                           className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#a0e7b1] to-[#3f7a5a]"
                         >
                           <div className="flex justify-end ml-[190px] mt-[-10px]">
-                            <RxCross2 className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                             onClick={() => handleDelete(item._id)}
+                            <RxCross2
+                              className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                              onClick={() => handleDelete(item._id)}
                             />
-                    
                           </div>
-
-
 
                           <img
                             src={
@@ -585,7 +694,7 @@ const EditProfile = () => {
                         if (idx === 0) {
                           setIsAddMultiLink(true);
                         } else {
-                          setIsAddMerch(true);
+                          setIsAddMultiLink(false);
                         }
                       }}
                       className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
@@ -615,7 +724,7 @@ const EditProfile = () => {
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
                   <label className="text-[32px] font-bold text-black">
-                    Merch (0 Items)
+                    Merch ({merchData.length})
                   </label>
                   <label className="relative cursor-pointer">
                     <input
@@ -639,8 +748,54 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
+                <>
+                  {merchData.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col md:flex-row items-center justify-between bg-[#72bb96] rounded-2xl p-4 shadow-lg space-y-4 md:space-y-0 mb-4"
+                    >
+                      <div className="text-center md:text-left">
+                        <p className="text-2xl font-semibold text-white">
+                          {item.title}
+                        </p>
+                        <p className="text-2xl font-semibold text-white mt-1">
+                          Item (1)
+                        </p>
+                      </div>
+
+                      <div className="relative">
+                        <div
+                          className="text-white text-2xl cursor-pointer"
+                          onClick={() =>
+                            setOpenIndex(openIndex === index ? null : index)
+                          }
+                        >
+                          <HiDotsVertical />
+                        </div>
+
+                        {openIndex === index && (
+                          <div className="absolute right-0 mt-2 space-y-2 flex flex-col bg-[#72bb96] text-black shadow-md rounded-md p-2 z-10">
+                            <button className="hover:bg-green-300 text-white text-2xl px-4 py-1 rounded">
+                              Edit
+                            </button>
+                            <button
+                              className="hover:bg-green-300 text-white text-2xl px-4 py-1 rounded"
+                              onClick={() => handleDeleteMerch(item._id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </>
+
                 <div className="flex flex-col md:flex-row items-center justify-between pb-6 px-6">
-                  <p className="text-[16px] font-normal text-[#EA00FF]">
+                  <p
+                    className="text-[16px] font-normal text-[#EA00FF]"
+                    onClick={() => setIsAddMerch(true)}
+                  >
                     Manage Merch
                   </p>
                 </div>
@@ -677,11 +832,53 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                <div className="flex flex-col md:flex-row items-center justify-between mb-5">
-                  <p className="text-[16px] font-normal text-black">
-                    Add Bio to your profile
-                  </p>
+                <div className="flex justify-center gap-3 ">
+
+                  <div className="flex flex-col items-center">
+                    {/* Add Photo Button */}
+                    <div className="flex justify-center items-center mb-5">
+                      <label className="cursor-pointer bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
+                        <div className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
+                      <img
+                        src={Thumbnail}
+                        alt="Small Thumbnail"
+                        className="object-contain h-16 mb-2"
+                      />
+                      </div>
+                        <p className="text-[16px] font-normal text-white text-center">
+                          Add photo
+                        </p>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleImageSelect}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+
+                    {/* Image Previews in rows of 3 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {imagePreviews.map((preview, index) => (
+                        <div
+                          key={index}
+                          className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center"
+                        >
+                          <img
+                            src={preview}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="object-cover w-32 h-32 rounded mb-2"
+                          />
+                          <p className="text-[16px] font-normal text-white text-center">
+                            Photo {index + 1}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
+
                 {/* Small Thumbnail Grid */}
               </div>
             </div>
@@ -1119,6 +1316,138 @@ const EditProfile = () => {
                 disabled={isBioUpdating}
               >
                 {isBioUpdating ? "Updating..." : "Add"}
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold text-white">
+              Manage Merch
+            </Dialog.Title>
+
+            <div className="flex flex-col gap-3 mt-4">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Select Type</p>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                >
+                  <option value="" disabled>
+                    Choose type
+                  </option>
+                  <option className="bg-[#72bb96]" value="youtube">
+                    YouTube
+                  </option>
+                  <option className="bg-[#72bb96]" value="vimeo">
+                    Vimeo
+                  </option>
+                  <option className="bg-[#72bb96]" value="spotify">
+                    Spotify
+                  </option>
+                  <option className="bg-[#72bb96]" value="other">
+                    Other
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Embed Link</p>
+                <Input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  type="text"
+                  placeholder="Embed link"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  placeholder="Title"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">$USD</p>
+                <Input
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  type="text"
+                  placeholder="Price"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Cover</p>
+                <label
+                  htmlFor="thumbnailUpload"
+                  className={`cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all ${
+                    preview
+                      ? "bg-cover bg-center"
+                      : "bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                  }`}
+                  style={{
+                    backgroundImage: preview ? `url(${preview})` : "none",
+                    minHeight: "200px",
+                  }}
+                >
+                  {!preview && (
+                    <>
+                      <p className="text-white">Upload thumbnail photo</p>
+                      <p className="text-white text-sm">
+                        500x500px, under 10MB
+                      </p>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    id="thumbnailUpload"
+                    accept="image/*"
+                    onChange={handleThumbnailChange}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
+                onClick={handleSubmit}
+              >
+                Add
               </button>
             </div>
           </Dialog.Content>
