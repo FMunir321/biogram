@@ -95,6 +95,7 @@ const Signup = () => {
       localStorage.setItem("email", response.data.email || email);
       localStorage.setItem("username", response.data.username || username);
       localStorage.setItem("fullName", response.data.fullName || fullName);
+      localStorage.setItem("otpToken", response.data.otpToken || "");
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

@@ -44,16 +44,21 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post("/api/auth/login", {
-        identifier: formData.identifier, 
+        identifier: formData.identifier,
         password: formData.password,
       });
-       const userId = response.data.userId;
-       localStorage.setItem("userId", userId);
+
+      const userId = response.data.userId;
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("otpToken", response.data.otpToken || "");
+
+      console.log(response.data);
+      
 
       console.log("Login Success:", response.data);
       alert("Login successful!");
       navigate("/otp");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login Error:", error.response?.data || error.message);
       alert("Login failed. Please check your credentials.");
@@ -103,7 +108,9 @@ const Login = () => {
                 type="text"
                 id="identifier"
                 value={formData.identifier}
-                onChange={(e) => handleInputChange("identifier", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("identifier", e.target.value)
+                }
                 onFocus={() => handleFocus("identifier")}
                 onBlur={() => handleBlur("identifier")}
                 className="w-full h-12 px-4 rounded-[10px] border border-[#E5E5E5] text-sm focus:outline-none focus:border-[#98e6c3] focus:ring-1 focus:ring-[#98e6c3] bg-white transition-all duration-200"
@@ -155,7 +162,11 @@ const Login = () => {
                 tabIndex={-1}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+                {showPassword ? (
+                  <EyeOffIcon size={20} />
+                ) : (
+                  <EyeIcon size={20} />
+                )}
               </button>
             </div>
 
@@ -165,7 +176,10 @@ const Login = () => {
                 id="terms"
                 className="mt-1 h-4 w-4 rounded border-[#E5E5E5] text-[#98e6c3] focus:ring-[#98e6c3]"
               />
-              <label htmlFor="terms" className="text-xs text-[#666666] leading-5">
+              <label
+                htmlFor="terms"
+                className="text-xs text-[#666666] leading-5"
+              >
                 By checking the box and tapping continue, you acknowledge that
                 you have read the{" "}
                 <Link to="/privacy-policy" className="text-[#1A1A1A] font-bold">

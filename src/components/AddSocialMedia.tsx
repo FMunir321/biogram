@@ -54,14 +54,14 @@ const AddSocialMedia = () => {
 
     try {
       const response = await api.get(
-        `http://localhost:5000/api/social-links/${userId}`,
+        `/api/social-links/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          params: {
-            userId: userId,
-          },
+          // params: {
+          //   userId: userId,
+          // },
         }
       );
 

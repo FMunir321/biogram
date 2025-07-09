@@ -27,9 +27,17 @@ const Otp = () => {
   const handleVerifyOtp = async () => {
     try {
       const userId = localStorage.getItem("userId");
+      const otpToken = localStorage.getItem("otpToken");
+      if (!userId || !otpToken) {
+        console.error("User ID or OTP token not found in localStorage.");
+        alert("Session expired. Please log in again.");
+        navigate("/login");
+        return;
+      }
       const payload = {
         userId: userId,
         otp: otp,
+        otpToken: otpToken,
       };
 
       const response = await api.post("/api/auth/verify-otp", payload);
