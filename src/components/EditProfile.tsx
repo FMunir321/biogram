@@ -44,6 +44,10 @@ type MerchItem = {
   _id: string;
   title: string;
 };
+interface GalleryImage {
+  _id: string;
+  imageUrl: string;
+}
 
 const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
@@ -63,7 +67,7 @@ const EditProfile = () => {
   const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [bioText, setBioText] = useState(""); // 1. Add state for bio
+  const [bioText, setBioText] = useState("");
   const [isBioUpdating, setIsBioUpdating] = useState(false);
   const [bigThumbnails, setBigThumbnails] = useState<any[]>([]);
   const [bigThumbType, setBigThumbType] = useState("");
@@ -79,14 +83,11 @@ const EditProfile = () => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
-  // const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
 
   const sections = [
     {
@@ -142,10 +143,10 @@ const EditProfile = () => {
     fetchUser();
   }, []);
 
+  //handle file change
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setIsUploading(true);
     try {
       const token = Cookies.get("token");
@@ -170,7 +171,7 @@ const EditProfile = () => {
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
-
+  // Function to handle the custom links tab
   const handleBioUpdate = async () => {
     setIsBioUpdating(true);
     try {
@@ -184,11 +185,9 @@ const EditProfile = () => {
           },
         }
       );
-      setIsAddBio(false); // Close modal on success
-      // Optionally, update userData state here if you want to reflect the new bio immediately
+      setIsAddBio(false);
     } catch (error) {
       console.error("Error updating bio:", error);
-      // Optionally show error to user
     } finally {
       setIsBioUpdating(false);
     }
@@ -201,7 +200,6 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
-    // Validation
     if (!title || !url || !type) {
       alert("Title, URL, and Thumbnail Type are required.");
       return;
@@ -240,7 +238,8 @@ const EditProfile = () => {
     }
   };
 
-  const fetchBigThumbnails = async () => {
+  // Function to fetch big thumbnails
+  const fetchBigThumbnails = useCallback(async () => {
     try {
       const token = Cookies.get("token");
       const res = await api.get(`/api/thumbnails/user/${userId}`, {
@@ -250,12 +249,14 @@ const EditProfile = () => {
     } catch (err) {
       console.error("Error fetching thumbnails:", err);
     }
-  };
+  }, [userId]); 
 
   useEffect(() => {
     fetchBigThumbnails();
-  }, [userId]);
+  }, [fetchBigThumbnails]);
 
+
+  // Function to handle deleting a thumbnail
   const handleDelete = async (id: string) => {
     try {
       const token = Cookies.get("token");
@@ -310,6 +311,8 @@ const EditProfile = () => {
     }
   };
 
+
+  // Function to fetch merch data
   const fetchMerch = useCallback(async () => {
     try {
       const token = Cookies.get("token");
@@ -346,6 +349,7 @@ const EditProfile = () => {
     }
   };
 
+  // Function to fetch uploaded images
   const fetchUploadedImages = async () => {
     const token = Cookies.get("token");
     const userId = localStorage.getItem("userId");
@@ -382,6 +386,8 @@ const EditProfile = () => {
     }
   };
 
+
+  // Function to handle image upload
   const handleUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("galleryImage", file);
@@ -404,6 +410,21 @@ const EditProfile = () => {
   useEffect(() => {
     fetchUploadedImages();
   }, []);
+
+  const handleDeleteImage = async (imageId: string) => {
+    const token = Cookies.get("token");
+
+    try {
+      await api.delete(`/api/gallery/${imageId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchUploadedImages();
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
@@ -520,8 +541,6 @@ const EditProfile = () => {
         }}
       >
         <div className="flex flex-col lg:flex-row lg:gap-5 2xl:gap-20 w-full">
-          {/* Left Side - Profile Image */}
-          {/* add this css below div for scroll bar  max-h-[calc(100vh-48px)] */}
           <div className="flex flex-col gap-4 md:w-[500px] h-auto md:h-full md:max-h-[calc(100vh-48px)] md:overflow-y-auto pr-2">
             {/* Add photo card */}
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
@@ -549,6 +568,7 @@ const EditProfile = () => {
                   className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
                   disabled={isUploading}
                 >
+                  Add Photo
                   {isUploading ? "Uploading..." : ""}
                 </button>
                 <input
@@ -877,9 +897,9 @@ const EditProfile = () => {
                       <label className="cursor-pointer bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
                         <div className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
                           <img
-                            src="/default-thumbnail.png"
-                            alt="Small Thumbnail"
-                            className="object-contain h-16 mb-2"
+                            src={Thumbnail}
+                            alt="Big Thumbnail"
+                            className="object-contain h-20 mb-2"
                           />
                         </div>
                         <p className="text-[16px] font-normal text-white text-center">
@@ -916,22 +936,24 @@ const EditProfile = () => {
 
                     {/* Uploaded Images From Server */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {uploadedImages.map((imageUrl, index) => (
+                      {uploadedImages.map((imageObj) => (
                         <div
-                          key={index}
-                          className="bg-[#4b5563] rounded-lg p-4 flex flex-col items-center"
+                          key={imageObj._id}
+                          className="bg-[#7ecfa7] rounded-lg p-4 flex flex-col items-center"
                         >
+                          <div className="flex justify-end ml-[100px] mt-[-15px]">
+                            <RxCross2
+                              className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                              onClick={() => handleDeleteImage(imageObj._id)}
+                            />
+                          </div>
                           <img
-                            src={
-                              imageUrl
-                                ? `http://3.111.146.115:5000/${imageUrl}`
-                                : "/default-image.png"
-                            }
-                            alt={`Uploaded ${index + 1}`}
+                            src={`http://3.111.146.115:5000/${imageObj.imageUrl}`}
+                            alt="Uploaded Image"
                             className="object-cover w-32 h-32 rounded mb-2"
                           />
                           <p className="text-[16px] font-normal text-white text-center">
-                            Uploaded {index + 1}
+                            Uploaded
                           </p>
                         </div>
                       ))}
