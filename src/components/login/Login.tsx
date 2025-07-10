@@ -51,6 +51,7 @@ const Login = () => {
       const userId = response.data.userId;
       localStorage.setItem("userId", userId);
       localStorage.setItem("otpToken", response.data.otpToken || "");
+      localStorage.setItem("isVerified", response.data.isVerified || "false");
 
       console.log(response.data);
       

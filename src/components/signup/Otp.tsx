@@ -16,17 +16,21 @@ const Otp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
     if (savedEmail) {
       setEmail(savedEmail);
     }
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
   }, []);
 
   const handleVerifyOtp = async () => {
     try {
-      const userId = localStorage.getItem("userId");
       const otpToken = localStorage.getItem("otpToken");
       if (!userId || !otpToken) {
         console.error("User ID or OTP token not found in localStorage.");
@@ -45,7 +49,14 @@ const Otp = () => {
 
       Cookies.set("token", token, { expires: 1 });
       console.log("Verification Success:", response.data);
-      navigate("/social-media");
+      const isVerified = localStorage.getItem("isVerified");
+
+      if (isVerified === "true") {
+        navigate("/search");
+      } else {
+        navigate("/social-media");
+      }
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
@@ -59,6 +70,20 @@ const Otp = () => {
       }
       alert("Invalid OTP or Server Error");
     }
+  };
+
+  const handleResendOtp = async () => {
+    setResendLoading(true);
+    setResendMessage("");
+    try {
+      await api.post("/api/auth/resend-otp", { userId, type: "login" }); // or "signup" or whatever is appropriate
+      setResendMessage("OTP resent! Please check your email.");
+    } catch (error) {
+      setResendMessage("Failed to resend OTP. Please try again.");
+    } finally {
+      setResendLoading(false);
+    }
+
   };
 
   return (
@@ -189,13 +214,17 @@ const Otp = () => {
           <p className="text-center font-poppins font-normal text-sm sm:text-base leading-[140%] text-[#1b1b1a] my-6 sm:my-8">
             It usually takes a few seconds to receive the code. If you don't
             receive the code.{" "}
-            <Link
-              to="/social-media"
+            <button
+              onClick={handleResendOtp}
+              disabled={resendLoading}
               className="text-[#53886C] font-bold text-base sm:text-lg md:text-xl font-poppins leading-[140%] hover:underline"
             >
-              Resend
-            </Link>
+              {resendLoading ? "Resending..." : "Resend OTP"}
+            </button>
           </p>
+          {resendMessage && (
+            <div className="text-sm text-center mt-2">{resendMessage}</div>
+          )}
         </div>
       </div>
     </div>
