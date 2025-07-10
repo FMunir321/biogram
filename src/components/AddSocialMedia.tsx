@@ -34,7 +34,7 @@ type SocialLink = {
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [links, setLinks] = useState<SocialLink[]>([]);
-    const [fullName, setFullName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
 
   const [selectedPlatform, setSelectedPlatform] = useState({
@@ -52,17 +52,14 @@ const AddSocialMedia = () => {
     const token = Cookies.get("token");
 
     try {
-      const response = await api.get(
-        `/api/social-links/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            userId: userId,
-          },
-        }
-      );
+      const response = await api.get(`/api/social-links/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          userId: userId,
+        },
+      });
 
       setLinks(response.data);
     } catch (error) {
@@ -70,8 +67,7 @@ const AddSocialMedia = () => {
     }
   };
 
-
-    useEffect(() => {
+  useEffect(() => {
     const savedFullName = localStorage.getItem("fullName");
     const savedUsername = localStorage.getItem("username");
     if (savedFullName) setFullName(savedFullName);
@@ -86,7 +82,7 @@ const AddSocialMedia = () => {
           Authorization: `Bearer ${token}`,
         },
       });
- 
+
       setLinks((prevLinks) => prevLinks.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error deleting link:", error);
@@ -141,7 +137,7 @@ const AddSocialMedia = () => {
               key={item._id}
               className="flex items-center justify-between mb-3"
             >
-              <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] shadow-md rounded-lg p-4 border border-gray-200 w-full ">
+              <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-[20px] shadow-md  p-4 border border-gray-200 w-full ">
                 <div>
                   <h1 className="text-white text-3xl font-semibold text-800 mb-2">
                     {item.platform}
@@ -443,10 +439,12 @@ const AddSocialMedia = () => {
             <div className="p-4 relative">
               {/* Mobile Layout - Only visible on sm screens */}
               <div className="flex flex-col md:hidden w-full">
-    <div className="mb-6">
-      <h2 className="text-3xl font-bold text-white mb-1">{fullName}</h2>
-      <p className="text-lg text-white/90">@{username}</p>
-    </div>
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold text-white mb-1">
+                    {fullName}
+                  </h2>
+                  <p className="text-lg text-white/90">@{username}</p>
+                </div>
 
                 <div className="flex flex-col gap-4 mb-6 w-full">
                   <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
