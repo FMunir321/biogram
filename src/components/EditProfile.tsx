@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef,useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import characterImg from "../../public/assets/aleximage.png";
 import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../../public/assets/lightbg.png";
@@ -82,8 +82,11 @@ const EditProfile = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
+  // const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const sections = [
     {
@@ -228,6 +231,7 @@ const EditProfile = () => {
       setBigThumbPreview(null);
       setBigThumbType("");
       setSelectedColor("");
+      fetchBigThumbnails();
     } catch (error) {
       console.error("Error adding big thumbnail:", error);
       alert("Failed to add thumbnail. Please try again.");
@@ -236,18 +240,19 @@ const EditProfile = () => {
     }
   };
 
+  const fetchBigThumbnails = async () => {
+    try {
+      const token = Cookies.get("token");
+      const res = await api.get(`/api/thumbnails/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setBigThumbnails(res.data);
+    } catch (err) {
+      console.error("Error fetching thumbnails:", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchBigThumbnails = async () => {
-      try {
-        const token = Cookies.get("token");
-        const res = await api.get(`/api/thumbnails/user/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setBigThumbnails(res.data);
-      } catch (err) {
-        console.error("Error fetching thumbnails:", err);
-      }
-    };
     fetchBigThumbnails();
   }, [userId]);
 
@@ -292,33 +297,38 @@ const EditProfile = () => {
       });
       alert("Uploaded Successfully!");
       setIsAddMerch(false);
-      fetchMerch(); 
+      fetchMerch();
+
+      setCategory("");
+      setUrl("");
+      setTitle("");
+      setPrice("");
+      setThumbnail(null);
     } catch (err) {
       console.error(err);
       alert("Upload Failed");
     }
   };
 
-const fetchMerch = useCallback(async () => {
-  try {
-    const token = Cookies.get("token");
-    const res = await api.get(`/api/merch/user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setMerchData(res.data.merch);
-  } catch (err) {
-    console.error("Error fetching merch data:", err);
-  }
-}, [userId]);
+  const fetchMerch = useCallback(async () => {
+    try {
+      const token = Cookies.get("token");
+      const res = await api.get(`/api/merch/user/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMerchData(res.data.merch);
+    } catch (err) {
+      console.error("Error fetching merch data:", err);
+    }
+  }, [userId]);
 
-useEffect(() => {
-  fetchMerch();
-}, [fetchMerch]);
+  useEffect(() => {
+    fetchMerch();
+  }, [fetchMerch]);
 
-
-// Function to handle deleting a merch item
+  // Function to handle deleting a merch item
   const handleDeleteMerch = async (merchId: string) => {
     try {
       const token = Cookies.get("token");
@@ -335,19 +345,43 @@ useEffect(() => {
       console.error("Error deleting merch item:", err);
     }
   };
-// Function to handle image selection and upload
+
+  const fetchUploadedImages = async () => {
+    const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      console.error("No userId found in localStorage");
+      return;
+    }
+    try {
+      const response = await api.get(`/api/gallery/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUploadedImages(response.data.gallery);
+    } catch (error) {
+      console.error("Error fetching uploaded images:", error);
+      setUploadedImages([]);
+    }
+  };
+
+  useEffect(() => {}, [uploadedImages]);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files[0]) {
-      const file = files[0];
-      const previewUrl = URL.createObjectURL(file);
-      setSelectedImages((prev) => [...prev, file]);
-      setImagePreviews((prev) => [...prev, previewUrl]);
-      handleUpload(file);
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file) => {
+        const previewUrl = URL.createObjectURL(file);
+        setSelectedImages((prev) => [...prev, file]);
+        setImagePreviews((prev) => [...prev, previewUrl]);
+        handleUpload(file);
+      });
     }
   };
-// Function to handle image upload
+
   const handleUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("galleryImage", file);
@@ -366,6 +400,10 @@ useEffect(() => {
       console.error("Upload failed:", error);
     }
   };
+
+  useEffect(() => {
+    fetchUploadedImages();
+  }, []);
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
@@ -833,18 +871,17 @@ useEffect(() => {
                   </label>
                 </div>
                 <div className="flex justify-center gap-3 ">
-
                   <div className="flex flex-col items-center">
-                    {/* Add Photo Button */}
+                    {/* Upload Button */}
                     <div className="flex justify-center items-center mb-5">
                       <label className="cursor-pointer bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
                         <div className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
-                      <img
-                        src={Thumbnail}
-                        alt="Small Thumbnail"
-                        className="object-contain h-16 mb-2"
-                      />
-                      </div>
+                          <img
+                            src="/default-thumbnail.png"
+                            alt="Small Thumbnail"
+                            className="object-contain h-16 mb-2"
+                          />
+                        </div>
                         <p className="text-[16px] font-normal text-white text-center">
                           Add photo
                         </p>
@@ -858,8 +895,8 @@ useEffect(() => {
                       </label>
                     </div>
 
-                    {/* Image Previews in rows of 3 */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* Preview of Selected Images Before Upload */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
                       {imagePreviews.map((preview, index) => (
                         <div
                           key={index}
@@ -867,11 +904,34 @@ useEffect(() => {
                         >
                           <img
                             src={preview}
-                            alt={`Thumbnail ${index + 1}`}
+                            alt={`Preview ${index + 1}`}
                             className="object-cover w-32 h-32 rounded mb-2"
                           />
                           <p className="text-[16px] font-normal text-white text-center">
-                            Photo {index + 1}
+                            Preview {index + 1}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Uploaded Images From Server */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {uploadedImages.map((imageUrl, index) => (
+                        <div
+                          key={index}
+                          className="bg-[#4b5563] rounded-lg p-4 flex flex-col items-center"
+                        >
+                          <img
+                            src={
+                              imageUrl
+                                ? `http://3.111.146.115:5000/${imageUrl}`
+                                : "/default-image.png"
+                            }
+                            alt={`Uploaded ${index + 1}`}
+                            className="object-cover w-32 h-32 rounded mb-2"
+                          />
+                          <p className="text-[16px] font-normal text-white text-center">
+                            Uploaded {index + 1}
                           </p>
                         </div>
                       ))}
