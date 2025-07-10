@@ -12,9 +12,8 @@ import toppopuppic from "../../../public/assets/toppopuppic.png";
 import centerpopuppic from "../../../public/assets/centerpopupoic.png";
 import bottompopuppic from "../../../public/assets/bottompopuppic.png";
 import axios from "axios";
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
 import api from "@/service/api";
-
 
 interface AddSocialMediaPopupProps {
   icon: string;
@@ -31,49 +30,46 @@ const AddSocialMediapopup = ({
 }: AddSocialMediaPopupProps) => {
   const [url, setUrl] = useState("");
 
+  const handleSave = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = Cookies.get("token");
+      const fixedPlatform = platformName?.toLowerCase();
+      const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
 
-const handleSave = async () => {
-  try {
-    const userId = localStorage.getItem("userId");
-    const token = Cookies.get("token");
-    const fixedPlatform = platformName?.toLowerCase();
-    const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
-
-    if (!userId || !fixedPlatform || !fixedUrl || !token) {
-      console.error("Missing required data or token.");
-      return;
-    }
-
-    const response = await api.post(
-      "/api/social-links",
-      {
-        userId,
-        platform: fixedPlatform,
-        url: fixedUrl,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
+      if (!userId || !fixedPlatform || !fixedUrl || !token) {
+        console.error("Missing required data or token.");
+        return;
       }
-    );
 
-    console.log("Response:", response.data);
-    onClose();
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(
-        "Error saving social link:",
-        error.response?.data || error.message
+      const response = await api.post(
+        "/api/social-links",
+        {
+          userId,
+          platform: fixedPlatform,
+          url: fixedUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
       );
-    } else {
-      console.error("Error saving social link:", error);
+      // fetchLinks(userId);
+      console.log("Response:", response.data);
+      onClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error saving social link:",
+          error.response?.data || error.message
+        );
+      } else {
+        console.error("Error saving social link:", error);
+      }
     }
-  }
-};
-
-
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

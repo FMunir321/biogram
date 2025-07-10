@@ -499,7 +499,7 @@ useEffect(() => {
                 <img
                   src={
                     userData?.profileImage
-                      ? `http://localhost:5000${userData.profileImage}`
+                      ? `http://3.111.146.115:5000${userData.profileImage}`
                       : "/default-profile.png"
                   }
                   alt="Profile character"
@@ -621,7 +621,7 @@ useEffect(() => {
                             item.thumbnailImage
                               ? item.thumbnailImage.startsWith("data:image")
                                 ? item.thumbnailImage
-                                : `http://localhost:5000${item.thumbnailImage}`
+                                : `http://3.111.146.115:5000${item.thumbnailImage}`
                               : "/default-thumbnail.png"
                           }
                           alt={item.title}
@@ -654,7 +654,7 @@ useEffect(() => {
                               item.thumbnailImage
                                 ? item.thumbnailImage.startsWith("data:image")
                                   ? item.thumbnailImage
-                                  : `http://localhost:5000${item.thumbnailImage}`
+                                  : `http://3.111.146.115:5000${item.thumbnailImage}`
                                 : "/default-thumbnail.png"
                             }
                             alt={item.title}

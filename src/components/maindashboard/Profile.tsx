@@ -93,9 +93,10 @@ import group from "../../../public/assets/boys333.png";
 import biogram from "../../../public/Biogram.png";
 import image from "../../../public/assets/Earth.png";
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import api from "@/service/api";
 
 type UserData = {
   fullName: string;
@@ -113,8 +114,8 @@ const Profile = () => {
         const token = Cookies.get("token");
         const userId = localStorage.getItem("userId");
 
-        const response = await axios.get(
-          `http://localhost:5000/api/user/${userId}`,
+        const response = await api.get(
+          `/api/user/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -136,7 +137,7 @@ const Profile = () => {
         className="relative bg-cover       bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
         style={{
           backgroundImage: userData?.profileImage
-            ? `url("http://localhost:5000${userData.profileImage}")`
+            ? `url("http://3.111.146.115:5000${userData.profileImage}")`
             : `url("${group}")`,
         }}
       ></div>

@@ -29,7 +29,6 @@ type SocialLink = {
   _id: string;
   platform: string;
   url: string;
-  // add other properties if needed
 };
 
 const AddSocialMedia = () => {
@@ -59,9 +58,9 @@ const AddSocialMedia = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          // params: {
-          //   userId: userId,
-          // },
+          params: {
+            userId: userId,
+          },
         }
       );
 
@@ -87,7 +86,7 @@ const AddSocialMedia = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // remove from UI
+ 
       setLinks((prevLinks) => prevLinks.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error deleting link:", error);
