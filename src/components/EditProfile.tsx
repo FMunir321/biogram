@@ -57,7 +57,7 @@ const EditProfile = () => {
   const [featureLinkToggle, setFeatureLinkToggle] = useState(false);
   const [merchToggle, setMerchToggle] = useState(false);
   const [galleryToggle, setGalleryToggle] = useState(false);
-  const [contactToggle, setContactToggle] = useState(false);
+  // const [contactToggle, setContactToggle] = useState(false);
   const [shoutsToggle, setShoutsToggle] = useState(false);
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -88,6 +88,11 @@ const EditProfile = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+    const [contactExists, setContactExists] = useState(false);
+
 
   const sections = [
     {
@@ -249,12 +254,11 @@ const EditProfile = () => {
     } catch (err) {
       console.error("Error fetching thumbnails:", err);
     }
-  }, [userId]); 
+  }, [userId]);
 
   useEffect(() => {
     fetchBigThumbnails();
   }, [fetchBigThumbnails]);
-
 
   // Function to handle deleting a thumbnail
   const handleDelete = async (id: string) => {
@@ -311,7 +315,6 @@ const EditProfile = () => {
       alert("Upload Failed");
     }
   };
-
 
   // Function to fetch merch data
   const fetchMerch = useCallback(async () => {
@@ -388,7 +391,6 @@ const EditProfile = () => {
     }
   };
 
-
   // Function to handle image upload
   const handleUpload = async (file: File) => {
     const formData = new FormData();
@@ -427,6 +429,121 @@ const EditProfile = () => {
       console.error("Error deleting image:", error);
     }
   };
+
+  // const handleAddContactInfo = async () => {
+  //   if (!email || !phoneNumber || !websiteUrl) {
+  //     alert("Please fill all fields.");
+  //     return;
+  //   }
+
+  //   const token = Cookies.get("token");
+  //   const userId = localStorage.getItem("userId");
+
+  //   if (!token || !userId) {
+  //     console.error("Missing token or userId");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await api.post(
+  //       "/api/contact-info",
+  //       { email, phoneNumber, websiteUrl },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     console.log("Success:", response.data);
+  //     alert("Contact info added successfully!");
+
+  //     await fetchContactInfo();
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("Failed to add contact info.");
+  //   }
+  // };
+
+
+
+  const handleSubmitContactInfo = async () => {
+    if (!email || !phoneNumber || !websiteUrl) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      console.error("Missing token or userId");
+      return;
+    }
+
+    try {
+      if (contactExists) {
+        const response = await api.put(
+          "/api/contact-info",
+          { email, phoneNumber, websiteUrl },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Contact info updated:", response.data);
+        alert("Contact info updated successfully!");
+      } else {
+        // Create using POST
+        const response = await api.post(
+          "/api/contact-info",
+          { email, phoneNumber, websiteUrl },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Contact info added:", response.data);
+        alert("Contact info added successfully!");
+        setContactExists(true);
+      }
+
+      await fetchContactInfo();
+    } catch (error) {
+      console.error("Error submitting contact info:", error);
+      alert("Failed to submit contact info.");
+    }
+  };
+
+  const fetchContactInfo = useCallback(async () => {
+    const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      console.error("Missing token or userId");
+      return;
+    }
+
+    try {
+      const response = await api.get(`/api/contact-info/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data) {
+        setEmail(response.data.email || "");
+        setPhoneNumber(response.data.phoneNumber || "");
+        setWebsiteUrl(response.data.websiteUrl || "");
+        setContactExists(true);
+      } else {
+        setContactExists(false);
+      }
+    } catch (error) {
+      console.error("Error fetching contact info:", error);
+      setContactExists(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchContactInfo();
+  }, [fetchContactInfo]);
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
@@ -971,7 +1088,6 @@ const EditProfile = () => {
             {/* Contact info card */}
             <div className="bg-[#dff3e9]/60 border border-[#7ecfa7] rounded-[24px]">
               <div className="rounded-[24px] p-6">
-                {/* Toggle Header */}
                 <div className="flex items-center justify-between rounded-[24px]">
                   <label className="text-[32px] font-bold text-black">
                     Contact info
@@ -981,17 +1097,17 @@ const EditProfile = () => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={contactToggle}
-                      onChange={() => setContactToggle(!contactToggle)}
+                      checked={galleryToggle}
+                      onChange={() => setGalleryToggle(!galleryToggle)}
                     />
                     <div
                       className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        contactToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                       }`}
                     ></div>
                     <div
                       className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        contactToggle
+                        galleryToggle
                           ? "translate-x-6 bg-[#72bb96]"
                           : "bg-[#d1d5db]"
                       }`}
@@ -1000,49 +1116,45 @@ const EditProfile = () => {
                 </div>
                 <div className="flex flex-col gap-2 mt-5">
                   <div className="flex items-center justify-center w-full space-x-4">
-                    <img
-                      src={Call}
-                      alt="Profile character"
-                      className="object-contain" // Adjust size as needed
-                    />
+                    <img src={Mail} alt="Email" className="object-contain" />
                     <Input
-                      type="text"
-                      placeholder=""
-                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                      type="email"
+                      placeholder="Enter email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 border"
                     />
                   </div>
 
                   <div className="flex items-center justify-center w-full space-x-4">
-                    <img
-                      src={Map}
-                      alt="Profile character"
-                      className="object-contain" // Adjust size as needed
-                    />
+                    <img src={Call} alt="Phone" className="object-contain" />
                     <Input
                       type="text"
-                      placeholder=""
-                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                      placeholder="Enter phone number"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 border"
                     />
                   </div>
 
                   <div className="flex items-center justify-center w-full space-x-4">
-                    <img
-                      src={Mail}
-                      alt="Profile character"
-                      className="object-contain" // Adjust size as needed
-                    />
+                    <img src={Map} alt="Website" className="object-contain" />
                     <Input
                       type="text"
-                      placeholder=""
-                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 focus:shadow-none border"
+                      placeholder="Enter website URL"
+                      value={websiteUrl}
+                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                      className="flex-1 bg-[#c2e2d2] px-2 py-4 text-[24px] font-medium !border-[#6fb793] rounded-lg focus:outline-none focus:ring-0 border"
                     />
                   </div>
 
                   <button
-                    // onClick={handleUploadClick}
-                    className="w-full mx-2 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                    onClick={handleSubmitContactInfo}
+                    className="w-full mx-2 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 rounded-full font-medium text-center cursor-pointer"
                   >
-                    + Add Contact Info
+                    {contactExists
+                      ? "Update Contact Info"
+                      : "+ Add Contact Info"}
                   </button>
                 </div>
               </div>
