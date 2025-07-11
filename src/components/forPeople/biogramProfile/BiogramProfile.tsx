@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa";
 // Import images from src/assets
 import FacebookImage from "../../../../public/assets/Facebook.png";
 import InstagramImage from "../../../../public/assets/Instagram.png";
-import TwitterImage from "../../../../public/assets/twitter.png";
+import TwitterImage from "../../../../public/assets/Twitter.png";
 import TiktokImage from "../../../../public/assets/TikTok.png";
 import WhatsappImage from "../../../../public/assets/Whatsapp.png";
 import LinkedinImage from "../../../../public/assets/Linkedin.png";
