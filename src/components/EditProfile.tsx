@@ -91,8 +91,7 @@ const EditProfile = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
-    const [contactExists, setContactExists] = useState(false);
-
+  const [contactExists, setContactExists] = useState(false);
 
   const sections = [
     {
@@ -353,6 +352,40 @@ const EditProfile = () => {
     }
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file) => {
+        const previewUrl = URL.createObjectURL(file);
+        setSelectedImages((prev) => [...prev, file]);
+        console.log("Selected file:", selectedImages);
+        setImagePreviews((prev) => [...prev, previewUrl]);
+        handleUpload(file);
+      });
+    }
+  };
+
+  // Function to handle image upload
+  const handleUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("galleryImage", file);
+
+    const token = Cookies.get("token");
+
+    try {
+      const response = await api.post("/api/gallery", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchUploadedImages();
+      console.log("Upload success:", response.data);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
+
   // Function to fetch uploaded images
   const fetchUploadedImages = async () => {
     const token = Cookies.get("token");
@@ -376,40 +409,7 @@ const EditProfile = () => {
     }
   };
 
-  useEffect(() => {}, [uploadedImages]);
-
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      Array.from(files).forEach((file) => {
-        const previewUrl = URL.createObjectURL(file);
-        setSelectedImages((prev) => [...prev, file]);
-        console.log("Selected file:", selectedImages);
-      setImagePreviews((prev) => [...prev, previewUrl]);
-        handleUpload(file);
-      });
-    }
-  };
-
-  // Function to handle image upload
-  const handleUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("galleryImage", file);
-
-    const token = Cookies.get("token");
-
-    try {
-      const response = await api.post("/api/gallery", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log("Upload success:", response.data);
-    } catch (error) {
-      console.error("Upload failed:", error);
-    }
-  };
+  // useEffect(() => {}, [uploadedImages]);
 
   useEffect(() => {
     fetchUploadedImages();
@@ -465,8 +465,6 @@ const EditProfile = () => {
   //   }
   // };
 
-
-
   const handleSubmitContactInfo = async () => {
     if (!email || !phoneNumber || !websiteUrl) {
       alert("Please fill all fields.");
@@ -513,7 +511,7 @@ const EditProfile = () => {
     }
   };
 
-  const fetchContactInfo = useCallback(async () => {
+  const fetchContactInfo = useCallback ( async () => {
     const token = Cookies.get("token");
     const userId = localStorage.getItem("userId");
 
@@ -785,28 +783,29 @@ const EditProfile = () => {
                     .map((item) => (
                       <div
                         key={item._id}
-                        className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
+                        className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center "
                       >
-                        <div className="flex justify-end ml-[390px] mt-[-15px]">
+                        <div className="relative">
                           <RxCross2
-                            className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
                             onClick={() => handleDelete(item._id)}
                           />
+
+                          <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
+                            {item.title}
+                          </p>
+                          <img
+                            src={
+                              item.thumbnailImage
+                                ? item.thumbnailImage.startsWith("data:image")
+                                  ? item.thumbnailImage
+                                  : `http://3.111.146.115:5000${item.thumbnailImage}`
+                                : "/default-thumbnail.png"
+                            }
+                            alt={item.title}
+                            className="object-contain h-48 w-full mb-2 rounded"
+                          />
                         </div>
-                        <img
-                          src={
-                            item.thumbnailImage
-                              ? item.thumbnailImage.startsWith("data:image")
-                                ? item.thumbnailImage
-                                : `http://3.111.146.115:5000${item.thumbnailImage}`
-                              : "/default-thumbnail.png"
-                          }
-                          alt={item.title}
-                          className="object-contain h-48 w-full mb-2 rounded"
-                        />
-                        <p className="text-[16px] font-normal text-white">
-                          {item.title}
-                        </p>
                       </div>
                     ))}
 
@@ -817,29 +816,28 @@ const EditProfile = () => {
                       .map((item) => (
                         <div
                           key={item._id}
-                          className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#a0e7b1] to-[#3f7a5a]"
+                          className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center"
                         >
-                          <div className="flex justify-end ml-[190px] mt-[-10px]">
+                          <div className="relative w-28 h-28">
                             <RxCross2
-                              className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                              className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
                               onClick={() => handleDelete(item._id)}
                             />
+                            <p className="absolute top-10 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
+                              {item.title}
+                            </p>
+                            <img
+                              src={
+                                item.thumbnailImage
+                                  ? item.thumbnailImage.startsWith("data:image")
+                                    ? item.thumbnailImage
+                                    : `http://3.111.146.115:5000${item.thumbnailImage}`
+                                  : "/default-thumbnail.png"
+                              }
+                              alt={item.title}
+                              className="object-contain h-full w-full rounded"
+                            />
                           </div>
-
-                          <img
-                            src={
-                              item.thumbnailImage
-                                ? item.thumbnailImage.startsWith("data:image")
-                                  ? item.thumbnailImage
-                                  : `http://3.111.146.115:5000${item.thumbnailImage}`
-                                : "/default-thumbnail.png"
-                            }
-                            alt={item.title}
-                            className="object-contain h-24 w-24 mb-2 rounded"
-                          />
-                          <p className="text-[14px] font-normal text-white">
-                            {item.title}
-                          </p>
                         </div>
                       ))}
                   </div>
@@ -870,7 +868,7 @@ const EditProfile = () => {
                       onClick={() => {
                         if (idx === 0) {
                           setIsAddMultiLink(true);
-                          console.log("Add Multi Link clicked",isaddMultiLink);
+                          console.log("Add Multi Link clicked", isaddMultiLink);
                         } else {
                           setIsAddMultiLink(false);
                         }
@@ -1036,7 +1034,7 @@ const EditProfile = () => {
                     </div>
 
                     {/* Preview of Selected Images Before Upload */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
                       {imagePreviews.map((preview, index) => (
                         <div
                           key={index}
@@ -1052,29 +1050,23 @@ const EditProfile = () => {
                           </p>
                         </div>
                       ))}
-                    </div>
+                    </div> */}
 
-                    {/* Uploaded Images From Server */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {uploadedImages.map((imageObj) => (
                         <div
                           key={imageObj._id}
-                          className="bg-[#7ecfa7] rounded-lg p-4 flex flex-col items-center"
+                          className="relative rounded-lg p-4 flex flex-col items-center"
                         >
-                          <div className="flex justify-end ml-[100px] mt-[-15px]">
-                            <RxCross2
-                              className="bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                              onClick={() => handleDeleteImage(imageObj._id)}
-                            />
-                          </div>
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => handleDeleteImage(imageObj._id)}
+                          />
                           <img
                             src={`http://3.111.146.115:5000/${imageObj.imageUrl}`}
                             alt="Uploaded Image"
                             className="object-cover w-32 h-32 rounded mb-2"
                           />
-                          <p className="text-[16px] font-normal text-white text-center">
-                            Uploaded
-                          </p>
                         </div>
                       ))}
                     </div>
