@@ -12,7 +12,7 @@ import Photshoot from "../../../../public/assets/realtimeanalytics/photshoot.png
 import Videoshoot from "../../../../public/assets/realtimeanalytics/videoshoot.png";
 import FacebookImage from "../../../../public/assets/Facebook.png";
 import InstagramImage from "../../../../public/assets/Instagram.png";
-import TwitterImage from "../../../../public/assets/twitter.png";
+import TwitterImage from "../../../../public/assets/Twitter.png";
 import TiktokImage from "../../../../public/assets/TikTok.png";
 import WhatsappImage from "../../../../public/assets/Whatsapp.png";
 

@@ -298,6 +298,7 @@ const EditProfile = () => {
       });
       alert("Uploaded Successfully!");
       setIsAddMerch(false);
+      console.log("Upload response:", res.data);
       fetchMerch();
 
       setCategory("");
@@ -380,7 +381,8 @@ const EditProfile = () => {
       Array.from(files).forEach((file) => {
         const previewUrl = URL.createObjectURL(file);
         setSelectedImages((prev) => [...prev, file]);
-        setImagePreviews((prev) => [...prev, previewUrl]);
+        console.log("Selected file:", selectedImages);
+      setImagePreviews((prev) => [...prev, previewUrl]);
         handleUpload(file);
       });
     }
@@ -751,6 +753,7 @@ const EditProfile = () => {
                       onClick={() => {
                         if (idx === 0) {
                           setIsAddMultiLink(true);
+                          console.log("Add Multi Link clicked",isaddMultiLink);
                         } else {
                           setIsAddMultiLink(false);
                         }

@@ -9,7 +9,7 @@ import {
 } from "../../../components/ui/card";
 import Badge from "../../../components/ui/Badge";
 import logo from "../../../../public/assets/Biogramlogo.png";
-import mybackground from "../../../../public/assets/pricingbg.png";
+import mybackground from "../../../../public/assets/Pricingbg.png";
 
 type PlanFeature = {
   name: string;
