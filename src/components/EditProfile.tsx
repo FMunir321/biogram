@@ -292,6 +292,7 @@ const EditProfile = () => {
       });
       alert("Uploaded Successfully!");
       setIsAddMerch(false);
+      console.log("Upload response:", res.data);
       fetchMerch(); 
     } catch (err) {
       console.error(err);
@@ -343,6 +344,7 @@ useEffect(() => {
       const file = files[0];
       const previewUrl = URL.createObjectURL(file);
       setSelectedImages((prev) => [...prev, file]);
+      console.log("Selected file:", selectedImages);
       setImagePreviews((prev) => [...prev, previewUrl]);
       handleUpload(file);
     }
@@ -693,6 +695,7 @@ useEffect(() => {
                       onClick={() => {
                         if (idx === 0) {
                           setIsAddMultiLink(true);
+                          console.log("Add Multi Link clicked",isaddMultiLink);
                         } else {
                           setIsAddMultiLink(false);
                         }

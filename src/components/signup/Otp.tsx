@@ -4,7 +4,7 @@ import {
   InputOTPSlot,
 } from "../../components/ui/input-otp";
 import { Mail } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Ballsimage from "../../../public/assets/e8f1a93c8d73686570bd39568d669322.png";
 import { useState } from "react";
 import api from "@/service/api";
