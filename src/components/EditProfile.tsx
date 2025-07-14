@@ -18,6 +18,12 @@ import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
 import { HiDotsVertical } from "react-icons/hi";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 const colors = [
   "#7ecfa7",
   "#548a6e",
@@ -39,6 +45,7 @@ type UserData = {
   username: string;
   profileImage: string;
   thumbnailImage: string;
+  bio: string;
 };
 type MerchItem = {
   _id: string;
@@ -180,6 +187,7 @@ const EditProfile = () => {
     setIsBioUpdating(true);
     try {
       const token = Cookies.get("token");
+
       await api.patch(
         "/api/user/bio",
         { bio: bioText },
@@ -189,6 +197,12 @@ const EditProfile = () => {
           },
         }
       );
+
+      setUserData((prev) => ({
+        ...prev!,
+        bio: bioText,
+      }));
+
       setIsAddBio(false);
     } catch (error) {
       console.error("Error updating bio:", error);
@@ -196,6 +210,12 @@ const EditProfile = () => {
       setIsBioUpdating(false);
     }
   };
+
+  useEffect(() => {
+    if (userData?.bio) {
+      setBioText(userData.bio);
+    }
+  }, [userData]);
 
   const handleAddBigThumbnail = async (
     title: string,
@@ -511,7 +531,7 @@ const EditProfile = () => {
     }
   };
 
-  const fetchContactInfo = useCallback ( async () => {
+  const fetchContactInfo = useCallback(async () => {
     const token = Cookies.get("token");
     const userId = localStorage.getItem("userId");
 
@@ -702,7 +722,10 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
-                  <label className="text-[32px] font-bold text-black">
+                  <label
+                    className="text-[32px] font-bold text-black"
+                    onClick={() => setIsAddBio(true)}
+                  >
                     Bio
                   </label>
                   <label className="relative cursor-pointer">
@@ -727,17 +750,17 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                <div
-                  className="flex flex-col md:flex-row items-center justify-between pb-6 px-6"
-                  onClick={() => setIsAddBio(true)}
-                >
-                  <p className="text-[16px] font-normal text-black">
-                    Add Bio to your profile
+                <div className="flex items-center justify-between w-full px-4 py-4 cursor-pointer">
+                  <p
+                    className="text-base font-normal text-black"
+                    onClick={() => setIsAddBio(true)}
+                  >
+                    {userData?.bio || "bio"}
                   </p>
                   <img
                     src={Greaterthen}
                     alt="greater than"
-                    className="object-contain"
+                    className="w-4 h-4 object-contain"
                   />
                 </div>
               </div>
@@ -777,53 +800,21 @@ const EditProfile = () => {
 
                 <div className="w-full space-y-4">
                   {/* Large Thumbnails - One per row */}
-
-                  {bigThumbnails
-                    .filter((item) => item.type === "large")
-                    .map((item) => (
-                      <div
-                        key={item._id}
-                        className="w-full py-6 px-4 rounded-lg flex flex-col items-center justify-center "
-                      >
-                        <div className="relative">
-                          <RxCross2
-                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                            onClick={() => handleDelete(item._id)}
-                          />
-
-                          <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
-                            {item.title}
-                          </p>
-                          <img
-                            src={
-                              item.thumbnailImage
-                                ? item.thumbnailImage.startsWith("data:image")
-                                  ? item.thumbnailImage
-                                  : `http://3.111.146.115:5000${item.thumbnailImage}`
-                                : "/default-thumbnail.png"
-                            }
-                            alt={item.title}
-                            className="object-contain h-48 w-full mb-2 rounded"
-                          />
-                        </div>
-                      </div>
-                    ))}
-
-                  {/* Small Thumbnails - 2 columns */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div>
                     {bigThumbnails
-                      .filter((item) => item.type === "small")
+                      .filter((item) => item.type === "large")
                       .map((item) => (
                         <div
                           key={item._id}
-                          className="w-full py-3 px-2 rounded-lg flex flex-col items-center justify-center"
+                          className="  py-1 rounded-lg flex flex-col items-center justify-center "
                         >
-                          <div className="relative w-28 h-28">
+                          <div className=" relative ">
                             <RxCross2
                               className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
                               onClick={() => handleDelete(item._id)}
                             />
-                            <p className="absolute top-10 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
+
+                            <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
                               {item.title}
                             </p>
                             <img
@@ -835,7 +826,43 @@ const EditProfile = () => {
                                   : "/default-thumbnail.png"
                               }
                               alt={item.title}
-                              className="object-contain h-full w-full rounded"
+                              className=" h-48 w-[420px] mb-2 rounded   object-cover"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Small Thumbnails - 2 columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 w-full max-w-5xl">
+                    {bigThumbnails
+                      .filter((item) => item.type === "small")
+                      .map((item) => (
+                        <div
+                          key={item._id}
+                          className="flex flex-col items-center justify-center ml-24"
+                        >
+                          <div className="relative w-72 h-36 rounded overflow-hidden">
+                            <RxCross2
+                              className="absolute top-2 right-2 mr-20 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer transition"
+                              onClick={() => handleDelete(item._id)}
+                            />
+                          
+                            <p className="absolute   top-28 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center">
+                              {item.title}
+                            </p>
+                          
+
+                            <img
+                              src={
+                                item.thumbnailImage
+                                  ? item.thumbnailImage.startsWith("data:image")
+                                    ? item.thumbnailImage
+                                    : `http://3.111.146.115:5000${item.thumbnailImage}`
+                                  : "/default-thumbnail.png"
+                              }
+                              alt={item.title}
+                              className="w-[205px] h-full object-cover rounded"
                             />
                           </div>
                         </div>
@@ -926,42 +953,46 @@ const EditProfile = () => {
                 </div>
                 <>
                   {merchData.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col md:flex-row items-center justify-between bg-[#72bb96] rounded-2xl p-4 shadow-lg space-y-4 md:space-y-0 mb-4"
-                    >
-                      <div className="text-center md:text-left">
-                        <p className="text-2xl font-semibold text-white">
-                          {item.title}
-                        </p>
-                        <p className="text-2xl font-semibold text-white mt-1">
-                          Item (1)
-                        </p>
-                      </div>
-
-                      <div className="relative">
-                        <div
-                          className="text-white text-2xl cursor-pointer"
-                          onClick={() =>
-                            setOpenIndex(openIndex === index ? null : index)
-                          }
-                        >
-                          <HiDotsVertical />
+                    <div className="flex justify-center px-4">
+                      <div
+                        key={index}
+                        className="flex flex-col md:flex-row w-full max-w-md items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-2xl p-4 shadow-lg space-y-4 md:space-y-0 mb-4"
+                      >
+                        <div className="text-center md:text-left">
+                          <p className="text-xl sm:text-2xl font-semibold text-white">
+                            {item.title}
+                          </p>
+                          <p className="text-xl sm:text-2xl font-semibold text-white mt-1">
+                            Item (1)
+                          </p>
                         </div>
 
-                        {openIndex === index && (
-                          <div className="absolute right-0 mt-2 space-y-2 flex flex-col bg-[#72bb96] text-black shadow-md rounded-md p-2 z-10">
-                            <button className="hover:bg-green-300 text-white text-2xl px-4 py-1 rounded">
-                              Edit
-                            </button>
-                            <button
-                              className="hover:bg-green-300 text-white text-2xl px-4 py-1 rounded"
-                              onClick={() => handleDeleteMerch(item._id)}
-                            >
-                              Delete
-                            </button>
+                        <div className="relative">
+                          <div
+                            className="text-white text-2xl cursor-pointer"
+                            onClick={() =>
+                              setOpenIndex(openIndex === index ? null : index)
+                            }
+                          >
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                {" "}
+                                <HiDotsVertical />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f]">
+                                <DropdownMenuItem className="   text-white      hover:bg-green-300 text-lg px-4 py-1 rounded">
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="   text-white     hover:bg-green-300  text-lg px-4 py-1 rounded"
+                                  onClick={() => handleDeleteMerch(item._id)}
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
-                        )}
+                        </div>
                       </div>
                     </div>
                   ))}
