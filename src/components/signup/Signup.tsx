@@ -96,6 +96,7 @@ const Signup = () => {
       localStorage.setItem("username", response.data.username || username);
       localStorage.setItem("fullName", response.data.fullName || fullName);
       localStorage.setItem("otpToken", response.data.otpToken || "");
+      localStorage.setItem("isVerified", response.data.verified || "");
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -117,7 +118,7 @@ const Signup = () => {
         {/* Center Form */}
         <div className="flex-1 flex flex-col justify-center px-2 sm:px-4 md:px-8 py-6 w-full max-w-2xl mx-auto">
           {/* Decorative Lines */}
-          <div className="flex items-center justify-center gap-1 mb-6">
+          <div className="hidden  items-center justify-center gap-1 mb-6">
             <div className="w-16 sm:w-20 h-1.5 rounded-lg bg-gradient-to-r from-[#7ECFA7] to-[#53886C]" />
             <div className="w-16 sm:w-20 h-1.5 rounded-lg bg-[#D9D9D9]" />
           </div>
@@ -161,7 +162,7 @@ const Signup = () => {
                 </p>
               </div>
               <Tabs defaultValue="personal" className="w-full">
-                <div className="px-0 sm:px-2 md:px-6 flex justify-center">
+                <div className="hidden px-0 sm:px-2 md:px-6 justify-center">
                   <TabsList
                     className="relative w-full max-w-xl h-[48px] sm:h-[56px] p-1 mb-8 flex gap-2"
                     style={{
