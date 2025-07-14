@@ -99,7 +99,7 @@ const EditProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [contactExists, setContactExists] = useState(false);
-
+  const [editMerchId, setEditMerchId] = useState<string | null>(null);
   const sections = [
     {
       heading: "Link",
@@ -300,6 +300,53 @@ const EditProfile = () => {
     }
   };
 
+  //   const handleSubmit = async () => {
+  //     const formData = new FormData();
+  //     formData.append("category", category);
+  //     formData.append("url", url);
+  //     formData.append("title", title);
+  //     formData.append("Price", price);
+  //     if (thumbnail) {
+  //       formData.append("image", thumbnail);
+  //     }
+
+  //     try {
+  //       const token = Cookies.get("token");
+
+  //       const res = await api.post("/api/merch", formData, {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       alert("Uploaded Successfully!");
+  //       setIsAddMerch(false);
+  //       console.log("Upload response:", res.data);
+  //       fetchMerch();
+
+  //       setCategory("");
+  //       setUrl("");
+  //       setTitle("");
+  //       setPrice("");
+  //       setThumbnail(null);
+  //     } catch (err) {
+  //       console.error(err);
+  //       alert("Upload Failed");
+  //     }
+  //   };
+
+  // const [editMerchId, setEditMerchId] = useState<string | null>(null);
+
+  //   const handleEditClick = (merch: any) => {
+  //   setCategory(merch.category);
+  //   setUrl(merch.url);
+  //   setTitle(merch.title);
+  //   setPrice(merch.Price);
+  //   setPreview(merch.image); // Assuming image is URL
+  //   setEditMerchId(merch._id);
+  //   setIsAddMerch(true);
+  // };
+
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("category", category);
@@ -310,29 +357,62 @@ const EditProfile = () => {
       formData.append("image", thumbnail);
     }
 
+    const token = Cookies.get("token");
+
     try {
-      const token = Cookies.get("token");
+      if (editMerchId) {
+        // Edit Mode
+        await api.put(`/api/merch/${editMerchId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        alert("Updated Successfully!");
+      } else {
+        // Add Mode
+        await api.post("/api/merch", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        alert("Uploaded Successfully!");
+      }
 
-      const res = await api.post("/api/merch", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      alert("Uploaded Successfully!");
-      setIsAddMerch(false);
-      console.log("Upload response:", res.data);
       fetchMerch();
-
-      setCategory("");
-      setUrl("");
-      setTitle("");
-      setPrice("");
-      setThumbnail(null);
+      resetForm();
+      setIsAddMerch(false);
     } catch (err) {
       console.error(err);
-      alert("Upload Failed");
+      alert("Operation Failed");
     }
+  };
+
+  const resetForm = () => {
+    setCategory("");
+    setUrl("");
+    setTitle("");
+    setPrice("");
+    setPreview("");
+    setThumbnail(null);
+    setEditMerchId(null);
+  };
+
+  const handleEditClick = (merch: any) => {
+    setCategory(merch.category);
+    setUrl(merch.url);
+    setTitle(merch.title);
+    setPrice(merch.Price);
+    const imageURL = merch.image
+      ? merch.image.startsWith("data:image")
+        ? merch.image
+        : `http://3.111.146.115:5000${merch.image}`
+      : "/default-thumbnail.png";
+    setPreview(imageURL);
+    setThumbnail(null);
+    setEditMerchId(merch._id);
+    setIsAddMerch(true);
   };
 
   // Function to fetch merch data
@@ -834,7 +914,7 @@ const EditProfile = () => {
                   </div>
 
                   {/* Small Thumbnails - 2 columns */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 w-full max-w-5xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2  ">
                     {bigThumbnails
                       .filter((item) => item.type === "small")
                       .map((item) => (
@@ -847,11 +927,10 @@ const EditProfile = () => {
                               className="absolute top-2 right-2 mr-20 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer transition"
                               onClick={() => handleDelete(item._id)}
                             />
-                          
-                            <p className="absolute   top-28 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center">
+
+                            <p className="absolute top-28 left-[50%] ml-[-146px] text-white font-bold text-lg text-center w-[205px]">
                               {item.title}
                             </p>
-                          
 
                             <img
                               src={
@@ -980,9 +1059,13 @@ const EditProfile = () => {
                                 <HiDotsVertical />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f]">
-                                <DropdownMenuItem className="   text-white      hover:bg-green-300 text-lg px-4 py-1 rounded">
+                                <DropdownMenuItem
+                                  className="text-white hover:bg-green-300 text-lg px-4 py-1 rounded"
+                                  onClick={() => handleEditClick(item)} // item is current merch object
+                                >
                                   Edit
                                 </DropdownMenuItem>
+
                                 <DropdownMenuItem
                                   className="   text-white     hover:bg-green-300  text-lg px-4 py-1 rounded"
                                   onClick={() => handleDeleteMerch(item._id)}
@@ -1042,52 +1125,12 @@ const EditProfile = () => {
                 <div className="flex justify-center gap-3 ">
                   <div className="flex flex-col items-center">
                     {/* Upload Button */}
-                    <div className="flex justify-center items-center mb-5">
-                      <label className="cursor-pointer bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
-                        <div className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center">
-                          <img
-                            src={Thumbnail}
-                            alt="Big Thumbnail"
-                            className="object-contain h-20 mb-2"
-                          />
-                        </div>
-                        <p className="text-[16px] font-normal text-white text-center">
-                          Add photo
-                        </p>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={handleImageSelect}
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
 
-                    {/* Preview of Selected Images Before Upload */}
-                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-                      {imagePreviews.map((preview, index) => (
-                        <div
-                          key={index}
-                          className="bg-[#72bb96] rounded-lg p-4 flex flex-col items-center"
-                        >
-                          <img
-                            src={preview}
-                            alt={`Preview ${index + 1}`}
-                            className="object-cover w-32 h-32 rounded mb-2"
-                          />
-                          <p className="text-[16px] font-normal text-white text-center">
-                            Preview {index + 1}
-                          </p>
-                        </div>
-                      ))}
-                    </div> */}
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 ">
                       {uploadedImages.map((imageObj) => (
                         <div
                           key={imageObj._id}
-                          className="relative rounded-lg p-4 flex flex-col items-center"
+                          className="relative rounded-lg  flex flex-col items-center"
                         >
                           <RxCross2
                             className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
@@ -1096,10 +1139,31 @@ const EditProfile = () => {
                           <img
                             src={`http://3.111.146.115:5000/${imageObj.imageUrl}`}
                             alt="Uploaded Image"
-                            className="object-cover w-32 h-32 rounded mb-2"
+                            className="object-cover w-32 h-32 rounded-2xl mb-2"
                           />
                         </div>
                       ))}
+                      <div className="flex justify-center items-center mb-5">
+                        <label className="cursor-pointer  bg-gradient-to-r from-[#7ecfa7] to-[#53886c] rounded-lg p-1 flex flex-col items-center">
+                          <div className=" bg-gradient-to-r from-[#7ecfa7] to-[#53886c] rounded-lg p-2 flex flex-col items-center">
+                            <img
+                              src={Thumbnail}
+                              alt="Big Thumbnail"
+                              className="object-contain w-80 h-18 mb-2"
+                            />
+                          </div>
+                          <p className="text-[16px] font-normal text-white text-center">
+                            Add photo
+                          </p>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageSelect}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1667,7 +1731,7 @@ const EditProfile = () => {
                 className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
                 onClick={handleSubmit}
               >
-                Add
+                {editMerchId ? "Update" : "Add"}
               </button>
             </div>
           </Dialog.Content>
