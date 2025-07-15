@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -29,6 +30,7 @@ type SocialLink = {
   _id: string;
   platform: string;
   url: string;
+  icon: string;
 };
 
 const AddSocialMedia = () => {
@@ -37,16 +39,100 @@ const AddSocialMedia = () => {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
 
-  const [selectedPlatform, setSelectedPlatform] = useState({
-    name: "",
-    icon: "",
-  });
-
   const openPopup = (name: string, icon: string) => {
     setSelectedPlatform({ name, icon });
     setIsPopupOpen(true);
   };
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<{
+    name: string;
+    icon: string;
+  }>({
+    name: "",
+    icon: "",
+  });
+  const [url, setUrl] = useState("");
+  const [editingId, setEditingId] = useState<string>("");
 
+  // // Open Add
+  // const openAdd = (p: { name: string; icon: string }) => {
+  //   setSelectedPlatform(p);
+  //   setUrl("");
+  //   setIsEditing(false);
+  //   setIsPopupOpen(true);
+  // };
+
+  const openEdit = (p: {
+    _id: string;
+    name: string;
+    icon: string;
+    url: string;
+  }) => {
+    setSelectedPlatform({ name: p.name, icon: p.icon });
+    setUrl(p.url);
+    setEditingId(p._id);
+    setIsEditing(true);
+    setIsPopupOpen(true);
+  };
+
+  // Handle Save
+  const handleSave = async (platformName: string) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = Cookies.get("token");
+
+      if (!url || url.trim() === "") return console.error("URL is required.");
+
+      const fixedPlatform = platformName.toLowerCase();
+      const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
+      const urlPattern = /^https?:\/\/[\w.-]+\.[a-z]{2,}.*$/i;
+      if (!urlPattern.test(fixedUrl))
+        return console.error("Invalid URL format.");
+
+      await api.post(
+        "/api/social-links",
+        { userId, platform: fixedPlatform, url: fixedUrl },
+        { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+      );
+
+      fetchLinks();
+      setUrl(""); 
+      setIsPopupOpen(false);
+    } catch (error: any) {
+      console.error("Error saving social link:", error?.message || error);
+    }
+  };
+
+  // Handle Update
+  const handleUpdate = async () => {
+    try {
+      const token = Cookies.get("token");
+
+      if (!url || url.trim() === "") return console.error("URL is required.");
+
+      const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
+      const urlPattern = /^https?:\/\/[\w.-]+\.[a-z]{2,}.*$/i;
+      if (!urlPattern.test(fixedUrl))
+        return console.error("Invalid URL format.");
+
+      await api.put(
+        `/api/social-links/${editingId}`,
+        { url: fixedUrl },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
+
+      fetchLinks();
+      setIsPopupOpen(false);
+      setUrl(""); 
+    } catch (error: any) {
+      console.error("Error updating social link:", error?.message || error);
+    }
+  };
+
+  //fetchLinkes
   const fetchLinks = async () => {
     const userId = localStorage.getItem("userId");
     const token = Cookies.get("token");
@@ -74,18 +160,22 @@ const AddSocialMedia = () => {
     if (savedUsername) setUsername(savedUsername);
   }, []);
 
+  //handleDelete
   const handleDelete = async (id: string) => {
-    const token = Cookies.get("token");
     try {
+      const token = Cookies.get("token");
+
+      if (!id) return console.error("No ID provided for deletion.");
+
       await api.delete(`/api/social-links/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
-      setLinks((prevLinks) => prevLinks.filter((item) => item._id !== id));
-    } catch (error) {
-      console.error("Error deleting link:", error);
+      fetchLinks();
+      setIsPopupOpen(false);
+    } catch (error: any) {
+      console.error("Error deleting social link:", error?.message || error);
     }
   };
 
@@ -106,7 +196,6 @@ const AddSocialMedia = () => {
             Connect your online presence in one place
           </p>
         </div>
-
         <div className="flex mb-4 gap-2 w-full p-2 py-5 rounded-full bg-white text-black text-[20px] font-medium">
           <Input
             type="text"
@@ -117,7 +206,6 @@ const AddSocialMedia = () => {
             Search
           </Button>
         </div>
-
         <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-4xl font-semibold text-white">Platform</h1>
@@ -158,10 +246,20 @@ const AddSocialMedia = () => {
                   </p>
 
                   <div className="flex gap-3">
-                    <button className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
-                      <FaRegEdit />
-                      Edit
+                    <button
+                      onClick={() =>
+                        openEdit({
+                          _id: item._id, // ✅ Add this line
+                          name: item.platform, // platform → name
+                          icon: item.icon,
+                          url: item.url,
+                        })
+                      }
+                      className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:opacity-90"
+                    >
+                      <FaRegEdit /> Edit
                     </button>
+
                     <button
                       className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                       onClick={() => handleDelete(item._id)}
@@ -175,7 +273,6 @@ const AddSocialMedia = () => {
             </div>
           ))}
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Social Networks Card */}
           <Card
@@ -375,13 +472,18 @@ const AddSocialMedia = () => {
             Continue
           </Button>
         </Link>
-
         {/* Popup Component */}
         <AddSocialMediapopup
           icon={selectedPlatform.icon}
           platformName={selectedPlatform.name}
           isOpen={isPopupOpen}
+          isEditing={isEditing}
+          url={url}
+          setUrl={setUrl}
           onClose={() => setIsPopupOpen(false)}
+          onSubmit={() =>
+            isEditing ? handleUpdate() : handleSave(selectedPlatform.name)
+          }
         />
       </div>
 
