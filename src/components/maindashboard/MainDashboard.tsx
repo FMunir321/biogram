@@ -1,6 +1,7 @@
 import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
+import image from "../../../public/assets/Earth.png";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
@@ -93,6 +94,7 @@ const MainDashboard = () => {
           </Button>
         </div>
 
+
         {/* User List: only show if search is not empty */}
         {search.trim() !== "" && (
           <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
@@ -124,7 +126,7 @@ const MainDashboard = () => {
                     style={{
                       width: 40,
                       height: 40,
-                      borderRadius: "50%",
+                      // borderRadius: "50%",
                       marginRight: 16,
                       objectFit: "cover",
                       border: "2px solid #e0e0e0",
@@ -135,6 +137,8 @@ const MainDashboard = () => {
                     <div style={{ fontWeight: 600, fontSize: 16 }}>{user.fullName || user.name || "No Name"}</div>
                     <div style={{ fontSize: 14, color: "#888" }}>@{user.username || user.email || "user"}</div>
                   </div>
+                  
+
                 </li>
               ))
             )}
@@ -168,17 +172,15 @@ const MainDashboard = () => {
             <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-8 mt-0">
               <div className="flex justify-center gap-8 pt-2">
                 <button
-                  className={`text-lg font-semibold ${
-                    activeTab === "shouts" ? "text-white" : "text-blue-400"
-                  }`}
+                  className={`text-lg font-semibold ${activeTab === "shouts" ? "text-white" : "text-blue-400"
+                    }`}
                   onClick={() => setActiveTab("shouts")}
                 >
                   Shouts
                 </button>
                 <button
-                  className={`text-lg font-semibold ${
-                    activeTab === "media" ? "text-white" : "text-blue-400"
-                  }`}
+                  className={`text-lg font-semibold ${activeTab === "media" ? "text-white" : "text-blue-400"
+                    }`}
                   onClick={() => setActiveTab("media")}
                 >
                   Media
@@ -187,6 +189,26 @@ const MainDashboard = () => {
               <div className="flex justify-center items-center mt-4">
                 <img src="/assets/Earth.png" alt="Earth" className="w-14 h-14" />
               </div>
+              
+              {activeTab === "shouts" && (
+                <div className="text-center justify-center">
+                  <h1 className="text-white font-bold text-4xl">
+                    No Shouts Yet!
+                  </h1>
+                  <h6 className="text-gray-300">Shouts posted by Saif Ali</h6>
+                  <p className="text-gray-300">will appear here </p>
+                </div>
+              )}
+
+              {activeTab === "media" && (
+                <div className="text-center  justify-center">
+                  <h1 className="text-white font-bold text-4xl">
+                    No Media Yet!
+                  </h1>
+                  <h6 className="text-gray-300 ">Shouts with media posted</h6>
+                  <p className="text-gray-300 ">by Saif Ali will appear here</p>
+                </div>
+              )}
             </div>
             {userDetails && (
               <div className="mt-4 text-center">
