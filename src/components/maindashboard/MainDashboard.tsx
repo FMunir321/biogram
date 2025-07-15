@@ -1,3 +1,4 @@
+import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
 import { Button } from "../ui/button";
@@ -20,6 +21,8 @@ const MainDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [activeTab, setActiveTab] = useState("shouts"); // Default to "shouts"
+  const [userDetails, setUserDetails] = useState<User | null>(null);
 
   useEffect(() => {
     fetchUser();
@@ -38,6 +41,20 @@ const MainDashboard = () => {
     } catch (error) {
       console.error("Error fetching user data:", error);
       setLoading(false);
+    }
+  };
+
+  const fetchUserById = async (userId: string) => {
+    try {
+      const token = Cookies.get("token");
+      const response = await api.get(`/api/user/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserDetails(response.data); // ya response.data.user, jo bhi aapke backend se aaye
+    } catch (error) {
+      console.error("Error fetching user by ID:", error);
     }
   };
 
@@ -85,7 +102,10 @@ const MainDashboard = () => {
               filteredUsers.map((user) => (
                 <li
                   key={user._id}
-                  onClick={() => setSelectedUser(user)}
+                  onClick={() => {
+                    setSelectedUser(user);
+                    fetchUserById(user._id); // yahan user ki id pass karein
+                  }}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -122,31 +142,66 @@ const MainDashboard = () => {
         )}
       </div>
 
-      <div className="w-full md:w-[50%] md:border-l md:border-[#b6c1bc] md:pl-8 flex justify-center items-center">
-        <div className="text-center px-4">
-          {selectedUser ? (
-            <div>
-              <img
-                src={selectedUser.profileImage || "/public/assets/avatar.png"}
-                alt={selectedUser.username || "avatar"}
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  border: "2px solid #e0e0e0",
-                  margin: "0 auto 16px auto"
-                }}
-              />
-              <div style={{ fontWeight: 600, fontSize: 22 }}>{selectedUser.fullName || selectedUser.name || "No Name"}</div>
-              <div style={{ fontSize: 16, color: "#888" }}>@{selectedUser.username || selectedUser.email || "user"}</div>
+      <div className="flex flex-1 p-4 flex-col items-center justify-center">
+        {selectedUser ? (
+          <>
+            {/* Responsive Profile Card */}
+            <div
+              className="relative flex items-center justify-center w-full max-w-[400px] aspect-[4/3] mx-auto shadow-xl rounded-2xl overflow-hidden bg-cover bg-center"
+              style={{
+                backgroundImage: selectedUser.profileImage
+                  ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
+                  : `url("${group}")`,
+              }}
+            >
+              {/* Centered Name and Username */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
+                <div className="text-white font-bold text-2xl drop-shadow-lg">
+                  {selectedUser.fullName || "Loading..."}
+                </div>
+                <div className="text-white font-medium text-lg drop-shadow-lg">
+                  @{selectedUser.username || "username"}
+                </div>
+              </div>
             </div>
-          ) : (
-            <p className="text-black font-medium">
-              Click on user to preview their profile
-            </p>
-          )}
-        </div>
+            {/* Tabs and Earth Image */}
+            <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-8 mt-0">
+              <div className="flex justify-center gap-8 pt-2">
+                <button
+                  className={`text-lg font-semibold ${
+                    activeTab === "shouts" ? "text-white" : "text-blue-400"
+                  }`}
+                  onClick={() => setActiveTab("shouts")}
+                >
+                  Shouts
+                </button>
+                <button
+                  className={`text-lg font-semibold ${
+                    activeTab === "media" ? "text-white" : "text-blue-400"
+                  }`}
+                  onClick={() => setActiveTab("media")}
+                >
+                  Media
+                </button>
+              </div>
+              <div className="flex justify-center items-center mt-4">
+                <img src="/assets/Earth.png" alt="Earth" className="w-14 h-14" />
+              </div>
+            </div>
+            {userDetails && (
+              <div className="mt-4 text-center">
+                <h2 className="text-xl font-bold text-white">{userDetails.fullName}</h2>
+                <p className="text-white">@{userDetails.username}</p>
+                <p className="text-white">{userDetails.email}</p>
+                {/* Add more fields as needed */}
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-black font-medium mt-10">
+            Click on user to preview their profile
+          </p>
+        )}
       </div>
     </div>
   );

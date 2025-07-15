@@ -89,7 +89,7 @@
 
 // import  biogram from "../../../public/Biogram.png";
 
-import group from "../../../public/assets/boys333.png";
+import group from "../../../public/assets/avatar.png";
 import biogram from "../../../public/Biogram.png";
 import image from "../../../public/assets/Earth.png";
 import { useState } from "react";
@@ -97,6 +97,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import api from "@/service/api";
+import { useParams } from "react-router-dom";
 
 type UserData = {
   fullName: string;
@@ -105,6 +106,7 @@ type UserData = {
 };
 
 const Profile = () => {
+  const { id } = useParams();
   const [activeTab, setActiveTab] = useState("shouts");
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -112,24 +114,26 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const token = Cookies.get("token");
-        const userId = localStorage.getItem("userId");
+        // const userId = localStorage.getItem("userId"); // This line is no longer needed
 
-        const response = await api.get(
-          `/api/user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setUserData(response.data);
+        if (id) {
+          const response = await api.get(
+            `/api/user/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setUserData(response.data);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [id]);
 
   return (
     <div className="flex p-4  flex-col items-center justify-center min-h-screen ">
