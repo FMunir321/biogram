@@ -163,17 +163,15 @@ const Profile = () => {
           <div className="justify-center items-center">
             <div className="flex gap-2 justify-center ">
               <button
-                className={`px-4 py-2 ${
-                  activeTab === "shouts" ? " text-white" : "text-blue-500"
-                }`}
+                className={`px-4 py-2 ${activeTab === "shouts" ? " text-white" : "text-blue-500"
+                  }`}
                 onClick={() => setActiveTab("shouts")}
               >
                 Shouts
               </button>
               <button
-                className={`px-4 py-2 ${
-                  activeTab === "media" ? " text-white" : "text-blue-500"
-                }`}
+                className={`px-4 py-2 ${activeTab === "media" ? " text-white" : "text-blue-500"
+                  }`}
                 onClick={() => setActiveTab("media")}
               >
                 Media

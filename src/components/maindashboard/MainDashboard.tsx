@@ -1,7 +1,9 @@
 import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
-import image from "../../../public/assets/Earth.png";
+
+import biogram from "../../../public/Biogram.png";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
@@ -79,7 +81,7 @@ const MainDashboard = () => {
       className="flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bground})` }}
     >
-      <div className="w-full md:w-[50%] p-5">
+      <div className="w-full md:w-[50%]">
         {/* Searchbar */}
         <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
           <Input
@@ -126,7 +128,7 @@ const MainDashboard = () => {
                     style={{
                       width: 40,
                       height: 40,
-                      // borderRadius: "50%",
+                      borderRadius: "50%",
                       marginRight: 16,
                       objectFit: "cover",
                       border: "2px solid #e0e0e0",
@@ -137,7 +139,7 @@ const MainDashboard = () => {
                     <div style={{ fontWeight: 600, fontSize: 16 }}>{user.fullName || user.name || "No Name"}</div>
                     <div style={{ fontSize: 14, color: "#888" }}>@{user.username || user.email || "user"}</div>
                   </div>
-                  
+
 
                 </li>
               ))
@@ -146,50 +148,54 @@ const MainDashboard = () => {
         )}
       </div>
 
-      <div className="flex flex-1 p-4 flex-col items-center justify-center">
+      <div className="flex flex-col items-center w-full">
         {selectedUser ? (
           <>
-            {/* Responsive Profile Card */}
+            {/* Profile Image as Card Header */}
             <div
-              className="relative flex items-center justify-center w-full max-w-[400px] aspect-[4/3] mx-auto shadow-xl rounded-2xl overflow-hidden bg-cover bg-center"
+                className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center mt-10"
               style={{
                 backgroundImage: selectedUser.profileImage
                   ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
                   : `url("${group}")`,
+
               }}
-            >
-              {/* Centered Name and Username */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
-                <div className="text-white font-bold text-2xl drop-shadow-lg">
-                  {selectedUser.fullName || "Loading..."}
-                </div>
-                <div className="text-white font-medium text-lg drop-shadow-lg">
-                  @{selectedUser.username || "username"}
-                </div>
+            ></div>
+            <div className="inset-0  flex flex-col items-center justify-center mt-[-150px] z-10">
+              <h2 className="text-2xl text-white font-bold">
+                {userDetails?.fullName || "Loading..."}
+              </h2>
+              <p className="text-sm text-gray-200 mt-1">
+                @{userDetails?.username || "username"}
+              </p>
+              <div className="hidden">
+                <img src={biogram} alt="Biogram Logo" className="w-16 h-18 mt-4 " />
               </div>
             </div>
-            {/* Tabs and Earth Image */}
-            <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-8 mt-0">
-              <div className="flex justify-center gap-8 pt-2">
+
+
+            <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 ">
+              <div className="flex justify-center gap-8 ">
                 <button
-                  className={`text-lg font-semibold ${activeTab === "shouts" ? "text-white" : "text-blue-400"
+                  className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-white" : "text-blue-400"
                     }`}
                   onClick={() => setActiveTab("shouts")}
                 >
                   Shouts
                 </button>
                 <button
-                  className={`text-lg font-semibold ${activeTab === "media" ? "text-white" : "text-blue-400"
+                  className={`text-lg font-semibold rounded-none ${activeTab === "media" ? "text-white" : "text-blue-400"
                     }`}
                   onClick={() => setActiveTab("media")}
                 >
                   Media
                 </button>
               </div>
+
+              {/* Earth Image or any other content */}
               <div className="flex justify-center items-center mt-4">
                 <img src="/assets/Earth.png" alt="Earth" className="w-14 h-14" />
               </div>
-              
               {activeTab === "shouts" && (
                 <div className="text-center justify-center">
                   <h1 className="text-white font-bold text-4xl">
@@ -210,14 +216,6 @@ const MainDashboard = () => {
                 </div>
               )}
             </div>
-            {userDetails && (
-              <div className="mt-4 text-center">
-                <h2 className="text-xl font-bold text-white">{userDetails.fullName}</h2>
-                <p className="text-white">@{userDetails.username}</p>
-                <p className="text-white">{userDetails.email}</p>
-                {/* Add more fields as needed */}
-              </div>
-            )}
           </>
         ) : (
           <p className="text-black font-medium mt-10">
