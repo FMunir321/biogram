@@ -89,7 +89,7 @@
 
 // import  biogram from "../../../public/Biogram.png";
 
-import group from "../../../public/assets/avatar.png";
+import group from "../../../public/assets/boys333.png";
 import biogram from "../../../public/Biogram.png";
 import image from "../../../public/assets/Earth.png";
 import { useState } from "react";
