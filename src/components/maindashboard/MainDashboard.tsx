@@ -153,7 +153,7 @@ const MainDashboard = () => {
           <>
             {/* Profile Image as Card Header */}
             <div
-                className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center mt-10"
+                className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center mt-10 rounded-2xl"
               style={{
                 backgroundImage: selectedUser.profileImage
                   ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
