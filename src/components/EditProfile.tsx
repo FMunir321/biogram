@@ -292,13 +292,13 @@ const EditProfile = () => {
     }
   };
 
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setThumbnail(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
+  // const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setThumbnail(file);
+  //     setPreview(URL.createObjectURL(file));
+  //   }
+  // };
 
   //   const handleSubmit = async () => {
   //     const formData = new FormData();
@@ -346,13 +346,23 @@ const EditProfile = () => {
   //   setEditMerchId(merch._id);
   //   setIsAddMerch(true);
   // };
+  // Thumbnail Change
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      setPreview(URL.createObjectURL(file)); // Set preview from selected image
+    }
+  };
 
+  // Submit Handler
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("category", category);
     formData.append("url", url);
     formData.append("title", title);
     formData.append("Price", price);
+
     if (thumbnail) {
       formData.append("image", thumbnail);
     }
@@ -361,7 +371,6 @@ const EditProfile = () => {
 
     try {
       if (editMerchId) {
-        // Edit Mode
         await api.put(`/api/merch/${editMerchId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -370,7 +379,6 @@ const EditProfile = () => {
         });
         alert("Updated Successfully!");
       } else {
-        // Add Mode
         await api.post("/api/merch", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -389,6 +397,7 @@ const EditProfile = () => {
     }
   };
 
+  // Reset form
   const resetForm = () => {
     setCategory("");
     setUrl("");
@@ -399,18 +408,24 @@ const EditProfile = () => {
     setEditMerchId(null);
   };
 
+  // Edit Click (fix for image)
   const handleEditClick = (merch: any) => {
     setCategory(merch.category);
     setUrl(merch.url);
     setTitle(merch.title);
     setPrice(merch.Price);
+
+    // ✅ Correct image URL creation
     const imageURL = merch.image
-      ? merch.image.startsWith("data:image")
+      ? merch.image.startsWith("http") // if full URL already
         ? merch.image
         : `http://3.111.146.115:5000${merch.image}`
       : "/default-thumbnail.png";
-    setPreview(imageURL);
+
+    setPreview(imageURL); // 👈 ye image background ke liye
     setThumbnail(null);
+    console.log("Preview Image URL:", imageURL);
+
     setEditMerchId(merch._id);
     setIsAddMerch(true);
   };
@@ -1697,14 +1712,14 @@ const EditProfile = () => {
                 <p className="text-white">Cover</p>
                 <label
                   htmlFor="thumbnailUpload"
-                  className={`cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all ${
-                    preview
-                      ? "bg-cover bg-center"
-                      : "bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
-                  }`}
+                  className={`cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all overflow-hidden`}
                   style={{
                     backgroundImage: preview ? `url(${preview})` : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                     minHeight: "200px",
+                    width: "100%",
+                    borderRadius: "12px",
                   }}
                 >
                   {!preview && (
