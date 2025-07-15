@@ -17,10 +17,10 @@ const Forpeople = () => {
       <ChooseBiogram />
       <RealTimeAnalyticsHero />
       <ArtistShowcase />
-       <BiogramProfile />
-       <BiogramShoutPage />
-       <ProfileCard />
-       <InstagramRedirectFeatures />
+      <BiogramProfile />
+      <BiogramShoutPage />
+      <ProfileCard />
+      <InstagramRedirectFeatures />
       <BiogramPricing />
       <Footer />
     </div>
