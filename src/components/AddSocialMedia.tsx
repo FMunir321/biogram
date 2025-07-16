@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -19,16 +20,30 @@ import { MdDelete } from "react-icons/md";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 import api from "@/service/api";
+import "../components/EditProfile.css";
+import { RxCross2 } from "react-icons/rx";
+const iconMap: Record<string, string> = {
+  whatsapp: whatsappimage,
+  linkedin: linkedinimage,
+  skype: skypeimage,
+  facebook: facebookimage,
+  instagram: instagramimage,
+  twitter: twitterimage,
+  tiktok: tiktokimage,
+  applemusic: applemusicimage,
+  soundcloud: soundcloudimage,
+  spotify: spotifyimage,
+};
 
 type SocialLink = {
   _id: string;
   platform: string;
   url: string;
+  icon: string;
 };
 
 const AddSocialMedia = () => {
@@ -36,17 +51,102 @@ const AddSocialMedia = () => {
   const [links, setLinks] = useState<SocialLink[]>([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
-
-  const [selectedPlatform, setSelectedPlatform] = useState({
-    name: "",
-    icon: "",
-  });
+  const [uploadedImageURLs, setUploadedImageURLs] = useState<
+    { id: string; url: string }[]
+  >([]);
 
   const openPopup = (name: string, icon: string) => {
     setSelectedPlatform({ name, icon });
     setIsPopupOpen(true);
   };
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<{
+    name: string;
+    icon: string;
+  }>({
+    name: "",
+    icon: "",
+  });
+  const [url, setUrl] = useState("");
+  const [editingId, setEditingId] = useState<string>("");
 
+  // Open Add
+  // const openAdd = (p: { name: string; icon: string }) => {
+  //   setSelectedPlatform(p);
+  //   setUrl("");
+  //   setIsEditing(false);
+  //   setIsPopupOpen(true);
+  // };
+
+  const openEdit = (p: SocialLink) => {
+    const platformKey = p.platform.toLowerCase();
+    const resolvedIcon = iconMap[platformKey];
+
+    setSelectedPlatform({ name: p.platform, icon: resolvedIcon });
+    setUrl(p.url);
+    setEditingId(p._id);
+    setIsEditing(true);
+    setIsPopupOpen(true);
+  };
+
+  // Handle Save
+  const handleSave = async (platformName: string) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = Cookies.get("token");
+
+      if (!url || url.trim() === "") return console.error("URL is required.");
+
+      const fixedPlatform = platformName.toLowerCase();
+      const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
+      const urlPattern = /^https?:\/\/[\w.-]+\.[a-z]{2,}.*$/i;
+      if (!urlPattern.test(fixedUrl))
+        return console.error("Invalid URL format.");
+
+      await api.post(
+        "/api/social-links",
+        { userId, platform: fixedPlatform, url: fixedUrl },
+        { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
+      );
+
+      fetchLinks();
+      setUrl("");
+      setIsPopupOpen(false);
+    } catch (error: any) {
+      console.error("Error saving social link:", error?.message || error);
+    }
+  };
+
+  // Handle Update
+  const handleUpdate = async () => {
+    try {
+      const token = Cookies.get("token");
+
+      if (!url || url.trim() === "") return console.error("URL is required.");
+
+      const fixedUrl = url.startsWith("http") ? url : `https://${url}`;
+      const urlPattern = /^https?:\/\/[\w.-]+\.[a-z]{2,}.*$/i;
+      if (!urlPattern.test(fixedUrl))
+        return console.error("Invalid URL format.");
+
+      await api.put(
+        `/api/social-links/${editingId}`,
+        { url: fixedUrl },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
+
+      fetchLinks();
+      setIsPopupOpen(false);
+      setUrl("");
+    } catch (error: any) {
+      console.error("Error updating social link:", error?.message || error);
+    }
+  };
+
+  //fetchLinkes
   const fetchLinks = async () => {
     const userId = localStorage.getItem("userId");
     const token = Cookies.get("token");
@@ -74,24 +174,130 @@ const AddSocialMedia = () => {
     if (savedUsername) setUsername(savedUsername);
   }, []);
 
+  //handleDelete
   const handleDelete = async (id: string) => {
-    const token = Cookies.get("token");
     try {
+      const token = Cookies.get("token");
+
+      if (!id) return console.error("No ID provided for deletion.");
+
       await api.delete(`/api/social-links/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
-      setLinks((prevLinks) => prevLinks.filter((item) => item._id !== id));
-    } catch (error) {
-      console.error("Error deleting link:", error);
+      fetchLinks();
+      setIsPopupOpen(false);
+    } catch (error: any) {
+      console.error("Error deleting social link:", error?.message || error);
     }
   };
 
   useEffect(() => {
     fetchLinks();
   }, []);
+
+  // postshout
+  const fetchShouts = async () => {
+    try {
+      const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
+
+      if (!token || !userId) return;
+
+      const res = await api.get(`/api/shouts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const shouts = res.data?.shouts || [];
+      const imageURLs = shouts
+        .filter((shout: any) => shout.imageUrl)
+        .map((shout: any) => ({
+          id: shout._id,
+          url: shout.imageUrl.startsWith("http")
+            ? shout.imageUrl
+            : `http://3.111.146.115:5000${shout.imageUrl}`,
+        }));
+
+      setUploadedImageURLs(imageURLs);
+    } catch (err) {
+      console.error("Failed to fetch shouts:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchShouts();
+  }, []);
+
+  // ✅ POST image
+  const postShout = async (
+    imageFile: File,
+    isMedia: boolean = false
+  ): Promise<any> => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      const formData = new FormData();
+      formData.append("isMedia", String(isMedia));
+      formData.append("file", imageFile);
+
+      const response = await api.post("/api/shouts/create", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error posting shout:", error);
+      return null;
+    }
+  };
+
+  //  Upload on click
+  const handleCardClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+
+      if (file) {
+        const posted = await postShout(file, false);
+        if (posted) {
+          await fetchShouts();
+        }
+      }
+    };
+
+    input.click();
+  };
+
+  //delete shut
+  const deleteShout = async (id: string) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      await api.delete(`/api/shouts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      await fetchShouts();
+    } catch (error) {
+      console.error("Failed to delete shout:", error);
+    }
+  };
+
+  const [activeTab, setActiveTab] = useState<"shots" | "media">("shots");
 
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
@@ -106,7 +312,6 @@ const AddSocialMedia = () => {
             Connect your online presence in one place
           </p>
         </div>
-
         <div className="flex mb-4 gap-2 w-full p-2 py-5 rounded-full bg-white text-black text-[20px] font-medium">
           <Input
             type="text"
@@ -117,7 +322,6 @@ const AddSocialMedia = () => {
             Search
           </Button>
         </div>
-
         <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-4xl font-semibold text-white">Platform</h1>
@@ -145,8 +349,8 @@ const AddSocialMedia = () => {
                 </div>
 
                 <hr className="mb-4 border-gray-300" />
-                <div className="flex justify-between gap-2 ">
-                  <p className="text-gray-700 mb-4 break-all">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <p className="text-gray-700 break-all">
                     <a
                       href={item.url}
                       target="_blank"
@@ -157,13 +361,16 @@ const AddSocialMedia = () => {
                     </a>
                   </p>
 
-                  <div className="flex gap-3">
-                    <button className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
-                      <FaRegEdit />
-                      Edit
-                    </button>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <button
-                      className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                      onClick={() => openEdit(item)}
+                      className="flex items-center justify-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:opacity-90"
+                    >
+                      <FaRegEdit /> Edit
+                    </button>
+
+                    <button
+                      className="flex items-center justify-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                       onClick={() => handleDelete(item._id)}
                     >
                       <MdDelete />
@@ -175,7 +382,6 @@ const AddSocialMedia = () => {
             </div>
           ))}
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Social Networks Card */}
           <Card
@@ -375,13 +581,18 @@ const AddSocialMedia = () => {
             Continue
           </Button>
         </Link>
-
         {/* Popup Component */}
         <AddSocialMediapopup
           icon={selectedPlatform.icon}
           platformName={selectedPlatform.name}
           isOpen={isPopupOpen}
+          isEditing={isEditing}
+          url={url}
+          setUrl={setUrl}
           onClose={() => setIsPopupOpen(false)}
+          onSubmit={() =>
+            isEditing ? handleUpdate() : handleSave(selectedPlatform.name)
+          }
         />
       </div>
 
@@ -412,23 +623,27 @@ const AddSocialMedia = () => {
                 }}
               >
                 <div
-                  className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1 w-full h-full"
-                  style={{
-                    backgroundClip: "padding-box",
-                    // Optional: add a solid background if you want to hide the gradient behind the content
-                    // background: "rgba(255,255,255,0.2)",
-                  }}
+                  className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1 w-full h-full "
+                  style={{ backgroundClip: "padding-box" }}
                 >
                   <button
-                    className="px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal"
-                    style={{
-                      background:
-                        "linear-gradient(97.29deg, #7ECFA7 13.65%, #53886C 90.87%)",
-                    }}
+                    onClick={() => setActiveTab("shots")}
+                    className={`px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal ${
+                      activeTab === "shots"
+                        ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                        : "hover:bg-white/10"
+                    }`}
                   >
                     Shots
                   </button>
-                  <button className="px-4 md:px-6 py-1.5 text-white text-[20px] font-normal hover:bg-white/10">
+                  <button
+                    onClick={() => setActiveTab("media")}
+                    className={`px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal ${
+                      activeTab === "media"
+                        ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                        : "hover:bg-white/10"
+                    }`}
+                  >
                     Media
                   </button>
                 </div>
@@ -445,41 +660,107 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-lg text-white/90">@{username}</p>
                 </div>
+                {/* flex flex-col gap-4 mb-6 w-full  */}
 
-                <div className="flex flex-col gap-4 mb-6 w-full">
+                {/* <div className="flex flex-col gap-4 mb-6 w-full   space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                  {uploadedImageURLs.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                    >
+                      <RxCross2
+                        className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                        onClick={() => deleteShout(item.id)}
+                      />
+                      <img
+                        src={item.url}
+                        alt={`Shout ${index}`}
+                        className="w-[242px] h-[226px] rounded-2xl object-cover"
+                      />
+                    </div>
+                  ))}
                   <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
+                    <div
+                      className="flex flex-col items-center gap-4 cursor-pointer"
+                      onClick={handleCardClick}
+                    >
                       <img
                         src={rightsideemojiimage}
                         alt="Right Side Emoji"
-                        className="w-[64px] h-[64px]"
+                        className="w-[88px] h-[88px]"
                       />
-                      <p className="text-white text-base">No shouts</p>
+                      <p className="text-white text-lg">Upload shouts</p>
                     </div>
                   </div>
+                </div> */}
+                {activeTab === "shots" ? (
+                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                    {uploadedImageURLs.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                      >
+                        <RxCross2
+                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                          onClick={() => deleteShout(item.id)}
+                        />
+                        <img
+                          src={item.url}
+                          alt={`Shout ${index}`}
+                          className="w-[242px] h-[226px] rounded-2xl object-cover"
+                        />
+                      </div>
+                    ))}
+                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleCardClick}
+                      >
+                        <img
+                          src={rightsideemojiimage}
+                          alt="Right Side Emoji"
+                          className="w-[88px] h-[88px]"
+                        />
+                        <p className="text-white text-lg">Upload shouts</p>
+                      </div>
+                    </div>
+                    {/* 
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
+                        <img
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
+                        />
+                      </div> */}
 
-                  <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <img
-                        src={rightsideemojiimage}
-                        alt="Right Side Emoji"
-                        className="w-[64px] h-[64px]"
-                      />
-                      <p className="text-white text-base">No shouts</p>
+                    {/* Desktop Bottom Card - Below character image */}
+                    {/* <div className="px-2 mt-[50px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              No shouts yet!
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              Shouts posted by alex james will appear here
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
+                  </div>
+                ) : (
+                  <div className="px-2 mt-[20px]">
+                    <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                      <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                        <h3 className="text-[40px] font-bold text-white mb-1">
+                          Not Found
+                        </h3>
+                        <p className="text-white/90 text-[20px] font-normal">
+                          No media to display
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="w-full mb-6">
-                  <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
-                    <h3 className="text-xl font-bold text-white mb-1">
-                      No shouts yet!
-                    </h3>
-                    <p className="text-white/90 text-xs">
-                      Shouts posted by alex james will appear here
-                    </p>
-                  </div>
-                </div>
+                )}
 
                 <div className="w-full flex justify-center">
                   <img
@@ -490,6 +771,17 @@ const AddSocialMedia = () => {
                 </div>
               </div>
 
+              {/* <div className="w-full mb-6">
+                  <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      No shouts yet!
+                    </h3>
+                    <p className="text-white/90 text-xs">
+                      Shouts posted by alex james will appear here
+                    </p>
+                  </div>
+                </div> */}
+
               {/* Desktop Layout - Hidden on sm, visible on md and up */}
               <div className="hidden md:block relative">
                 <div className="relative z-10">
@@ -498,52 +790,116 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-xl text-white/90 mb-6">{username}</p>
 
-                  <div className="space-y-4 max-w-[242px]">
+                  {/* <div className="space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                    {uploadedImageURLs.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                      >
+                        <RxCross2
+                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                          onClick={() => deleteShout(item.id)}
+                        />
+                        <img
+                          src={item.url}
+                          alt={`Shout ${index}`}
+                          className="w-[242px] h-[226px] rounded-2xl object-cover"
+                        />
+                      </div>
+                    ))}
+
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-4">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleCardClick}
+                      >
                         <img
                           src={rightsideemojiimage}
                           alt="Right Side Emoji"
                           className="w-[88px] h-[88px]"
                         />
-                        <p className="text-white text-lg">No shouts</p>
+                        <p className="text-white text-lg">Upload shouts</p>
                       </div>
                     </div>
+                  </div> */}
 
-                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-4">
+                  {activeTab === "shots" ? (
+                    <div className="space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                      {uploadedImageURLs.map((item, index) => (
+                        <div
+                          key={item.id}
+                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                        >
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                          />
+                          <img
+                            src={item.url}
+                            alt={`Shout ${index}`}
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                          />
+                        </div>
+                      ))}
+                      <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                        <div
+                          className="flex flex-col items-center gap-4 cursor-pointer"
+                          onClick={handleCardClick}
+                        >
+                          <img
+                            src={rightsideemojiimage}
+                            alt="Right Side Emoji"
+                            className="w-[88px] h-[88px]"
+                          />
+                          <p className="text-white text-lg">Upload shouts</p>
+                        </div>
+                      </div>
+
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
                         <img
-                          src={rightsideemojiimage}
-                          alt="Right Side Emoji"
-                          className="w-[88px] h-[88px]"
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
                         />
-                        <p className="text-white text-lg">No shouts</p>
+                      </div>
+
+                      {/* Desktop Bottom Card - Below character image */}
+                      {/* <div className="px-2 mt-[50px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              No shouts yet!
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              Shouts posted by alex james will appear here
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-screen">
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
+                        <img
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
+                        />
+                      </div>
+                      <div className="px-2 mt-[20px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              Not Found
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              No media to display
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Character Image for Desktop */}
-                <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
-                  <img
-                    src={alexjamesimage}
-                    alt="Alex James Character"
-                    className="h-[100%]"
-                  />
-                </div>
-
-                {/* Desktop Bottom Card - Below character image */}
-                <div className="px-2 mt-[50px]">
-                  <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
-                    <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
-                      <h3 className="text-[40px] font-bold text-white mb-1">
-                        No shouts yet!
-                      </h3>
-                      <p className="text-white/90 text-[20px] font-normal">
-                        Shouts posted by alex james will appear here
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
