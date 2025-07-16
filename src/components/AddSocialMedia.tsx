@@ -25,6 +25,7 @@ import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 import api from "@/service/api";
 import "../components/EditProfile.css";
+import { RxCross2 } from "react-icons/rx";
 const iconMap: Record<string, string> = {
   whatsapp: whatsappimage,
   linkedin: linkedinimage,
@@ -50,7 +51,10 @@ const AddSocialMedia = () => {
   const [links, setLinks] = useState<SocialLink[]>([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
-  const [uploadedImageURLs, setUploadedImageURLs] = useState<string[]>([]);
+  const [uploadedImageURLs, setUploadedImageURLs] = useState<
+    { id: string; url: string }[]
+  >([]);
+
   const openPopup = (name: string, icon: string) => {
     setSelectedPlatform({ name, icon });
     setIsPopupOpen(true);
@@ -209,9 +213,13 @@ const AddSocialMedia = () => {
 
       const shouts = res.data?.shouts || [];
       const imageURLs = shouts
-        .map((shout: any) => shout.imageUrl)
-        .filter((url: string) => !!url)
-        .map((url: string) => `http://3.111.146.115:5000${url}`);
+        .filter((shout: any) => shout.imageUrl)
+        .map((shout: any) => ({
+          id: shout._id,
+          url: shout.imageUrl.startsWith("http")
+            ? shout.imageUrl
+            : `http://3.111.146.115:5000${shout.imageUrl}`,
+        }));
 
       setUploadedImageURLs(imageURLs);
     } catch (err) {
@@ -271,6 +279,24 @@ const AddSocialMedia = () => {
     input.click();
   };
 
+  //delete shut
+  const deleteShout = async (id: string) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      await api.delete(`/api/shouts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      await fetchShouts();
+    } catch (error) {
+      console.error("Failed to delete shout:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
       {/* Left Section */}
@@ -321,8 +347,8 @@ const AddSocialMedia = () => {
                 </div>
 
                 <hr className="mb-4 border-gray-300" />
-                <div className="flex justify-between gap-2 ">
-                  <p className="text-gray-700 mb-4 break-all">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <p className="text-gray-700 break-all">
                     <a
                       href={item.url}
                       target="_blank"
@@ -333,16 +359,16 @@ const AddSocialMedia = () => {
                     </a>
                   </p>
 
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <button
                       onClick={() => openEdit(item)}
-                      className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:opacity-90"
+                      className="flex items-center justify-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:opacity-90"
                     >
                       <FaRegEdit /> Edit
                     </button>
 
                     <button
-                      className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                      className="flex items-center justify-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                       onClick={() => handleDelete(item._id)}
                     >
                       <MdDelete />
@@ -629,30 +655,37 @@ const AddSocialMedia = () => {
                   <p className="text-lg text-white/90">@{username}</p>
                 </div>
 
-                {/* <div className="flex flex-col gap-4 mb-6 w-full">
+                <div className="flex flex-col gap-4 mb-6 w-full   space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                  {uploadedImageURLs.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                    >
+                      <RxCross2
+                        className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                        onClick={() => deleteShout(item.id)}
+                      />
+                      <img
+                        src={item.url}
+                        alt={`Shout ${index}`}
+                        className="w-[242px] h-[226px] rounded-2xl object-cover"
+                      />
+                    </div>
+                  ))}
                   <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
-                
-                     <div className="flex flex-col items-center gap-4">
+                    <div
+                      className="flex flex-col items-center gap-4 cursor-pointer"
+                      onClick={handleCardClick}
+                    >
                       <img
                         src={rightsideemojiimage}
                         alt="Right Side Emoji"
-                        className="w-[64px] h-[64px]"
+                        className="w-[88px] h-[88px]"
                       />
-                      <p className="text-white text-base">No shouts</p>
+                      <p className="text-white text-lg">Upload shouts</p>
                     </div>
                   </div>
-
-                  <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <img
-                        src={rightsideemojiimage}
-                        alt="Right Side Emoji"
-                        className="w-[64px] h-[64px]"
-                      />
-                      <p className="text-white text-base">No shouts</p>
-                    </div>
-                  </div>
-                </div> */}
+                </div>
 
                 <div className="w-full mb-6">
                   <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
@@ -682,16 +715,20 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-xl text-white/90 mb-6">{username}</p>
 
-                  <div className="space-y-4 max-w-[242px] h-[600px]  scrollbar-hide    overflow-y-auto">
-                    {uploadedImageURLs.map((url, index) => (
+                  <div className="space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                    {uploadedImageURLs.map((item, index) => (
                       <div
-                        key={index}
-                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center"
+                        key={item.id}
+                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
                       >
+                        <RxCross2
+                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                          onClick={() => deleteShout(item.id)}
+                        />
                         <img
-                          src={url}
+                          src={item.url}
                           alt={`Shout ${index}`}
-                          className="w-[88px] h-[88px] object-cover rounded"
+                          className="w-[242px] h-[226px] rounded-2xl object-cover"
                         />
                       </div>
                     ))}
