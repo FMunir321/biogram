@@ -24,17 +24,7 @@ import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 import api from "@/service/api";
-
-// import whatsappimage from "../../../public/assets/whatsapp.png";
-// import linkedinimage from "../../../public/assets/linkedin.png";
-// import skypeimage from "../../../public/assets/skype.png";
-
-// const iconMap: Record<string, string> = {
-//   whatsapp: whatsappimage,
-//   linkedin: linkedinimage,
-//   skype: skypeimage,
-// };
-
+import "../components/EditProfile.css";
 const iconMap: Record<string, string> = {
   whatsapp: whatsappimage,
   linkedin: linkedinimage,
@@ -45,12 +35,12 @@ const iconMap: Record<string, string> = {
   tiktok: tiktokimage,
   applemusic: applemusicimage,
   soundcloud: soundcloudimage,
-  spotify: spotifyimage
+  spotify: spotifyimage,
 };
 
 type SocialLink = {
   _id: string;
-  platform: string; // ✅ Correct key
+  platform: string;
   url: string;
   icon: string;
 };
@@ -60,7 +50,7 @@ const AddSocialMedia = () => {
   const [links, setLinks] = useState<SocialLink[]>([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
-
+  const [uploadedImageURLs, setUploadedImageURLs] = useState<string[]>([]);
   const openPopup = (name: string, icon: string) => {
     setSelectedPlatform({ name, icon });
     setIsPopupOpen(true);
@@ -85,8 +75,8 @@ const AddSocialMedia = () => {
   // };
 
   const openEdit = (p: SocialLink) => {
-    const platformKey = p.platform.toLowerCase(); // e.g., "whatsapp", "linkedin"
-    const resolvedIcon = iconMap[platformKey]; // get image from map
+    const platformKey = p.platform.toLowerCase();
+    const resolvedIcon = iconMap[platformKey];
 
     setSelectedPlatform({ name: p.platform, icon: resolvedIcon });
     setUrl(p.url);
@@ -202,6 +192,84 @@ const AddSocialMedia = () => {
   useEffect(() => {
     fetchLinks();
   }, []);
+
+  // postshout
+  const fetchShouts = async () => {
+    try {
+      const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
+
+      if (!token || !userId) return;
+
+      const res = await api.get(`/api/shouts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const shouts = res.data?.shouts || [];
+      const imageURLs = shouts
+        .map((shout: any) => shout.imageUrl)
+        .filter((url: string) => !!url)
+        .map((url: string) => `http://3.111.146.115:5000${url}`);
+
+      setUploadedImageURLs(imageURLs);
+    } catch (err) {
+      console.error("Failed to fetch shouts:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchShouts();
+  }, []);
+
+  // ✅ POST image
+  const postShout = async (
+    imageFile: File,
+    isMedia: boolean = false
+  ): Promise<any> => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      const formData = new FormData();
+      formData.append("isMedia", String(isMedia));
+      formData.append("file", imageFile);
+
+      const response = await api.post("/api/shouts/create", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error posting shout:", error);
+      return null;
+    }
+  };
+
+  //  Upload on click
+  const handleCardClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+
+      if (file) {
+        const posted = await postShout(file, false);
+        if (posted) {
+          await fetchShouts();
+        }
+      }
+    };
+
+    input.click();
+  };
 
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
@@ -561,9 +629,10 @@ const AddSocialMedia = () => {
                   <p className="text-lg text-white/90">@{username}</p>
                 </div>
 
-                <div className="flex flex-col gap-4 mb-6 w-full">
+                {/* <div className="flex flex-col gap-4 mb-6 w-full">
                   <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-4 h-[200px] w-full flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
+                
+                     <div className="flex flex-col items-center gap-4">
                       <img
                         src={rightsideemojiimage}
                         alt="Right Side Emoji"
@@ -583,7 +652,7 @@ const AddSocialMedia = () => {
                       <p className="text-white text-base">No shouts</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="w-full mb-6">
                   <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
@@ -613,26 +682,31 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-xl text-white/90 mb-6">{username}</p>
 
-                  <div className="space-y-4 max-w-[242px]">
-                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-4">
+                  <div className="space-y-4 max-w-[242px] h-[600px]  scrollbar-hide    overflow-y-auto">
+                    {uploadedImageURLs.map((url, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center"
+                      >
                         <img
-                          src={rightsideemojiimage}
-                          alt="Right Side Emoji"
-                          className="w-[88px] h-[88px]"
+                          src={url}
+                          alt={`Shout ${index}`}
+                          className="w-[88px] h-[88px] object-cover rounded"
                         />
-                        <p className="text-white text-lg">No shouts</p>
                       </div>
-                    </div>
+                    ))}
 
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-4">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleCardClick}
+                      >
                         <img
                           src={rightsideemojiimage}
                           alt="Right Side Emoji"
                           className="w-[88px] h-[88px]"
                         />
-                        <p className="text-white text-lg">No shouts</p>
+                        <p className="text-white text-lg">Upload shouts</p>
                       </div>
                     </div>
                   </div>
