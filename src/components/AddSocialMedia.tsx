@@ -297,6 +297,8 @@ const AddSocialMedia = () => {
     }
   };
 
+  const [activeTab, setActiveTab] = useState<"shots" | "media">("shots");
+
   return (
     <div className="min-h-screen w-full bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] p-4 md:p-6 flex flex-col lg:flex-row items-center justify-center gap-2">
       {/* Left Section */}
@@ -621,23 +623,27 @@ const AddSocialMedia = () => {
                 }}
               >
                 <div
-                  className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1 w-full h-full"
-                  style={{
-                    backgroundClip: "padding-box",
-                    // Optional: add a solid background if you want to hide the gradient behind the content
-                    // background: "rgba(255,255,255,0.2)",
-                  }}
+                  className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1 w-full h-full "
+                  style={{ backgroundClip: "padding-box" }}
                 >
                   <button
-                    className="px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal"
-                    style={{
-                      background:
-                        "linear-gradient(97.29deg, #7ECFA7 13.65%, #53886C 90.87%)",
-                    }}
+                    onClick={() => setActiveTab("shots")}
+                    className={`px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal ${
+                      activeTab === "shots"
+                        ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                        : "hover:bg-white/10"
+                    }`}
                   >
                     Shots
                   </button>
-                  <button className="px-4 md:px-6 py-1.5 text-white text-[20px] font-normal hover:bg-white/10">
+                  <button
+                    onClick={() => setActiveTab("media")}
+                    className={`px-4 md:px-6 py-3 rounded-full text-white text-[20px] font-normal ${
+                      activeTab === "media"
+                        ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                        : "hover:bg-white/10"
+                    }`}
+                  >
                     Media
                   </button>
                 </div>
@@ -654,8 +660,9 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-lg text-white/90">@{username}</p>
                 </div>
+                {/* flex flex-col gap-4 mb-6 w-full  */}
 
-                <div className="flex flex-col gap-4 mb-6 w-full   space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                {/* <div className="flex flex-col gap-4 mb-6 w-full   space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
                   {uploadedImageURLs.map((item, index) => (
                     <div
                       key={item.id}
@@ -685,18 +692,75 @@ const AddSocialMedia = () => {
                       <p className="text-white text-lg">Upload shouts</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
+                {activeTab === "shots" ? (
+                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                    {uploadedImageURLs.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                      >
+                        <RxCross2
+                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                          onClick={() => deleteShout(item.id)}
+                        />
+                        <img
+                          src={item.url}
+                          alt={`Shout ${index}`}
+                          className="w-[242px] h-[226px] rounded-2xl object-cover"
+                        />
+                      </div>
+                    ))}
+                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleCardClick}
+                      >
+                        <img
+                          src={rightsideemojiimage}
+                          alt="Right Side Emoji"
+                          className="w-[88px] h-[88px]"
+                        />
+                        <p className="text-white text-lg">Upload shouts</p>
+                      </div>
+                    </div>
+                    {/* 
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
+                        <img
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
+                        />
+                      </div> */}
 
-                <div className="w-full mb-6">
-                  <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
-                    <h3 className="text-xl font-bold text-white mb-1">
-                      No shouts yet!
-                    </h3>
-                    <p className="text-white/90 text-xs">
-                      Shouts posted by alex james will appear here
-                    </p>
+                    {/* Desktop Bottom Card - Below character image */}
+                    {/* <div className="px-2 mt-[50px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              No shouts yet!
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              Shouts posted by alex james will appear here
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
                   </div>
-                </div>
+                ) : (
+                  <div className="px-2 mt-[20px]">
+                    <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                      <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                        <h3 className="text-[40px] font-bold text-white mb-1">
+                          Not Found
+                        </h3>
+                        <p className="text-white/90 text-[20px] font-normal">
+                          No media to display
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="w-full flex justify-center">
                   <img
@@ -707,6 +771,17 @@ const AddSocialMedia = () => {
                 </div>
               </div>
 
+              {/* <div className="w-full mb-6">
+                  <div className="bg-[#FFFFFF40] rounded-2xl p-4 text-center">
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      No shouts yet!
+                    </h3>
+                    <p className="text-white/90 text-xs">
+                      Shouts posted by alex james will appear here
+                    </p>
+                  </div>
+                </div> */}
+
               {/* Desktop Layout - Hidden on sm, visible on md and up */}
               <div className="hidden md:block relative">
                 <div className="relative z-10">
@@ -715,7 +790,7 @@ const AddSocialMedia = () => {
                   </h2>
                   <p className="text-xl text-white/90 mb-6">{username}</p>
 
-                  <div className="space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
+                  {/* <div className="space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
                     {uploadedImageURLs.map((item, index) => (
                       <div
                         key={item.id}
@@ -746,30 +821,85 @@ const AddSocialMedia = () => {
                         <p className="text-white text-lg">Upload shouts</p>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </div> */}
 
-                {/* Character Image for Desktop */}
-                <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
-                  <img
-                    src={alexjamesimage}
-                    alt="Alex James Character"
-                    className="h-[100%]"
-                  />
-                </div>
+                  {activeTab === "shots" ? (
+                    <div className="space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                      {uploadedImageURLs.map((item, index) => (
+                        <div
+                          key={item.id}
+                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                        >
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                          />
+                          <img
+                            src={item.url}
+                            alt={`Shout ${index}`}
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                          />
+                        </div>
+                      ))}
+                      <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                        <div
+                          className="flex flex-col items-center gap-4 cursor-pointer"
+                          onClick={handleCardClick}
+                        >
+                          <img
+                            src={rightsideemojiimage}
+                            alt="Right Side Emoji"
+                            className="w-[88px] h-[88px]"
+                          />
+                          <p className="text-white text-lg">Upload shouts</p>
+                        </div>
+                      </div>
 
-                {/* Desktop Bottom Card - Below character image */}
-                <div className="px-2 mt-[50px]">
-                  <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
-                    <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
-                      <h3 className="text-[40px] font-bold text-white mb-1">
-                        No shouts yet!
-                      </h3>
-                      <p className="text-white/90 text-[20px] font-normal">
-                        Shouts posted by alex james will appear here
-                      </p>
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
+                        <img
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
+                        />
+                      </div>
+
+                      {/* Desktop Bottom Card - Below character image */}
+                      {/* <div className="px-2 mt-[50px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              No shouts yet!
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              Shouts posted by alex james will appear here
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-screen">
+                      <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
+                        <img
+                          src={alexjamesimage}
+                          alt="Alex James Character"
+                          className="h-[100%]"
+                        />
+                      </div>
+                      <div className="px-2 mt-[20px]">
+                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
+                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
+                            <h3 className="text-[40px] font-bold text-white mb-1">
+                              Not Found
+                            </h3>
+                            <p className="text-white/90 text-[20px] font-normal">
+                              No media to display
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
