@@ -1,5 +1,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
+import api from "@/service/api";
 // import { IoPerson } from "react-icons/io5";
 // import { CiEdit } from "react-icons/ci";
 // import { MdMessage } from "react-icons/md";
@@ -49,6 +51,27 @@ const Layout = ({ children }: LayoutProps) => {
       document.body.style.overflow = "unset";
     }
   }, [sidebarOpen]);
+
+  // Add state for current user
+  const [currentUser, setCurrentUser] = useState<{ profileImage?: string; fullName?: string; username?: string } | null>(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const token = Cookies.get("token");
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+          const response = await api.get(`/api/user/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setCurrentUser(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
   if (shouldHideSidebar) {
     return <div className="min-h-screen bg-gray-50">{children}</div>;
@@ -200,13 +223,13 @@ const Layout = ({ children }: LayoutProps) => {
         {/* User Profile at bottom */}
         <div className="flex items-center gap-3 p-3 mt-6 bg-opacity-50 rounded-xl">
           <img
-            src="https://i.pravatar.cc/300"
+            src={currentUser?.profileImage ? `http://3.111.146.115:5000${currentUser.profileImage}` : "/assets/avatar.png"}
             alt="Profile"
             className="w-[50px] h-[50px] rounded-full ring-2 ring-black"
           />
           <div>
-            <p className="text-[20px] font-bold text-black">Alex James</p>
-            <p className="text-[13px] font-normal text-black">@AlexJames</p>
+            <p className="text-[20px] font-bold text-black">{currentUser?.fullName || "Loading..."}</p>
+            <p className="text-[13px] font-normal text-black">@{currentUser?.username || "username"}</p>
           </div>
         </div>
       </div>
