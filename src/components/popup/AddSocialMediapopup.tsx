@@ -15,7 +15,7 @@ import bottompopuppic from "../../../public/assets/bottompopuppic.png";
 // AddSocialMediapopup.tsx
 
 interface AddSocialMediaPopupProps {
-   icon: string;
+  icon: string;
   platformName: string;
   isOpen: boolean;
   isEditing: boolean;
@@ -25,9 +25,8 @@ interface AddSocialMediaPopupProps {
   onSubmit: (name: string) => void;
 }
 
-
 const AddSocialMediapopup = ({
-   icon,
+  icon,
   platformName,
   isOpen,
   onClose,
@@ -89,11 +88,11 @@ const AddSocialMediapopup = ({
               >
                 Cancel
               </Button>
-           
+
               <Button
                 onClick={() => onSubmit(platformName)}
-               className="md:w-[200px] text-[18px] md:text[24px]  bg-gradient-to-r from-[#98e6c3] to-[#4a725f] lg:text-[32px] py-7 border-1 border-[#aeaeae] rounded-lg  cursor-pointer"
-               >
+                className="md:w-[200px] text-[18px] md:text[24px]  bg-gradient-to-r from-[#98e6c3] to-[#4a725f] lg:text-[32px] py-7 border-1 border-[#aeaeae] rounded-lg  cursor-pointer"
+              >
                 {isEditing ? "Update" : "Save"}
               </Button>
             </div>

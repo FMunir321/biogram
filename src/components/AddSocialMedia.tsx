@@ -20,15 +20,37 @@ import { MdDelete } from "react-icons/md";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
 import api from "@/service/api";
 
+// import whatsappimage from "../../../public/assets/whatsapp.png";
+// import linkedinimage from "../../../public/assets/linkedin.png";
+// import skypeimage from "../../../public/assets/skype.png";
+
+// const iconMap: Record<string, string> = {
+//   whatsapp: whatsappimage,
+//   linkedin: linkedinimage,
+//   skype: skypeimage,
+// };
+
+const iconMap: Record<string, string> = {
+  whatsapp: whatsappimage,
+  linkedin: linkedinimage,
+  skype: skypeimage,
+  facebook: facebookimage,
+  instagram: instagramimage,
+  twitter: twitterimage,
+  tiktok: tiktokimage,
+  applemusic: applemusicimage,
+  soundcloud: soundcloudimage,
+  spotify: spotifyimage
+};
+
 type SocialLink = {
   _id: string;
-  platform: string;
+  platform: string; // ✅ Correct key
   url: string;
   icon: string;
 };
@@ -54,7 +76,7 @@ const AddSocialMedia = () => {
   const [url, setUrl] = useState("");
   const [editingId, setEditingId] = useState<string>("");
 
-  // // Open Add
+  // Open Add
   // const openAdd = (p: { name: string; icon: string }) => {
   //   setSelectedPlatform(p);
   //   setUrl("");
@@ -62,13 +84,11 @@ const AddSocialMedia = () => {
   //   setIsPopupOpen(true);
   // };
 
-  const openEdit = (p: {
-    _id: string;
-    name: string;
-    icon: string;
-    url: string;
-  }) => {
-    setSelectedPlatform({ name: p.name, icon: p.icon });
+  const openEdit = (p: SocialLink) => {
+    const platformKey = p.platform.toLowerCase(); // e.g., "whatsapp", "linkedin"
+    const resolvedIcon = iconMap[platformKey]; // get image from map
+
+    setSelectedPlatform({ name: p.platform, icon: resolvedIcon });
     setUrl(p.url);
     setEditingId(p._id);
     setIsEditing(true);
@@ -96,7 +116,7 @@ const AddSocialMedia = () => {
       );
 
       fetchLinks();
-      setUrl(""); 
+      setUrl("");
       setIsPopupOpen(false);
     } catch (error: any) {
       console.error("Error saving social link:", error?.message || error);
@@ -126,7 +146,7 @@ const AddSocialMedia = () => {
 
       fetchLinks();
       setIsPopupOpen(false);
-      setUrl(""); 
+      setUrl("");
     } catch (error: any) {
       console.error("Error updating social link:", error?.message || error);
     }
@@ -247,14 +267,7 @@ const AddSocialMedia = () => {
 
                   <div className="flex gap-3">
                     <button
-                      onClick={() =>
-                        openEdit({
-                          _id: item._id, // ✅ Add this line
-                          name: item.platform, // platform → name
-                          icon: item.icon,
-                          url: item.url,
-                        })
-                      }
+                      onClick={() => openEdit(item)}
                       className="flex items-center gap-1 bg-[linear-gradient(to_bottom_right,_#98e6c3,_#4a725f)] text-white px-4 py-2 rounded-md hover:opacity-90"
                     >
                       <FaRegEdit /> Edit
