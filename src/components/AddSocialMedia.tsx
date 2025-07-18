@@ -46,14 +46,21 @@ type SocialLink = {
   icon: string;
 };
 
+type UploadedMedia = {
+  id: string;
+  url: string;
+  isVideo: boolean;
+};
+
 const AddSocialMedia = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [links, setLinks] = useState<SocialLink[]>([]);
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
-  const [uploadedImageURLs, setUploadedImageURLs] = useState<
-    { id: string; url: string }[]
-  >([]);
+  // const [uploadedImageURLs, setUploadedImageURLs] = useState<
+  //   { id: string; url: string }[]
+  // >([]);
+  const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
 
   const openPopup = (name: string, icon: string) => {
     setSelectedPlatform({ name, icon });
@@ -201,27 +208,35 @@ const AddSocialMedia = () => {
   const fetchShouts = async () => {
     try {
       const token = Cookies.get("token");
-      const userId = localStorage.getItem("userId");
-
-      if (!token || !userId) return;
+      if (!token) return;
 
       const res = await api.get(`/api/shouts`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const shouts = res.data?.shouts || [];
-      const imageURLs = shouts
-        .filter((shout: any) => shout.imageUrl)
-        .map((shout: any) => ({
-          id: shout._id,
-          url: shout.imageUrl.startsWith("http")
-            ? shout.imageUrl
-            : `http://3.111.146.115:5000${shout.imageUrl}`,
-        }));
 
-      setUploadedImageURLs(imageURLs);
+      const media = shouts.map((shout: any) => {
+        let url = shout.videoUrl || "";
+
+        // Agar relative URL hai to full path banao
+        if (!url.startsWith("http")) {
+          url = `http://3.111.146.115:5000${url}`;
+        }
+
+        // Agar isMedia false hai (image), aur path videos ka hai, to fix karo
+        if (!shout.isMedia && url.includes("/videos/")) {
+          url = url.replace("/videos/", "/images/");
+        }
+
+        return {
+          id: shout._id,
+          url,
+          isVideo: shout.isMedia, // true = video, false = image
+        };
+      });
+
+      setUploadedMedia(media);
     } catch (err) {
       console.error("Failed to fetch shouts:", err);
     }
@@ -231,9 +246,9 @@ const AddSocialMedia = () => {
     fetchShouts();
   }, []);
 
-  // ✅ POST image
+  // ✅ POST image/video
   const postShout = async (
-    imageFile: File,
+    file: File,
     isMedia: boolean = false
   ): Promise<any> => {
     try {
@@ -241,8 +256,8 @@ const AddSocialMedia = () => {
       if (!token) return;
 
       const formData = new FormData();
-      formData.append("isMedia", String(isMedia));
-      formData.append("file", imageFile);
+      formData.append("isMedia", String(isMedia)); // false=image, true=video
+      formData.append("file", file);
 
       const response = await api.post("/api/shouts/create", formData, {
         headers: {
@@ -258,8 +273,8 @@ const AddSocialMedia = () => {
     }
   };
 
-  //  Upload on click
-  const handleCardClick = () => {
+  // Upload Image
+  const handleImageUpload = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -267,28 +282,39 @@ const AddSocialMedia = () => {
     input.onchange = async (event: Event) => {
       const target = event.target as HTMLInputElement;
       const file = target.files?.[0];
-
       if (file) {
-        const posted = await postShout(file, false);
-        if (posted) {
-          await fetchShouts();
-        }
+        const posted = await postShout(file, false); // false = image
+        if (posted) await fetchShouts();
       }
     };
-
     input.click();
   };
 
-  //delete shut
+  // Upload Video
+  const handleVideoUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        const posted = await postShout(file, true); // true = video
+        if (posted) await fetchShouts();
+      }
+    };
+    input.click();
+  };
+
+  // Delete Shout
   const deleteShout = async (id: string) => {
     try {
       const token = Cookies.get("token");
       if (!token) return;
 
       await api.delete(`/api/shouts/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       await fetchShouts();
@@ -695,26 +721,28 @@ const AddSocialMedia = () => {
                 </div> */}
                 {activeTab === "shots" ? (
                   <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
-                    {uploadedImageURLs.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
-                      >
-                        <RxCross2
-                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                          onClick={() => deleteShout(item.id)}
-                        />
-                        <img
-                          src={item.url}
-                          alt={`Shout ${index}`}
-                          className="w-[242px] h-[226px] rounded-2xl object-cover"
-                        />
-                      </div>
-                    ))}
+                    {uploadedMedia
+                      .filter((item) => !item.isVideo)
+                      .map((item, index) => (
+                        <div
+                          key={item.id}
+                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                        >
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                          />
+                          <img
+                            src={item.url}
+                            alt={`Shout ${index}`}
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                          />
+                        </div>
+                      ))}
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
                       <div
                         className="flex flex-col items-center gap-4 cursor-pointer"
-                        onClick={handleCardClick}
+                        onClick={handleVideoUpload}
                       >
                         <img
                           src={rightsideemojiimage}
@@ -748,15 +776,37 @@ const AddSocialMedia = () => {
                       </div> */}
                   </div>
                 ) : (
-                  <div className="px-2 mt-[20px]">
-                    <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
-                      <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
-                        <h3 className="text-[40px] font-bold text-white mb-1">
-                          Not Found
-                        </h3>
-                        <p className="text-white/90 text-[20px] font-normal">
-                          No media to display
-                        </p>
+                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                    {uploadedMedia
+                      .filter((item) => item.isVideo)
+                      .map((item) => (
+                        <div
+                          key={item.id}
+                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                        >
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                          />
+                          <video
+                            src={item.url}
+                            controls
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                          />
+                        </div>
+                      ))}
+
+                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleVideoUpload}
+                      >
+                        <img
+                          src={rightsideemojiimage}
+                          alt="Right Side Emoji"
+                          className="w-[88px] h-[88px]"
+                        />
+                        <p className="text-white text-lg">Upload Media</p>
                       </div>
                     </div>
                   </div>
@@ -786,72 +836,42 @@ const AddSocialMedia = () => {
               <div className="hidden md:block relative">
                 <div className="relative z-10">
                   <h2 className="text-5xl font-bold text-white mb-1">
-                    {fullName}
+                    Full Name
                   </h2>
-                  <p className="text-xl text-white/90 mb-6">{username}</p>
-
-                  {/* <div className="space-y-4 max-w-[242px] h-[600px]   scrollbar-hide    overflow-y-auto">
-                    {uploadedImageURLs.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
-                      >
-                        <RxCross2
-                          className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                          onClick={() => deleteShout(item.id)}
-                        />
-                        <img
-                          src={item.url}
-                          alt={`Shout ${index}`}
-                          className="w-[242px] h-[226px] rounded-2xl object-cover"
-                        />
-                      </div>
-                    ))}
-
-                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      <div
-                        className="flex flex-col items-center gap-4 cursor-pointer"
-                        onClick={handleCardClick}
-                      >
-                        <img
-                          src={rightsideemojiimage}
-                          alt="Right Side Emoji"
-                          className="w-[88px] h-[88px]"
-                        />
-                        <p className="text-white text-lg">Upload shouts</p>
-                      </div>
-                    </div>
-                  </div> */}
+                  <p className="text-xl text-white/90 mb-6">@username</p>
 
                   {activeTab === "shots" ? (
                     <div className="space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
-                      {uploadedImageURLs.map((item, index) => (
-                        <div
-                          key={item.id}
-                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
-                        >
-                          <RxCross2
-                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
-                            onClick={() => deleteShout(item.id)}
-                          />
-                          <img
-                            src={item.url}
-                            alt={`Shout ${index}`}
-                            className="w-[242px] h-[226px] rounded-2xl object-cover"
-                          />
-                        </div>
-                      ))}
+                      {uploadedMedia
+                        .filter((item) => !item.isVideo)
+                        .map((item, index) => (
+                          <div
+                            key={item.id}
+                            className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                          >
+                            <RxCross2
+                              className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                              onClick={() => deleteShout(item.id)}
+                            />
+                            <img
+                              src={item.url}
+                              alt={`Shout ${index}`}
+                              className="w-[242px] h-[226px] rounded-2xl object-cover"
+                            />
+                          </div>
+                        ))}
+
                       <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
                         <div
                           className="flex flex-col items-center gap-4 cursor-pointer"
-                          onClick={handleCardClick}
+                          onClick={handleImageUpload}
                         >
                           <img
                             src={rightsideemojiimage}
                             alt="Right Side Emoji"
                             className="w-[88px] h-[88px]"
                           />
-                          <p className="text-white text-lg">Upload shouts</p>
+                          <p className="text-white text-lg">Upload Shouts</p>
                         </div>
                       </div>
 
@@ -862,41 +882,48 @@ const AddSocialMedia = () => {
                           className="h-[100%]"
                         />
                       </div>
-
-                      {/* Desktop Bottom Card - Below character image */}
-                      {/* <div className="px-2 mt-[50px]">
-                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
-                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
-                            <h3 className="text-[40px] font-bold text-white mb-1">
-                              No shouts yet!
-                            </h3>
-                            <p className="text-white/90 text-[20px] font-normal">
-                              Shouts posted by alex james will appear here
-                            </p>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-screen">
+                    <div className="space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                      {uploadedMedia
+                        .filter((item) => item.isVideo)
+                        .map((item) => (
+                          <div
+                            key={item.id}
+                            className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                          >
+                            <RxCross2
+                              className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                              onClick={() => deleteShout(item.id)}
+                            />
+                            <video
+                              src={item.url}
+                              controls
+                              className="w-[242px] h-[226px] rounded-2xl object-cover"
+                            />
+                          </div>
+                        ))}
+
+                      <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                        <div
+                          className="flex flex-col items-center gap-4 cursor-pointer"
+                          onClick={handleVideoUpload}
+                        >
+                          <img
+                            src={rightsideemojiimage}
+                            alt="Right Side Emoji"
+                            className="w-[88px] h-[88px]"
+                          />
+                          <p className="text-white text-lg">Upload Media</p>
+                        </div>
+                      </div>
+
                       <div className="absolute right-[-20px] bottom-[10px] h-[80%] z-0 top-[9px]">
                         <img
                           src={alexjamesimage}
                           alt="Alex James Character"
                           className="h-[100%]"
                         />
-                      </div>
-                      <div className="px-2 mt-[20px]">
-                        <div className="relative rounded-xl p-[2px] bg-gradient-to-r from-white to-transparent">
-                          <div className="rounded-xl bg-[#699683] text-white px-4 py-2 text-center">
-                            <h3 className="text-[40px] font-bold text-white mb-1">
-                              Not Found
-                            </h3>
-                            <p className="text-white/90 text-[20px] font-normal">
-                              No media to display
-                            </p>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   )}
