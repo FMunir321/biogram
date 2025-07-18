@@ -1,7 +1,18 @@
- import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import Greaterthen from "../../../public/assets/greaterthen.png";
 import bground from "../../../public/assets/lightbg.png";
+import Cookies from "js-cookie";
+import api from "@/service/api";
+
+// UserData type (update as per your backend response)
+type UserData = {
+  fullName?: string;
+  username?: string;
+  dateOfBirth?: string;
+  interests?: string;
+  email?: string;
+};
 
 const menuItems = [
   { key: "personal-info", label: "Personal Info" },
@@ -10,16 +21,33 @@ const menuItems = [
   { key: "privacy", label: "Privacy policy" },
   { key: "about", label: "About" },
 ];
-const personalInfo = [
-  { label: "Name", value: "Alex James" },
-  { label: "Username", value: "@Alexjames123" },
-  { label: "Birth Date", value: "10/Jun/2000" },
-  { label: "My Interests", value: "Sports, Cricket" },
-  { label: "Email ", value: "Alexhames123@gmail.com" },
-  { label: "Change Password", value: "*********" },
-];
+
 const Settings = () => {
   const [activeMenu, setActiveMenu] = useState("personal-info");
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = Cookies.get("token");
+        const userId = localStorage.getItem("userId");
+        const response = await api.get(`/api/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserData(response.data);
+        console.log("userData:",response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const formattedDate = userData?.dateOfBirth
+    ? new Date(userData.dateOfBirth).toLocaleDateString("en-GB")
+    : "";
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -77,26 +105,49 @@ const Settings = () => {
                   account.
                 </p>
                 <div className="mt-19 flex flex-col gap-4">
-                  {personalInfo.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex flex-row justify-between mb-4"
-                    >
-                      <p className="text-[20px] font-medium text-black">
-                        {item.label}
-                      </p>
-                      <div className="flex flex-row items-center gap-2">
-                        <p className="text-[16px] font-normal text-black">
-                          {item.value}
-                        </p>
-                        <img
-                          src={Greaterthen}
-                          alt="greater than"
-                          className="object-contain w-[22px] h-[22px]"
-                        />
-                      </div>
+                  <div className="flex flex-row justify-between mb-4">
+                    <p className="text-[20px] font-medium text-black">Name</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">{userData?.fullName || ""}</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
                     </div>
-                  ))}
+                  </div>
+                  <div className="flex flex-row justify-between mb-4">
+                    <p className="text-[20px] font-medium text-black">Username</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">@{userData?.username || ""}</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-between mb-4">
+                    <p className="text-[20px] font-medium text-black">dateOfBirth</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">{formattedDate}</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-between mb-4">
+                    <p className="text-[20px] font-medium text-black">My Interests</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">{userData?.interests || ""}</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-between mb-4">
+                    <p className="text-[20px] font-medium text-black">Email</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">{userData?.email || ""}</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                    </div>
+                  </div>
+                  {/* Change Password Option */}
+                  <div className="flex flex-row justify-between mb-4 cursor-pointer">
+                    <p className="text-[20px] font-medium text-black">Change Password</p>
+                    <div className="flex flex-row items-center gap-2">
+                      <p className="text-[16px] font-normal text-black">*********</p>
+                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                    </div>
+                  </div>
                 </div>
               </>
             )}
