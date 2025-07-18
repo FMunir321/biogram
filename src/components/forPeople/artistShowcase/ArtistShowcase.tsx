@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { motion } from "framer-motion";
+=======
+import { useEffect, useRef } from "react";
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
 import redjersy from "../../../../public/assets/redjersy.png";
 import Mobilefram from "../../../../public/assets/realtimeanalytics/mobilefram.png";
 import Mobileframesm from "../../../../public/assets/realtimeanalytics/mobileframesm.png";
@@ -67,6 +71,23 @@ const container = {
 };
 
 const ArtistShowcase = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      const scrollInterval = setInterval(() => {
+        scrollContainer.scrollLeft += 1;
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+          scrollContainer.scrollLeft = 0; // Loop back to start
+        }
+      }, 20); // Speed control (lower number = faster scroll)
+
+      // Cleanup interval on component unmount
+      return () => clearInterval(scrollInterval);
+    }
+  }, []);
+
   const socialIcons = [
     { src: FacebookImage, alt: "Facebook" },
     { src: InstagramImage, alt: "Instagram" },
@@ -76,6 +97,7 @@ const ArtistShowcase = () => {
   ];
 
   return (
+<<<<<<< HEAD
     <div className="container p-5 mx-auto">
       {/* First Row */}
       <motion.div
@@ -89,6 +111,16 @@ const ArtistShowcase = () => {
           variants={pulse}
           className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl lg:w-[60%]"
         >
+=======
+    <>
+      {/* Horizontal Scrollable Sections */}
+      <div
+        ref={scrollRef}
+        className="container p-5 overflow-x-auto scroll-smooth whitespace-nowrap gap-4 my-5"
+      >
+        {/* Tour Dates and Artist Card */}
+        <div className="inline-flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl mr-4 lg:w-[60%] lg:h-[422px] xl:h-full">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
           <div className="md:w-[50%]">
             <motion.p 
               variants={popIn}
@@ -98,6 +130,7 @@ const ArtistShowcase = () => {
             </motion.p>
             
             <div className="pl-5">
+<<<<<<< HEAD
               <motion.h1 
                 variants={slide.fromTop}
                 className="text-[40px] my-8 font-extrabold text-black"
@@ -111,6 +144,13 @@ const ArtistShowcase = () => {
                   variants={slide.fromLeft}
                   className="self-start flex flex-row items-center"
                 >
+=======
+              <h1 className="text-[20px] md:text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
+                Tour Dates
+              </h1>
+              <div className="flex flex-col items-center gap-4">
+                <div className="self-start flex flex-row items-center">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <div className="border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
@@ -133,6 +173,7 @@ const ArtistShowcase = () => {
                     className="max-w-[81px] -ml-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]"
                   >
                     Tickets
+<<<<<<< HEAD
                   </motion.div>
                 </motion.div>
 
@@ -148,6 +189,14 @@ const ArtistShowcase = () => {
                   >
                     Tickets
                   </motion.div>
+=======
+                  </div>
+                </div>
+                <div className="md:self-end flex flex-row items-center">
+                  <div className="z-10 max-w-[81px] -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                    Tickets
+                  </div>
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <div className="z-2 border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A] ml-[20px]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
@@ -168,12 +217,17 @@ const ArtistShowcase = () => {
               </div>
             </div>
           </div>
+<<<<<<< HEAD
 
           <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px]">
             <motion.div 
               variants={pulse}
               className="relative w-full flex justify-center items-center"
             >
+=======
+          <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
+            <div className="relative w-full flex justify-center items-center">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
               <img
                 src={Tickets}
                 alt="Mobile Frame"
@@ -185,10 +239,14 @@ const ArtistShowcase = () => {
                 className="absolute w-full object-cover top-[-15px]"
               />
               <div className="absolute bottom-[2%] w-[80%]">
+<<<<<<< HEAD
                 <motion.h3 
                   variants={slide.fromTop}
                   className="text-white text-[32px] font-extrabold"
                 >
+=======
+                <h3 className="text-white text-[32px] font-extrabold">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   Chan Ja HO
                 </motion.h3>
                 <motion.p 
@@ -216,6 +274,7 @@ const ArtistShowcase = () => {
               </div>
             </motion.div>
           </div>
+<<<<<<< HEAD
         </motion.div>
 
         {/* Products Section */}
@@ -237,6 +296,19 @@ const ArtistShowcase = () => {
                   variants={slide.fromLeft}
                   className="flex flex-row items-center bg-white shadow-md rounded-lg"
                 >
+=======
+        </div>
+
+        {/* Products Card */}
+        <div className="inline-flex flex-col lg:w-[40%] lg:h-[422px] xl:h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl mr-4">
+          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+            Coming Soon: Sell Products & Services
+          </p>
+          <div className="flex flex-row justify-between h-full xl:h-[464px] 2xl:h-[578px] mt-5 relative">
+            <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
+              <div className="flex flex-col gap-4 pl-[30px] w-[280px]">
+                <div className="flex flex-row items-center bg-white shadow-md rounded-lg">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <div>
                     <img
                       src={redjersy}
@@ -248,12 +320,17 @@ const ArtistShowcase = () => {
                     <p className="text-[20px] font-bold text-[#2D2D2D]">Red jersey</p>
                     <p className="text-[16px] font-normal text-[#2D2D2D]">250.00$</p>
                   </div>
+<<<<<<< HEAD
                 </motion.div>
 
                 <motion.div 
                   variants={slide.fromLeft}
                   className="flex flex-row items-center bg-white shadow-md rounded-lg"
                 >
+=======
+                </div>
+                <div className="flex flex-row items-center bg-white shadow-md rounded-lg">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <div>
                     <img
                       src={Sweet}
@@ -268,12 +345,17 @@ const ArtistShowcase = () => {
                 </motion.div>
               </div>
             </div>
+<<<<<<< HEAD
 
             <div className="px-5 md:w-[60%] self-end">
               <motion.div 
                 variants={pulse}
                 className="relative self-end w-full flex justify-center items-center"
               >
+=======
+            <div className="px-5 md:w-[60%] xl:mt-[65px] self-end">
+              <div className="relative self-end w-full flex justify-center items-center">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                 <img
                   src={Products}
                   alt="Mobile Frame"
@@ -285,10 +367,14 @@ const ArtistShowcase = () => {
                   className="absolute w-full object-cover top-[-7px]"
                 />
                 <div className="absolute bottom-[2%] w-[80%]">
+<<<<<<< HEAD
                   <motion.h3 
                     variants={slide.fromTop}
                     className="text-white text-[32px] font-extrabold"
                   >
+=======
+                  <h3 className="text-white text-[32px] font-extrabold">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                     Michal James
                   </motion.h3>
                   <motion.p 
@@ -317,6 +403,7 @@ const ArtistShowcase = () => {
               </motion.div>
             </div>
           </div>
+<<<<<<< HEAD
         </motion.div>
       </motion.div>
 
@@ -346,6 +433,19 @@ const ArtistShowcase = () => {
                   variants={slide.fromLeft}
                   className="flex flex-row items-center bg-white shadow-md rounded-full"
                 >
+=======
+        </div>
+
+        {/* Music Card */}
+        <div className="inline-flex flex-col lg:w-[40%] h-[430px] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl mr-4">
+          <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+            Add Your Music
+          </p>
+          <div className="flex flex-row justify-between mt-5 lg:mt-0 xl:mt-11 items-center relative">
+            <div className="z-10 -mr-25 w-[60%]">
+              <div className="flex flex-col gap-4 pl-2">
+                <div className="flex flex-row items-center bg-white shadow-md rounded-full">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <div>
                     <img
                       src={Stream}
@@ -358,12 +458,17 @@ const ArtistShowcase = () => {
                       Stream "Hype" on all platforms!
                     </p>
                   </div>
+<<<<<<< HEAD
                 </motion.div>
 
                 <motion.div 
                   variants={slide.fromLeft}
                   className="border border-[#4278ef] rounded-xl mt-9"
                 >
+=======
+                </div>
+                <div className="border border-[#4278ef] rounded-xl mt-9">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <img
                     src={Music}
                     alt="Artist"
@@ -372,12 +477,17 @@ const ArtistShowcase = () => {
                 </motion.div>
               </div>
             </div>
+<<<<<<< HEAD
 
             <div className="px-5 md:w-[60%]">
               <motion.div 
                 variants={pulse}
                 className="relative w-full flex justify-center items-center"
               >
+=======
+            <div className="px-5 md:w-[60%] lg:mt-[65px]">
+              <div className="relative w-full flex justify-center items-center">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                 <img
                   src={Musicbg}
                   alt="Mobile Frame"
@@ -389,10 +499,14 @@ const ArtistShowcase = () => {
                   className="absolute w-full object-cover top-[-7px]"
                 />
                 <div className="absolute bottom-[2%] w-[80%]">
+<<<<<<< HEAD
                   <motion.h3 
                     variants={slide.fromTop}
                     className="text-white text-[32px] font-extrabold"
                   >
+=======
+                  <h3 className="text-white text-[32px] font-extrabold">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                     Arcangel
                   </motion.h3>
                   <motion.p 
@@ -423,6 +537,7 @@ const ArtistShowcase = () => {
           </div>
         </motion.div>
 
+<<<<<<< HEAD
         {/* Appointment Section */}
         <motion.div 
           variants={pulse}
@@ -441,6 +556,16 @@ const ArtistShowcase = () => {
                 variants={pulse}
                 className="relative w-full flex justify-center items-center"
               >
+=======
+        {/* Appointment Scheduler Card */}
+        <div className="inline-flex flex-col lg:w-[60%] h-[430px] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
+          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+            Coming Soon: Appointment Scheduler
+          </p>
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">
+            <div className="px-5 md:w-[50%] lg:mt-[65px]">
+              <div className="relative w-full flex justify-center items-center">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                 <img
                   src={Appointment}
                   alt="Mobile Frame"
@@ -452,10 +577,14 @@ const ArtistShowcase = () => {
                   className="absolute w-full object-cover top-[-12px]"
                 />
                 <div className="absolute bottom-[2%] w-[80%]">
+<<<<<<< HEAD
                   <motion.h3 
                     variants={slide.fromTop}
                     className="text-white text-[24px] font-extrabold"
                   >
+=======
+                  <h3 className="text-white text-[16px] md:text-[24px] font-extrabold">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                     Max James
                   </motion.h3>
                   <motion.p 
@@ -483,6 +612,7 @@ const ArtistShowcase = () => {
                 </div>
               </motion.div>
             </div>
+<<<<<<< HEAD
             
             <div className="p-3">
               <div className="flex flex-col gap-4 pl-2">
@@ -490,12 +620,18 @@ const ArtistShowcase = () => {
                   variants={slide.fromRight}
                   className="relative"
                 >
+=======
+            <div className="p-3">
+              <div className="flex flex-col gap-4 pl-2">
+                <div className="relative">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <img
                     src={Photshoot}
                     alt="Artist"
                     className="object-cover rounded-xl"
                   />
                   <div className="absolute bottom-0 right-0 p-2 text-white">
+<<<<<<< HEAD
                     <p className="text-[24px] font-bold">Photoshoot in miami</p>
                     <p className="text-[14px] font-normal text-right">2 Hours -$500</p>
                   </div>
@@ -505,22 +641,40 @@ const ArtistShowcase = () => {
                   variants={slide.fromRight}
                   className="relative"
                 >
+=======
+                    <p className="text-[16px] md:text-[24px] font-bold">Photoshoot in Miami</p>
+                    <p className="text-[12px] md:text-[14px] font-normal text-right">2 Hours -$500</p>
+                  </div>
+                </div>
+                <div className="relative">
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   <img
                     src={Videoshoot}
                     alt="Artist"
                     className="object-cover rounded-xl"
                   />
                   <div className="absolute top-0 left-0 p-2 text-white">
+<<<<<<< HEAD
                     <p className="text-[24px] font-bold">Video Shoot in miami</p>
                     <p className="text-[14px] font-normal">2 Hours -$1999</p>
+=======
+                    <p className="text-[16px] md:text-[24px] font-bold">Video Shoot in Miami</p>
+                    <p className="text-[12px] md:text-[14px] font-normal">2 Hours -$1999</p>
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
                   </div>
                 </motion.div>
               </div>
             </div>
           </div>
+<<<<<<< HEAD
         </motion.div>
       </motion.div>
     </div>
+=======
+        </div>
+      </div>
+    </>
+>>>>>>> 6cfbf11a3d22c22090878b00cc81a4742639b2e2
   );
 };
 
