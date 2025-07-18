@@ -17,7 +17,7 @@ const Forpeople = () => {
       <ChooseBiogram />
       <RealTimeAnalyticsHero />
       <ArtistShowcase />
-       <BiogramProfile />
+       <BiogramProfile /> 
        <BiogramShoutPage />
        <ProfileCard />
        <InstagramRedirectFeatures />

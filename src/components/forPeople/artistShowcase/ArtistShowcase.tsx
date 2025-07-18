@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import redjersy from "../../../../public/assets/redjersy.png";
 import Mobilefram from "../../../../public/assets/realtimeanalytics/mobilefram.png";
 import Mobileframesm from "../../../../public/assets/realtimeanalytics/mobileframesm.png";
@@ -16,6 +17,55 @@ import TwitterImage from "../../../../public/assets/twitter.png";
 import TiktokImage from "../../../../public/assets/TikTok.png";
 import WhatsappImage from "../../../../public/assets/Whatsapp.png";
 
+// Animation variants
+const popIn = {
+  hidden: { scale: 0.9, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { type: "spring", damping: 12, stiffness: 120 }
+  }
+};
+
+const slide = {
+  fromTop: {
+    hidden: { y: -30, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  },
+  fromLeft: {
+    hidden: { x: -50, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  },
+  fromRight: {
+    hidden: { x: 50, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  }
+};
+
+const pulse = {
+  hidden: { scale: 1 },
+  visible: { 
+    scale: 1.03,
+    transition: { 
+      duration: 1.8, 
+      repeat: Infinity, 
+      repeatType: "reverse",
+      ease: "easeInOut"
+    }
+  }
+};
+
+const container = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      when: "beforeChildren"
+    }
+  }
+};
+
 const ArtistShowcase = () => {
   const socialIcons = [
     { src: FacebookImage, alt: "Facebook" },
@@ -26,27 +76,45 @@ const ArtistShowcase = () => {
   ];
 
   return (
-    <>
-      <div className="container  p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
-        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
+    <div className="container p-5 mx-auto">
+      {/* First Row */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={container}
+        className="flex flex-col lg:flex-row gap-4 my-5"
+      >
+        {/* Tour Dates Section */}
+        <motion.div 
+          variants={pulse}
+          className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl lg:w-[60%]"
+        >
           <div className="md:w-[50%]">
-            <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+            <motion.p 
+              variants={popIn}
+              className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[20px] font-semibold px-4 py-2 rounded-r-full"
+            >
               Coming Soon: Add your Tickets
-            </p>
+            </motion.p>
+            
             <div className="pl-5">
-              <h1 className="text-[20px] md:text[30px] md:text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
+              <motion.h1 
+                variants={slide.fromTop}
+                className="text-[40px] my-8 font-extrabold text-black"
+              >
                 Tour Dates
-              </h1>
+              </motion.h1>
 
-              {/* Vertical stack with alternating alignments */}
-              <div className=" flex flex-col items-center gap-4">
-                {/* First card - align left */}
-                <div className="self-start flex flex-row items-center">
-                  <div className="border w-[250px] border-[#7ecfa7]  rounded-[20px] px-5 bg-[#d8e8e0]">
+              <div className="flex flex-col items-center gap-4">
+                {/* First Tour Card */}
+                <motion.div 
+                  variants={slide.fromLeft}
+                  className="self-start flex flex-row items-center"
+                >
+                  <div className="border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
-                        <span className="text-[40px] font-bold">21 </span>jun
-                        2025
+                        <span className="text-[40px] font-bold">21 </span>jun 2025
                       </p>
                       <p className="text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-12px]">
                         8PM
@@ -59,21 +127,31 @@ const ArtistShowcase = () => {
                       Miami, FL
                     </p>
                   </div>
-                  <div className="max-w-[81px] -ml-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                  <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    variants={popIn}
+                    className="max-w-[81px] -ml-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]"
+                  >
                     Tickets
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
-                {/* Second card - align right */}
-                <div className="md:self-end  flex flex-row items-center">
-                  <div className="z-10 max-w-[81px] -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                {/* Second Tour Card */}
+                <motion.div 
+                  variants={slide.fromRight}
+                  className="md:self-end flex flex-row items-center"
+                >
+                  <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    variants={popIn}
+                    className="z-10 max-w-[81px] -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]"
+                  >
                     Tickets
-                  </div>
-                  <div className="z-2 border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0] ">
+                  </motion.div>
+                  <div className="z-2 border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A] ml-[20px]">
                       <p className="text-[20px] font-medium text-[#2D2D2D]">
-                        <span className="text-[40px] font-bold">26 </span>jun
-                        2025
+                        <span className="text-[40px] font-bold">26 </span>jun 2025
                       </p>
                       <p className="text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-12px]">
                         10PM
@@ -86,60 +164,79 @@ const ArtistShowcase = () => {
                       Las Vegas
                     </p>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
-          <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
-            <div className="relative w-full flex justify-center items-center">
-              {/* Mobile Frame */}
 
+          <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px]">
+            <motion.div 
+              variants={pulse}
+              className="relative w-full flex justify-center items-center"
+            >
               <img
                 src={Tickets}
                 alt="Mobile Frame"
                 className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
               />
-
-              {/* Content Image inside the frame */}
               <img
-                src={Mobilefram} // <-- your content image
+                src={Mobilefram}
                 alt="Content"
-                className="absolute w-full object-cover top-[-23px] md:top-[-6px] xl:top-[-15px]"
+                className="absolute w-full object-cover top-[-15px]"
               />
-              {/* Overlay Text */}
-              <div className="absolute bottom-[2%]  w-[80%]">
-                <h3 className="text-white text-[32px] font-extrabold">
+              <div className="absolute bottom-[2%] w-[80%]">
+                <motion.h3 
+                  variants={slide.fromTop}
+                  className="text-white text-[32px] font-extrabold"
+                >
                   Chan Ja HO
-                </h3>
-                <p className="text-white text-[14px]">June 21, 2025</p>
+                </motion.h3>
+                <motion.p 
+                  variants={slide.fromTop}
+                  className="text-white text-[14px]"
+                >
+                  June 21, 2025
+                </motion.p>
                 <div className="flex flex-row gap-2 mt-2">
                   {socialIcons.map((icon, idx) => (
-                    <div
+                    <motion.div
                       key={idx}
-                      className="rounded-[30px] flex items-center justify-center"
+                      variants={popIn}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="rounded-[30px] p-1 flex items-center justify-center"
                       style={{
-                        background:
-                          "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                        background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                       }}
                     >
-                      <img src={icon.src} alt={icon.alt} />
-                    </div>
+                      <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                    </motion.div>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
-        <div className="flex flex-col lg:w-[40%] lg:h-[422px] xl:h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
-          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+        </motion.div>
+
+        {/* Products Section */}
+        <motion.div 
+          variants={pulse}
+          className="flex flex-col lg:w-[40%] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"
+        >
+          <motion.p 
+            variants={popIn}
+            className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[20px] font-semibold px-4 py-2 rounded-r-full"
+          >
             Coming Soon: Sell Products & Services
-          </p>
-          <div className="flex flex-row justify-between h-full xl:h-[464px] 2xl:h-[578px] mt-5 relative">
-            {/* Card Column - overlaps image and is vertically centered */}
+          </motion.p>
+
+          <div className="flex flex-row justify-between h-full mt-5 relative">
             <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
               <div className="flex flex-col gap-4 pl-[30px] w-[280px]">
-                {/* First card */}
-                <div className="flex flex-row items-center bg-white shadow-md rounded-lg">
+                <motion.div 
+                  variants={slide.fromLeft}
+                  className="flex flex-row items-center bg-white shadow-md rounded-lg"
+                >
                   <div>
                     <img
                       src={redjersy}
@@ -148,17 +245,15 @@ const ArtistShowcase = () => {
                     />
                   </div>
                   <div className="rounded-lg px-5 bg-white">
-                    <p className="text-[20px] font-bold text-[#2D2D2D]">
-                      Red jersey
-                    </p>
-                    <p className="text-[16px] font-normal text-[#2D2D2D]">
-                      250.00$
-                    </p>
+                    <p className="text-[20px] font-bold text-[#2D2D2D]">Red jersey</p>
+                    <p className="text-[16px] font-normal text-[#2D2D2D]">250.00$</p>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Second card */}
-                <div className="flex flex-row items-center bg-white shadow-md rounded-lg">
+                <motion.div 
+                  variants={slide.fromLeft}
+                  className="flex flex-row items-center bg-white shadow-md rounded-lg"
+                >
                   <div>
                     <img
                       src={Sweet}
@@ -167,73 +262,90 @@ const ArtistShowcase = () => {
                     />
                   </div>
                   <div className="rounded-lg px-5 bg-white">
-                    <p className="text-[20px] font-bold text-[#2D2D2D]">
-                      Red jersey
-                    </p>
-                    <p className="text-[16px] font-normal text-[#2D2D2D]">
-                      250.00$
-                    </p>
+                    <p className="text-[20px] font-bold text-[#2D2D2D]">Sweet Package</p>
+                    <p className="text-[16px] font-normal text-[#2D2D2D]">150.00$</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
 
-            {/* Image Column */}
-            <div className="px-5 md:w-[60%] xl:mt-[65px] self-end">
-              <div className="relative self-end w-full flex justify-center items-center">
-                {/* Mobile Frame */}
-
+            <div className="px-5 md:w-[60%] self-end">
+              <motion.div 
+                variants={pulse}
+                className="relative self-end w-full flex justify-center items-center"
+              >
                 <img
                   src={Products}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] rounded-t-[50px] 2xl:rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] rounded-t-[50px] object-cover shadow-md"
                 />
-
-                {/* Content Image inside the frame */}
                 <img
-                  src={Mobileframesm} // <-- your content image
+                  src={Mobileframesm}
                   alt="Content"
-                  className="absolute w-full object-cover top-[-5px] md:top-[-8px] lg:top-[-1px] xl:top-[-7px]"
+                  className="absolute w-full object-cover top-[-7px]"
                 />
-                {/* Overlay Text */}
-                <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[32px] font-extrabold">
+                <div className="absolute bottom-[2%] w-[80%]">
+                  <motion.h3 
+                    variants={slide.fromTop}
+                    className="text-white text-[32px] font-extrabold"
+                  >
                     Michal James
-                  </h3>
-                  <p className="text-white text-[14px]">@ MJames123.com</p>
+                  </motion.h3>
+                  <motion.p 
+                    variants={slide.fromTop}
+                    className="text-white text-[14px]"
+                  >
+                    @ MJames123.com
+                  </motion.p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
-                        className="rounded-[30px] flex items-center justify-center"
+                        variants={popIn}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="rounded-[30px] p-1 flex items-center justify-center"
                         style={{
-                          background:
-                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} />
-                      </div>
+                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <div className="container p-5 flex flex-col lg:flex-row items-center mx-auto gap-4 my-5 ">
-        {/* <div className="flex flex-col lg:w-[40%] h-full lg:h-[430px] xl:h-[575px] 2xl:h-[740px] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"></div> */}
-        <div className="flex flex-col lg:w-[40%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
-          <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+      {/* Second Row */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={container}
+        className="flex flex-col lg:flex-row gap-4 my-5"
+      >
+        {/* Music Section */}
+        <motion.div 
+          variants={pulse}
+          className="flex flex-col lg:w-[40%] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"
+        >
+          <motion.p 
+            variants={popIn}
+            className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[20px] font-semibold px-4 py-2 rounded-r-full"
+          >
             Add Your Music
-          </p>
-          <div className="flex flex-row justify-between mt-5 lg:mt-0 xl:mt-11 items-center relative">
-            {/* Card Column - overlaps image and is vertically centered */}
+          </motion.p>
+
+          <div className="flex flex-row justify-between mt-5 xl:mt-11 items-center relative">
             <div className="z-10 -mr-25 w-[60%]">
               <div className="flex flex-col gap-4 pl-2">
-                {/* First card */}
-                <div className="flex flex-row items-center bg-white shadow-md rounded-full">
+                <motion.div 
+                  variants={slide.fromLeft}
+                  className="flex flex-row items-center bg-white shadow-md rounded-full"
+                >
                   <div>
                     <img
                       src={Stream}
@@ -241,155 +353,174 @@ const ArtistShowcase = () => {
                       className="w-[52px] h-[50px] object-cover rounded-full"
                     />
                   </div>
-                  <div className=" px-1">
+                  <div className="px-1">
                     <p className="text-[14px] font-normal text-[#2D2D2D]">
-                      Stream “Hype” on all platforms!
+                      Stream "Hype" on all platforms!
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Second card */}
-                <div className="border border-[#4278ef] rounded-xl mt-9">
+                <motion.div 
+                  variants={slide.fromLeft}
+                  className="border border-[#4278ef] rounded-xl mt-9"
+                >
                   <img
                     src={Music}
                     alt="Artist"
                     className="w-[280px] object-cover rounded-xl"
                   />
-                </div>
+                </motion.div>
               </div>
             </div>
 
-            {/* Image Column */}
-            <div className="px-5 md:w-[60%] lg:mt-[65px]">
-              <div className="relative w-full flex justify-center items-center">
-                {/* Mobile Frame */}
-
+            <div className="px-5 md:w-[60%]">
+              <motion.div 
+                variants={pulse}
+                className="relative w-full flex justify-center items-center"
+              >
                 <img
                   src={Musicbg}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] rounded-t-[40px] xl:rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
                 />
-
-                {/* Content Image inside the frame */}
                 <img
-                  src={Mobileframesm} // <-- your content image
+                  src={Mobileframesm}
                   alt="Content"
-                  className="absolute w-full object-cover top-[0px] 2xl:top-[-7px]"
+                  className="absolute w-full object-cover top-[-7px]"
                 />
-                {/* Overlay Text */}
-                <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[32px] font-extrabold">
+                <div className="absolute bottom-[2%] w-[80%]">
+                  <motion.h3 
+                    variants={slide.fromTop}
+                    className="text-white text-[32px] font-extrabold"
+                  >
                     Arcangel
-                  </h3>
-                  <p className="text-white text-[14px]">@ Arcangel.com</p>
+                  </motion.h3>
+                  <motion.p 
+                    variants={slide.fromTop}
+                    className="text-white text-[14px]"
+                  >
+                    @ Arcangel.com
+                  </motion.p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
-                        className="rounded-[30px] flex items-center justify-center"
+                        variants={popIn}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="rounded-[30px] p-1 flex items-center justify-center"
                         style={{
-                          background:
-                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} />
-                      </div>
+                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col lg:w-[60%] h-full shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
-          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+        {/* Appointment Section */}
+        <motion.div 
+          variants={pulse}
+          className="flex flex-col lg:w-[60%] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"
+        >
+          <motion.p 
+            variants={popIn}
+            className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[20px] font-semibold px-4 py-2 rounded-r-full"
+          >
             Coming Soon: Appointment Scheduler
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">
-            {/* Image Column */}
-            <div className="px-5 md:w-[50%] lg:mt-[65px]">
-              <div className="relative w-full flex justify-center items-center">
-                {/* Mobile Frame */}
-
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-5 relative">
+            <div className="px-5 md:w-[50%]">
+              <motion.div 
+                variants={pulse}
+                className="relative w-full flex justify-center items-center"
+              >
                 <img
                   src={Appointment}
                   alt="Mobile Frame"
-                  className="w-[97%] h-[90%] 2xl:rounded-t-[56px] object-cover shadow-md"
+                  className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
                 />
-
-                {/* Content Image inside the frame */}
                 <img
-                  src={Mobilefram} // <-- your content image
+                  src={Mobilefram}
                   alt="Content"
-                  className="absolute w-full object-cover top-[-7px] sm:top-[-8px] md:top-[-13px] lg:top-[-9px] xl:top-[-12px]"
+                  className="absolute w-full object-cover top-[-12px]"
                 />
-                {/* Overlay Text */}
-                <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[16px] md:text[24px] font-extrabold">
+                <div className="absolute bottom-[2%] w-[80%]">
+                  <motion.h3 
+                    variants={slide.fromTop}
+                    className="text-white text-[24px] font-extrabold"
+                  >
                     Max James
-                  </h3>
-                  <p className="text-white text-[12px] md:text-[14px]">June 21, 2025</p>
+                  </motion.h3>
+                  <motion.p 
+                    variants={slide.fromTop}
+                    className="text-white text-[14px]"
+                  >
+                    June 21, 2025
+                  </motion.p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
-                      <div
+                      <motion.div
                         key={idx}
-                        className="rounded-[30px] flex items-center justify-center"
+                        variants={popIn}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="rounded-[30px] p-1 flex items-center justify-center"
                         style={{
-                          background:
-                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} />
-                      </div>
+                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
-            {/* Card Column - overlaps image and is vertically centered */}
-            <div className=" p-3">
+            
+            <div className="p-3">
               <div className="flex flex-col gap-4 pl-2">
-                {/* First card */}
-                <div className="relative">
+                <motion.div 
+                  variants={slide.fromRight}
+                  className="relative"
+                >
                   <img
                     src={Photshoot}
                     alt="Artist"
-                    className=" object-cover rounded-xl"
+                    className="object-cover rounded-xl"
                   />
                   <div className="absolute bottom-0 right-0 p-2 text-white">
-                    <p className="text-[16px] md:text[24px]font-bold">Photoshoot in miami</p>
-                    <p className="text-[12px] md:text-[14px] font-normal text-right">2 Hours -$500</p>
+                    <p className="text-[24px] font-bold">Photoshoot in miami</p>
+                    <p className="text-[14px] font-normal text-right">2 Hours -$500</p>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Second card */}
-                <div className="relative">
+                <motion.div 
+                  variants={slide.fromRight}
+                  className="relative"
+                >
                   <img
                     src={Videoshoot}
                     alt="Artist"
-                    className=" object-cover rounded-xl"
+                    className="object-cover rounded-xl"
                   />
-                   <div className="absolute top-0 left-0 p-2 text-white">
-                    <p className="text-[16px] md:text[24px] font-bold">Video Shoot in miami</p>
-                    <p className="text-[12px] md:text-[14px] font-normal">2 Hours -$1999</p>
+                  <div className="absolute top-0 left-0 p-2 text-white">
+                    <p className="text-[24px] font-bold">Video Shoot in miami</p>
+                    <p className="text-[14px] font-normal">2 Hours -$1999</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>
-    // <div className="container mx-auto p-4">
-    //   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-    //     <TourDatesAndArtistCard />
-    //     <ProductsCard />
-    //     <MusicPlayerCard />
-    //     <AppointmentSchedulerCard />
-    //   </div>
-    // </div>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
