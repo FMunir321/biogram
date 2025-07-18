@@ -4,6 +4,7 @@ import Greaterthen from "../../../public/assets/greaterthen.png";
 import bground from "../../../public/assets/lightbg.png";
 import Cookies from "js-cookie";
 import api from "@/service/api";
+import * as Dialog from "@radix-ui/react-dialog";
 
 // UserData type (update as per your backend response)
 type UserData = {
@@ -48,6 +49,8 @@ const Settings = () => {
   const formattedDate = userData?.dateOfBirth
     ? new Date(userData.dateOfBirth).toLocaleDateString("en-GB")
     : "";
+
+    const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -141,7 +144,10 @@ const Settings = () => {
                     </div>
                   </div>
                   {/* Change Password Option */}
-                  <div className="flex flex-row justify-between mb-4 cursor-pointer">
+                  <div
+                    className="flex flex-row justify-between mb-4 cursor-pointer"
+                    onClick={() => setIsChangePasswordOpen(true)}
+                  >
                     <p className="text-[20px] font-medium text-black">Change Password</p>
                     <div className="flex flex-row items-center gap-2">
                       <p className="text-[16px] font-normal text-black">*********</p>
@@ -155,6 +161,46 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      <Dialog.Root open={isChangePasswordOpen} onOpenChange={setIsChangePasswordOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+            <Dialog.Title className="text-xl font-bold mb-4">Change Password</Dialog.Title>
+            <form>
+              <input
+                type="password"
+                placeholder="Old Password"
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <input
+                type="password"
+                placeholder="New Password"
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-300 rounded"
+                  onClick={() => setIsChangePasswordOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-500 text-white rounded"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 };
