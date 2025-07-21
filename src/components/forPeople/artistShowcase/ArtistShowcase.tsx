@@ -325,19 +325,31 @@ const ArtistShowcase = () => {
           </div>
         </div>
       </div >
-
+      
       <div className="container p-5 flex flex-col lg:flex-row items-center mx-auto gap-4 my-5 ">
-        {/* <div className="flex flex-col lg:w-[40%] h-full lg:h-[430px] xl:h-[575px] 2xl:h-[740px] bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl"></div> */}
+        {/* Music Player Card */}
         <div className="flex flex-col lg:w-[40%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
-          <p className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+          <motion.p
+            variants={slideFromTop}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.4 }}
+            className="mt-5 max-w-[300px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
+          >
             Add Your Music
-          </p>
+          </motion.p>
           <div className="flex flex-row justify-between mt-5 lg:mt-0 xl:mt-11 items-center relative">
             {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 -mr-25 w-[60%]">
               <div className="flex flex-col gap-4 pl-2">
                 {/* First card */}
-                <div className="flex flex-row items-center bg-white shadow-md rounded-full">
+                <motion.div
+                  variants={slideFromLeft}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  className="flex flex-row items-center bg-white shadow-md rounded-full"
+                >
                   <div>
                     <img
                       src={Stream}
@@ -347,19 +359,25 @@ const ArtistShowcase = () => {
                   </div>
                   <div className=" px-1">
                     <p className="text-[14px] font-normal text-[#2D2D2D]">
-                      Stream “Hype” on all platforms!
+                      Stream "Hype" on all platforms!
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Second card */}
-                <div className="border border-[#4278ef] rounded-xl mt-9">
+                <motion.div
+                  variants={slideFromRight}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  className="border border-[#4278ef] rounded-xl mt-9"
+                >
                   <img
                     src={Music}
                     alt="Artist"
                     className="w-[280px] object-cover rounded-xl"
                   />
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -367,26 +385,53 @@ const ArtistShowcase = () => {
             <div className="px-5 md:w-[60%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
                 {/* Mobile Frame */}
-
-                <img
+                <motion.img
+                  variants={slideFromBottom}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
                   src={Musicbg}
                   alt="Mobile Frame"
                   className="w-[97%] h-[90%] rounded-t-[40px] xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
                 {/* Content Image inside the frame */}
-                <img
-                  src={Mobileframesm} // <-- your content image
+                <motion.img
+                  variants={slideFromBottom}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  src={Mobileframesm}
                   alt="Content"
                   className="absolute w-full object-cover top-[0px] 2xl:top-[-7px]"
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[32px] font-extrabold">
+                  <motion.h3
+                    variants={slideFromRight}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="text-white text-[32px] font-extrabold"
+                  >
                     Arcangel
-                  </h3>
-                  <p className="text-white text-[14px]">@ Arcangel.com</p>
-                  <div className="flex flex-row gap-2 mt-2">
+                  </motion.h3>
+                  <motion.p
+                    variants={slideFromLeft}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="text-white text-[14px]"
+                  >
+                    @ Arcangel.com
+                  </motion.p>
+                  <motion.div
+                    variants={slideFromBottom}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="flex flex-row gap-2 mt-2"
+                  >
                     {socialIcons.map((icon, idx) => (
                       <div
                         key={idx}
@@ -399,43 +444,77 @@ const ArtistShowcase = () => {
                         <img src={icon.src} alt={icon.alt} />
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Appointment Scheduler Card */}
         <div className="flex flex-col lg:w-[60%] h-full shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
-          <p className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
+          <motion.p
+            variants={slideFromTop}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.4 }}
+            className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
+          >
             Coming Soon: Appointment Scheduler
-          </p>
+          </motion.p>
 
           <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">
             {/* Image Column */}
             <div className="px-5 md:w-[50%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
                 {/* Mobile Frame */}
-
-                <img
+                <motion.img
+                  variants={slideFromBottom}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
                   src={Appointment}
                   alt="Mobile Frame"
                   className="w-[97%] h-[90%] 2xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
                 {/* Content Image inside the frame */}
-                <img
-                  src={Mobilefram} // <-- your content image
+                <motion.img
+                  variants={slideFromBottom}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  src={Mobilefram}
                   alt="Content"
                   className="absolute w-full object-cover top-[-7px] sm:top-[-8px] md:top-[-13px] lg:top-[-9px] xl:top-[-12px]"
                 />
                 {/* Overlay Text */}
                 <div className="absolute bottom-[2%]  w-[80%]">
-                  <h3 className="text-white text-[16px] md:text[24px] font-extrabold">
+                  <motion.h3
+                    variants={slideFromLeft}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="text-white text-[16px] md:text[24px] font-extrabold"
+                  >
                     Max James
-                  </h3>
-                  <p className="text-white text-[12px] md:text-[14px]">June 21, 2025</p>
-                  <div className="flex flex-row gap-2 mt-2">
+                  </motion.h3>
+                  <motion.p
+                    variants={slideFromRight}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="text-white text-[12px] md:text-[14px]"
+                  >
+                    June 21, 2025
+                  </motion.p>
+                  <motion.div
+                    variants={slideFromTop}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.4 }}
+                    className="flex flex-row gap-2 mt-2"
+                  >
                     {socialIcons.map((icon, idx) => (
                       <div
                         key={idx}
@@ -448,7 +527,7 @@ const ArtistShowcase = () => {
                         <img src={icon.src} alt={icon.alt} />
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -456,7 +535,13 @@ const ArtistShowcase = () => {
             <div className=" p-3">
               <div className="flex flex-col gap-4 pl-2">
                 {/* First card */}
-                <div className="relative">
+                <motion.div
+                  variants={slideFromRight}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  className="relative"
+                >
                   <img
                     src={Photshoot}
                     alt="Artist"
@@ -466,10 +551,16 @@ const ArtistShowcase = () => {
                     <p className="text-[16px] md:text[24px]font-bold">Photoshoot in miami</p>
                     <p className="text-[12px] md:text-[14px] font-normal text-right">2 Hours -$500</p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Second card */}
-                <div className="relative">
+                <motion.div
+                  variants={slideFromLeft}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.4 }}
+                  className="relative"
+                >
                   <img
                     src={Videoshoot}
                     alt="Artist"
@@ -479,21 +570,13 @@ const ArtistShowcase = () => {
                     <p className="text-[16px] md:text[24px] font-bold">Video Shoot in miami</p>
                     <p className="text-[12px] md:text-[14px] font-normal">2 Hours -$1999</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
-    // <div className="container mx-auto p-4">
-    //   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-    //     <TourDatesAndArtistCard />
-    //     <ProductsCard />
-    //     <MusicPlayerCard />
-    //     <AppointmentSchedulerCard />
-    //   </div>
-    // </div>
   );
 };
 
