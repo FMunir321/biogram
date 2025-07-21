@@ -4,8 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avat
 
 import mock2 from "../../../../public/assets/good.png";
 import mock3 from "../../../../public/assets/mock2.png";
-
 import avatar from "../../../../public/assets/mock3.png";
+import mock5 from "../../../../public/assets/fire.png";
 
 import {
   FaInstagram,
@@ -14,7 +14,6 @@ import {
   FaSpotify,
   FaTwitter,
 } from "react-icons/fa";
-import mock5 from "../../../../public/assets/fire.png";
 
 const ProfileCard = () => {
   return (
@@ -30,7 +29,7 @@ const ProfileCard = () => {
         </p>
 
         {/* Preview Cards */}
-        <div className=" relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
+        <div className="relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
           {/* Background Cards */}
           <div className="absolute -left-40 mb-[500px]">
             <div className="absolute -left-16 w-80 h-[500px] bg-black rounded-lg">
@@ -59,6 +58,7 @@ const ProfileCard = () => {
               </Button>
             </div>
           </div>
+
           <div className="absolute -left-16 w-80 h-[550px] bg-black rounded-lg border border-red-500">
             <Avatar className="w-20 h-20 rounded-full mx-auto mt-10">
               <AvatarImage src={avatar} alt="Alex James" />
@@ -112,8 +112,6 @@ const ProfileCard = () => {
                   Share profile
                 </Button>
 
-                {/* Social Icons Row with Transparent Rectangles */}
-                {/* Social Icons Row with Transparent Rectangles */}
                 <div className="mt-4 flex flex-col gap-2 w-full">
                   {[
                     { Icon: FaInstagram, label: "Instagram" },
@@ -133,13 +131,7 @@ const ProfileCard = () => {
                 </div>
 
                 <div className="mt-6 grid grid-cols-5 gap-10">
-                  {[
-                    "/theme1.png",
-                    "/theme2.png",
-                    "/theme3.png",
-                    "/theme4.png",
-                    "/theme5.png",
-                  ].map((_, idx) => {
+                  {["theme1.png", "theme2.png", "theme3.png", "theme4.png", "theme5.png"].map((theme, idx) => {
                     const bgColors = [
                       "bg-pink-500",
                       "bg-green-500",
@@ -150,11 +142,11 @@ const ProfileCard = () => {
                     return (
                       <div
                         key={idx}
-                        className={w-10 h-10 scale-150  rounded-md border-2 border-transparent hover:border-pink-400 cursor-pointer flex items-center justify-center ${bgColors[idx]}}
+                        className={`w-10 h-10 scale-150 rounded-md border-2 border-transparent hover:border-pink-400 cursor-pointer flex items-center justify-center ${bgColors[idx]}`}
                       >
                         <img
                           src={avatar}
-                          alt={theme-${idx}}
+                          alt={`theme-${idx}`}
                           className="w-10 h-10"
                         />
                       </div>
@@ -168,7 +160,6 @@ const ProfileCard = () => {
           {/* Right BG */}
           <div className="absolute right-0 z-10">
             <div className="relative mt-16 flex justify-center items-center w-full max-w-3xl">
-              {/* Background Cards */}
               <div className="absolute -left-48 mb-[630px]">
                 <div className="absolute -left-32 w-80 h-[860px] rounded-lg">
                   <img
@@ -179,7 +170,6 @@ const ProfileCard = () => {
                   <Avatar className="w-50 h-96 mx-auto -mt-[490px] mr-5">
                     <AvatarImage src={mock3} alt="Alex James" />
                   </Avatar>
-
                   <Button className="mt-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-sm px-10 py-8">
                     Continue profile
                   </Button>
@@ -187,18 +177,18 @@ const ProfileCard = () => {
               </div>
             </div>
           </div>
+
           <div className="absolute right-0 z-0">
-            <div className="absolute -left-48 w-80 h-[530px] bg-pink-500 rounded-lg border border-red-500b -mt-[260px]">
-              <Avatar className="w-52 h-90 rounded-full mx-auto ">
+            <div className="absolute -left-48 w-80 h-[530px] bg-pink-500 rounded-lg border border-red-500 -mt-[260px]">
+              <Avatar className="w-52 h-90 rounded-full mx-auto">
                 <AvatarImage src={mock3} alt="Alex James" />
               </Avatar>
               <h3 className="text-xl font-bold">Alex James</h3>
               <p className="text-sm text-gray-300">@AlexLinks</p>
-
-              <Button className=" bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-sm px-4 py-1">
+              <Button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-sm px-4 py-1">
                 Continue profile
               </Button>
-              <div className=" flex gap-4 justify-center">
+              <div className="flex gap-4 justify-center">
                 {[
                   { Icon: FaInstagram, color: "#E1306C" },
                   { Icon: FaTwitter, color: "#1DA1F2" },
