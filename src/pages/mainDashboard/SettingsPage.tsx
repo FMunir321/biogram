@@ -26,6 +26,13 @@ const menuItems = [
 const Settings = () => {
   const [activeMenu, setActiveMenu] = useState("personal-info");
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,7 +57,37 @@ const Settings = () => {
     ? new Date(userData.dateOfBirth).toLocaleDateString("en-GB")
     : "";
 
-    const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const token = Cookies.get("token");
+      await api.put(
+        "/api/user/change-password",
+        { currentPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuccess("Password changed successfully!");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setTimeout(() => setIsChangePasswordOpen(false), 1500); // modal close after success
+    } catch (err: any) {
+      setError(
+        err?.response?.data?.message ||
+        "Failed to change password. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -164,37 +201,48 @@ const Settings = () => {
       <Dialog.Root open={isChangePasswordOpen} onOpenChange={setIsChangePasswordOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+          <Dialog.Content aria-describedby="change-password-desc" className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
             <Dialog.Title className="text-xl font-bold mb-4">Change Password</Dialog.Title>
-            <form>
+            <div id="change-password-desc">Enter your current and new password below.</div>
+            <form onSubmit={handleChangePassword}>
               <input
                 type="password"
-                placeholder="Old Password"
+                placeholder="Current Password"
+                value={currentPassword}
+                onChange={e => setCurrentPassword(e.target.value)}
                 className="w-full mb-3 p-2 border rounded"
               />
               <input
                 type="password"
                 placeholder="New Password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
                 className="w-full mb-3 p-2 border rounded"
               />
               <input
                 type="password"
                 placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
                 className="w-full mb-3 p-2 border rounded"
               />
+              {error && <div className="text-red-500 mb-2">{error}</div>}
+              {success && <div className="text-green-600 mb-2">{success}</div>}
               <div className="flex justify-end gap-2 mt-4">
                 <button
                   type="button"
                   className="px-4 py-2 bg-gray-300 rounded"
                   onClick={() => setIsChangePasswordOpen(false)}
+                  disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-green-500 text-white rounded"
+                  disabled={loading}
                 >
-                  Save
+                  {loading ? "Saving..." : "Save"}
                 </button>
               </div>
             </form>
