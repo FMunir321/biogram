@@ -35,6 +35,9 @@ const Settings = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -47,7 +50,7 @@ const Settings = () => {
           },
         });
         setUserData(response.data);
-        console.log("userData:",response.data);
+        console.log("userData:", response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -244,20 +247,49 @@ const Settings = () => {
                     )}
                   </button>
                 </div>
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  className="bg-white/10 border border-white text-white px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-white focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-80"
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  className="bg-white/10 border border-white text-white px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-white focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-80"
-                />
+                <div className="relative w-80">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    placeholder="New Password"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    className="bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                    onClick={() => setShowNewPassword((prev) => !prev)}
+                    tabIndex={-1}
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+                <div className="relative w-80">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    className="bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                  ) : (
+                      <Eye className="h-5 w-5" />
+                  )}
+                  </button>
+                </div>
+
                 {error && <div className="text-red-500 mb-2">{error}</div>}
                 {success && <div className="text-green-600 mb-2">{success}</div>}
                 <div className="flex justify-center gap-4 mt-4 w-full">
