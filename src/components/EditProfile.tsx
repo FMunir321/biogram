@@ -347,13 +347,15 @@ const EditProfile = () => {
   //   setIsAddMerch(true);
   // };
   // Thumbnail Change
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setThumbnail(file);
-      setPreview(URL.createObjectURL(file)); // Set preview from selected image
-    }
-  };
+
+const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    setThumbnail(file);
+    setPreview(URL.createObjectURL(file)); // ✅ Override preview if new image selected
+  }
+};
+
 
   // Submit Handler
   const handleSubmit = async () => {
@@ -409,26 +411,24 @@ const EditProfile = () => {
   };
 
   // Edit Click (fix for image)
-  const handleEditClick = (merch: any) => {
-    setCategory(merch.category);
-    setUrl(merch.url);
-    setTitle(merch.title);
-    setPrice(merch.Price);
+const handleEditClick = (merch: any) => {
+  setCategory(merch.category);
+  setUrl(merch.url);
+  setTitle(merch.title);
+  setPrice(merch.Price);
 
-    // ✅ Correct image URL creation
-    const imageURL = merch.image
-      ? merch.image.startsWith("http") // if full URL already
-        ? merch.image
-        : `http://3.111.146.115:5000${merch.image}`
-      : "/default-thumbnail.png";
+  // 👇 Correct way to build image preview from server
+  const imageURL = merch.image?.startsWith("http")
+    ? merch.image
+    : `http://3.111.146.115:5000${merch.image}`;
 
-    setPreview(imageURL); // 👈 ye image background ke liye
-    setThumbnail(null);
-    console.log("Preview Image URL:", imageURL);
+  setPreview(imageURL); 
+  setThumbnail(null);   
 
-    setEditMerchId(merch._id);
-    setIsAddMerch(true);
-  };
+  setEditMerchId(merch._id);
+  setIsAddMerch(true);
+};
+
 
   // Function to fetch merch data
   const fetchMerch = useCallback(async () => {
