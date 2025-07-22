@@ -231,7 +231,7 @@ const ProfileCard = () => {
         </div>
       </div>
     </div>
-  );
+  ); 
 };
 
 export default ProfileCard;
