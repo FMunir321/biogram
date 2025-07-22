@@ -22,6 +22,7 @@ const menuItems = [
   { key: "terms", label: "Terms & Conditions" },
   { key: "privacy", label: "Privacy policy" },
   { key: "about", label: "About" },
+  { key: "delete-account", label: "Delete Account" },
 ];
 
 const Settings = () => {
@@ -37,7 +38,8 @@ const Settings = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [showPassword, setshowPassword] = useState(false);
+  const [passwordValue, setPasswordValue] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -199,6 +201,49 @@ const Settings = () => {
                 </div>
               </>
             )}
+
+            {activeMenu === "delete-account" && (
+              <>
+                <h1 className="text-[32px] font-bold mb-2 text-black">
+                  Delete Account
+                </h1>
+                <div className="text-center">
+                  <div className="text-4xl mb-6 text-center">😢</div>
+                  <h1 className="text-[20px] font-bold mb-2 text-black">
+                    Are you sure you want to delete your account
+                  </h1>
+                  <p className="text-[15px] text-normal text-black mb-8">
+                    Your account will be deactivated for 30 days.
+                    <br />
+                    After 30 days your account will be permanently deleted.
+                  </p>
+
+                  <div className="relative w-80 text-center mx-auto">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={passwordValue}
+                      onChange={(e) => setPasswordValue(e.target.value)}
+                      className="appearance-none bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10 border border-gray-400"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                      onClick={() => setshowPassword((prev) => !prev)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                  <button
+                    className="w-40 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
+
             {/* You can add more conditions for other menu items here */}
           </div>
         </div>
@@ -284,9 +329,9 @@ const Settings = () => {
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-5 w-5" />
-                  ) : (
+                    ) : (
                       <Eye className="h-5 w-5" />
-                  )}
+                    )}
                   </button>
                 </div>
 
@@ -314,6 +359,8 @@ const Settings = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+
     </div>
   );
 };
