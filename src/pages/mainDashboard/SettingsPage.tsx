@@ -95,6 +95,12 @@ const Settings = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (activeMenu === "delete-account") {
+      setPasswordValue(""); // clear password field
+      setshowPassword(false); // hide password by default
+    }
+  }, [activeMenu]);
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -235,11 +241,6 @@ const Settings = () => {
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
-                  <button
-                    className="w-40 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
-                  >
-                    Delete
-                  </button>
                 </div>
               </>
             )}
