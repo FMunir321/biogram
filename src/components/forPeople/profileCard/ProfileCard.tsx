@@ -19,7 +19,7 @@ import {
 const ProfileCard = () => {
   const [centerCard, setCenterCard] = useState(2); // Default center card is the 3rd one
 
-  const handleCardClick = (index) => {
+  const handleCardClick = (index: any) => {
     setCenterCard(index);
   };
 
@@ -38,7 +38,7 @@ const ProfileCard = () => {
         {/* Preview Cards */}
         <div className="relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
           {/* Background Cards */}
-          <div 
+          <div
             className={`absolute -left-40 mb-[500px] ${centerCard === 0 ? 'z-50' : 'z-0'}`}
             onClick={() => handleCardClick(0)}
           >
@@ -69,7 +69,7 @@ const ProfileCard = () => {
             </div>
           </div>
 
-          <div 
+          <div
             className={`absolute -left-16 w-80 h-[550px] bg-black rounded-lg border border-red-500 ${centerCard === 1 ? 'z-50' : 'z-10'} transition-all duration-300 ${centerCard === 1 ? 'scale-105' : ''}`}
             onClick={() => handleCardClick(1)}
           >
@@ -112,7 +112,7 @@ const ProfileCard = () => {
           </div>
 
           {/* Main Card */}
-          <div 
+          <div
             className={`relative ${centerCard === 2 ? 'z-50' : 'z-40'} transition-all duration-300`}
             onClick={() => handleCardClick(2)}
           >
@@ -163,7 +163,7 @@ const ProfileCard = () => {
                         >
                           <img
                             src={avatar}
-                            alt={`theme-${idx}`}
+                            alt={`theme-${theme}`}
                             className="w-10 h-10"
                           />
                         </div>
@@ -176,7 +176,7 @@ const ProfileCard = () => {
           </div>
 
           {/* Right BG */}
-          <div 
+          <div
             className={`absolute right-0 z-10 ${centerCard === 3 ? 'z-50' : 'z-10'}`}
             onClick={() => handleCardClick(3)}
           >
@@ -199,7 +199,7 @@ const ProfileCard = () => {
             </div>
           </div>
 
-          <div 
+          <div
             className={`absolute right-0 z-0 ${centerCard === 4 ? 'z-50' : 'z-0'}`}
             onClick={() => handleCardClick(4)}
           >
