@@ -60,16 +60,12 @@ const EditProfile = () => {
   const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isBioEnabled, setIsBioEnabled] = useState(false);
-  const [featureLinkToggle, setFeatureLinkToggle] = useState(false);
-  const [merchToggle, setMerchToggle] = useState(false);
-  const [galleryToggle, setGalleryToggle] = useState(false);
-  // const [contactToggle, setContactToggle] = useState(false);
-  const [shoutsToggle, setShoutsToggle] = useState(false);
+  // const [isBioEnabled, setIsBioEnabled] = useState(false);
+
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
-  const [isAddBio, setIsAddBio] = useState(false);
+  // const [isAddBio, setIsAddBio] = useState(false);
   const [isaddMerch, setIsAddMerch] = useState(false);
   const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
@@ -93,13 +89,21 @@ const EditProfile = () => {
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [contactExists, setContactExists] = useState(false);
   const [editMerchId, setEditMerchId] = useState<string | null>(null);
+
+  const [isBioEnabled, setIsBioEnabled] = useState(false);
+  const [galleryToggle, setGalleryToggle] = useState(false);
+  const [featureLinkToggle, setFeatureLinkToggle] = useState(false);
+  const [merchToggle, setMerchToggle] = useState(false);
+  const [shoutsToggle, setShoutsToggle] = useState(false);
+  const [isAddBio, setIsAddBio] = useState(false);
+  const [contactInfo, setContactInfo] = useState(false);
   const sections = [
     {
       heading: "Link",
@@ -134,6 +138,45 @@ const EditProfile = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  useEffect(() => {
+    const fetchVisibilitySettings = async () => {
+      try {
+        const token = Cookies.get("token");
+        const userId = localStorage.getItem("userId");
+        if (!token) {
+          console.error("Token not found");
+          return;
+        }
+
+        const res = await fetch(
+          `http://3.111.146.115:5000/api/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+          }
+        );
+
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+
+        const data = await res.json();
+        setIsBioEnabled(data?.visibilitySettings?.bio || false);
+        setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
+        setMerchToggle(data?.visibilitySettings?.merch || false);
+        setShoutsToggle(data?.visibilitySettings?.shouts || false);
+        setGalleryToggle(data?.visibilitySettings?.gallery || false);
+        setContactInfo(data?.visibilitySettings?.contactInfo || false);
+      } catch (error) {
+        console.error("Error fetching visibility settings:", error);
+      }
+    };
+
+    fetchVisibilitySettings();
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -348,14 +391,13 @@ const EditProfile = () => {
   // };
   // Thumbnail Change
 
-const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (file) {
-    setThumbnail(file);
-    setPreview(URL.createObjectURL(file)); // ✅ Override preview if new image selected
-  }
-};
-
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      setPreview(URL.createObjectURL(file)); // ✅ Override preview if new image selected
+    }
+  };
 
   // Submit Handler
   const handleSubmit = async () => {
@@ -411,24 +453,23 @@ const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   };
 
   // Edit Click (fix for image)
-const handleEditClick = (merch: any) => {
-  setCategory(merch.category);
-  setUrl(merch.url);
-  setTitle(merch.title);
-  setPrice(merch.Price);
+  const handleEditClick = (merch: any) => {
+    setCategory(merch.category);
+    setUrl(merch.url);
+    setTitle(merch.title);
+    setPrice(merch.Price);
 
-  // 👇 Correct way to build image preview from server
-  const imageURL = merch.image?.startsWith("http")
-    ? merch.image
-    : `http://3.111.146.115:5000${merch.image}`;
+    // 👇 Correct way to build image preview from server
+    const imageURL = merch.image?.startsWith("http")
+      ? merch.image
+      : `http://3.111.146.115:5000${merch.image}`;
 
-  setPreview(imageURL); 
-  setThumbnail(null);   
+    setPreview(imageURL);
+    setThumbnail(null);
 
-  setEditMerchId(merch._id);
-  setIsAddMerch(true);
-};
-
+    setEditMerchId(merch._id);
+    setIsAddMerch(true);
+  };
 
   // Function to fetch merch data
   const fetchMerch = useCallback(async () => {
@@ -471,10 +512,10 @@ const handleEditClick = (merch: any) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       Array.from(files).forEach((file) => {
-        const previewUrl = URL.createObjectURL(file);
+        // const previewUrl = URL.createObjectURL(file);
         setSelectedImages((prev) => [...prev, file]);
         console.log("Selected file:", selectedImages);
-        setImagePreviews((prev) => [...prev, previewUrl]);
+        // setImagePreviews((prev) => [...prev, previewUrl]);
         handleUpload(file);
       });
     }
@@ -814,7 +855,7 @@ const handleEditClick = (merch: any) => {
             </div>
 
             {/* Bio card */}
-            <div className="bg-[#dff3e9]/60 border-1 rounded-[24px] border-[#7ecfa7]">
+            <div className="bg-[#dff3e9]/60 border rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
                   <label
@@ -1199,17 +1240,17 @@ const handleEditClick = (merch: any) => {
                       type="checkbox"
                       id="bio-toggle"
                       className="sr-only"
-                      checked={galleryToggle}
-                      onChange={() => setGalleryToggle(!galleryToggle)}
+                      checked={contactInfo}
+                      onChange={() => setContactInfo(!contactInfo)}
                     />
                     <div
                       className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
                       }`}
                     ></div>
                     <div
                       className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        galleryToggle
+                        contactInfo
                           ? "translate-x-6 bg-[#72bb96]"
                           : "bg-[#d1d5db]"
                       }`}
