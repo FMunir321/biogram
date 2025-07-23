@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import api from "@/service/api";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // UserData type (update as per your backend response)
 type UserData = {
@@ -40,7 +41,7 @@ const Settings = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleteError, setDeleteError] = useState("");
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -96,12 +97,7 @@ const Settings = () => {
       setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   if (activeMenu === "delete-account") {
-  //     setPasswordValue(""); // clear password field
-  //     setshowPassword(false); // hide password by default
-  //   }
-  // }, [activeMenu]);
+ 
   //<<<<<<<<--------------- delete handler function --------------->>>>>>>
   const handleDeleteAccount = async () => {
     setDeleteError(""); // Clear previous errors
@@ -124,6 +120,16 @@ const Settings = () => {
       // Optionally clear user data, redirect or show success message
       alert("Account deleted successfully.");
       // Example: window.location.href = '/goodbye';
+
+       // ✅ Clear user data from localStorage
+       localStorage.removeItem("user"); // or whatever key you're using
+  
+       // ✅ Optional: clear tokens too if stored
+      localStorage.removeItem("token");
+  
+       // ✅ Redirect to homepage
+       navigate("/");
+       
     } catch (error: any) {
       console.error("Account deletion failed:", error);
       setDeleteError(
@@ -131,6 +137,23 @@ const Settings = () => {
       );
     }
   };
+  // const handleDeleteAccount = async () => {
+  //   try {
+  //     await api.delete(`/api/user/delete`);
+  
+  //     // ✅ Clear user data from localStorage
+  //     localStorage.removeItem("user"); // or whatever key you're using
+  
+  //     // ✅ Optional: clear tokens too if stored
+  //     localStorage.removeItem("token");
+  
+  //     // ✅ Redirect to homepage
+  //     navigate("/");
+  
+  //   } catch (error) {
+  //     console.error("Account deletion failed:", error);
+  //   }
+  // };
 
 
   return (
