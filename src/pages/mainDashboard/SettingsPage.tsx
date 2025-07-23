@@ -38,8 +38,9 @@ const Settings = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [showPassword, setshowPassword] = useState(false);
-  const [passwordValue, setPasswordValue] = useState("");
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -95,12 +96,42 @@ const Settings = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (activeMenu === "delete-account") {
-      setPasswordValue(""); // clear password field
-      setshowPassword(false); // hide password by default
+  // useEffect(() => {
+  //   if (activeMenu === "delete-account") {
+  //     setPasswordValue(""); // clear password field
+  //     setshowPassword(false); // hide password by default
+  //   }
+  // }, [activeMenu]);
+  //<<<<<<<<--------------- delete handler function --------------->>>>>>>
+  const handleDeleteAccount = async () => {
+    setDeleteError(""); // Clear previous errors
+
+    if (deleteConfirmText.trim().toLowerCase() !== "delete") {
+      setDeleteError("Please type 'delete' to confirm.");
+      return;
     }
-  }, [activeMenu]);
+
+    try {
+      const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
+
+      await api.delete(`/api/user/delete/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Optionally clear user data, redirect or show success message
+      alert("Account deleted successfully.");
+      // Example: window.location.href = '/goodbye';
+    } catch (error: any) {
+      console.error("Account deletion failed:", error);
+      setDeleteError(
+        error?.response?.data?.message || "Failed to delete account. Please try again."
+      );
+    }
+  };
+
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -219,28 +250,38 @@ const Settings = () => {
                     Are you sure you want to delete your account
                   </h1>
                   <p className="text-[15px] text-normal text-black mb-8">
-                    Your account will be deactivated for 30 days.
+                    {/* Your account will be deactivated for 30 days.
                     <br />
-                    After 30 days your account will be permanently deleted.
+                    After 30 days your account will be permanently deleted. */}
+
+                    Are you sure you want to permanently delete this account?
+                    <br />
+                    If yes, type 'delete' and click the Delete button.
                   </p>
 
                   <div className="relative w-80 text-center mx-auto">
                     <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={passwordValue}
-                      onChange={(e) => setPasswordValue(e.target.value)}
+                      type="text"
+                      placeholder="Type 'delete' to confirm"
+                      value={deleteConfirmText}
+                      onChange={(e) => setDeleteConfirmText(e.target.value)}
                       className="appearance-none bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10 border border-gray-400"
                     />
+                  </div>
+
+                  {deleteError && (
+                    <p className="text-red-500 text-sm mb-2">{deleteError}</p>
+                  )}
+
+                  <div className="relative w-80 text-center mx-auto">
                     <button
-                      type="button"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                      onClick={() => setshowPassword((prev) => !prev)}
-                      tabIndex={-1}
+                      className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                      onClick={handleDeleteAccount}
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      Delete
                     </button>
                   </div>
+
                 </div>
               </>
             )}
