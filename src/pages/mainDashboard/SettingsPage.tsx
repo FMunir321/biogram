@@ -84,6 +84,7 @@ const Settings = () => {
       setNewPassword("");
       setConfirmPassword("");
       setTimeout(() => setIsChangePasswordOpen(false), 1500); // modal close after success
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err?.response?.data?.message ||
