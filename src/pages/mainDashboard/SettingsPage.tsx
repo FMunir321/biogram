@@ -113,9 +113,9 @@ const Settings = () => {
 
     try {
       const token = Cookies.get("token");
-      const userId = localStorage.getItem("userId");
+      // const userId = localStorage.getItem("userId");
 
-      await api.delete(`/api/user/delete/${userId}`, {
+      await api.delete(`/api/user/delete-account`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
