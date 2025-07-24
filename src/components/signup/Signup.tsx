@@ -10,13 +10,14 @@ import {
 import { Input } from "../../components/ui/input";
 import logo from "../../../public/assets/Biogramlogo.png";
 
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
+import { EyeIcon, EyeOffIcon, CheckCircle2, XCircle } from "lucide-react";
+import { useState, useEffect } from "react";
 import RightImage from "../../../public/assets/RightImage.png";
 import LeftImage from "../../../public/assets/LeftImage.png";
 import { Link, useNavigate } from "react-router-dom";
 import groupBg from "../../../public/assets/group.png";
 import api from "../../service/api";
+import toast, { Toaster } from "react-hot-toast";
 
 // ...existing code...
 const Signup = () => {
@@ -32,7 +33,26 @@ const Signup = () => {
     termsAgreement: false,
   });
   const [error, setError] = useState("");
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasNumber: false,
+    hasSpecial: false,
+  });
   const navigate = useNavigate();
+
+  // Check password requirements as user types
+  useEffect(() => {
+    const password = personalForm.password;
+    setPasswordRequirements({
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSpecial: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
+    });
+  }, [personalForm.password]);
 
   // Handle input changes
   const handlePersonalChange = (
@@ -100,11 +120,31 @@ const Signup = () => {
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Signup failed");
+      if (err?.response?.data?.error === "Username taken") {
+        toast.error("Username already exists");
+      } else if (err?.response?.data?.error === "Email already registered") {
+        toast.error("Email already exists");
+      } else {
+        toast.error(err?.response?.data?.error || "Signup failed"); // fallback to the backend message
+      }
     }
   };
 
+  // Password requirement component
+  const PasswordRequirement = ({ met, text }: { met: boolean; text: string }) => (
+    <div className="flex items-center gap-2 text-xs">
+      {met ? (
+        <CheckCircle2 className="h-4 w-4 text-green-500" />
+      ) : (
+        <XCircle className="h-4 w-4 text-gray-400" />
+      )}
+      <span className={met ? "text-green-600" : "text-gray-500"}>{text}</span>
+    </div>
+  );
+
   return (
+    <>
+    <div><Toaster/></div>
     <div className="min-h-screen bg-white">
       <div className="flex flex-col lg:flex-row items-stretch min-h-screen">
         {/* Left Image */}
@@ -367,6 +407,32 @@ const Signup = () => {
                           )}
                         </button>
                       </div>
+                      
+                      {/* Password Requirements */}
+                      {personalForm.password.length > 0 && (
+                        <div className="mt-2 p-3 bg-gray-50 rounded-md space-y-1.5">
+                          <PasswordRequirement 
+                            met={passwordRequirements.minLength} 
+                            text="At least 8 characters" 
+                          />
+                          <PasswordRequirement 
+                            met={passwordRequirements.hasUppercase} 
+                            text="At least one uppercase letter" 
+                          />
+                          <PasswordRequirement 
+                            met={passwordRequirements.hasLowercase} 
+                            text="At least one lowercase letter" 
+                          />
+                          <PasswordRequirement 
+                            met={passwordRequirements.hasNumber} 
+                            text="At least one number" 
+                          />
+                          <PasswordRequirement 
+                            met={passwordRequirements.hasSpecial} 
+                            text="At least one special character (!@#$%^&*)" 
+                          />
+                        </div>
+                      )}
                     </fieldset>
                     {/* Terms */}
                     <div className="text-xs text-gray-500">
@@ -580,9 +646,10 @@ const Signup = () => {
             alt="Right Profile"
             className="absolute w-[180px] xl:w-[322px] h-[600px] xl:h-[1063px] -top-2 xl:-top-[3px] right-2 xl:right-8"
           />
-        </div>
+          </div>
+          </div>
       </div>
-    </div>
+    </>
   );
 };
 
