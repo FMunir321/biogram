@@ -613,6 +613,45 @@ const EditProfile = () => {
     fetchContactInfo();
   }, [fetchContactInfo]);
 
+  const handleToggle = async (
+    section: string,
+    currentValue: boolean,
+    setterFunction: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const originalValue = currentValue;
+    setterFunction(!currentValue);
+
+    const success = await updateVisibilitySetting(section, !currentValue);
+    if (!success) {
+      setterFunction(originalValue);
+    }
+  };
+  const updateVisibilitySetting = async (section: string, value: boolean) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) {
+        console.error("Token not found");
+        return false;
+      }
+
+      // Correct Axios PATCH request
+      await api.patch(
+        "/api/user/visibility",
+        { section, value },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return true;
+    } catch (error) {
+      console.error("Error updating visibility setting:", error);
+      return false;
+    }
+  };
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
       {/* Mobile View */}
@@ -774,7 +813,7 @@ const EditProfile = () => {
                 <div className="flex items-center justify-between rounded-[24px] p-6">
                   <label
                     className="text-[32px] font-bold text-black"
-                    onClick={() => setIsAddBio(true)}
+
                   >
                     Bio
                   </label>
@@ -784,19 +823,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      onChange={() => handleToggle("bio", isBioEnabled, setIsBioEnabled)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        isBioEnabled
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -831,19 +868,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={featureLinkToggle}
-                      onChange={() => setFeatureLinkToggle(!featureLinkToggle)}
+                      onChange={() => handleToggle("featuredLinks", featureLinkToggle, setFeatureLinkToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        featureLinkToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -984,19 +1019,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={merchToggle}
-                      onChange={() => setMerchToggle(!merchToggle)}
+                      onChange={() => handleToggle("merch", merchToggle, setMerchToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        merchToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1081,19 +1114,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={galleryToggle}
-                      onChange={() => setGalleryToggle(!galleryToggle)}
+                      onChange={() => handleToggle("gallery", galleryToggle, setGalleryToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        galleryToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1161,19 +1192,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={contactInfo}
-                      onChange={() => setContactInfo(!contactInfo)}
+                      onChange={() => handleToggle("contactInfo", contactInfo, setContactInfo)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        contactInfo
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactInfo
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1236,19 +1265,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={shoutsToggle}
-                      onChange={() => setShoutsToggle(!shoutsToggle)}
+                      onChange={() => handleToggle("shouts", shoutsToggle, setShoutsToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        shoutsToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1420,21 +1447,19 @@ const EditProfile = () => {
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Solid"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Solid
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Gradient"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Gradient
                         </button>
