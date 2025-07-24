@@ -54,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   // Add state for current user
   const [currentUser, setCurrentUser] = useState<{ profileImage?: string; fullName?: string; username?: string } | null>(null);
-
+  const [showDropdown, setShowDropdown] = useState(false)
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -72,6 +72,12 @@ const Layout = ({ children }: LayoutProps) => {
     };
     fetchCurrentUser();
   }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("userId");
+    window.location.href = "/"; // ya login page
+  };
 
   if (shouldHideSidebar) {
     return <div className="min-h-screen bg-gray-50">{children}</div>;
@@ -221,17 +227,37 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         {/* User Profile at bottom */}
-        <div className="flex items-center gap-3 p-3 mt-6 bg-opacity-50 rounded-xl">
-          <img
-            src={currentUser?.profileImage ? `http://3.111.146.115:5000${currentUser.profileImage}` : "/assets/avatar.png"}
-            alt="Profile"
-            className="w-[50px] h-[50px] rounded-full ring-2 ring-black"
-          />
-          <div>
-            <p className="text-[20px] font-bold text-black">{currentUser?.fullName || "Loading..."}</p>
-            <p className="text-[13px] font-normal text-black">@{currentUser?.username || "username"}</p>
-          </div>
+        <div className="relative">
+          <button
+            onClick={() => setShowDropdown((prev) => !prev)}
+            className="w-full">
+            <div className="flex items-center gap-3 p-3 mt-6 bg-opacity-50 rounded-xl">
+
+              <img
+                src={currentUser?.profileImage ? `http://3.111.146.115:5000${currentUser.profileImage}` : "/assets/avatar.png"}
+                alt="Profile"
+                className="w-[50px] h-[50px] rounded-full ring-2 ring-black"
+              />
+              <div>
+                <p className="text-[20px] font-bold text-black">{currentUser?.fullName || "Loading..."}</p>
+                <p className="text-[13px] font-normal text-black">@{currentUser?.username || "username"}</p>
+              </div>
+            </div>
+          </button>
+            {showDropdown && (
+              <div className="absolute bottom-16 left-0 w-full bg-white rounded-lg shadow-lg z-50 py-2">
+                <button
+                  onClick={handleLogout}
+                  // className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+
+                >
+                  Logout
+                </button>
+              </div>
+            )}
         </div>
+
       </div>
 
       {/* Main Content */}
