@@ -122,12 +122,7 @@ const Settings = () => {
       alert("Account deleted successfully.");
       // Example: window.location.href = '/goodbye';
       // ✅ Clear all related data from localStorage
-      localStorage.removeItem("email");
-      localStorage.removeItem("fullName");
-      localStorage.removeItem("isVerified");
-      localStorage.removeItem("otpToken");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("username");
+      localStorage.clear();
       Cookies.remove("token");
       
 
