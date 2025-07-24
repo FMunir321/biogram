@@ -40,7 +40,38 @@ const Signup = () => {
     hasNumber: false,
     hasSpecial: false,
   });
+  const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
+
+  // Helper function to check if form is valid
+  const checkFormValidity = () => {
+    const {
+      email,
+      fullName,
+      birthDay,
+      birthMonth,
+      birthYear,
+      username,
+      password,
+      termsAgreement,
+    } = personalForm;
+
+    // Check if all fields are filled
+    const areAllFieldsFilled = 
+      Boolean(email) && 
+      Boolean(fullName) && 
+      Boolean(birthDay) && 
+      Boolean(birthMonth) && 
+      Boolean(birthYear) && 
+      Boolean(username) && 
+      Boolean(password) && 
+      Boolean(termsAgreement);
+
+    // Check if all password requirements are met
+    const areAllPasswordRequirementsMet = Object.values(passwordRequirements).every(Boolean);
+    
+    return areAllFieldsFilled && areAllPasswordRequirementsMet;
+  };
 
   // Check password requirements as user types
   useEffect(() => {
@@ -53,6 +84,11 @@ const Signup = () => {
       hasSpecial: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
     });
   }, [personalForm.password]);
+  
+  // Update form validity whenever form fields or password requirements change
+  useEffect(() => {
+    setIsFormValid(checkFormValidity());
+  }, [personalForm, passwordRequirements]);
 
   // Handle input changes
   const handlePersonalChange = (
@@ -70,6 +106,18 @@ const Signup = () => {
   const handlePersonalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    
+    // Use the form validity check to determine if we can proceed
+    if (!isFormValid) {
+      if (!Object.values(passwordRequirements).every(Boolean)) {
+        setError("Password does not meet all requirements.");
+      } else {
+        setError("All fields are required and you must agree to the terms.");
+      }
+      return;
+    }
+    
+    // Extract needed values for API call
     const {
       email,
       fullName,
@@ -78,21 +126,7 @@ const Signup = () => {
       birthYear,
       username,
       password,
-      termsAgreement,
     } = personalForm;
-    if (
-      !email ||
-      !fullName ||
-      !birthDay ||
-      !birthMonth ||
-      !birthYear ||
-      !username ||
-      !password ||
-      !termsAgreement
-    ) {
-      setError("All fields are required and you must agree to the terms.");
-      return;
-    }
     try {
       const dateOfBirth = `${birthYear}-${String(birthMonth).padStart(
         2,
@@ -460,7 +494,11 @@ const Signup = () => {
                     </div>
                     <button
                       type="submit"
-                      className="block w-full h-[52px] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90 bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
+                      className={`block w-full h-[52px] text-white rounded-full text-base font-medium text-center leading-[52px] hover:opacity-90 ${
+                        isFormValid
+                          ? "bg-[linear-gradient(97.29deg,_#7ECFA7_13.65%,_#53886C_90.87%)]"
+                          : "bg-gray-400"
+                      }`}
                     >
                       Continue
                     </button>
