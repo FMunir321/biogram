@@ -7,6 +7,7 @@ import api from "@/service/api";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // UserData type (update as per your backend response)
 type UserData = {
@@ -97,7 +98,7 @@ const Settings = () => {
       setLoading(false);
     }
   };
- 
+
   //<<<<<<<<--------------- delete handler function --------------->>>>>>>
   const handleDeleteAccount = async () => {
     setDeleteError(""); // Clear previous errors
@@ -120,16 +121,20 @@ const Settings = () => {
       // Optionally clear user data, redirect or show success message
       alert("Account deleted successfully.");
       // Example: window.location.href = '/goodbye';
+      // ✅ Clear all related data from localStorage
+      localStorage.removeItem("email");
+      localStorage.removeItem("fullName");
+      localStorage.removeItem("isVerified");
+      localStorage.removeItem("otpToken");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("username");
 
-       // ✅ Clear user data from localStorage
-       localStorage.removeItem("user"); // or whatever key you're using
-  
-       // ✅ Optional: clear tokens too if stored
-      localStorage.removeItem("token");
-  
-       // ✅ Redirect to homepage
-       navigate("/");
-       
+      // ✅ Optionally show a toast
+    toast.success("Your account has been deleted.");
+    
+      // ✅ Redirect to homepage
+      navigate("/");
+
     } catch (error: any) {
       console.error("Account deletion failed:", error);
       setDeleteError(
@@ -140,16 +145,16 @@ const Settings = () => {
   // const handleDeleteAccount = async () => {
   //   try {
   //     await api.delete(`/api/user/delete`);
-  
+
   //     // ✅ Clear user data from localStorage
   //     localStorage.removeItem("user"); // or whatever key you're using
-  
+
   //     // ✅ Optional: clear tokens too if stored
   //     localStorage.removeItem("token");
-  
+
   //     // ✅ Redirect to homepage
   //     navigate("/");
-  
+
   //   } catch (error) {
   //     console.error("Account deletion failed:", error);
   //   }
