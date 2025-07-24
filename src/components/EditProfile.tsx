@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useCallback } from "react";
 import characterImg from "../../public/assets/aleximage.png";
-import CustomLinksTab from "../components/CustomLinksTab";
+// import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../../public/assets/lightbg.png";
 import Greaterthen from "../../public/assets/greaterthen.png";
 import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
@@ -48,6 +48,7 @@ type UserData = {
   bio: string;
 };
 type MerchItem = {
+  id(id: any): unknown;
   _id: string;
   title: string;
 };
@@ -67,6 +68,7 @@ const EditProfile = () => {
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
   // const [isAddBio, setIsAddBio] = useState(false);
   const [isaddMerch, setIsAddMerch] = useState(false);
+  const [isEditMerch, setIsEditMerch] = useState(false);
   const [activeTab, setActiveTab] = useState("Solid");
   const [selectedColor, setSelectedColor] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -335,72 +337,15 @@ const EditProfile = () => {
     }
   };
 
-  // const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     setThumbnail(file);
-  //     setPreview(URL.createObjectURL(file));
-  //   }
-  // };
-
-  //   const handleSubmit = async () => {
-  //     const formData = new FormData();
-  //     formData.append("category", category);
-  //     formData.append("url", url);
-  //     formData.append("title", title);
-  //     formData.append("Price", price);
-  //     if (thumbnail) {
-  //       formData.append("image", thumbnail);
-  //     }
-
-  //     try {
-  //       const token = Cookies.get("token");
-
-  //       const res = await api.post("/api/merch", formData, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       alert("Uploaded Successfully!");
-  //       setIsAddMerch(false);
-  //       console.log("Upload response:", res.data);
-  //       fetchMerch();
-
-  //       setCategory("");
-  //       setUrl("");
-  //       setTitle("");
-  //       setPrice("");
-  //       setThumbnail(null);
-  //     } catch (err) {
-  //       console.error(err);
-  //       alert("Upload Failed");
-  //     }
-  //   };
-
-  // const [editMerchId, setEditMerchId] = useState<string | null>(null);
-
-  //   const handleEditClick = (merch: any) => {
-  //   setCategory(merch.category);
-  //   setUrl(merch.url);
-  //   setTitle(merch.title);
-  //   setPrice(merch.Price);
-  //   setPreview(merch.image); // Assuming image is URL
-  //   setEditMerchId(merch._id);
-  //   setIsAddMerch(true);
-  // };
-  // Thumbnail Change
-
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setThumbnail(file);
-      setPreview(URL.createObjectURL(file)); // ✅ Override preview if new image selected
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  // Submit Handler
-  const handleSubmit = async () => {
+  const handlePostSubmit = async () => {
     const formData = new FormData();
     formData.append("category", category);
     formData.append("url", url);
@@ -414,34 +359,57 @@ const EditProfile = () => {
     const token = Cookies.get("token");
 
     try {
-      if (editMerchId) {
-        await api.put(`/api/merch/${editMerchId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        alert("Updated Successfully!");
-      } else {
-        await api.post("/api/merch", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        alert("Uploaded Successfully!");
-      }
-
+      await api.post("/api/merch", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Uploaded Successfully!");
       fetchMerch();
       resetForm();
       setIsAddMerch(false);
     } catch (err) {
       console.error(err);
-      alert("Operation Failed");
+      alert("Upload Failed");
     }
   };
 
-  // Reset form
+  // PUT Handler
+  const handleUpdateSubmit = async () => {
+    console.log("Updating merch with ID:", editMerchId); // Debugging
+
+    if (!editMerchId) {
+      alert("Merch ID not found!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("title", title);
+
+    if (thumbnail) {
+      formData.append("image", thumbnail);
+    }
+
+    const token = Cookies.get("token");
+
+    try {
+      await api.put(`/api/merch/${editMerchId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Updated Successfully!");
+      fetchMerch(); // Refresh merch list
+      resetForm(); // Reset form fields
+      setIsEditMerch(false); // Close dialog
+    } catch (err) {
+      console.error("Update Error:", err);
+      alert("Update Failed");
+    }
+  };
+
   const resetForm = () => {
     setCategory("");
     setUrl("");
@@ -449,26 +417,7 @@ const EditProfile = () => {
     setPrice("");
     setPreview("");
     setThumbnail(null);
-    setEditMerchId(null);
-  };
-
-  // Edit Click (fix for image)
-  const handleEditClick = (merch: any) => {
-    setCategory(merch.category);
-    setUrl(merch.url);
-    setTitle(merch.title);
-    setPrice(merch.Price);
-
-    // 👇 Correct way to build image preview from server
-    const imageURL = merch.image?.startsWith("http")
-      ? merch.image
-      : `http://3.111.146.115:5000${merch.image}`;
-
-    setPreview(imageURL);
-    setThumbnail(null);
-
-    setEditMerchId(merch._id);
-    setIsAddMerch(true);
+    setEditMerchId(null); // Reset ID
   };
 
   // Function to fetch merch data
@@ -586,41 +535,6 @@ const EditProfile = () => {
     }
   };
 
-  // const handleAddContactInfo = async () => {
-  //   if (!email || !phoneNumber || !websiteUrl) {
-  //     alert("Please fill all fields.");
-  //     return;
-  //   }
-
-  //   const token = Cookies.get("token");
-  //   const userId = localStorage.getItem("userId");
-
-  //   if (!token || !userId) {
-  //     console.error("Missing token or userId");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await api.post(
-  //       "/api/contact-info",
-  //       { email, phoneNumber, websiteUrl },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("Success:", response.data);
-  //     alert("Contact info added successfully!");
-
-  //     await fetchContactInfo();
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("Failed to add contact info.");
-  //   }
-  // };
-
   const handleSubmitContactInfo = async () => {
     if (!email || !phoneNumber || !websiteUrl) {
       alert("Please fill all fields.");
@@ -699,6 +613,45 @@ const EditProfile = () => {
     fetchContactInfo();
   }, [fetchContactInfo]);
 
+  const handleToggle = async (
+    section: string,
+    currentValue: boolean,
+    setterFunction: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const originalValue = currentValue;
+    setterFunction(!currentValue);
+
+    const success = await updateVisibilitySetting(section, !currentValue);
+    if (!success) {
+      setterFunction(originalValue);
+    }
+  };
+  const updateVisibilitySetting = async (section: string, value: boolean) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) {
+        console.error("Token not found");
+        return false;
+      }
+
+      // Correct Axios PATCH request
+      await api.patch(
+        "/api/user/visibility",
+        { section, value },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return true;
+    } catch (error) {
+      console.error("Error updating visibility setting:", error);
+      return false;
+    }
+  };
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2">
       {/* Mobile View */}
@@ -838,7 +791,7 @@ const EditProfile = () => {
 
                 <button
                   onClick={handleUploadClick}
-                  className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                  className="w-full  bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 mt-3  rounded-full font-medium text-center cursor-pointer"
                   disabled={isUploading}
                 >
                   Add Photo
@@ -860,7 +813,7 @@ const EditProfile = () => {
                 <div className="flex items-center justify-between rounded-[24px] p-6">
                   <label
                     className="text-[32px] font-bold text-black"
-                    onClick={() => setIsAddBio(true)}
+
                   >
                     Bio
                   </label>
@@ -870,19 +823,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={isBioEnabled}
-                      onChange={() => setIsBioEnabled(!isBioEnabled)}
+                      onChange={() => handleToggle("bio", isBioEnabled, setIsBioEnabled)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        isBioEnabled
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -917,19 +868,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={featureLinkToggle}
-                      onChange={() => setFeatureLinkToggle(!featureLinkToggle)}
+                      onChange={() => handleToggle("featuredLinks", featureLinkToggle, setFeatureLinkToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        featureLinkToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1070,19 +1019,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={merchToggle}
-                      onChange={() => setMerchToggle(!merchToggle)}
+                      onChange={() => handleToggle("merch", merchToggle, setMerchToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        merchToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1117,9 +1064,14 @@ const EditProfile = () => {
                               <DropdownMenuContent className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f]">
                                 <DropdownMenuItem
                                   className="text-white hover:bg-green-300 text-lg px-4 py-1 rounded"
-                                  onClick={() => handleEditClick(item)} // item is current merch object
+                                  onClick={() => {
+                                    console.log("Selected Item:", item); // Debugging
+                                    setIsEditMerch(true);
+                                    setEditMerchId(String(item._id)); // Use _id from API
+                                    setTitle(item.title);
+                                  }}
                                 >
-                                  Edit
+                                  Rename
                                 </DropdownMenuItem>
 
                                 <DropdownMenuItem
@@ -1162,19 +1114,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={galleryToggle}
-                      onChange={() => setGalleryToggle(!galleryToggle)}
+                      onChange={() => handleToggle("gallery", galleryToggle, setGalleryToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        galleryToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1186,26 +1136,27 @@ const EditProfile = () => {
                       {uploadedImages.map((imageObj) => (
                         <div
                           key={imageObj._id}
-                          className="relative rounded-lg  flex flex-col items-center"
+                          className="relative rounded-lg flex flex-col items-center w-32 h-32 sm:w-28 sm:h-28 xs:w-24 xs:h-24"
                         >
                           <RxCross2
-                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            className="absolute top-1 right-1 sm:top-1 sm:right-1 bg-gray-200 text-red-600 p-1 rounded-full w-5 h-5 sm:w-4 sm:h-4 cursor-pointer hover:bg-gray-300 transition"
                             onClick={() => handleDeleteImage(imageObj._id)}
                           />
                           <img
                             src={`http://3.111.146.115:5000/${imageObj.imageUrl}`}
                             alt="Uploaded Image"
-                            className="object-cover w-32 h-32 rounded-2xl mb-2"
+                            className="object-cover w-full h-full rounded-2xl mb-2"
                           />
                         </div>
                       ))}
+
                       <div className="flex justify-center items-center mb-5">
                         <label className="cursor-pointer  bg-gradient-to-r from-[#7ecfa7] to-[#53886c] rounded-lg p-1 flex flex-col items-center">
                           <div className=" bg-gradient-to-r from-[#7ecfa7] to-[#53886c] rounded-lg p-2 flex flex-col items-center">
                             <img
                               src={Thumbnail}
                               alt="Big Thumbnail"
-                              className="object-contain w-80 h-18 mb-2"
+                              className="object-contain w-24 h-14 mb-2"
                             />
                           </div>
                           <p className="text-[16px] font-normal text-white text-center">
@@ -1241,19 +1192,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={contactInfo}
-                      onChange={() => setContactInfo(!contactInfo)}
+                      onChange={() => handleToggle("contactInfo", contactInfo, setContactInfo)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        contactInfo
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactInfo
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1316,19 +1265,17 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={shoutsToggle}
-                      onChange={() => setShoutsToggle(!shoutsToggle)}
+                      onChange={() => handleToggle("shouts", shoutsToggle, setShoutsToggle)}
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        shoutsToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1354,7 +1301,13 @@ const EditProfile = () => {
 
             <div className="flex flex-col space-y-4">
               {sections.map((section, index) => (
-                <div key={index}>
+                <div key={index} onClick={() => {
+                  if (section.heading === 'E commerce') {
+                    setIsAddMerch(true);
+                  } else if (section.heading === 'Link') {
+                    setIsBigThumbnailOpen(true);
+                  }
+                }}>
                   <h1>{section.heading}</h1>
                   <div
                     className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
@@ -1383,10 +1336,10 @@ const EditProfile = () => {
       </div>
 
       {/* Custom Links Tab */}
-      <CustomLinksTab
+      {/* <CustomLinksTab
         isOpen={isCustomLinksOpen}
         onClose={() => setIsCustomLinksOpen(false)}
-      />
+      /> */}
 
       {/* Modals */}
 
@@ -1500,21 +1453,19 @@ const EditProfile = () => {
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Solid"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Solid
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Gradient"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Gradient
                         </button>
@@ -1662,7 +1613,7 @@ const EditProfile = () => {
         </Dialog.Portal>
       </Dialog.Root>
 
-      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
+      {/* <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
           <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
@@ -1740,13 +1691,37 @@ const EditProfile = () => {
 
               <div className="flex flex-col gap-1">
                 <p className="text-white">$USD</p>
-                <Input
+                <select
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  type="text"
-                  placeholder="Price"
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                />
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#98e6c3] cursor-pointer"
+                >
+                  <option
+                    className="bg-[#548a6e] hover:bg-blue-500"
+                    value=""
+                    disabled
+                  >
+                    Select Price Range
+                  </option>
+                  <option
+                    className="bg-[#548a6e] hover:bg-blue-500"
+                    value="500-1000"
+                  >
+                    500$ - 1000$
+                  </option>
+                  <option
+                    className="bg-[#548a6e] hover:bg-blue-500"
+                    value="1500-3000"
+                  >
+                    1500$ - 3000$
+                  </option>
+                  <option
+                    className="bg-[#548a6e] hover:bg-blue-500"
+                    value="300-5000"
+                  >
+                    300$ - 5000$
+                  </option>
+                </select>
               </div>
 
               <div className="flex flex-col gap-1">
@@ -1785,9 +1760,205 @@ const EditProfile = () => {
             <div className="mt-4">
               <button
                 className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
-                onClick={handleSubmit}
+                onClick={handlePostSubmit}
               >
-                {editMerchId ? "Update" : "Add"}
+               Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root> */}
+
+      <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold text-white">
+              Add Merch
+            </Dialog.Title>
+
+            <div className="flex flex-col gap-3 mt-4">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Select Type</p>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                >
+                  <option value="" disabled>
+                    Choose type
+                  </option>
+                  <option className="bg-[#72bb96]" value="youtube">
+                    YouTube
+                  </option>
+                  <option className="bg-[#72bb96]" value="vimeo">
+                    Vimeo
+                  </option>
+                  <option className="bg-[#72bb96]" value="spotify">
+                    Spotify
+                  </option>
+                  <option className="bg-[#72bb96]" value="other">
+                    Other
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Embed Link</p>
+                <Input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  type="text"
+                  placeholder="Embed link"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  placeholder="Title"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">$USD</p>
+                <select
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#98e6c3] cursor-pointer"
+                >
+                  <option className="bg-[#548a6e]" value="" disabled>
+                    Select Price Range
+                  </option>
+                  <option className="bg-[#548a6e]" value="500-1000">
+                    500$ - 1000$
+                  </option>
+                  <option className="bg-[#548a6e]" value="1500-3000">
+                    1500$ - 3000$
+                  </option>
+                  <option className="bg-[#548a6e]" value="300-5000">
+                    300$ - 5000$
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Cover</p>
+                <label
+                  htmlFor="thumbnailUpload"
+                  className="cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all overflow-hidden"
+                  style={{
+                    backgroundImage: preview ? `url(${preview})` : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    minHeight: "200px",
+                    width: "100%",
+                    borderRadius: "12px",
+                  }}
+                >
+                  {!preview && (
+                    <>
+                      <p className="text-white">Upload thumbnail photo</p>
+                      <p className="text-white text-sm">
+                        500x500px, under 10MB
+                      </p>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    id="thumbnailUpload"
+                    accept="image/*"
+                    onChange={handleThumbnailChange}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
+                onClick={handlePostSubmit}
+              >
+                Add
+              </button>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={isEditMerch} onOpenChange={setIsEditMerch}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
+            <Dialog.Close asChild>
+              <button
+                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
+                aria-label="Close"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
+                </svg>
+              </button>
+            </Dialog.Close>
+            <Dialog.Title className="text-2xl font-bold text-white">
+              Update Title
+            </Dialog.Title>
+
+            <div className="flex flex-col gap-3 mt-4">
+              <div className="flex flex-col gap-1">
+                <p className="text-white">Title</p>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  placeholder="Enter new title"
+                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <button
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
+                onClick={handleUpdateSubmit}
+              >
+                Update
               </button>
             </div>
           </Dialog.Content>

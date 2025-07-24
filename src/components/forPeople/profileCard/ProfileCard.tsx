@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../components/ui/avatar";
 
 import mock2 from "../../../../public/assets/good.png";
 import mock3 from "../../../../public/assets/mock2.png";
@@ -19,6 +23,7 @@ import {
 const ProfileCard = () => {
   const [centerCard, setCenterCard] = useState(2); // Default center card is the 3rd one
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCardClick = (index: any) => {
     setCenterCard(index);
   };
@@ -39,10 +44,16 @@ const ProfileCard = () => {
         <div className="relative mt-16 flex flex-col md:flex-row justify-center items-center w-full max-w-3xl">
           {/* Background Cards */}
           <div
-            className={`absolute -left-40 mb-[500px] ${centerCard === 0 ? 'z-50' : 'z-0'}`}
+            className={`absolute -left-40 mb-[500px] ${
+              centerCard === 0 ? "z-50" : "z-0"
+            }`}
             onClick={() => handleCardClick(0)}
           >
-            <div className={`absolute -left-16 w-80 h-[500px] bg-black rounded-lg transition-all duration-300 ${centerCard === 0 ? 'scale-105' : ''}`}>
+            <div
+              className={`absolute -left-16 w-80 h-[500px] bg-black rounded-lg transition-all duration-300 ${
+                centerCard === 0 ? "scale-105" : ""
+              }`}
+            >
               <Avatar className="w-48 h-[370px] mx-auto mt-5 ml-5">
                 <AvatarImage src={mock2} alt="Alex James" />
               </Avatar>
@@ -70,7 +81,11 @@ const ProfileCard = () => {
           </div>
 
           <div
-            className={`absolute -left-16 w-80 h-[550px] bg-black rounded-lg border border-red-500 ${centerCard === 1 ? 'z-50' : 'z-10'} transition-all duration-300 ${centerCard === 1 ? 'scale-105' : ''}`}
+            className={`absolute -left-16 w-80 h-[550px] bg-black rounded-lg border border-red-500 ${
+              centerCard === 1 ? "z-50" : "z-10"
+            } transition-all duration-300 ${
+              centerCard === 1 ? "scale-105" : ""
+            }`}
             onClick={() => handleCardClick(1)}
           >
             <Avatar className="w-20 h-20 rounded-full mx-auto mt-10">
@@ -113,7 +128,9 @@ const ProfileCard = () => {
 
           {/* Main Card */}
           <div
-            className={`relative ${centerCard === 2 ? 'z-50' : 'z-40'} transition-all duration-300`}
+            className={`relative ${
+              centerCard === 2 ? "z-50" : "z-40"
+            } transition-all duration-300`}
             onClick={() => handleCardClick(2)}
           >
             <Card className="md:w-110 bg-black text-white rounded-2xl shadow-xl">
@@ -148,7 +165,13 @@ const ProfileCard = () => {
                   </div>
 
                   <div className="mt-6 grid grid-cols-5 gap-10">
-                    {["theme1.png", "theme2.png", "theme3.png", "theme4.png", "theme5.png"].map((theme, idx) => {
+                    {[
+                      "theme1.png",
+                      "theme2.png",
+                      "theme3.png",
+                      "theme4.png",
+                      "theme5.png",
+                    ].map((theme, idx) => {
                       const bgColors = [
                         "bg-pink-500",
                         "bg-green-500",
@@ -177,12 +200,18 @@ const ProfileCard = () => {
 
           {/* Right BG */}
           <div
-            className={`absolute right-0 z-10 ${centerCard === 3 ? 'z-50' : 'z-10'}`}
+            className={`absolute right-0 z-10 ${
+              centerCard === 3 ? "z-50" : "z-10"
+            }`}
             onClick={() => handleCardClick(3)}
           >
             <div className="relative mt-16 flex justify-center items-center w-full max-w-3xl">
               <div className="absolute -left-48 mb-[630px]">
-                <div className={`absolute -left-32 w-80 h-[860px] rounded-lg transition-all duration-300 ${centerCard === 3 ? 'scale-105' : ''}`}>
+                <div
+                  className={`absolute -left-32 w-80 h-[860px] rounded-lg transition-all duration-300 ${
+                    centerCard === 3 ? "scale-105" : ""
+                  }`}
+                >
                   <img
                     src={mock5}
                     alt="bg4"
@@ -200,10 +229,16 @@ const ProfileCard = () => {
           </div>
 
           <div
-            className={`absolute right-0 z-0 ${centerCard === 4 ? 'z-50' : 'z-0'}`}
+            className={`absolute right-0 z-0 ${
+              centerCard === 4 ? "z-50" : "z-0"
+            }`}
             onClick={() => handleCardClick(4)}
           >
-            <div className={`absolute -left-48 w-80 h-[530px] bg-pink-500 rounded-lg border border-red-500 -mt-[260px] transition-all duration-300 ${centerCard === 4 ? 'scale-105' : ''}`}>
+            <div
+              className={`absolute -left-48 w-80 h-[530px] bg-pink-500 rounded-lg border border-red-500 -mt-[260px] transition-all duration-300 ${
+                centerCard === 4 ? "scale-105" : ""
+              }`}
+            >
               <Avatar className="w-52 h-90 rounded-full mx-auto">
                 <AvatarImage src={mock3} alt="Alex James" />
               </Avatar>
