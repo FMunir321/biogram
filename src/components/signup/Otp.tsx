@@ -12,6 +12,7 @@ import api from "@/service/api";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Otp = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Otp = () => {
       const otpToken = localStorage.getItem("otpToken");
       if (!userId || !otpToken) {
         console.error("User ID or OTP token not found in localStorage.");
-        alert("Session expired. Please log in again.");
+        toast.error("Session expired. Please log in again.");
         navigate("/login");
         return;
       }
@@ -51,11 +52,19 @@ const Otp = () => {
       Cookies.set("token", token, { expires: 1 });
       console.log("Verification Success:", response.data);
       const isVerified = localStorage.getItem("isVerified");
+      console.log("isVerified value:", isVerified); // Debug log to check actual value
 
       if (isVerified === "true") {
-        navigate("/search");
+        toast.success("Verification successful");
+        // Delay navigation to allow toast to be visible
+        setTimeout(() => {
+          navigate("/search");
+        }, 1500);
       } else {
-        navigate("/social-media");
+        // For non-verified users, also delay slightly for consistency
+        setTimeout(() => {
+          navigate("/social-media");
+        }, 500);
       }
 
     } catch (error) {
@@ -69,7 +78,7 @@ const Otp = () => {
       } else {
         console.error("Verification Error:", error);
       }
-      alert("Invalid OTP or Server Error");
+      toast.error("Invalid OTP or Server Error");
     }
   };
 
@@ -88,6 +97,11 @@ const Otp = () => {
   };
 
   return (
+    <>
+    <Toaster
+  position="top-right"
+  reverseOrder={false}
+/>
     <div className="relative min-h-screen w-full overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div
@@ -229,6 +243,7 @@ const Otp = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

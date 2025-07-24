@@ -6,9 +6,20 @@ import imageleftsideimage2 from "../../../public/assets/image19.png";
 import logo from "../../../public/assets/loginlogo.png";
 import groupBg from "../../../public/assets/group.png";
 import api from "@/service/api";
+import toast, { Toaster } from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
+
+
+// Spinner component
+const Spinner = () => (
+  <div className="flex justify-center items-center">
+    <ClipLoader color="#98e6c3" size={20} />  
+  </div>
+);
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     identifier: "", // ✅ use 'identifier' to match backend
@@ -43,6 +54,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await api.post("/api/auth/login", {
         identifier: formData.identifier,
         password: formData.password,
@@ -53,20 +65,22 @@ const Login = () => {
       localStorage.setItem("otpToken", response.data.otpToken || "");
       localStorage.setItem("isVerified", response.data.isVerified || "false");
 
-      console.log(response.data);
       
-
-      console.log("Login Success:", response.data);
-      alert("Login successful!");
+      console.log(response.data);
+      setLoading(false);
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error("Login Error:", error.response?.data || error.message);
-      alert("Login failed. Please check your credentials.");
-    }
+      toast.error(error.response?.data?.error || "Login failed. Please check your credentials.");
+    } 
   };
 
   return (
+    <>
+    <Toaster
+  position="top-right"
+  reverseOrder={false}
+/>
     <div className="min-h-screen flex flex-col md:flex-row bg-white">
       {/* Left Section (Images) */}
       <div className="hidden md:flex md:w-1/2 p-0 md:p-6 justify-end items-center bg-white">
@@ -196,8 +210,9 @@ const Login = () => {
             <button
               type="submit"
               className="w-full h-10 sm:h-12 mt-4 rounded-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-sm font-medium cursor-pointer transition-all"
+              disabled={loading}
             >
-              Continue
+              {loading ? <Spinner /> : "Continue"}
             </button>
 
             <div className="text-center mt-4">
@@ -212,6 +227,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
