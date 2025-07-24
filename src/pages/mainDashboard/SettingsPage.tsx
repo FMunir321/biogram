@@ -128,10 +128,12 @@ const Settings = () => {
       localStorage.removeItem("otpToken");
       localStorage.removeItem("userId");
       localStorage.removeItem("username");
+      Cookies.remove("token");
+      
 
       // ✅ Optionally show a toast
     toast.success("Your account has been deleted.");
-    
+
       // ✅ Redirect to homepage
       navigate("/");
 
