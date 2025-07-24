@@ -75,7 +75,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    localStorage.removeItem("userId");
+    localStorage.clear();
     window.location.href = "/"; // ya login page
   };
 
