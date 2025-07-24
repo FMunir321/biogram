@@ -63,13 +63,13 @@ const ArtistShowcase = () => {
   ];
 
   return (
-    <div className="overflow-hidden"> {/* Added overflow-hidden to prevent scrollbar */}
-      <div className="container flex flex-col lg:flex-row flex-wrap gap-4 p-5 mx-auto my-5 box-border w-full">
-        {/* First Row - Tour Dates Card */}
-        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[57%] lg:h-[422px] xl:h-full w-full">
+    <>
+      <div className="container  p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
+        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
           <div className="md:w-[50%]">
+            {/* Animated Coming Soon */}
             <motion.p
-              variants={slideFromTop} 
+              variants={slideFromTop}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.4 }}
@@ -84,6 +84,7 @@ const ArtistShowcase = () => {
               </h1>
 
               <div className="flex flex-col items-center gap-4">
+                {/* First Card - Slide from Left */}
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
@@ -112,6 +113,7 @@ const ArtistShowcase = () => {
                   </div>
                 </motion.div>
 
+                {/* Second Card - Slide from Right */}
                 <motion.div
                   variants={slideFromRight}
                   initial="hidden"
@@ -144,60 +146,58 @@ const ArtistShowcase = () => {
           </div>
           <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
             <div className="relative w-full flex justify-center items-center">
-              <motion.img
-                variants={slideFromBottom}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.4 }}
-                src={Tickets}
-                alt="Mobile Frame"
-                className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
-              />
+              {/* Mobile Frame */}
 
               <motion.img
                 variants={slideFromBottom}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false, amount: 0.4 }}
-                src={Mobilefram}
+
+                src={Tickets}
+                alt="Mobile Frame"
+                className="w-[97%] h-[90%] rounded-t-[56px] object-cover shadow-md"
+              />
+
+              {/* Content Image inside the frame */}
+              <motion.img
+                variants={slideFromBottom}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.4 }}
+                src={Mobilefram} // <-- your content image
                 alt="Content"
                 className="absolute w-full object-cover top-[-23px] md:top-[-6px] xl:top-[-15px]"
               />
-              <div className="absolute bottom-[2%] w-[80%]">
+              {/* Overlay Text */}
+              <div className="absolute bottom-[2%]  w-[80%]">
                 <motion.h3
                   variants={slideFromRight}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.4 }} 
-                  className="text-white text-[32px] font-extrabold"
-                >
+                  viewport={{ once: false, amount: 0.4 }} className="text-white text-[32px] font-extrabold">
                   Chan Ja HO
                 </motion.h3>
                 <motion.p
                   variants={slideFromRight}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.4 }} 
-                  className="text-white text-[14px]"
-                >
-                  June 21, 2025
-                </motion.p>
+                  viewport={{ once: false, amount: 0.4 }} className="text-white text-[14px]">June 21, 2025</motion.p>
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.4 }} 
-                  className="flex flex-row gap-2 mt-2"
-                >
+                  viewport={{ once: false, amount: 0.4 }} className="flex flex-row gap-2 mt-2">
                   {socialIcons.map((icon, idx) => (
                     <div
                       key={idx}
                       className="rounded-[30px] flex items-center justify-center"
                       style={{
-                        background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                        background:
+                          "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                       }}
                     >
-                      <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                      <img src={icon.src} alt={icon.alt} />
                     </div>
                   ))}
                 </motion.div>
@@ -205,28 +205,24 @@ const ArtistShowcase = () => {
             </div>
           </div>
         </div>
-
-        {/* First Row - Products Card */}
-        <div className="flex flex-col lg:w-[40%] lg:h-[422px] xl:h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl w-full">
+        <div className="flex flex-col lg:w-[40%] lg:h-[422px] xl:h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
           <motion.p
             variants={slideFromTop}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.4 }} 
-            className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
-          >
+            viewport={{ once: false, amount: 0.4 }} className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full">
             Coming Soon: Sell Products & Services
           </motion.p>
           <div className="flex flex-row justify-between h-full xl:h-[464px] 2xl:h-[578px] mt-5 relative">
+            {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
               <div className="flex flex-col gap-4 pl-[30px] w-[280px]">
+                {/* First card */}
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.4 }} 
-                  className="flex flex-row items-center bg-white shadow-md rounded-lg"
-                >
+                  viewport={{ once: false, amount: 0.4 }} className="flex flex-row items-center bg-white shadow-md rounded-lg">
                   <div>
                     <img
                       src={redjersy}
@@ -244,13 +240,12 @@ const ArtistShowcase = () => {
                   </div>
                 </motion.div>
 
+                {/* Second card */}
                 <motion.div
                   variants={slideFromRight}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.4 }} 
-                  className="flex flex-row items-center bg-white shadow-md rounded-lg"
-                >
+                  viewport={{ once: false, amount: 0.4 }} className="flex flex-row items-center bg-white shadow-md rounded-lg">
                   <div>
                     <img
                       src={Sweet}
@@ -270,8 +265,11 @@ const ArtistShowcase = () => {
               </div>
             </div>
 
+            {/* Image Column */}
             <div className="px-5 md:w-[60%] xl:mt-[65px] self-end">
               <div className="relative self-end w-full flex justify-center items-center">
+                {/* Mobile Frame */}
+
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
@@ -282,33 +280,30 @@ const ArtistShowcase = () => {
                   className="w-[97%] h-[90%] rounded-t-[50px] 2xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
+                {/* Content Image inside the frame */}
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: false, amount: 0.4 }}
-                  src={Mobileframesm}
+                  src={Mobileframesm} // <-- your content image
                   alt="Content"
                   className="absolute w-full object-cover top-[-5px] md:top-[-8px] lg:top-[-1px] xl:top-[-7px]"
                 />
-                <div className="absolute bottom-[2%] w-[80%]">
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
                   <motion.h3
                     variants={slideFromLeft}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: false, amount: 0.4 }} 
-                    className="text-white text-[32px] font-extrabold"
-                  >
+                    viewport={{ once: false, amount: 0.4 }} className="text-white text-[32px] font-extrabold">
                     Michal James
                   </motion.h3>
                   <motion.p
                     variants={slideFromRight}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: false, amount: 0.4 }} 
-                    className="text-white text-[14px]"
-                  >
-                    @ MJames123.com
+                    viewport={{ once: false, amount: 0.4 }} className="text-white text-[14px]">@ MJames123.com
                   </motion.p>
                   <div className="flex flex-row gap-2 mt-2">
                     {socialIcons.map((icon, idx) => (
@@ -316,10 +311,11 @@ const ArtistShowcase = () => {
                         key={idx}
                         className="rounded-[30px] flex items-center justify-center"
                         style={{
-                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                        <img src={icon.src} alt={icon.alt} />
                       </div>
                     ))}
                   </div>
@@ -328,12 +324,11 @@ const ArtistShowcase = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
       
-      {/* Second Row */}
-      <div className="container flex flex-col lg:flex-row flex-wrap items-center gap-4 p-5 mx-auto my-5 box-border w-full">
+      <div className="container p-5 flex flex-col lg:flex-row items-center mx-auto gap-4 my-5 ">
         {/* Music Player Card */}
-        <div className="flex flex-col lg:w-[37%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl w-full">
+        <div className="flex flex-col lg:w-[40%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
           <motion.p
             variants={slideFromTop}
             initial="hidden"
@@ -344,8 +339,10 @@ const ArtistShowcase = () => {
             Add Your Music
           </motion.p>
           <div className="flex flex-row justify-between mt-5 lg:mt-0 xl:mt-11 items-center relative">
+            {/* Card Column - overlaps image and is vertically centered */}
             <div className="z-10 -mr-25 w-[60%]">
               <div className="flex flex-col gap-4 pl-2">
+                {/* First card */}
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
@@ -360,13 +357,14 @@ const ArtistShowcase = () => {
                       className="w-[52px] h-[50px] object-cover rounded-full"
                     />
                   </div>
-                  <div className="px-1">
+                  <div className=" px-1">
                     <p className="text-[14px] font-normal text-[#2D2D2D]">
                       Stream "Hype" on all platforms!
                     </p>
                   </div>
                 </motion.div>
 
+                {/* Second card */}
                 <motion.div
                   variants={slideFromRight}
                   initial="hidden"
@@ -383,8 +381,10 @@ const ArtistShowcase = () => {
               </div>
             </div>
 
+            {/* Image Column */}
             <div className="px-5 md:w-[60%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
+                {/* Mobile Frame */}
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
@@ -395,6 +395,7 @@ const ArtistShowcase = () => {
                   className="w-[97%] h-[90%] rounded-t-[40px] xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
+                {/* Content Image inside the frame */}
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
@@ -404,7 +405,8 @@ const ArtistShowcase = () => {
                   alt="Content"
                   className="absolute w-full object-cover top-[0px] 2xl:top-[-7px]"
                 />
-                <div className="absolute bottom-[2%] w-[80%]">
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
                   <motion.h3
                     variants={slideFromRight}
                     initial="hidden"
@@ -435,10 +437,11 @@ const ArtistShowcase = () => {
                         key={idx}
                         className="rounded-[30px] flex items-center justify-center"
                         style={{
-                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                        <img src={icon.src} alt={icon.alt} />
                       </div>
                     ))}
                   </motion.div>
@@ -449,7 +452,7 @@ const ArtistShowcase = () => {
         </div>
 
         {/* Appointment Scheduler Card */}
-        <div className="flex flex-col lg:w-[60%] h-full shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl w-full">
+        <div className="flex flex-col lg:w-[60%] h-full shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
           <motion.p
             variants={slideFromTop}
             initial="hidden"
@@ -461,8 +464,10 @@ const ArtistShowcase = () => {
           </motion.p>
 
           <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">
+            {/* Image Column */}
             <div className="px-5 md:w-[50%] lg:mt-[65px]">
               <div className="relative w-full flex justify-center items-center">
+                {/* Mobile Frame */}
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
@@ -473,6 +478,7 @@ const ArtistShowcase = () => {
                   className="w-[97%] h-[90%] 2xl:rounded-t-[56px] object-cover shadow-md"
                 />
 
+                {/* Content Image inside the frame */}
                 <motion.img
                   variants={slideFromBottom}
                   initial="hidden"
@@ -482,7 +488,8 @@ const ArtistShowcase = () => {
                   alt="Content"
                   className="absolute w-full object-cover top-[-7px] sm:top-[-8px] md:top-[-13px] lg:top-[-9px] xl:top-[-12px]"
                 />
-                <div className="absolute bottom-[2%] w-[80%]">
+                {/* Overlay Text */}
+                <div className="absolute bottom-[2%]  w-[80%]">
                   <motion.h3
                     variants={slideFromLeft}
                     initial="hidden"
@@ -513,18 +520,21 @@ const ArtistShowcase = () => {
                         key={idx}
                         className="rounded-[30px] flex items-center justify-center"
                         style={{
-                          background: "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
+                          background:
+                            "linear-gradient(141.54deg, #FBFBFC 7.37%, #DBDDE8 92.32%)",
                         }}
                       >
-                        <img src={icon.src} alt={icon.alt} className="w-6 h-6" />
+                        <img src={icon.src} alt={icon.alt} />
                       </div>
                     ))}
                   </motion.div>
                 </div>
               </div>
             </div>
-            <div className="p-3">
+            {/* Card Column - overlaps image and is vertically centered */}
+            <div className=" p-3">
               <div className="flex flex-col gap-4 pl-2">
+                {/* First card */}
                 <motion.div
                   variants={slideFromRight}
                   initial="hidden"
@@ -535,14 +545,15 @@ const ArtistShowcase = () => {
                   <img
                     src={Photshoot}
                     alt="Artist"
-                    className="object-cover rounded-xl w-full"
+                    className=" object-cover rounded-xl"
                   />
                   <div className="absolute bottom-0 right-0 p-2 text-white">
-                    <p className="text-[16px] md:text[24px] font-bold">Photoshoot in miami</p>
+                    <p className="text-[16px] md:text[24px]font-bold">Photoshoot in miami</p>
                     <p className="text-[12px] md:text-[14px] font-normal text-right">2 Hours -$500</p>
                   </div>
                 </motion.div>
 
+                {/* Second card */}
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
@@ -553,19 +564,19 @@ const ArtistShowcase = () => {
                   <img
                     src={Videoshoot}
                     alt="Artist"
-                    className="object-cover rounded-xl w-full"
+                    className=" object-cover rounded-xl"
                   />
                   <div className="absolute top-0 left-0 p-2 text-white">
                     <p className="text-[16px] md:text[24px] font-bold">Video Shoot in miami</p>
                     <p className="text-[12px] md:text-[14px] font-normal">2 Hours -$1999</p>
-                  </div> 
+                  </div>
                 </motion.div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
