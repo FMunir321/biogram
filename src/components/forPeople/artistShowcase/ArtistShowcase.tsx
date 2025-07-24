@@ -64,7 +64,7 @@ const ArtistShowcase = () => {
 
   return (
     <>
-      <div className="container  p-5 flex flex-col lg:flex-row mx-auto gap-4 my-5 ">
+      <div className="container flex flex-col lg:flex-row flex-wrap gap-4 p-5 mx-auto my-5 box-border overflow-x-hidden w-full">
         <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[60%] lg:h-[422px] xl:h-full">
           <div className="md:w-[50%]">
             {/* Animated Coming Soon */}
@@ -326,7 +326,7 @@ const ArtistShowcase = () => {
         </div>
       </div >
       
-      <div className="container p-5 flex flex-col lg:flex-row items-center mx-auto gap-4 my-5 ">
+      <div className="container flex flex-col lg:flex-row flex-wrap items-center gap-4 p-5 mx-auto my-5 box-border overflow-x-hidden w-full">
         {/* Music Player Card */}
         <div className="flex flex-col lg:w-[40%] h-full bg-[#e4f4ec] shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl">
           <motion.p

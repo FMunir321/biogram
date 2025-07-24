@@ -1,21 +1,21 @@
 import React from 'react';
 import profileImage from '../../public/assets/Proof.png';
-import logo from '../../public/assets/loginlogo.png';
+// import logo from '../../public/assets/loginlogo.png';
 const BiogramShoutPage: React.FC = () => {
   return (
-    <div className="max-w-[1280px] mx-auto min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="w-full max-w-full mx-auto min-h-screen bg-white flex items-center justify-center px-4 box-border overflow-x-hidden">
       {/* Biogram Text */}
 
       {/* Logo Positioned Absolutely */}
 
       
-      <img
+      {/* <img
         src={logo}
         alt="Biogram Logo"
         className="absolute top-8 left-8 w-[200px] h-auto object-contain z-30"
-      />
+      /> */}
 
-      <div className="max-w-6xl w-full flex flex-col xl:flex-row gap-10 items-center z-10 mt-25">
+      <div className="max-w-6xl w-full flex flex-col xl:flex-row flex-wrap gap-6 xl:gap-10 items-center z-10 mt-25 box-border overflow-x-hidden">
         {/* Left Content - No changes as requested */}
         <div>
           <h1 className="text-[32px] sm:text-[45px] md:text-[60px] lg:text-[80px]  font-extrabold text-black text-center xl:text-left">
@@ -70,9 +70,9 @@ const BiogramShoutPage: React.FC = () => {
             className="absolute hidden sm:block w-[180px] h-[250px] rounded-xl shadow-lg border-4 border-white object-cover"
             style={{
               bottom: "34px",
-              right: "-100px",
+              right: "-45px",
               transform: "rotate(-10deg)",
-              zIndex: 10
+              zIndex: 5
             }}
           />
         </div>
@@ -85,14 +85,3 @@ const BiogramShoutPage: React.FC = () => {
 };
 
 export default BiogramShoutPage;
-
-
-
-
-
-
-
-
-
-
-
