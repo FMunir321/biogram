@@ -30,7 +30,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
     value: ''
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  
+
   // New state for thumbnail links
   const [bigThumbnailImage, setBigThumbnailImage] = useState<string | null>(null);
   const [smallThumbnailImages, setSmallThumbnailImages] = useState<[string | null, string | null]>([null, null]);
@@ -134,7 +134,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
         {/* Fixed Header */}
         <div className="sticky top-0 bg-white rounded-t-[32px] p-6 pb-2 z-10">
           <div className="flex items-center justify-end">
-            <button 
+            <button
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer"
             >
@@ -160,24 +160,24 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
             accept="image/*"
             className="hidden"
           />
-         <input
-  type="file"
-  ref={el => {
-    smallThumbnailInputRefs.current[0] = el;
-  }}
-  onChange={(e) => handleSmallThumbnailChange(e, 0)}
-  accept="image/*"
-  className="hidden"
-/>
-<input
-  type="file"
-  ref={el => {
-    smallThumbnailInputRefs.current[1] = el;
-  }}
-  onChange={(e) => handleSmallThumbnailChange(e, 1)}
-  accept="image/*"
-  className="hidden"
-/>
+          <input
+            type="file"
+            ref={el => {
+              smallThumbnailInputRefs.current[0] = el;
+            }}
+            onChange={(e) => handleSmallThumbnailChange(e, 0)}
+            accept="image/*"
+            className="hidden"
+          />
+          <input
+            type="file"
+            ref={el => {
+              smallThumbnailInputRefs.current[1] = el;
+            }}
+            onChange={(e) => handleSmallThumbnailChange(e, 1)}
+            accept="image/*"
+            className="hidden"
+          />
 
 
           {/* Profile Picture Section */}
@@ -190,7 +190,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
-              <button 
+              <button
                 onClick={handleImageClick}
                 className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-50 cursor-pointer"
               >
@@ -216,16 +216,14 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 <h3 className="font-semibold">Enable Bio</h3>
                 <p className="text-sm text-gray-600">Show bio on your profile</p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsBioEnabled(!isBioEnabled)}
-                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isBioEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
-                }`}
-              >
-                <span 
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${
-                    isBioEnabled ? 'transform translate-x-6' : ''
+                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${isBioEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                   }`}
+              >
+                <span
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${isBioEnabled ? 'transform translate-x-6' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -248,7 +246,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           </div>
 
           {/* Add No Thumbnail Link Button */}
-          <div 
+          <div
             onClick={() => setShowFeaturedLinks(!showFeaturedLinks)}
             className="w-full h-14 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-2xl flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity mb-6"
           >
@@ -268,12 +266,12 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               </div>
 
               {/* Big Thumbnail Link */}
-              <div 
+              <div
                 onClick={handleBigThumbnailClick}
                 className="w-full h-40 rounded-2xl mb-4 flex flex-col items-center justify-center cursor-pointer overflow-hidden relative"
                 style={{
-                  background: bigThumbnailImage 
-                    ? `url(${bigThumbnailImage}) center/cover` 
+                  background: bigThumbnailImage
+                    ? `url(${bigThumbnailImage}) center/cover`
                     : 'linear-gradient(to right, #98e6c3, #4a725f)'
                 }}
               >
@@ -281,9 +279,9 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                   <>
                     <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mb-2">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="12" y1="8" x2="12" y2="16"/>
-                        <line x1="8" y1="12" x2="16" y2="12"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
                       </svg>
                     </div>
                     <span className="text-white text-sm">Add Big Thumbnail link</span>
@@ -294,12 +292,12 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
               {/* Small Thumbnail Links Container */}
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 {/* Small Thumbnail Link 1 */}
-                <div 
+                <div
                   onClick={() => handleSmallThumbnailClick(0)}
                   className="w-full sm:flex-1 h-28 rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden relative"
                   style={{
-                    background: smallThumbnailImages[0] 
-                      ? `url(${smallThumbnailImages[0]}) center/cover` 
+                    background: smallThumbnailImages[0]
+                      ? `url(${smallThumbnailImages[0]}) center/cover`
                       : 'linear-gradient(to right, #98e6c3, #4a725f)'
                   }}
                 >
@@ -307,9 +305,9 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     <>
                       <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mb-2">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                          <line x1="12" y1="8" x2="12" y2="16"/>
-                          <line x1="8" y1="12" x2="16" y2="12"/>
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <line x1="12" y1="8" x2="12" y2="16" />
+                          <line x1="8" y1="12" x2="16" y2="12" />
                         </svg>
                       </div>
                       <span className="text-white text-xs">Add Small Thumbnail link</span>
@@ -318,12 +316,12 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 </div>
 
                 {/* Small Thumbnail Link 2 */}
-                <div 
+                <div
                   onClick={() => handleSmallThumbnailClick(1)}
                   className="w-full sm:flex-1 h-28 rounded-2xl flex flex-col items-center justify-center cursor-pointer overflow-hidden relative"
                   style={{
-                    background: smallThumbnailImages[1] 
-                      ? `url(${smallThumbnailImages[1]}) center/cover` 
+                    background: smallThumbnailImages[1]
+                      ? `url(${smallThumbnailImages[1]}) center/cover`
                       : 'linear-gradient(to right, #98e6c3, #4a725f)'
                   }}
                 >
@@ -331,23 +329,23 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     <>
                       <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mb-2">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                          <line x1="12" y1="8" x2="12" y2="16"/>
-                          <line x1="8" y1="12" x2="16" y2="12"/>
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <line x1="12" y1="8" x2="12" y2="16" />
+                          <line x1="8" y1="12" x2="16" y2="12" />
                         </svg>
-                        
+
                       </div>
-                      
+
                       <span className="text-white text-xs">Add Small Thumbnail link</span>
-                      
+
                     </>
-                    
+
                   )}
-                  
+
                 </div>
-                
+
               </div>
-              
+
             </div>
           )}
 
@@ -358,16 +356,14 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 <h3 className="text-lg font-bold">Merch (0 Items)</h3>
                 <p className="text-sm text-gray-600">Manage Merch</p>
               </div>
-              <button 
-                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isMerchEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
-                }`}
+              <button
+                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${isMerchEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
+                  }`}
                 onClick={() => setIsMerchEnabled(!isMerchEnabled)}
               >
-                <span 
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${
-                    isMerchEnabled ? 'transform translate-x-6' : ''
-                  }`}
+                <span
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${isMerchEnabled ? 'transform translate-x-6' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -385,9 +381,9 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                       <img src={merchImage} alt="Merch" className="w-full h-full object-cover" />
                     ) : (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="12" y1="8" x2="12" y2="16"/>
-                        <line x1="8" y1="12" x2="16" y2="12"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
                       </svg>
                     )}
                   </div>
@@ -410,16 +406,14 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 <h3 className="text-lg font-bold">Gallery</h3>
                 <p className="text-sm text-gray-600">Add Bio to your profile</p>
               </div>
-              <button 
-                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isGalleryEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
-                }`}
+              <button
+                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${isGalleryEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
+                  }`}
                 onClick={() => setIsGalleryEnabled(!isGalleryEnabled)}
               >
-                <span 
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${
-                    isGalleryEnabled ? 'transform translate-x-6' : ''
-                  }`}
+                <span
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${isGalleryEnabled ? 'transform translate-x-6' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -431,7 +425,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                       <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
-                  <div 
+                  <div
                     className="aspect-square bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center justify-center cursor-pointer relative"
                     onClick={() => galleryInputRef.current?.click()}
                   >
@@ -443,9 +437,9 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                       className="hidden"
                     />
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="12" y1="8" x2="12" y2="16"/>
-                      <line x1="8" y1="12" x2="16" y2="12"/>
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <line x1="12" y1="8" x2="12" y2="16" />
+                      <line x1="8" y1="12" x2="16" y2="12" />
                     </svg>
                   </div>
                 </div>
@@ -457,16 +451,14 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold">Contact Info</h3>
-              <button 
+              <button
                 onClick={() => setIsContactEnabled(!isContactEnabled)}
-                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isContactEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
-                }`}
-              >
-                <span 
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${
-                    isContactEnabled ? 'transform translate-x-6' : ''
+                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${isContactEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                   }`}
+              >
+                <span
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${isContactEnabled ? 'transform translate-x-6' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -481,7 +473,7 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
 
                 <div className="space-y-3 mb-4">
                   {contactInfo.map((info, index) => (
-                    <div 
+                    <div
                       key={index}
                       className="w-full h-12 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-xl flex items-center px-4"
                     >
@@ -496,31 +488,28 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                     <div className="flex gap-2 mb-4">
                       <button
                         onClick={() => handleContactTypeChange('phone')}
-                        className={`px-4 py-2 rounded-full text-sm ${
-                          newContact.type === 'phone' 
-                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
+                        className={`px-4 py-2 rounded-full text-sm ${newContact.type === 'phone'
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white'
                             : 'bg-gray-100'
-                        }`}
+                          }`}
                       >
                         Phone
                       </button>
                       <button
                         onClick={() => handleContactTypeChange('email')}
-                        className={`px-4 py-2 rounded-full text-sm ${
-                          newContact.type === 'email' 
-                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
+                        className={`px-4 py-2 rounded-full text-sm ${newContact.type === 'email'
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white'
                             : 'bg-gray-100'
-                        }`}
+                          }`}
                       >
                         Email
                       </button>
                       <button
                         onClick={() => handleContactTypeChange('url')}
-                        className={`px-4 py-2 rounded-full text-sm ${
-                          newContact.type === 'url' 
-                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
+                        className={`px-4 py-2 rounded-full text-sm ${newContact.type === 'url'
+                            ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white'
                             : 'bg-gray-100'
-                        }`}
+                          }`}
                       >
                         URL
                       </button>
@@ -563,16 +552,14 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
           <div className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold">Shouts/Media</h3>
-              <button 
+              <button
                 onClick={() => setIsShoutMediaEnabled(!isShoutMediaEnabled)}
-                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${
-                  isShoutMediaEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
-                }`}
-              >
-                <span 
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${
-                    isShoutMediaEnabled ? 'transform translate-x-6' : ''
+                className={`w-12 h-6 rounded-full transition-colors duration-200 ease-in-out relative ${isShoutMediaEnabled ? 'bg-[#98e6c3]' : 'bg-gray-300'
                   }`}
+              >
+                <span
+                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${isShoutMediaEnabled ? 'transform translate-x-6' : ''
+                    }`}
                 />
               </button>
             </div>
@@ -582,21 +569,19 @@ const CustomLinksTab = ({ isOpen, onClose }: CustomLinksTabProps) => {
                 <div className="flex gap-4 mb-4">
                   <button
                     onClick={() => setActiveTab('shouts')}
-                    className={`px-6 py-2 rounded-full ${
-                      activeTab === 'shouts' 
-                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
+                    className={`px-6 py-2 rounded-full ${activeTab === 'shouts'
+                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white'
                         : 'bg-gray-100 text-gray-600'
-                    }`}
+                      }`}
                   >
                     Shouts
                   </button>
                   <button
                     onClick={() => setActiveTab('media')}
-                    className={`px-6 py-2 rounded-full ${
-                      activeTab === 'media' 
-                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white' 
+                    className={`px-6 py-2 rounded-full ${activeTab === 'media'
+                        ? 'bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white'
                         : 'bg-gray-100 text-gray-600'
-                    }`}
+                      }`}
                   >
                     Media
                   </button>

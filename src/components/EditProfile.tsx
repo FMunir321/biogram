@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useCallback } from "react";
 import characterImg from "../../public/assets/aleximage.png";
-import CustomLinksTab from "../components/CustomLinksTab";
+// import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../../public/assets/lightbg.png";
 import Greaterthen from "../../public/assets/greaterthen.png";
 import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
@@ -1301,7 +1301,13 @@ const EditProfile = () => {
 
             <div className="flex flex-col space-y-4">
               {sections.map((section, index) => (
-                <div key={index}>
+                <div key={index} onClick={() => {
+                  if (section.heading === 'E commerce') {
+                    setIsAddMerch(true);
+                  } else if (section.heading === 'Link') {
+                    setIsBigThumbnailOpen(true);
+                  }
+                }}>
                   <h1>{section.heading}</h1>
                   <div
                     className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
@@ -1330,10 +1336,10 @@ const EditProfile = () => {
       </div>
 
       {/* Custom Links Tab */}
-      <CustomLinksTab
+      {/* <CustomLinksTab
         isOpen={isCustomLinksOpen}
         onClose={() => setIsCustomLinksOpen(false)}
-      />
+      /> */}
 
       {/* Modals */}
 
