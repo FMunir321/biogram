@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import api from "@/service/api";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // UserData type (update as per your backend response)
 type UserData = {
@@ -22,6 +24,7 @@ const menuItems = [
   { key: "terms", label: "Terms & Conditions" },
   { key: "privacy", label: "Privacy policy" },
   { key: "about", label: "About" },
+  { key: "delete-account", label: "Delete Account" },
 ];
 
 const Settings = () => {
@@ -37,7 +40,9 @@ const Settings = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -94,6 +99,65 @@ const Settings = () => {
       setLoading(false);
     }
   };
+
+  //<<<<<<<<--------------- delete handler function --------------->>>>>>>
+  const handleDeleteAccount = async () => {
+    setDeleteError(""); // Clear previous errors
+
+    if (deleteConfirmText.trim().toLowerCase() !== "delete") {
+      setDeleteError("Please type 'delete' to confirm.");
+      return;
+    }
+
+    try {
+      const token = Cookies.get("token");
+      // const userId = localStorage.getItem("userId");
+
+      await api.delete(`/api/user/delete-account`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Optionally clear user data, redirect or show success message
+      alert("Account deleted successfully.");
+      // Example: window.location.href = '/goodbye';
+      // ✅ Clear all related data from localStorage
+      localStorage.clear();
+      Cookies.remove("token");
+      
+
+      // ✅ Optionally show a toast
+    toast.success("Your account has been deleted.");
+
+      // ✅ Redirect to homepage
+      navigate("/");
+
+    } catch (error: any) {
+      console.error("Account deletion failed:", error);
+      setDeleteError(
+        error?.response?.data?.message || "Failed to delete account. Please try again."
+      );
+    }
+  };
+  // const handleDeleteAccount = async () => {
+  //   try {
+  //     await api.delete(`/api/user/delete`);
+
+  //     // ✅ Clear user data from localStorage
+  //     localStorage.removeItem("user"); // or whatever key you're using
+
+  //     // ✅ Optional: clear tokens too if stored
+  //     localStorage.removeItem("token");
+
+  //     // ✅ Redirect to homepage
+  //     navigate("/");
+
+  //   } catch (error) {
+  //     console.error("Account deletion failed:", error);
+  //   }
+  // };
+
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
@@ -200,6 +264,54 @@ const Settings = () => {
                 </div>
               </>
             )}
+
+            {activeMenu === "delete-account" && (
+              <>
+                <h1 className="text-[32px] font-bold mb-2 text-black">
+                  Delete Account
+                </h1>
+                <div className="text-center">
+                  <div className="text-4xl mb-6 text-center">😢</div>
+                  <h1 className="text-[20px] font-bold mb-2 text-black">
+                    Are you sure you want to delete your account
+                  </h1>
+                  <p className="text-[15px] text-normal text-black mb-8">
+                    {/* Your account will be deactivated for 30 days.
+                    <br />
+                    After 30 days your account will be permanently deleted. */}
+
+                    Are you sure you want to permanently delete this account?
+                    <br />
+                    If yes, type 'delete' and click the Delete button.
+                  </p>
+
+                  <div className="relative w-80 text-center mx-auto">
+                    <input
+                      type="text"
+                      placeholder="Type 'delete' to confirm"
+                      value={deleteConfirmText}
+                      onChange={(e) => setDeleteConfirmText(e.target.value)}
+                      className="appearance-none bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10 border border-gray-400"
+                    />
+                  </div>
+
+                  {deleteError && (
+                    <p className="text-red-500 text-sm mb-2">{deleteError}</p>
+                  )}
+
+                  <div className="relative w-80 text-center mx-auto">
+                    <button
+                      className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-2 pb-2 rounded-full font-medium text-center cursor-pointer"
+                      onClick={handleDeleteAccount}
+                    >
+                      Delete
+                    </button>
+                  </div>
+
+                </div>
+              </>
+            )}
+
             {/* You can add more conditions for other menu items here */}
           </div>
         </div>
@@ -285,9 +397,9 @@ const Settings = () => {
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-5 w-5" />
-                  ) : (
+                    ) : (
                       <Eye className="h-5 w-5" />
-                  )}
+                    )}
                   </button>
                 </div>
 
@@ -315,6 +427,8 @@ const Settings = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+
     </div>
   );
 };
