@@ -188,7 +188,7 @@ export default function RealTimeAnalyticsHero() {
           </div>
         </div>
         {/* For People Button with Dropdown */}
-        <div className="fixed bottom-4 right-4 z-30">
+        <div className="hidden fixed bottom-4 right-4 z-30">
           <div
             className="bg-green-200 py-1 px-4 rounded-lg text-black shadow-sm cursor-pointer flex items-center gap-2"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}

@@ -2,19 +2,13 @@ import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import api from "@/service/api";
-// import { IoPerson } from "react-icons/io5";
-// import { CiEdit } from "react-icons/ci";
-// import { MdMessage } from "react-icons/md";
-// import { FaChartLine } from "react-icons/fa";
-// import { IoIosNotifications } from "react-icons/io";
-// import { IoIosSettings } from "react-icons/io";
 import logo from "../../../public/assets/Biogramlogo.png";
 import Search from "../../../public/assets/menue/search.svg";
 import Profile from "../../../public/assets/menue/profile.svg";
 import Editeprofile from "../../../public/assets/menue/editprofile.svg";
 import Message from "../../../public/assets/menue/message.svg";
 import Analytics from "../../../public/assets/menue/analytics.svg";
-import Notification from "../../../public/assets/menue/notification.svg";
+// import Notification from "../../../public/assets/menue/notification.svg";
 import Setting from "../../../public/assets/menue/setting.svg";
 // import { profile } from "console";
 // import { Button } from "../components/ui/button";
@@ -197,7 +191,7 @@ const Layout = ({ children }: LayoutProps) => {
                 active={location.pathname === "/analytics"}
               />
             </Link>
-            <Link to="/notifications" onClick={() => setSidebarOpen(false)}>
+            {/* <Link to="/notifications" onClick={() => setSidebarOpen(false)}>
               <SidebarItem
                 icon={
                   <img
@@ -209,7 +203,7 @@ const Layout = ({ children }: LayoutProps) => {
                 label="Notifications"
                 active={location.pathname === "/notifications"}
               />
-            </Link>
+            </Link> */}
             <Link to="/settings">
               <SidebarItem
                 icon={

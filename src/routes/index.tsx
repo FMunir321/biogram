@@ -10,7 +10,7 @@ import Profile from "../pages/mainDashboard/ProfilePage";
 import EditProfile from "../pages/mainDashboard/EditProfilePage";
 import Messages from "../pages/mainDashboard/MessagesPage";
 import Analytics from "../pages/mainDashboard/AnalyticsPage";
-import Notifications from "../pages/mainDashboard/NotificationsPage";
+// import Notifications from "../pages/mainDashboard/NotificationsPage";
 import Settings from "../pages/mainDashboard/SettingsPage";
 import FeaturedLinkForm from "../components/FeaturedLinkForm";
 import AddMultiLink from "../components/AddMultiLink";
@@ -77,10 +77,10 @@ const RoutesComponent = () => {
         path="/messages"
         element={<ProtectedRoute element={<Messages />} />}
       />
-      <Route
+      {/* <Route
         path="/notifications"
         element={<ProtectedRoute element={<Notifications />} />}
-      />
+      /> */}
       <Route
         path="/settings"
         element={<ProtectedRoute element={<Settings />} />}
