@@ -58,7 +58,7 @@ interface GalleryImage {
 }
 
 const EditProfile = () => {
-  const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
+  // const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   // const [isBioEnabled, setIsBioEnabled] = useState(false);
@@ -112,7 +112,7 @@ const EditProfile = () => {
       title: "Custom Links",
       subtitle: "Link section",
       image: "/public/assets/Link.png",
-      onClick: () => setIsCustomLinksOpen(true),
+      // onClick: () => setIsCustomLinksOpen(true),
     },
     {
       heading: "Streaming",
@@ -702,7 +702,7 @@ const EditProfile = () => {
                 {/* Custom Links */}
                 <div
                   className="bg-white rounded-xl p-3 flex items-center justify-between cursor-pointer"
-                  onClick={() => setIsCustomLinksOpen(true)}
+                // onClick={() => setIsCustomLinksOpen(true)}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -1311,7 +1311,6 @@ const EditProfile = () => {
                   <h1>{section.heading}</h1>
                   <div
                     className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
-                    onClick={section.onClick}
                   >
                     <div className="flex items-center gap-3">
                       <img src={section.image} alt={section.title} />

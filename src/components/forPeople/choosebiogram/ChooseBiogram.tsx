@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import user1 from "../../../../public/assets/Rectangle79.jpg";
 import user2 from "../../../../public/assets/Rectangle80.jpg";
 import user3 from "../../../../public/assets/Rectangle77.jpg";
@@ -60,7 +60,7 @@ const socialColors = [
   "#000000", // TikTok
 ];
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: (i: number) => ({
     opacity: 1,
@@ -105,7 +105,7 @@ const ChooseBiogram: React.FC = () => {
                   boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
                   zIndex: 2,
                 }}
-                variants={cardVariants}   
+                variants={cardVariants}
                 initial="hidden"
                 animate="visible"
                 custom={index}
