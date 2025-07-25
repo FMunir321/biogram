@@ -19,16 +19,20 @@ import groupBg from "../../../public/assets/group.png";
 import api from "../../service/api";
 import toast, { Toaster } from "react-hot-toast";
 
+interface SignupProps {
+  initialName?: string;
+}
+
 // ...existing code...
-const Signup = () => {
+const Signup: React.FC<SignupProps> = ({ initialName = "" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [personalForm, setPersonalForm] = useState({
     email: "",
-    fullName: "",
+    fullName: initialName,
     birthDay: "",
     birthMonth: "",
     birthYear: "",
-    username: "",
+    username: initialName ? initialName.toLowerCase().replace(/\s+/g, '') : "",
     password: "",
     termsAgreement: false,
   });

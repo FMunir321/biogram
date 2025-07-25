@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 // import { Input } from "../../components/ui/input";
 import men from "../../../public/assets/men.png";
@@ -13,18 +12,11 @@ import { FloatingLabelInput } from "../ui/floatinglabelinput";
 // } from "@/components/ui/Dropdown-menu";
 // import { ChevronDown } from "lucide-react";
 
-const HeroSection: React.FC = () => {
-  const [username, setUsername] = useState("");
+const HeroSection: React.FC<{ name: string, handleNameInput: (name: string) => void, handleButtonInput: (name: string) => void }> = ({ name, handleNameInput ,handleButtonInput  }) => {
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
 
-  const handleSignupWithName = () => {
-    // This would pre-populate signup form with username in a real implementation
-    console.log(`Signup with username: ${username}`);
-  };
 
+ 
   return (
     // <div
     //   className="relative hero-background overflow-hidden"
@@ -53,14 +45,14 @@ const HeroSection: React.FC = () => {
           <div className="flex flex-row items-center sm:gap-4 border border-gray-300 rounded-[46px] px-4 py-2 bg-[#cbeede] w-full lg:w-[655px]">
             <FloatingLabelInput
               label="Biogram / Your name"
-              value={username}
-              onChange={handleUsernameChange}
+              value={name}
+              onChange={(e) => handleNameInput(e.target.value)}
               className=""
             />
 
             <Button
               className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-lg px-6 py-3 rounded-full font-poppins sm:w-full sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none h-[60px] transition duration-200 cursor-pointer"
-              onClick={handleSignupWithName}
+              onClick={() => handleButtonInput(name)}
             >
               Signup Free
             </Button>

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BiogramLandingPage from "../../../components/forPeople/BiogramLandingPage";
 import ChooseBiogram from "../../../components/forPeople/choosebiogram/ChooseBiogram";
 import Navbar from "../../../components/forPeople/navbar/Navbar";
@@ -10,15 +12,30 @@ import Footer from "@/components/footer/Footer";
 import ProfileCard from "../../../components/forPeople/profileCard/ProfileCard";
 import InstagramRedirectFeatures from "../../../components/forPeople/instagramRedirectFeatures/InstagramRedirectFeatures";
 const Forpeople = () => {
+  const [name, setName] = useState<string>("");
+  const navigate = useNavigate();
+
+  function handleUsernameChange(name: string) {
+    setName(name);
+  }
+  
+  function handleSignupWithName(name:string){
+    if (name.trim()) {
+      navigate(`/signup?name=${encodeURIComponent(name)}`);
+    } else {
+      navigate('/signup');
+    }
+  }
+  
   return (
     <div>
       <Navbar />
-      <BiogramLandingPage />
+      <BiogramLandingPage name={name} handleNameInput={handleUsernameChange}  handleButtonInput={handleSignupWithName}/>
       <ChooseBiogram />
-      <RealTimeAnalyticsHero />
+      <RealTimeAnalyticsHero   name={name} handleNameInput={handleUsernameChange}  handleButtonInput={handleSignupWithName}  />
       <ArtistShowcase />
-      <BiogramProfile />
-      <BiogramShoutPage />
+      <BiogramProfile name={name} handleNameInput={handleUsernameChange}  handleButtonInput={handleSignupWithName}  />
+      <BiogramShoutPage  /> 
       <ProfileCard />
       <InstagramRedirectFeatures />
       <BiogramPricing />

@@ -7,7 +7,7 @@ import TikTok from "../../../../public/assets/TikTok.png";
 import franceFlag from "../../../../public/assets/france.png";
 import usaFlag from "../../../../public/assets/united states.png";
 
-export default function RealTimeAnalyticsHero() {
+export default function RealTimeAnalyticsHero({ name, handleNameInput, handleButtonInput }: { name: string, handleNameInput: (name: string) => void, handleButtonInput: (name: string) => void }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
     <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white p-4 flex flex-col justify-between overflow-x-hidden">
@@ -173,14 +173,23 @@ export default function RealTimeAnalyticsHero() {
               from whether it’s hundreds or millions.
             </p>
 
-            <div className="mt-5 w-full flex flex-col sm:flex-row  mx-auto lg:mx-0 gap-3 md:max-w-lg">
+            <div className="mt-5 w-full flex flex-col sm:flex-row  mx-auto lg:mx-0 gap-3 md:max-w-lg relative z-20">
               <div className="flex w-full overflow-hidden rounded-full bg-white h-[50px] sm:h-[60px] shadow-lg">
                 <input
                   type="text"
+                  value={name}
                   placeholder="Biogram/your name"
+                  onChange={(e) => {
+                    handleNameInput(e.target.value);
+                  }}
                   className="flex-grow px-4 sm:px-6 text-black outline-none placeholder-gray-500 text-sm bg-transparent"
                 />
-                <button className="text-[16px] md:text[20px] px-6 sm:px-8 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-full text-white">
+                <button 
+                  onClick={() => {
+                    handleButtonInput(name);
+                  }} 
+                  className="text-[16px] md:text[20px] px-6 sm:px-8 py-2 bg-gradient-to-r from-[#53886C] to-[#98e6c3] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-r-full text-white cursor-pointer min-w-[120px]"
+                >
                   Signup Free
                 </button>
               </div>

@@ -20,7 +20,7 @@ import ShoppingImage from "../../../../public/assets/Shopingbag.png";
 import YoutubeImage from "../../../../public/assets/Youtube.png";
 import CalendarImage from "../../../../public/assets/Calender.png";
 
-const BiogramProfile: React.FC = () => {
+const BiogramProfile: React.FC<{ name: string, handleNameInput: (name: string) => void, handleButtonInput: (name: string) => void }> = ({ name, handleNameInput, handleButtonInput }) => {
   return (
     <div
       className=" w-full h-full min-h-screen p-4 md:p-8 font-sans"
@@ -49,9 +49,11 @@ const BiogramProfile: React.FC = () => {
               <input
                 type="text"
                 placeholder="Biogram/Your name"
+                value={name}
+                onChange={(e) => handleNameInput(e.target.value)}
                 className="flex-1 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none w-full sm:w-auto py-3"
               />
-              <Button className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-[16px] md:text[20px] px-6 py-3 rounded-full font-poppins sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none focus:ring-2 focus:ring-orange-300 h-[60px]">
+              <Button onClick={() => handleButtonInput(name)} className="bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white text-[16px] md:text[20px] px-6 py-3 rounded-full font-poppins sm:w-auto hover:from-[#4a725f] hover:to-[#98e6c3] focus:outline-none focus:ring-2 focus:ring-orange-300 h-[60px]">
                 Signup Free
               </Button>
             </div>
