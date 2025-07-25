@@ -13,6 +13,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
+
+// Spinner component
+const Spinner = () => (
+  <div className="flex justify-center items-center">
+    <ClipLoader color="#98e6c3" size={20} />  
+  </div>
+);
 
 const Otp = () => {
   const navigate = useNavigate();
@@ -21,6 +29,7 @@ const Otp = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
@@ -33,6 +42,7 @@ const Otp = () => {
 
   const handleVerifyOtp = async () => {
     try {
+      setLoading(true);
       const otpToken = localStorage.getItem("otpToken");
       if (!userId || !otpToken) {
         console.error("User ID or OTP token not found in localStorage.");
@@ -58,16 +68,19 @@ const Otp = () => {
         toast.success("Verification successful");
         // Delay navigation to allow toast to be visible
         setTimeout(() => {
+          setLoading(false);
           navigate("/search");
         }, 1500);
       } else {
         // For non-verified users, also delay slightly for consistency
         setTimeout(() => {
+          setLoading(false);
           navigate("/social-media");
         }, 500);
       }
 
     } catch (error) {
+      setLoading(false);
       if (axios.isAxiosError(error)) {
         console.error(
           "Verification Error:",
@@ -79,7 +92,7 @@ const Otp = () => {
         console.error("Verification Error:", error);
       }
       toast.error("Invalid OTP or Server Error");
-    }
+    } 
   };
 
   const handleResendOtp = async () => {
@@ -221,8 +234,9 @@ const Otp = () => {
             <button
               onClick={handleVerifyOtp}
               className="bg-[#53886C] text-white px-6 py-2 rounded-md font-semibold mt-2 hover:bg-[#446e58]"
+              disabled={loading}
             >
-              Verify OTP
+              {loading ? <Spinner /> : "Verify OTP"}
             </button>
           </div>
 
