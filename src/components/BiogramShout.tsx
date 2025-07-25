@@ -85,14 +85,3 @@ const BiogramShoutPage: React.FC = () => {
 };
 
 export default BiogramShoutPage;
-
-
-
-
-
-
-
-
-
-
-
