@@ -32,7 +32,7 @@ const Signup: React.FC<SignupProps> = ({ initialName = "" }) => {
     birthDay: "",
     birthMonth: "",
     birthYear: "",
-    username: initialName ? initialName.toLowerCase().replace(/\s+/g, '') : "",
+    username:  "",
     password: "",
     termsAgreement: false,
   });

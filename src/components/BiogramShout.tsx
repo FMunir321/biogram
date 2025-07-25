@@ -1,7 +1,9 @@
 import React from 'react';
 import profileImage from '../../public/assets/Proof.png';
 import logo from '../../public/assets/loginlogo.png';
+import { useNavigate } from 'react-router-dom';
 const BiogramShoutPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="max-w-[1280px] mx-auto min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
       {/* Biogram Text */}
@@ -29,7 +31,7 @@ const BiogramShoutPage: React.FC = () => {
             Tired of the daily hassle of posting? Our Social Planner makes scheduling a breeze—plan, optimize, and auto-post your content across platforms, all in one place. Stay consistent, save hours every week, and grow your online presence effortlessly.
           </p>
           <div className="mt-8 text-center xl:text-left">
-            <button className="text-[16px] md:text[24px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:from-[#53886C] hover:to-[#7ECFA7] text-white font-semibold py-3 px-8 rounded-full transition-all">
+            <button onClick={() => navigate('/signup')} className="text-[16px] md:text[24px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] hover:from-[#53886C] hover:to-[#7ECFA7] text-white font-semibold py-3 px-8 rounded-full transition-all">
               Get Started For free
             </button>
           </div>
