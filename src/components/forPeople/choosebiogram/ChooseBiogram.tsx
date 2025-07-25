@@ -85,21 +85,22 @@ const ChooseBiogram: React.FC = () => {
         </p>
 
         {/* Cards Section */}
-        <div className="overflow-x-hidden">
-          <motion.div
-            className="flex gap-6"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
+            <div className="overflow-hidden  ">
+              <motion.div
+                className="flex gap-6 h-[390px] "
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
               repeat: Infinity,
               repeatType: "loop",
               duration: 18,
               ease: "linear",
+              
             }}
           >
             {[...people, ...people].map((person, index) => (
               <motion.div
                 key={index}
-                className={`w-60 h-[360px] bg-white rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white flex-shrink-0 ${person.rotation}`}
+                className={`w-60 h-[360px] mt-4 bg-white rounded-3xl overflow-hidden relative border-4 border-white flex-shrink-0 ${person.rotation}`}
                 whileHover={{
                   scale: 1.07,
                   boxShadow: "0 12px 32px 0 rgba(0,0,0,0.18)",
