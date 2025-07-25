@@ -71,6 +71,7 @@ const Login = () => {
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      setLoading(false);
       toast.error(error.response?.data?.error || "Login failed. Please check your credentials.");
     } 
   };
