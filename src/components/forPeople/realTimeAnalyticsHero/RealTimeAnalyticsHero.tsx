@@ -10,8 +10,8 @@ import usaFlag from "../../../../public/assets/united states.png";
 export default function RealTimeAnalyticsHero({ name, handleNameInput, handleButtonInput }: { name: string, handleNameInput: (name: string) => void, handleButtonInput: (name: string) => void }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
-    <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white p-4 flex flex-col justify-between overflow-x-hidden">
-      <div className="relative max-w-[1280px] mx-auto ">
+    <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white sm:p-4 flex flex-col justify-between overflow-x-hidden">
+      <div className="relative max-w-[1280px] w-[98%] mx-auto ">
         {" "}
         {/* Background World Image */}
         <img
@@ -57,13 +57,13 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
             America (10%)
           </div>
         </div>
-        <div>
+        <div >
           <div className="flex flex-col lg:flex-row items-center justify-between mt-[300px] px-4 md:ml-[90px] gap-8">
             <div>
               {/* Instagram & Tiktok Card */}
-              <div className=" flex flex-col gap-5 lg:gap-0 md:ml-[50px]">
+              <div className=" flex flex-col mx-auto gap-5 lg:gap-0 md:ml-[50px]">
                 {/* Instagram Card */}
-                <div className=" flex justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/20">
+                <div className=" flex justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] w-full sm:w-auto lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/20">
                   <div className="flex flex-row items-center gap-4">
                     <img
                       src={Instagram}
@@ -78,15 +78,15 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
                     </div>
                   </div>
 
-                  <div className="">
-                    <span className="bg-white/20 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold shadow text-white">
+                  <div>
+                    <span className="bg-white/20 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap font-semibold shadow text-white">
                       502K Clicks
                     </span>
                   </div>
                 </div>
 
                 {/* TikTok Card */}
-                <div className=" flex lg:ml-[30%] lg:mt-[-30px] justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/30">
+                <div className=" flex lg:ml-[30%] lg:mt-[-30px] justify-between items-center gap-4 text-white px-4 sm:px-6 py-4 rounded-[20px] w-full sm:w-auto lg:w-[400px] xl:w-[450px] shadow-2xl h-[110px] bg-white/30">
                   <div className="flex flex-row items-center gap-4">
                     <img
                       src={TikTok}
@@ -101,8 +101,8 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
                     </div>
                   </div>
 
-                  <div className="">
-                    <span className="bg-white/20 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold shadow text-white">
+                  <div>
+                    <span className="bg-white/20 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap font-semibold shadow text-white">
                       1.5M Clicks
                     </span>
                   </div>
@@ -170,10 +170,10 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
             <p className="text-[16px] md:text[24px] font-medium text-white mt-4">
               With Biogram, your profile is always online and lightning fast.
               Get detailed, real-time analytics showing where your clicks come
-              from whether it’s hundreds or millions.
+              from whether it's hundreds or millions.
             </p>
 
-            <div className="mt-5 w-full flex flex-col sm:flex-row  mx-auto lg:mx-0 gap-3 md:max-w-lg relative z-20">
+            <div className="m-5  w-full flex flex-col sm:flex-row  mx-auto lg:mx-0 gap-3 md:max-w-lg relative z-20">
               <div className="flex w-full overflow-hidden rounded-full bg-white h-[50px] sm:h-[60px] shadow-lg">
                 <input
                   type="text"
@@ -188,7 +188,7 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
                   onClick={() => {
                     handleButtonInput(name);
                   }} 
-                  className="text-[16px] md:text[20px] px-6 sm:px-8 py-2 bg-gradient-to-r from-[#53886C] to-[#98e6c3] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-r-full text-white cursor-pointer min-w-[120px]"
+                  className="text-[14px] md:text[20px] px-6 sm:px-8  py-2 bg-gradient-to-r from-[#53886C] to-[#98e6c3] hover:from-[#4a725f] hover:to-[#98e6c3] font-semibold transition text-sm border-l border-gray-300 whitespace-nowrap rounded-r-full text-white cursor-pointer min-w-[120px ]"
                 >
                   Signup Free
                 </button>

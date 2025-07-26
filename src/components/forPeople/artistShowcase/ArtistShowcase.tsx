@@ -66,8 +66,8 @@ const ArtistShowcase = () => {
     <div className="overflow-hidden"> {/* Added overflow-hidden to prevent scrollbar */}
       <div className="container flex flex-col lg:flex-row flex-wrap gap-4 p-5 mx-auto my-5 box-border w-full">
         {/* First Row - Tour Dates Card */}
-        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040] rounded-2xl gap-9 md:gap-0 lg:w-[57%] lg:h-[422px] xl:h-full w-full">
-          <div className="md:w-[50%]">
+        <div className="flex flex-col md:flex-row shadow-[0px_0px_20.2px_0px_#00000040]  rounded-2xl gap-9 md:gap-0 lg:w-[57%] lg:h-[422px] xl:h-full w-full">
+          <div className="w-[99%] sm:w-[90%] md:w-[50%]  sm:mx-0">
             <motion.p
               variants={slideFromTop} 
               initial="hidden"
@@ -78,12 +78,12 @@ const ArtistShowcase = () => {
               Coming Soon: Add your Tickets
             </motion.p>
 
-            <div className="pl-5">
+            <div className="pl-2 sm:pl-5">
               <h1 className="text-[20px] md:text[30px] md:text-[40px] my-8 lg:my-1 xl:my-15 font-extrabold text-black">
                 Tour Dates
               </h1>
 
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col  items-center gap-4">
                 <motion.div
                   variants={slideFromLeft}
                   initial="hidden"
@@ -91,19 +91,19 @@ const ArtistShowcase = () => {
                   viewport={{ once: false, amount: 0.4 }}
                   className="self-start flex flex-row items-center"
                 >
-                  <div className="border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
+                  <div className="border w-[210px] sm:w-[250px] border-[#7ecfa7] rounded-[20px] px-3 sm:px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A]">
-                      <p className="text-[20px] font-medium text-[#2D2D2D]">
-                        <span className="text-[40px] font-bold">21 </span>jun 2025
+                      <p className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D]">
+                        <span className="text-[36px] sm:text-[40px] font-bold">21 </span>jun 2025
                       </p>
-                      <p className="text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-12px]">
+                      <p className="text-[13px] sm:text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-5px]">
                         8PM
                       </p>
                     </div>
-                    <p className="text-[20px] font-medium text-[#2D2D2D]">
+                    <p className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D]">
                       Kaseya Center
                     </p>
-                    <p className="text-[14px] font-normal text-[#2D2D2D]">
+                    <p className="text-[12px] sm:text-[14px] font-normal text-[#2D2D2D]">
                       Miami, FL
                     </p>
                   </div>
@@ -117,24 +117,24 @@ const ArtistShowcase = () => {
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: false, amount: 0.4 }}
-                  className="md:self-end flex flex-row items-center"
+                  className="self-end flex flex-row items-center  "
                 >
-                  <div className="z-10 max-w-[81px] -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
+                  <div className="z-10 max-w-[81px]  -mr-[30px] h-[30px] text-center bg-gradient-to-r from-[#7ECFA7] to-[#53886C] py-1 px-2 rounded-2xl text-white text-[13px]">
                     Tickets
                   </div>
-                  <div className="z-2 border w-[250px] border-[#7ecfa7] rounded-[20px] px-5 bg-[#d8e8e0]">
+                  <div className="z-2  border w-[210px] sm:w-[250px] border-[#7ecfa7] rounded-[20px] px-3 sm:px-5 bg-[#d8e8e0]">
                     <div className="flex flex-row items-center justify-between border-b border-dotted border-[#3A3A3A] ml-[20px]">
-                      <p className="text-[20px] font-medium text-[#2D2D2D]">
-                        <span className="text-[40px] font-bold">26 </span>jun 2025
+                      <p className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D]">
+                        <span className="text-[36px] sm:text-[40px] font-bold">26 </span>jun 2025
                       </p>
-                      <p className="text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-12px]">
+                      <p className="text-[13px] sm:text-[15px] font-medium text-[#2D2D2D] mt-[-30px] mr-[-5px]">
                         10PM
                       </p>
                     </div>
-                    <p className="text-[20px] font-medium text-[#2D2D2D] ml-[20px]">
+                    <p className="text-[18px] sm:text-[20px] font-medium text-[#2D2D2D] ml-[20px]">
                       T-Mobile Arena
                     </p>
-                    <p className="text-[14px] font-normal text-[#2D2D2D] ml-[20px]">
+                    <p className="text-[12px] sm:text-[14px] font-normal text-[#2D2D2D] ml-[20px]">
                       Las Vegas
                     </p>
                   </div>
@@ -142,7 +142,7 @@ const ArtistShowcase = () => {
               </div>
             </div>
           </div>
-          <div className="px-5 md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
+          <div className="px-5 w-full md:w-[50%] mt-5 lg:mt-[53px] xl:mt-[65px]">
             <div className="relative w-full flex justify-center items-center">
               <motion.img
                 variants={slideFromBottom}
@@ -161,7 +161,7 @@ const ArtistShowcase = () => {
                 viewport={{ once: false, amount: 0.4 }}
                 src={Mobilefram}
                 alt="Content"
-                className="absolute w-full object-cover top-[-23px] md:top-[-6px] xl:top-[-15px]"
+                className="absolute w-full object-cover top-[-4px] md:top-[-6px] xl:top-[-15px]"
               />
               <div className="absolute bottom-[2%] w-[80%]">
                 <motion.h3
