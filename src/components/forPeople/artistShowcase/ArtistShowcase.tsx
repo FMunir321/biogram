@@ -75,7 +75,7 @@ const ArtistShowcase = () => {
               viewport={{ once: false, amount: 0.4 }}
               className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
             >
-              Coming Soon: Add your Tickets
+               Add your Tickets
             </motion.p>
 
             <div className="pl-2 sm:pl-5">
@@ -215,7 +215,7 @@ const ArtistShowcase = () => {
             viewport={{ once: false, amount: 0.4 }} 
             className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
           >
-            Coming Soon: Sell Products & Services
+           Sell Products & Services
           </motion.p>
           <div className="flex flex-row justify-between h-full xl:h-[464px] 2xl:h-[578px] mt-5 relative">
             <div className="z-10 md:w-[40%] ml-[50px] flex flex-col justify-center items-center -mr-[300px]">
@@ -457,7 +457,7 @@ const ArtistShowcase = () => {
             viewport={{ once: false, amount: 0.4 }}
             className="mt-5 max-w-[500px] bg-gradient-to-r from-[#7ECFA7] to-[#53886C] text-white text-[16px] md:text-[20px] font-semibold px-4 py-2 rounded-r-full"
           >
-            Coming Soon: Appointment Scheduler
+             Appointment Scheduler
           </motion.p>
 
           <div className="flex flex-col sm:flex-row justify-between items-center mt-5 lg:mt-0 relative">

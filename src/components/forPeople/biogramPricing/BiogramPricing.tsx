@@ -1,4 +1,5 @@
 import React from "react";
+import { Info } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -8,8 +9,14 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import Badge from "../../../components/ui/Badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../../components/ui/tooltip";
 import logo from "../../../../public/assets/Biogramlogo.png";
-import mybackground from "../../../../public/assets/Pricingbg.png";
+import mybackground from "../../../../public/assets/pricingbg.png";
 
 type PlanFeature = {
   name: string;
@@ -19,7 +26,7 @@ type PlanFeature = {
 
 type PricingPlan = {
   title: string;
-  price: number;
+  price: number | number[];
   description: string;
   features: PlanFeature[];
   highlight?: boolean;
@@ -35,7 +42,7 @@ interface PricingCardProps {
 const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
   return (
     <Card
-      className={`border border-gray-300 rounded-[46px] h-full w-[433px] bg-[#b5efd2] shadow-lg`}
+      className={`border border-gray-300 rounded-[46px] h-full w-[433px] bg-[#b5efd2] shadow-lg relative`}
       style={{
         height: "600px",
         width: "433px",
@@ -47,8 +54,19 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold text-center">{plan.title}</CardTitle>
         <div className="flex justify-center items-center mt-2">
-          <span className="text-5xl font-bold text-[#7ECFA7]">{plan.price}</span>
-          <span className="text-lg font-medium text-black">$/mo</span>
+          {Array.isArray(plan.price) ? (
+            <>
+              <span className="text-3xl font-bold text-[#7ECFA7]">
+                {plan.price.join("$/")}$
+              </span>
+              <span className="text-lg font-medium text-black">/mo</span>
+            </>
+          ) : (
+            <>
+              <span className="text-5xl font-bold text-[#7ECFA7]">{plan.price}</span>
+              <span className="text-lg font-medium text-black">$/mo</span>
+            </>
+          )}
         </div>
         <CardDescription className="text-center text-sm mt-2">
           {plan.description}
@@ -59,23 +77,25 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
               {feature.name === "Up to" ? (
-                
                 <div className="bg-[#7ECFA7] text-white px-3 py-1 rounded-md text-sm font-medium">
-                 25 Links
-                </div>
-              ) : feature.link ? (
-                <div className="w-full">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">{feature.name}</span>
-                    {feature.description && (
-                      <span className="text-xs text-blue-600 cursor-pointer hover:underline">
-                        Learn more
-                      </span>
-                    )}
-                  </div>
+                  25 Links
                 </div>
               ) : (
-                <span className="text-sm">{feature.name}</span>
+                <div className="flex items-center">
+                  <span className="text-sm mr-1">{feature.name}</span>
+                  {feature.description && (
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="h-4 w-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+                        </TooltipTrigger>
+                        <TooltipContent side="right" className="max-w-[300px]">
+                          <p className="text-sm text-white">{feature.description}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
               )}
             </li>
           ))}
@@ -101,7 +121,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ plans }) => {
     <div
       className="w-full bg-cover bg-center py-12"
       style={{
-         backgroundImage: `url(${mybackground})`,
+        backgroundImage: `url(${mybackground})`,
       }}
     >
       <div className="w-full max-w-6xl mx-auto px-4">
@@ -123,45 +143,46 @@ const PricingTable: React.FC<PricingTableProps> = ({ plans }) => {
 const BiogramPricing = () => {
   const pricingPlans: PricingPlan[] = [
     {
-      title: "Starter",
+      title: "Creator",
       price: 0,
       description:
         "Create a beautiful page, share all your projects and open instagram audience",
       features: [
-        { name: "Deeplink Technology" },
-        { name: "Landing Page" },
-        { name: "Unlimited Content" },
-        { name: "Beautiful Designs" },
+        { name: "1 Link", description: "You can add one link to your profile." },
+        { name: "High converting custom Landing Page", description: "Build a personalized page to showcase all your content and social media links" },
+        { name: "Analytics", description: "Track visitors live with detailed insights on demographic,devices,and locations." },
+        { name: "Deeplinks", description: "skip the in-app browser and open your page directly in Safari, Chrome, or tour visitors default browser." },
+        { name: "Personal QR code", description: "You get an individual QR code that links people directly to your biogram landing page." },
+        { name: "Shoutout function", description: "Get shout out from other biogram users." },
+        { name: "Multiple link templates", description: "Choose between multiple beautiful designs to create your own customisable link." },
+        { name: "Affiliate program", description: "Get 10% commission for every user you undesrtand." },
       ],
     },
     {
-      title: "Creator",
-      price: 9,
+      title: "Creator Pro",
+      price: 5,
       description:
         "Send links directly to your page, protect your social accounts and collaborate content",
       features: [
-        { name: "Everything in Starter" },
-        { name: "Direct Link" },
-        { name: "Shield Protection", description: "Learn more",},
-        { name: "Geo Filter", description: "Learn more",},
-        { name: "Link Analytics" },
-        { name: "Clicks Tracking" },
-        { name: "Engagement Boost" },
+        { name: "Everything in creator", description: "Includes all features from the Creator plan plus additional advanced options." },
+        { name: "Posts scheduling", description: "Make posting more effective and schedule your post for the whole week directly in biogram." },
+        { name: "Direct Link", description: "Direct your audience to the final destination instantly,skipping unnecessary steps." },
+        { name: "Your own domain link", description: "Create a link with just your name without the biogram name in it." },
+        { name: "Direct message", description: "Recieve and sent direct messsages to biogram users making outreach and connectiong way more effective." },
+        { name: "Appointment scheduler", description: "people are not able to book an appointment for your service." },
+        { name: "Add your music", description: "Doesn't matter if you are a music producer or just a listener you;re not able to add your fav song to your biogram." },
       ],
     },
     {
       title: "Agency",
-      price: 49,
+      price: [10, 20, 35, 50],
       description:
         "Manage all your creators from in one place & maximize your traffic and content",
       features: [
-        { name: "Everything in Creator" },
-        { name: "Up to" }, // Ye feature ab "Up to 25 Links" styled div ban gaya hai
-        { name: "Shields for 5 Links", description: "Learn more" },
-        { name: "All-in-One Dashboard" },
-        { name: "Custom Tracking" },
-        { name: "White-Label Experience" },
-        { name: "VIP Telegram Support" },
+        { name: "Everything in Creator pro", description: "All features from Creator Pro plus specialized agency tools." },
+        { name: "Up to 25/50/100/200/500 Links", description: "Manage multiple links with different permission levels for team members." },
+        { name: "Shields protection for direct Links", description: "Add an extra layer of defence against bots and modes with shield protection for all your social links." },
+        { name: "Advanced analytics", description: "See what links performs the best in one dashboard" },
       ],
     },
   ];
