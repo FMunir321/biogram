@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import imageleftsideimage from "../../../public/assets/image20.png";
-import imageleftsideimage2 from "../../../public/assets/image19.png";
 import logo from "../../../public/assets/loginlogo.png";
 import groupBg from "../../../public/assets/group.png";
 import api from "@/service/api";
 import toast, { Toaster } from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
+import MotionCards from "./MotionCardForLogin";
 
 
 // Spinner component
@@ -16,6 +15,38 @@ const Spinner = () => (
     <ClipLoader color="#98e6c3" size={20} />  
   </div>
 );
+const people = [
+  {
+    name: "Eliza",
+    tag: "@elizaSocial.com",
+    role: "Flush",
+    imagePath: "/assets/Rectangle79.jpg",
+  },
+  {
+    name: "Chan Ja HO",
+    tag: "@chan567james.com",
+    role: "Blogger",
+    imagePath: "/assets/Rectangle80.jpg",
+  },
+  {
+    name: "Sara James",
+    tag: "@sara123james.com",
+    role: "Designer",
+    imagePath: "/assets/Rectangle77.jpg",
+  },
+  {
+    name: "James Max",
+    tag: "@james555.com",
+    role: "Actor",
+    imagePath: "/assets/Rectangle76.jpg",
+  },
+  {
+    name: "Alex",
+    tag: "@alexcraft.com",
+    role: "Slicer",
+    imagePath: "/assets/Rectangle78.jpg",
+  },
+];
 
 const Login = () => {
   const navigate = useNavigate();
@@ -86,16 +117,11 @@ const Login = () => {
       {/* Left Section (Images) */}
       <div className="hidden md:flex md:w-1/2 p-0 md:p-6 justify-end items-center bg-white">
         <div className="flex gap-4 md:gap-10 w-full justify-end">
-          <img
-            src={imageleftsideimage}
-            alt="Profile 1"
-            className="hidden sm:block w-[120px] h-[340px] md:w-[180px] md:h-[500px] lg:w-[220px] lg:h-[650px] xl:w-[322px] xl:h-[905px] object-cover"
-          />
-          <img
-            src={imageleftsideimage2}
-            alt="Profile 2"
-            className="hidden sm:block w-[120px] h-[340px] md:w-[180px] md:h-[500px] lg:w-[220px] lg:h-[650px] xl:w-[322px] xl:h-[905px] object-cover"
-          />
+          <MotionCards people={people}  />
+          <div className="mt-12">
+          <MotionCards people={people} reverse={true}  />
+          </div>
+         
         </div>
       </div>
 
