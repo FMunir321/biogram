@@ -16,7 +16,7 @@ import {
   TooltipTrigger,
 } from "../../../components/ui/tooltip";
 import logo from "../../../../public/assets/Biogramlogo.png";
-import mybackground from "../../../../public/assets/pricingbg.png";
+import mybackground from "../../../../public/assets/Pricingbg.png";
 
 type PlanFeature = {
   name: string;
