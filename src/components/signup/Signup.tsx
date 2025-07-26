@@ -5,15 +5,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
-
+import MotionCards from "./MotionCard";
 // ...existing code...
 import { Input } from "../../components/ui/input";
 import logo from "../../../public/assets/Biogramlogo.png";
 
 import { EyeIcon, EyeOffIcon, CheckCircle2, XCircle } from "lucide-react";
 import { useState, useEffect } from "react";
-import RightImage from "../../../public/assets/RightImage.png";
-import LeftImage from "../../../public/assets/LeftImage.png";
+
 import { Link, useNavigate } from "react-router-dom";
 import groupBg from "../../../public/assets/group.png";
 import api from "../../service/api";
@@ -22,6 +21,39 @@ import toast, { Toaster } from "react-hot-toast";
 interface SignupProps {
   initialName?: string;
 }
+const people = [
+  {
+    name: "Eliza",
+    tag: "@elizaSocial.com",
+    role: "Flush",
+    imagePath: "/assets/Rectangle79.jpg",
+  },
+  {
+    name: "Chan Ja HO",
+    tag: "@chan567james.com",
+    role: "Blogger",
+    imagePath: "/assets/Rectangle80.jpg",
+  },
+  {
+    name: "Sara James",
+    tag: "@sara123james.com",
+    role: "Designer",
+    imagePath: "/assets/Rectangle77.jpg",
+  },
+  {
+    name: "James Max",
+    tag: "@james555.com",
+    role: "Actor",
+    imagePath: "/assets/Rectangle76.jpg",
+  },
+  {
+    name: "Alex",
+    tag: "@alexcraft.com",
+    role: "Slicer",
+    imagePath: "/assets/Rectangle78.jpg",
+  },
+];
+
 
 // ...existing code...
 const Signup: React.FC<SignupProps> = ({ initialName = "" }) => {
@@ -187,11 +219,7 @@ const Signup: React.FC<SignupProps> = ({ initialName = "" }) => {
       <div className="flex flex-col lg:flex-row items-stretch min-h-screen">
         {/* Left Image */}
         <div className="hidden lg:block w-[300px] xl:w-[400px] h-screen overflow-hidden relative">
-          <img
-            src={LeftImage}
-            alt="Left Profile"
-            className="absolute w-[180px] xl:w-[322px] h-[600px] xl:h-[1063px] -top-4 xl:-top-[21px] left-2 xl:left-8"
-          />
+          <MotionCards people={people} />
         </div>
         {/* Center Form */}
         <div className="flex-1 flex flex-col justify-center px-2 sm:px-4 md:px-8 py-6 w-full max-w-2xl mx-auto">
@@ -683,11 +711,7 @@ const Signup: React.FC<SignupProps> = ({ initialName = "" }) => {
         </div>
         {/* Right Image */}
         <div className="hidden lg:block w-[300px] xl:w-[400px] h-screen overflow-hidden relative">
-          <img
-            src={RightImage}
-            alt="Right Profile"
-            className="absolute w-[180px] xl:w-[322px] h-[600px] xl:h-[1063px] -top-2 xl:-top-[3px] right-2 xl:right-8"
-          />
+         <MotionCards people={people} reverseDirection={true} />
           </div>
           </div>
       </div>
