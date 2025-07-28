@@ -35,13 +35,13 @@ const MainDashboard = () => {
     const token = Cookies.get("token");
     console.log("clicked",userId);
     try {
-      const response = await fetch(`http://3.111.146.115:5000/api/analytics/link-click/${userId}`, {
+      const response = await api.post(`/api/analytics/link-click/${userId}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      const data = await response.data;
       console.log("click tracked",data);
     } catch (error) {
       console.error("API error:", error);
@@ -51,13 +51,12 @@ const MainDashboard = () => {
     const token = Cookies.get("token");
     console.log("clicked",userId);
     try {
-      const response = await fetch(`http://3.111.146.115:5000/api/analytics/profile-view/${userId}`, {
-        method: "POST",
+      const response = await api.post(`/api/analytics/profile-view/${userId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      const data = await response.data;
       console.log("click tracked",data);
     } catch (error) {
       console.error("API error:", error);
@@ -186,7 +185,7 @@ const MainDashboard = () => {
         {selectedUser ? (
           <>
             {/* Profile Image as Card Header */}
-            <div className="bg-amber-500 cursor-pointer mt-10" onClick={() => handleClickOnProfile(selectedUser._id)}>
+            <div className=" cursor-pointer mt-10" >
             <div
                 className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
               style={{
@@ -209,7 +208,7 @@ const MainDashboard = () => {
             </div>
 
 
-            <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 ">
+            <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 " onClick={() => handleClickOnProfile(selectedUser._id)}>
               <div className="flex justify-center gap-8 ">
                 <button
                   className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-blue-400" : "text-white"

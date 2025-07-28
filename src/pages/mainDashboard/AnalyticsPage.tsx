@@ -195,12 +195,12 @@ useEffect(() => {
   const stats = [
     {
       label: "Link Clicks",
-      value: profileViews,
+      value: linkClicks,
       change: "Link Clicks",
     },
     {
       label: "Profile Views",
-      value: linkClicks,
+      value:  profileViews,
       change: "Profile Views",
     },
     {
