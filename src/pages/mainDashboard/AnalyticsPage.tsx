@@ -36,7 +36,6 @@ useEffect(() => {
   try {
     const token = Cookies.get("token");
     const userId = localStorage.getItem("userId");
-    console.log(userId);
 
     const fetchData = async () => {
       const response = await fetch(`http://3.111.146.115:5000/api/analytics/${userId}`, {
@@ -46,7 +45,6 @@ useEffect(() => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       setProfileViews(data.profileViews);
       setLinkClicks(data.linkClicks);

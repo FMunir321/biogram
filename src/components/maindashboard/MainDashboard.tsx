@@ -31,6 +31,39 @@ const MainDashboard = () => {
     fetchUser();
   }, []);
 
+  const handleClickOnId = async (userId: string) => {
+    const token = Cookies.get("token");
+    console.log("clicked",userId);
+    try {
+      const response = await fetch(`http://3.111.146.115:5000/api/analytics/link-click/${userId}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log("click tracked",data);
+    } catch (error) {
+      console.error("API error:", error);
+    }
+  };
+  const handleClickOnProfile = async (userId: string) => {
+    const token = Cookies.get("token");
+    console.log("clicked",userId);
+    try {
+      const response = await fetch(`http://3.111.146.115:5000/api/analytics/profile-view/${userId}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log("click tracked",data);
+    } catch (error) {
+      console.error("API error:", error);
+    }
+  };
+
   const fetchUser = async () => {
     try {
       const token = Cookies.get("token");
@@ -108,6 +141,7 @@ const MainDashboard = () => {
                   key={user._id}
                   onClick={() => {
                     setSelectedUser(user);
+                    handleClickOnId(user._id);
                     fetchUserById(user._id); // yahan user ki id pass karein
                   }}
                   style={{
@@ -136,7 +170,7 @@ const MainDashboard = () => {
                     onError={e => { (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png"; }}
                   />
                   <div>
-                    <div style={{ fontWeight: 600, fontSize: 16 }}>{user.fullName || user.name || "No Name"}</div>
+                    <div style={{ fontWeight: 600, fontSize: 14 }}>{user.fullName || user.name || "No Name"}</div>
                     <div style={{ fontSize: 14, color: "#888" }}>@{user.username || user.email || "user"}</div>
                   </div>
 
@@ -148,12 +182,13 @@ const MainDashboard = () => {
         )}
       </div>
 
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full ">
         {selectedUser ? (
           <>
             {/* Profile Image as Card Header */}
+            <div className="bg-amber-500 cursor-pointer mt-10" onClick={() => handleClickOnProfile(selectedUser._id)}>
             <div
-                className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center mt-10 rounded-2xl"
+                className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
               style={{
                 backgroundImage: selectedUser.profileImage
                   ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
@@ -177,14 +212,14 @@ const MainDashboard = () => {
             <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 ">
               <div className="flex justify-center gap-8 ">
                 <button
-                  className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-white" : "text-blue-400"
+                  className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-blue-400" : "text-white"
                     }`}
                   onClick={() => setActiveTab("shouts")}
                 >
                   Shouts
                 </button>
                 <button
-                  className={`text-lg font-semibold rounded-none ${activeTab === "media" ? "text-white" : "text-blue-400"
+                  className={`text-lg font-semibold rounded-none ${activeTab === "media" ? "text-blue-400" : "text-white"
                     }`}
                   onClick={() => setActiveTab("media")}
                 >
@@ -215,6 +250,7 @@ const MainDashboard = () => {
                   <p className="text-gray-300 ">by Saif Ali will appear here</p>
                 </div>
               )}
+            </div>
             </div>
           </>
         ) : (
