@@ -103,10 +103,41 @@ type UserData = {
   username: string;
   profileImage: string;
 };
+// type ShoutType = {
+//   _id: string;
+//   content?: string;
+//   image?: string;
+//   videoUrl?: string;
+//   isMedia: boolean;
+//   createdAt: string;
+// };
+interface Shout {
+  _id: string;
+  mediaUrl?: string;
+  userId?: string;
+  videoUrl?: string;
+  createdAt?: string;
+  text?: string;
+  isMedia: boolean;
+  image?: string;     // 👈 Add this
+  content?: string;   // 👈 Add this
+}
+
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("shouts");
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [shouts, setShouts] = useState<Shout[]>([]);
+  const [mediaShouts, setMediaShouts] = useState<Shout[]>([]);
+  const textShouts = shouts.filter((item) => !item.isMedia);
+  const [loadingShouts, setLoadingShouts] = useState(true);
+  const [loadingMedia, setLoadingMedia] = useState(true);
+
+
+  // const [newText, setNewText] = useState("");
+  // const [newMedia, setNewMedia] = useState<File | null>(null);
+
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -129,6 +160,57 @@ const Profile = () => {
     };
 
     fetchUser();
+  }, []);
+
+  //<<<<<<______________________________________________>>>>>>>
+
+  const fetchShouts = async () => {
+    setLoadingShouts(true); // Start loading
+    try {
+      const token = Cookies.get("token");
+      const res = await api.get(`/api/shouts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const onlyMedia = res.data.shouts?.filter((shout: Shout) => shout.isMedia === false);
+      console.log("Filtered shouts", onlyMedia);
+      setShouts(onlyMedia || []);
+    } catch (error) {
+      console.error("Error fetching shouts:", error);
+    } finally {
+      setLoadingShouts(false);
+    }
+
+  };
+  const fetchMedia = async () => {
+    setLoadingMedia(true);
+    try {
+      const token = Cookies.get("token");
+      const res = await api.get(`/api/shouts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // ✅ Only keep media shouts
+      const onlyMedia = res.data.shouts?.filter((shout: Shout) => shout.isMedia === true);
+      console.log("Filtered Media", onlyMedia);
+      setMediaShouts(onlyMedia || []);
+    } catch (error) {
+      console.error("Error fetching media:", error);
+    } finally {
+      setLoadingMedia(false);
+    }
+  };
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId"); // ✅ declared here
+    if (userId) {
+      fetchShouts();
+      fetchMedia();
+    }
   }, []);
 
   return (
@@ -157,6 +239,7 @@ const Profile = () => {
       <div className="  bg-black w-[550px] ">
         <div className="flex flex-col items-center justify-center p-22">
           <div className="justify-center items-center">
+
             <div className="flex gap-2 justify-center ">
               <button
                 className={`px-4 py-2 ${activeTab === "shouts" ? " text-white" : "text-blue-500"
@@ -180,23 +263,66 @@ const Profile = () => {
 
               {activeTab === "shouts" && (
                 <div className="text-center justify-center">
-                  <h1 className="text-white font-bold text-4xl">
-                    No Shouts Yet!
-                  </h1>
-                  <h6 className="text-gray-300">Shouts posted by Saif Ali</h6>
-                  <p className="text-gray-300">will appear here </p>
+                  {loadingShouts ? (
+                    <p className="text-gray-300">Loading shouts...</p>
+                  ) : (
+                    textShouts.length === 0 ? (
+                      <>
+                        <h1 className="text-white font-bold text-4xl">No Shouts Yet!</h1>
+                        <p className="text-gray-300">Shouts will appear here</p>
+                      </>
+                    ) : (
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {textShouts.map((shout) => (
+                          <div key={shout._id} className="bg-white rounded-xl shadow p-2">
+                            {shout.videoUrl && !shout.isMedia && (
+                              <img
+                                src={`http://3.111.146.115:5000${shout.videoUrl.replace("/videos/", "/images/")}`}
+                                alt="Shout"
+                                className="w-100 h-48 object-cover rounded"
+                              />
+                            )}
+                            {shout.content && (
+                              <p className="text-gray-800 mt-2">{shout.content}</p>
+                            )}
+
+                          </div>
+                        ))}
+
+                      </div>
+                    )
+                  )}
                 </div>
               )}
 
               {activeTab === "media" && (
-                <div className="text-center  justify-center">
-                  <h1 className="text-white font-bold text-4xl">
-                    No Media Yet!
-                  </h1>
-                  <h6 className="text-gray-300 ">Shouts with media posted</h6>
-                  <p className="text-gray-300 ">by Saif Ali will appear here</p>
+                <div className="text-center justify-center">
+                  {loadingMedia ? (
+                    <p className="text-gray-300">Loading media...</p>
+                  ) : mediaShouts.length === 0 ? (
+                    <>
+                      <h1 className="text-white font-bold text-4xl">No Media Yet!</h1>
+                      <p className="text-gray-300">Videos will appear here</p>
+                    </>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {mediaShouts.map((media) => (
+                        <video
+                          key={media._id}
+                          controls
+                          className="w-full h-auto rounded-xl"
+                          src={`http://3.111.146.115:5000${media.videoUrl}`} // ✅ fixed video path
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
+
+
+
+
+
             </div>
           </div>
         </div>
