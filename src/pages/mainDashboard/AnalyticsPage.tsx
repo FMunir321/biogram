@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import bground from "../../../public/assets/lightbg.png";
 import WorldAnalyticsMap from "../../components/WorldAnalyticsMap";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,6 +26,39 @@ ChartJS.register(
 );
 
 const Analytics = () => {
+const [profileViews, setProfileViews] = useState(0);
+const [linkClicks, setLinkClicks] = useState(0);
+const [lastMonthVisitors, setLastMonthVisitors] = useState(0);
+const [totalVisitors, setTotalVisitors] = useState(0);
+
+
+useEffect(() => {
+  try {
+    const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+    console.log(userId);
+
+    const fetchData = async () => {
+      const response = await fetch(`http://3.111.146.115:5000/api/analytics/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      setProfileViews(data.profileViews);
+      setLinkClicks(data.linkClicks);
+      setLastMonthVisitors(data.lastMonthVisitors);
+      setTotalVisitors(data.totalVisitors);
+    };
+
+    fetchData();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}, []);
   const labels = [
     "2025-04-10",
     "2025-04-11",
@@ -155,28 +190,33 @@ const Analytics = () => {
     },
   };
 
+ 
+  
+   
+
   const stats = [
     {
-      label: "My Deeplinks",
-      value: "5/25",
-      change: "Active Links",
+      label: "Link Clicks",
+      value: profileViews,
+      change: "Link Clicks",
     },
     {
-      label: "Shield Protection",
-      value: "4/5",
-      change: "Protected Links",
+      label: "Profile Views",
+      value: linkClicks,
+      change: "Profile Views",
     },
     {
-      label: "April analytics",
-      value: "7.889",
-      change: "Visitors in April 2025",
+      label: "Visitors last Month",
+      value: lastMonthVisitors,
+      change: "Visitors last Month",
     },
     {
-      label: "All Time Analytics",
-      value: "7.889",
+      label: "Total Visitors",
+      value: totalVisitors,
       change: "Total Visitors",
     },
   ];
+
 
   return (
     <div className="w-full max-w-[1300px] mx-auto p-2 md:p-4">
@@ -190,19 +230,19 @@ const Analytics = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 ">
           {stats.map((stat) => (
             <div
               key={stat.label}
               className="bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3] rounded-2xl p-4"
             >
-              <h3 className="text-[20px] font-medium mb-2 text-[#3C3C3C]">
+              <h3 className="text-[20px]  font-medium mb-2 text-[#3C3C3C]">
                 {stat.label}
               </h3>
               <p className="text-[64px] font-semibold text-[#3C3C3C] text-center">
                 {stat.value}
               </p>
-              <p className="text-[16px] font-normal text-[#3C3C3C] mt-2 text-center">
+              <p className="text-[16px]  font-medium text-[#3C3C3C] mt-2 text-center">
                 {stat.change}
               </p>
             </div>
