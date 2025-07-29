@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import api from "@/service/api";
+import bground from "../../../public/assets/lightbg.png";
+
 
 type UserData = {
   fullName: string;
@@ -125,10 +127,16 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="flex p-4  flex-col items-center justify-center min-h-screen ">
+    <div className="bg-white rounded-[32px] bg-center bg-cover"
+          style={{
+            backgroundImage: `url("${bground}")`,
+          }}
+        >
+    <div className="flex p-4  flex-col items-center justify-center h-[calc(100vh-25px)]">
+       
       
       <div
-        className="relative bg-cover       bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
+        className="relative bg-cover bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
         style={{
           backgroundImage: userData?.profileImage
             ? `url("http://3.111.146.115:5000${userData.profileImage}")`
@@ -243,6 +251,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

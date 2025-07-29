@@ -108,10 +108,10 @@ const MainDashboard = () => {
 
   return (
     <div
-      className="flex flex-col md:flex-row justify-center items-stretch min-h-screen bg-cover bg-center"
+      className="flex flex-col md:flex-row justify-center items-stretch h-[calc(100vh-25px)] bg-cover bg-center"
       style={{ backgroundImage: `url(${bground})` }}
     >
-      <div className="w-full md:w-[50%]">
+      <div className="w-full md:w-[50%] p-4">
         {/* Searchbar */}
         <div className="flex !border-[#6fb793] border-1 mb-4 gap-2 w-full  rounded-full [background:linear-gradient(to_right,_#dfece2,_#d5dad9)] text-black text-[20px] font-medium">
           <Input

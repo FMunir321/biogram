@@ -257,12 +257,13 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Main Content */}
       <div className="flex-1 min-w-0 overflow-auto">
         {/* Top Bar */}
-        <div className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-gray-100 px-4 py-4 md:px-6 z-10">
-          <div className="relative z-10 flex justify-between items-center max-w-6xl mx-auto">
+        <div className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-gray-100 h-[25px]  md:px-6 z-10">
+
+          <div className="relative  z-10 flex justify-between items-center max-w-6xl mx-auto">
 
             {/* Hamburger Button (small screens) */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden p-1 rounded-lg hover:bg-gray-100 transition-colors"
               onClick={() => setSidebarOpen(true)}
             >
               <svg

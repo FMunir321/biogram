@@ -217,11 +217,12 @@ useEffect(() => {
 
 
   return (
-    <div className="w-full max-w-[1300px] mx-auto p-2 md:p-4">
-      <div
+    <div
         className="bg-white rounded-[32px] p-4 md:p-6 bg-cover bg-center"
         style={{ backgroundImage: `url(${bground})` }}
       >
+    <div className="w-full max-w-[1300px] mx-auto p-2 md:p-4">
+      
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-[36px] font-bold mb-2 text-black">Overview</h1>

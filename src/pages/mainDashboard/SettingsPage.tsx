@@ -89,11 +89,11 @@ const Settings = () => {
       setNewPassword("");
       setConfirmPassword("");
       setTimeout(() => setIsChangePasswordOpen(false), 1500); // modal close after success
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(
         err?.response?.data?.message ||
-        "Failed to change password. Please try again."
+          "Failed to change password. Please try again."
       );
     } finally {
       setLoading(false);
@@ -125,18 +125,17 @@ const Settings = () => {
       // ✅ Clear all related data from localStorage
       localStorage.clear();
       Cookies.remove("token");
-      
 
       // ✅ Optionally show a toast
-    toast.success("Your account has been deleted.");
+      toast.success("Your account has been deleted.");
 
       // ✅ Redirect to homepage
       navigate("/");
-
     } catch (error: any) {
       console.error("Account deletion failed:", error);
       setDeleteError(
-        error?.response?.data?.message || "Failed to delete account. Please try again."
+        error?.response?.data?.message ||
+          "Failed to delete account. Please try again."
       );
     }
   };
@@ -158,14 +157,15 @@ const Settings = () => {
   //   }
   // };
 
-
   return (
-    <div className="w-full mx-auto p-2 md:p-4 h-full bg-no-repeat bg-cover bg-center"
-      style={{ backgroundImage: `url(${bground})` }}>
-      <div className=" rounded-[32px] p-4 md:p-6 bg-white/40 bg-cover h-full">
+    <div
+      className="w-full mx-auto bg-no-repeat bg-cover bg-center"
+      style={{ backgroundImage: `url(${bground})` }}
+    >
+      <div className=" rounded-[32px] bg-white/40 bg-cover h-[calc(100vh-25px)]">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side - Settings Menu */}
-          <div className="w-full lg:w-[300px] lg:flex-shrink-0">
+          <div className="w-full lg:w-[300px] lg:flex-shrink-0 p-4">
             {/* Search Bar */}
             <div className="mb-6">
               <div className="w-full p-[2px] rounded-full ">
@@ -183,9 +183,10 @@ const Settings = () => {
                 <button
                   key={item.key}
                   className={`w-full flex items-center justify-between p-4 rounded-xl text-left transition 
-                    ${activeMenu === item.key
-                      ? "bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3]"
-                      : "hover:bg-gray-50"
+                    ${
+                      activeMenu === item.key
+                        ? "bg-gradient-to-r from-[#d3f0e3] to-[#c1e4d3]"
+                        : "hover:bg-gray-50"
                     }`}
                   onClick={() => setActiveMenu(item.key)}
                 >
@@ -203,7 +204,7 @@ const Settings = () => {
           </div>
 
           {/* Right Side - Content */}
-          <div className="flex-1 mt-6 lg:mt-0">
+          <div className="flex-1 mt-6 lg:mt-2 p-4">
             {activeMenu === "personal-info" && (
               <>
                 <h1 className="text-[32px] font-bold mb-2 text-black">
@@ -218,36 +219,72 @@ const Settings = () => {
                   <div className="flex flex-row justify-between mb-4">
                     <p className="text-[20px] font-medium text-black">Name</p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">{userData?.fullName || ""}</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        {userData?.fullName || ""}
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                   <div className="flex flex-row justify-between mb-4">
-                    <p className="text-[20px] font-medium text-black">Username</p>
+                    <p className="text-[20px] font-medium text-black">
+                      Username
+                    </p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">@{userData?.username || ""}</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        @{userData?.username || ""}
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                   <div className="flex flex-row justify-between mb-4">
-                    <p className="text-[20px] font-medium text-black">dateOfBirth</p>
+                    <p className="text-[20px] font-medium text-black">
+                      dateOfBirth
+                    </p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">{formattedDate}</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        {formattedDate}
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                   <div className="flex flex-row justify-between mb-4">
-                    <p className="text-[20px] font-medium text-black">My Interests</p>
+                    <p className="text-[20px] font-medium text-black">
+                      My Interests
+                    </p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">{userData?.interests || ""}</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        {userData?.interests || ""}
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                   <div className="flex flex-row justify-between mb-4">
                     <p className="text-[20px] font-medium text-black">Email</p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">{userData?.email || ""}</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        {userData?.email || ""}
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                   {/* Change Password Option */}
@@ -255,10 +292,18 @@ const Settings = () => {
                     className="flex flex-row justify-between mb-4 cursor-pointer"
                     onClick={() => setIsChangePasswordOpen(true)}
                   >
-                    <p className="text-[20px] font-medium text-black">Change Password</p>
+                    <p className="text-[20px] font-medium text-black">
+                      Change Password
+                    </p>
                     <div className="flex flex-row items-center gap-2">
-                      <p className="text-[16px] font-normal text-black">*********</p>
-                      <img src={Greaterthen} alt="greater than" className="object-contain w-[22px] h-[22px]" />
+                      <p className="text-[16px] font-normal text-black">
+                        *********
+                      </p>
+                      <img
+                        src={Greaterthen}
+                        alt="greater than"
+                        className="object-contain w-[22px] h-[22px]"
+                      />
                     </div>
                   </div>
                 </div>
@@ -279,7 +324,6 @@ const Settings = () => {
                     {/* Your account will be deactivated for 30 days.
                     <br />
                     After 30 days your account will be permanently deleted. */}
-
                     Are you sure you want to permanently delete this account?
                     <br />
                     If yes, type 'delete' and click the Delete button.
@@ -307,7 +351,6 @@ const Settings = () => {
                       Delete
                     </button>
                   </div>
-
                 </div>
               </>
             )}
@@ -316,7 +359,10 @@ const Settings = () => {
           </div>
         </div>
       </div>
-      <Dialog.Root open={isChangePasswordOpen} onOpenChange={setIsChangePasswordOpen}>
+      <Dialog.Root
+        open={isChangePasswordOpen}
+        onOpenChange={setIsChangePasswordOpen}
+      >
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
           <Dialog.Content
@@ -328,8 +374,18 @@ const Settings = () => {
                 className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
                 aria-label="Close"
               >
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 6l12 12M6 18L18 6"
+                  />
                 </svg>
               </button>
             </Dialog.Close>
@@ -344,7 +400,7 @@ const Settings = () => {
                     type={showCurrentPassword ? "text" : "password"}
                     placeholder="Current Password"
                     value={currentPassword}
-                    onChange={e => setCurrentPassword(e.target.value)}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                     className="bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10"
                   />
                   <button
@@ -365,7 +421,7 @@ const Settings = () => {
                     type={showNewPassword ? "text" : "password"}
                     placeholder="New Password"
                     value={newPassword}
-                    onChange={e => setNewPassword(e.target.value)}
+                    onChange={(e) => setNewPassword(e.target.value)}
                     className="bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10"
                   />
                   <button
@@ -386,7 +442,7 @@ const Settings = () => {
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm Password"
                     value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     className="bg-white/80 text-black px-4 py-3 rounded-xl mb-2 text-lg font-semibold placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7ecfa7] w-full pr-10"
                   />
                   <button
@@ -404,7 +460,9 @@ const Settings = () => {
                 </div>
 
                 {error && <div className="text-red-500 mb-2">{error}</div>}
-                {success && <div className="text-green-600 mb-2">{success}</div>}
+                {success && (
+                  <div className="text-green-600 mb-2">{success}</div>
+                )}
                 <div className="flex justify-center gap-4 mt-4 w-full">
                   <button
                     type="button"
@@ -427,8 +485,6 @@ const Settings = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-
-
     </div>
   );
 };
