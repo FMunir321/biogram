@@ -1,9 +1,7 @@
 import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
-
 import biogram from "../../../public/Biogram.png";
-
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
