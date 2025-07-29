@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useState, useEffect, ReactNode } from "react";
-import { baseUrl, getRequest, postRequest } from "../service/api";
+import api, { baseUrl, getRequest, postRequest } from "../service/api";
 import { io, Socket } from "socket.io-client";
+import Cookies from "js-cookie";
 
 // =================== Interfaces ===================
 
@@ -64,56 +65,60 @@ export const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ childr
     const [messagesError, setMesssagesError] = useState<string | null>(null);
     const [sendTextMessageError, setSendTextMessageError] = useState<string | null>(null);
     const [newMessage, setNewMessage] = useState<Message | null>(null);
-    const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:300");
-        setSocket(newSocket);
-        return () => {
-            newSocket.disconnect();
-        };
-    }, [user]);
+        const fetchUser = async () => {
+            try {
+                const token = Cookies.get("token");
+                const response = await api.get(`/api/user`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const users = response.data.users as User[];
+                const pChats = users.filter((u) => {
+                    if (user._id === u._id) return false;
 
-    useEffect(() => {
-        const getUsers = async () => {
-            const response = await getRequest(`${baseUrl}/users`);
-            if ((response as any).error) {
-                console.error("Error fetching users:", response);
-                return;
+                    let isChatCreated = false;
+                    if (userChats) {
+                        isChatCreated = userChats.some(chat => chat.members.includes(u._id));
+                    }
+
+                    return !isChatCreated;
+                });
+
+                setPotentialChats(pChats);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+
             }
-            const users = response as User[];
-
-            const pChats = users.filter((u) => {
-                if (user._id === u._id) return false;
-
-                let isChatCreated = false;
-                if (userChats) {
-                    isChatCreated = userChats.some(chat => chat.members.includes(u._id));
-                }
-
-                return !isChatCreated;
-            });
-
-            setPotentialChats(pChats);
         };
-
-        getUsers();
+        fetchUser();
     }, [user, userChats]);
 
     useEffect(() => {
+        console.log('get api chats:')
         const getUserChats = async () => {
             if (user?._id) {
                 setIsUserChatsLoading(true);
                 setUserChatsError(null);
 
-                const response = await getRequest(`${baseUrl}/chats/${user._id}`);
-                if ((response as any).error) {
-                    setUserChatsError((response as any).message);
-                } else {
-                    setUserChats(response as Chat[]);
-                }
+                try {
+                    const token = Cookies.get("token");
+                    const response = await api.get(`/api/chats/${user._id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
 
-                setIsUserChatsLoading(false);
+                    const chats = response.data as Chat[];
+                    setUserChats(chats);
+                } catch (error: any) {
+                    console.error("Error fetching user chats:", error);
+                    setUserChatsError(error.response?.data?.message || "Failed to fetch chats");
+                } finally {
+                    setIsUserChatsLoading(false);
+                }
             }
         };
 
@@ -123,22 +128,32 @@ export const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ childr
     useEffect(() => {
         const getMessages = async () => {
             if (!currentChat?._id) return;
+
             setIsMessagesloading(true);
             setMesssagesError(null);
 
-            const response = await getRequest(`${baseUrl}/messages/${currentChat._id}`);
+            try {
+                const token = Cookies.get("token");
 
-            if ((response as any).error) {
-                setMesssagesError((response as any).message);
-            } else {
-                setMessages(response as Message[]);
+                const response = await api.get(`/api/messages/${currentChat._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const messages = response.data as Message[];
+                setMessages(messages);
+            } catch (error: any) {
+                console.error("Error fetching messages:", error);
+                setMesssagesError(error.response?.data?.message || "Failed to fetch messages");
+            } finally {
+                setIsMessagesloading(false);
             }
-
-            setIsMessagesloading(false);
         };
 
         getMessages();
     }, [currentChat]);
+
 
     const sendTextMessage = useCallback(
         async (
@@ -151,11 +166,11 @@ export const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ childr
 
             const response = await postRequest(
                 `${baseUrl}/messages`,
-                JSON.stringify({
+                {
                     chatId: currentChatId,
                     senderId: sender._id,
                     text: textMessage,
-                })
+                }
             );
 
             if ((response as any).error) {
@@ -178,7 +193,7 @@ export const ChatContextProvider: React.FC<ChatContextProviderProps> = ({ childr
     const createChat = useCallback(async (firstId: string, secondId: string) => {
         const response = await postRequest(
             `${baseUrl}/chats`,
-            JSON.stringify({ firstId, secondId })
+            { firstId, secondId }
         );
 
         if ((response as any).error) {

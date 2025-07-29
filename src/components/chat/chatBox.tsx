@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import { ChatContext, ChatContextType } from '@/context/chatContext';
 import { useFetchRecipientsUser } from '@/hooks/useFetchRecipients';
+import { Input } from '../ui/input';
 
 interface Message {
     _id?: string;
@@ -26,12 +27,7 @@ export const ChatBox = () => {
     const userId = localStorage.getItem('userId') || '';
     const user: user = { _id: userId };
 
-    const {
-        currentChat,
-        messages,
-        isMessagesLoading,
-        sendTextMessage,
-    } = useContext(ChatContext) as ChatContextType
+    const { currentChat, messages, isMessagesLoading, sendTextMessage } = useContext(ChatContext) as ChatContextType
 
     const { recipientUser, isLoading, error } = useFetchRecipientsUser(currentChat, user);
     const [textMessage, setTextMessage] = useState<string>('');
@@ -57,34 +53,36 @@ export const ChatBox = () => {
     }
 
     return (
-        <div className='chat-box'>
-            <div className='chat-header'>
-                <strong>{recipientUser?.name}</strong>
+        <div className=''>
+            <div className=''>
+                <strong>{recipientUser?.username}</strong>
             </div>
-            <div>
-                {(messages || []).map((message, index) => (
-                    <div
-                        key={index}
-                        className={`mr-1 ${message?.senderId === user._id
-                            ? 'message self align-self-end flex-grow-0'
-                            : 'message align-self-start flex-grow-0'
-                            }`}
-                        style={{
-                            color: 'white',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                            maxWidth: '30%',
-                        }}
-                    >
-                        <span>{message.text}</span>
-                        <span className='message-footer'>
-                            {moment(message.createdAt).calendar()}
-                        </span>
-                    </div>
-                ))}
+            <div className="flex flex-col gap-2">
+                {(messages || []).map((message, index) => {
+                    const isOwnMessage = message?.senderId === user._id;
+                    return (
+                        <div
+                            key={index}
+                            className={`max-w-[100%] p-2 rounded-xl text-sm ${isOwnMessage
+                                    ? 'bg-blue-500 text-white ml-auto'
+                                    : 'bg-gray-200 text-black mr-auto'
+                                }`}
+                        >
+                            <p className="break-words">{message.text}</p>
+                            <span className="text-[10px] block mt-1 text-right text-gray-300">
+                                {moment(message.createdAt).calendar()}
+                            </span>
+                        </div>
+                    );
+                })}
             </div>
-            <div className='chat-input flex-grow-0'>
-                
+            <div className="flex !border-[#6fb793] border-1 gap-2 w-full  rounded-full bg-white text-black text-[12px] ">
+                <Input
+                    type="text"
+                    placeholder="Send Message"
+                    className=" text-[12px]  border-0 focus:border-0 focus:ring-0 focus-visible:ring-0 outline-none shadow-none"
+                    value={textMessage} onChange={(e) => setTextMessage(e.target.value)}
+                />
                 <button
                     className='send-btn'
                     onClick={() => sendTextMessage(textMessage, user, currentChat._id, setTextMessage)}
