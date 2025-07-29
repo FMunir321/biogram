@@ -1,9 +1,13 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ChatContext } from '../../context/chatContext';
-import { AuthContext } from '../../context/AuthContext';
-
+// import { AuthContext } from '../../context/AuthContext';
+interface user {
+    _id: string;
+}
 export const PotentialChats = () => {
-    const { user } = useContext(AuthContext)
+    // const { user } = useContext(AuthContext)
+    const userId = localStorage.getItem('userId') || '';
+    const user: user = { _id: userId };
     const { potentialChats, createChat } = useContext(ChatContext);
 
 

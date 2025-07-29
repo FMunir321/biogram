@@ -1,13 +1,17 @@
-import React from 'react'
-import { useFetchRecipientsUser } from '../../hooks/useFetchRecipients';
-import { Stack } from 'react-bootstrap';
-import avatar from '../../../public/avatar.svg';
 
-export const UserChat = ({ chat, user }) => {
+import { useFetchRecipientsUser } from '../../hooks/useFetchRecipients';
+// import { Stack } from 'react-bootstrap';
+import avatar from '../../../public/avatar.svg';
+interface UserChatProps {
+    chat: any;
+    user: any;
+}
+
+export const UserChat = ({ chat, user }: UserChatProps) => {
     const { recipientUser, error } = useFetchRecipientsUser(chat, user);
 
     return (
-        <Stack direction='horizontal' style={{ gap: '90px' }}
+        <div style={{ gap: '90px' }}
             className='user-chat align-items-center p-2 justify-content-between'
             role='button'>
             <div className='d-flex'>
@@ -24,6 +28,6 @@ export const UserChat = ({ chat, user }) => {
                 <div className='this-user-notifications'>3</div>
                 <span className='user-online'></span>
             </div>
-        </Stack>
+        </div>
     );
 }
