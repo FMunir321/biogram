@@ -126,6 +126,7 @@ const Profile = () => {
 
   return (
     <div className="flex p-4  flex-col items-center justify-center min-h-screen ">
+      
       <div
         className="relative bg-cover       bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
         style={{
@@ -133,7 +134,11 @@ const Profile = () => {
             ? `url("http://3.111.146.115:5000${userData.profileImage}")`
             : `url("${group}")`,
         }}
-      ></div>
+      >
+
+<div className="absolute bottom-0 left-0 w-full h-46 bg-gradient-to-b from-transparent to-black via-black/90 z-10" >
+            </div>
+      </div>
 
       <div className="inset-0  flex flex-col items-center justify-center mt-[-150px] z-10">
         <h2 className="text-2xl text-white font-bold">
