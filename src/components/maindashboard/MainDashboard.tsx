@@ -60,16 +60,28 @@ const MainDashboard = () => {
       console.error("API error:", error);
     }
   };
-
   const fetchUser = async () => {
+    const currentUserId=localStorage.getItem("userId")
+    if (!currentUserId) {
+      console.warn("No current user ID found in localStorage");
+      return;
+    }
     try {
       const token = Cookies.get("token");
+  
       const response = await api.get(`/api/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUsers(response.data.users || []);
+
+  
+      const allUsers = response.data.users || [];
+  
+      // Filter out the current user
+      const filteredUsers = allUsers.filter((user: User) => user._id !== currentUserId);
+  
+      setUsers(filteredUsers);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
