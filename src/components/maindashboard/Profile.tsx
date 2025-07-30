@@ -162,7 +162,7 @@ const Profile = () => {
               <div className="flex gap-2 justify-center pt-22">
                 <button
                   className={`px-4 py-2 ${
-                    activeTab === "shouts" ? " text-white" : "text-blue-500"
+                    activeTab === "shouts" ? " text-white" : "text-gray-300"
                   }`}
                   onClick={() => setActiveTab("shouts")}
                 >
@@ -170,7 +170,7 @@ const Profile = () => {
                 </button>
                 <button
                   className={`px-4 py-2 ${
-                    activeTab === "media" ? " text-white" : "text-blue-500"
+                    activeTab === "media" ? " text-white" : "text-gray-300"
                   }`}
                   onClick={() => setActiveTab("media")}
                 >
@@ -191,7 +191,7 @@ const Profile = () => {
                         <h1 className="text-white font-bold text-4xl">
                           No Shouts Yet!
                         </h1>
-                        <p className="text-gray-300">Shouts will appear here</p>
+                        <p className="text-gray-300">No shouts have been uploaded yet</p>
                       </>
                     ) : (
                       <Carousel
@@ -213,7 +213,7 @@ const Profile = () => {
                                       "/images/"
                                     )}`}
                                     alt="Shout"
-                                    className="w-full h-[90%] object-cover rounded-2xl"
+                                    className="w-full h-[90%] object-cover rounded-2xl text-white"
                                   />
                                 )}
                                 {shout.content && (
@@ -233,7 +233,7 @@ const Profile = () => {
                 )}
 
                 {activeTab === "media" && (
-                  <div className="text-center justify-center">
+                  <div className="text-center justify-center text-white">
                     {loadingMedia ? (
                       <p className="text-gray-300">Loading media...</p>
                     ) : mediaShouts.length === 0 ? (
@@ -241,7 +241,7 @@ const Profile = () => {
                         <h1 className="text-white font-bold text-4xl">
                           No Media Yet!
                         </h1>
-                        <p className="text-gray-300">Videos will appear here</p>
+                        <p className="text-gray-300">No media has been uploaded yet</p>
                       </>
                     ) : (
                       <Carousel

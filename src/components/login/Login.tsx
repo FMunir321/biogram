@@ -113,12 +113,12 @@ const Login = () => {
   position="top-right"
   reverseOrder={false}
 />
-    <div className="min-h-screen flex flex-col md:flex-row bg-white">
+    <div className="min-h-screen flex flex-col md:flex-row bg-white  h-[100vh] overflow-hidden">
       {/* Left Section (Images) */}
-      <div className="hidden md:flex md:w-1/2 p-0 md:p-6 justify-end items-center bg-white">
+      <div className="hidden md:flex md:w-1/2  justify-end items-center bg-white">
         <div className="flex gap-4 md:gap-10 w-full justify-end">
           <MotionCards people={people}  />
-          <div className="mt-12">
+          <div className="hidden xl:block mt-20">
           <MotionCards people={people} reverse={true}  />
           </div>
          

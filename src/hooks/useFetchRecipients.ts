@@ -13,6 +13,7 @@ interface User {
 interface RecipientUser {
     _id: string;
     username: string;
+    profileImage?: string;
     // Add other fields if needed
 }
 
