@@ -208,7 +208,7 @@ const AddSocialMediaPictureUpload = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight text-left">
               Welcome
               <br />
-              Alex!
+              {fullName}
             </h1>
 
             <p className="text-base md:text-xl text-white mb-2 text-left">
