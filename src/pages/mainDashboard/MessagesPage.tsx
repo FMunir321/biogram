@@ -248,7 +248,17 @@ const Messages = () => {
                 <li
                   key={user._id}
                   onClick={() => {
-                    createChat(userId, user._id);
+                    // Check if chat already exists with this user
+                    const existingChat = userChats?.find(
+                      chat => chat.members.includes(user._id)
+                    );
+                    if (existingChat) {
+                      updateCurrentChat(existingChat);
+                      setSearch(""); // Clear search after opening chat
+                    } else {
+                      createChat(userId, user._id);
+                      setSearch(""); // Clear search after creating chat
+                    }
                   }}
                   className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
