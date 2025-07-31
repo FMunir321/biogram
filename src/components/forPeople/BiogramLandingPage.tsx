@@ -31,7 +31,7 @@ const HeroSection: React.FC<{ name: string, handleNameInput: (name: string) => v
         {/* Left Column: Text & Form */}
         <div className="w-full md:w-[60%] z-10">
           <h1 className="text-[32px] sm:text-[45px] md:text-[80px] lg:text-[100px] text-center lg:text-left font-poppins font-extrabold leading-[1.1] tracking-tight text-black">
-            One link,123
+            One link,
             <br className="hidden sm:block text-center lg:text-left " />
             Endless possibilities.
           </h1>
