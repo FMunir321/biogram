@@ -97,7 +97,6 @@ const Login = () => {
       localStorage.setItem("isVerified", response.data.isVerified || "false");
 
       
-      console.log(response.data);
       setLoading(false);
       navigate("/otp");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

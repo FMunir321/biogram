@@ -60,10 +60,7 @@ const Otp = () => {
       const token = response.data.token;
 
       Cookies.set("token", token, { expires: 1 });
-      console.log("Verification Success:", response.data);
       const isVerified = localStorage.getItem("isVerified");
-      console.log("isVerified value:", isVerified); // Debug log to check actual value
-
       if (isVerified === "true") {
         toast.success("Verification successful");
         // Delay navigation to allow toast to be visible

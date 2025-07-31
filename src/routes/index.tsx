@@ -23,7 +23,6 @@ import Signup from "../pages/public/signup/SignUpPage";
 import Login from "../pages/public/Login/LoginPage";
 // import  searchpage  from "../pages/mainDashboard/SearchPage.tsx";
 import SearchPage from "../pages/mainDashboard/SearchPage";
-import { ChatContextProvider } from '../context/chatContext'
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
   <Layout>{children}</Layout>
 );
@@ -40,7 +39,6 @@ const RoutesComponent = () => {
     _id: userId,
   };
   return (
-    <ChatContextProvider user={user}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Forpeople />} />
@@ -93,7 +91,6 @@ const RoutesComponent = () => {
           element={<ProtectedRoute element={<Settings />} />}
         />
       </Routes>
-    </ChatContextProvider>
   );
 };
 

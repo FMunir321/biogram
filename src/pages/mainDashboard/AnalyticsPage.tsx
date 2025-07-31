@@ -249,17 +249,10 @@ useEffect(() => {
         </div>
         {/* Map Section */}
         <div className="relative bg-[#f1f8f4 rounded-2xl p-4 md:p-6">
-          <WorldAnalyticsMap />
+          <WorldAnalyticsMap profileViews={profileViews} linkClicks={linkClicks} />
         </div>
         {/* Graph Section */}
         <div className="relative bg-[#f1f8f4] rounded-2xl p-4 md:p-6 overflow-hidden border border-[#7cc5a1]">
-          {/* Chart Frame as background
-          <img
-            src={analyticsframe}
-            alt="Analytics Frame"
-            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
-            style={{ borderRadius: "1rem" }}
-          /> */}
           <div className="relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
               <div>
