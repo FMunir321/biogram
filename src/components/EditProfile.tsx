@@ -96,6 +96,7 @@ const EditProfile = () => {
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  setSelectedImages(selectedImages)
   // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
   const [email, setEmail] = useState("");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import api, { baseUrl, getRequest } from '../service/api';
+import api from '../service/api';
 import Cookies from 'js-cookie';
 
 interface Chat {

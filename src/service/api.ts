@@ -30,22 +30,22 @@ export const postRequest = async <T>(
   return data;
 };
 
-export const getRequest = async <T>(
-  url: string
-): Promise<T | { error: true; message: string }> => {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+// export const getRequest = async <T>(
+//   url: string
+// ): Promise<T | { error: true; message: string }> => {
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   });
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  if (!response.ok) {
-    const message = data?.message || data || 'An error occurred';
-    return { error: true, message };
-  }
+//   if (!response.ok) {
+//     const message = data?.message || data || 'An error occurred';
+//     return { error: true, message };
+//   }
 
-  return data;
-};
+//   return data;
+// };
