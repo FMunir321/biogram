@@ -136,7 +136,7 @@ const Messages = () => {
   const createChat = useCallback(async (firstId: string, secondId: string) => {
     try {
       const response = await postRequest(
-        `${baseUrl}/chats`,
+        `${baseUrl}/api/chats`,
         { firstId, secondId }
       );
 
@@ -169,7 +169,7 @@ const Messages = () => {
 
       try {
         const response = await postRequest(
-          `${baseUrl}/messages`,
+          `${baseUrl}/api/messages`,
           {
             chatId: currentChatId,
             senderId: sender._id,
