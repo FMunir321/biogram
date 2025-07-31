@@ -32,7 +32,7 @@ interface Chat {
 }
 
 const Messages = () => {
-  const userId = localStorage.getItem('userId') || '';
+  const userId = localStorage.getItem("userId") || "";
   const user: User = { _id: userId };
 
   // State for users and search
@@ -101,7 +101,8 @@ const Messages = () => {
       setUserChats(chats);
     } catch (error: unknown) {
       console.error("Error fetching user chats:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to fetch chats";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch chats";
       setUserChatsError(errorMessage);
     } finally {
       setIsUserChatsLoading(false);
@@ -126,7 +127,8 @@ const Messages = () => {
       setMessages(messages);
     } catch (error: unknown) {
       console.error("Error fetching messages:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to fetch messages";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch messages";
       setMessagesError(errorMessage);
     } finally {
       setIsMessagesLoading(false);
@@ -135,10 +137,10 @@ const Messages = () => {
 
   const createChat = useCallback(async (firstId: string, secondId: string) => {
     try {
-      const response = await postRequest(
-        `${baseUrl}/api/chats`,
-        { firstId, secondId }
-      );
+      const response = await postRequest(`${baseUrl}/api/chats`, {
+        firstId,
+        secondId,
+      });
 
       if ((response as { error?: boolean }).error) {
         console.log("Error creating chat", response);
@@ -168,17 +170,17 @@ const Messages = () => {
       if (!textMessage.trim()) return;
 
       try {
-        const response = await postRequest(
-          `${baseUrl}/api/messages`,
-          {
-            chatId: currentChatId,
-            senderId: sender._id,
-            text: textMessage,
-          }
-        );
+        const response = await postRequest(`${baseUrl}/api/messages`, {
+          chatId: currentChatId,
+          senderId: sender._id,
+          text: textMessage,
+        });
 
         if ((response as { error?: boolean; message?: string }).error) {
-          console.error("Error sending message:", (response as { message?: string }).message);
+          console.error(
+            "Error sending message:",
+            (response as { message?: string }).message
+          );
           return;
         }
 
@@ -193,15 +195,18 @@ const Messages = () => {
   );
 
   // Filter users based on search
-  const filteredUsers = search.trim() === "" ? [] : users.filter(user => {
-    const value = search.toLowerCase();
-    return (
-      (user.fullName ?? "").toLowerCase().includes(value) ||
-      (user.username ?? "").toLowerCase().includes(value) ||
-      (user.email ?? "").toLowerCase().includes(value) ||
-      (user.name ?? "").toLowerCase().includes(value)
-    );
-  });
+  const filteredUsers =
+    search.trim() === ""
+      ? []
+      : users.filter((user) => {
+          const value = search.toLowerCase();
+          return (
+            (user.fullName ?? "").toLowerCase().includes(value) ||
+            (user.username ?? "").toLowerCase().includes(value) ||
+            (user.email ?? "").toLowerCase().includes(value) ||
+            (user.name ?? "").toLowerCase().includes(value)
+          );
+        });
 
   return (
     <div
@@ -209,42 +214,51 @@ const Messages = () => {
       style={{ backgroundImage: `url(${bground})` }}
     >
       {/* Sidebar */}
-      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent overflow-y-auto h-[50vh] md:h-auto">
-        <h1 className="text-2xl md:text-[32px] font-semibold text-black mb-3 md:mb-0">Message</h1>
-        
+      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent h-[50vh] md:h-auto relative">
+        <h1 className="text-2xl md:text-[32px] font-semibold text-black mb-3">
+          Message
+        </h1>
         {/* Searchbar */}
-        <div className="flex border border-[#6fb793] mb-4 gap-2 w-full rounded-full bg-gradient-to-r from-[#dfece2] to-[#d5dad9] text-black text-lg md:text-[20px] font-medium">
+        <div className="flex border border-[#6fb793] gap-2 w-full rounded-full bg-gradient-to-r from-[#dfece2] to-[#d5dad9] text-black text-lg md:text-[20px] font-medium relative z-20">
           <Input
             type="text"
             placeholder="Search Person name here"
             className="py-4 md:py-7 m-1 text-lg md:text-[20px] font-medium border-0 focus:border-0 focus:ring-0 focus-visible:ring-0 outline-none shadow-none"
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <Button className="py-5 md:py-7 px-4 md:px-5 m-1 bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white rounded-full text-xs md:text-sm font-semibold whitespace-nowrap hover:opacity-90 transition-opacity">
             Search
           </Button>
         </div>
 
-        {/* Search Results */}
+        {/* Search Results Overlay */}
         {search.trim() !== "" && (
-          <ul className="max-h-60 overflow-y-auto" style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
+          <ul
+            className="absolute left-0 right-0 mt-2 top-[120px] md:top-[135px] mx-4 bg-white rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto"
+            style={{ listStyle: "none", padding: 2 }}
+          >
             {filteredUsers.length === 0 ? (
-              <li style={{ color: "#888", textAlign: "center" }}>No users found.</li>
+              <li style={{ color: "#888", textAlign: "center" }}>
+                No users found.
+              </li>
             ) : (
               filteredUsers.map((user) => (
+                <>
                 <li
                   key={user._id}
                   onClick={() => {
                     createChat(userId, user._id);
                   }}
-                  className="flex items-center mb-3 md:mb-4 bg-white rounded-lg shadow p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
+                  className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
                   <img
                     src={user.profileImage || "/public/assets/avatar.png"}
                     alt={user.username || "avatar"}
                     className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png"; }}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png";
+                    }}
                   />
                   <div className="flex flex-col min-w-0">
                     <div className="font-semibold text-sm md:text-base truncate max-w-[120px] md:max-w-[160px]">
@@ -255,6 +269,8 @@ const Messages = () => {
                     </div>
                   </div>
                 </li>
+                <hr/>
+                </>
               ))
             )}
           </ul>
@@ -266,12 +282,20 @@ const Messages = () => {
             <div>
               <div className="messsages-box flex-grow-0 pe-3 hover:cursor-pointer max-h-72 md:max-h-[60vh] overflow-y-auto">
                 {isUserChatsLoading && <p>Loading chats...</p>}
-                {userChatsError && <p className="text-red-500">{userChatsError}</p>}
-                {Array.isArray(userChats) && userChats.map((chat, index) => (
-                  <div key={index} onClick={() => { updateCurrentChat(chat) }}>
-                    <UserChat chat={chat} user={user} />
-                  </div>
-                ))}
+                {userChatsError && (
+                  <p className="text-red-500">{userChatsError}</p>
+                )}
+                {Array.isArray(userChats) &&
+                  userChats.map((chat, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        updateCurrentChat(chat);
+                      }}
+                    >
+                      <UserChat chat={chat} user={user} />
+                    </div>
+                  ))}
               </div>
             </div>
           )}
@@ -281,7 +305,7 @@ const Messages = () => {
       {/* Chat area */}
       <div className="w-full md:w-[63%] border-t md:border-t-0 md:border-l border-[#b6c1bc] flex items-center min-h-[50vh] md:min-h-0">
         <div className="w-full h-full">
-          <ChatBox 
+          <ChatBox
             currentChat={currentChat}
             messages={messages}
             isMessagesLoading={isMessagesLoading}
