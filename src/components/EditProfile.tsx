@@ -18,6 +18,7 @@ import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
 import { HiDotsVertical } from "react-icons/hi";
+import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,7 +57,11 @@ interface GalleryImage {
   _id: string;
   imageUrl: string;
 }
-
+type UploadedMedia = {
+  id: string;
+  url: string;
+  isVideo: boolean;
+};
 const EditProfile = () => {
   // const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
@@ -106,6 +111,7 @@ const EditProfile = () => {
   const [shoutsToggle, setShoutsToggle] = useState(false);
   const [isAddBio, setIsAddBio] = useState(false);
   const [contactInfo, setContactInfo] = useState(false);
+  const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
   const sections = [
     {
       heading: "Link",
@@ -652,18 +658,139 @@ const EditProfile = () => {
       return false;
     }
   };
+
+  // postshout
+  const fetchShouts = async () => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      const res = await api.get(`/api/shouts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const shouts = res.data?.shouts || [];
+
+      const media = shouts.map((shout: any) => {
+        let url = shout.videoUrl || "";
+
+        // Agar relative URL hai to full path banao
+        if (!url.startsWith("http")) {
+          url = `http://3.111.146.115:5000${url}`;
+        }
+
+        // Agar isMedia false hai (image), aur path videos ka hai, to fix karo
+        if (!shout.isMedia && url.includes("/videos/")) {
+          url = url.replace("/videos/", "/images/");
+        }
+
+        return {
+          id: shout._id,
+          url,
+          isVideo: shout.isMedia, // true = video, false = image
+        };
+      });
+
+      setUploadedMedia(media);
+    } catch (err) {
+      console.error("Failed to fetch shouts:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchShouts();
+  }, []);
+
+  // ✅ POST image/video
+  const postShout = async (
+    file: File,
+    isMedia: boolean = false
+  ): Promise<any> => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      const formData = new FormData();
+      formData.append("isMedia", String(isMedia)); // false=image, true=video
+      formData.append("file", file);
+
+      const response = await api.post("/api/shouts/create", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error posting shout:", error);
+      return null;
+    }
+  };
+
+  // Upload Image
+  const handleImageUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        const posted = await postShout(file, false); // false = image
+        if (posted) await fetchShouts();
+      }
+    };
+    input.click();
+  };
+
+  // Upload Video
+  const handleVideoUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        const posted = await postShout(file, true); // true = video
+        if (posted) await fetchShouts();
+      }
+    };
+    input.click();
+  };
+
+  // Delete Shout
+  const deleteShout = async (id: string) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      await api.delete(`/api/shouts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      await fetchShouts();
+    } catch (error) {
+      console.error("Failed to delete shout:", error);
+    }
+  };
+
+  const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">("shots");
   return (
     <div className="w-full h-[calc(100vh-25px)] mx-auto  ">
       {/* Mobile View */}
 
-      
-        <div
-          className="bg-white rounded-[32px] bg-cover bg-center "
-          style={{
-            backgroundImage: `url("${bground}")`,
-          }}
-        >
-          <div className="hidden">
+
+      <div
+        className="bg-white rounded-[32px] bg-cover bg-center "
+        style={{
+          backgroundImage: `url("${bground}")`,
+        }}
+      >
+        <div className="hidden">
           <div className="bg-gradient-to-r from-pink-100 to-pink-50 rounded-[24px] p-4">
             <div className="text-center">
               <div className="relative w-[120px] h-[120px] mx-auto mb-4">
@@ -1280,14 +1407,123 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                <div className="flex flex-col items-center justify-between pb-6 px-6">
+
+                {/* Top Tabs */}
+                <div className="flex items-end justify-center p-4 min-w-[238px] ">
+                  <div
+                    className="p-[2px] rounded-full inline-block"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #FFFFFF 0%, rgba(255,255,255,0) 100%)",
+                    }}
+                  >
+                    <div
+                      className="inline-flex bg-white/20 backdrop-blur-sm rounded-full p-1 w-full h-full "
+                      style={{ backgroundClip: "padding-box" }}
+                    >
+                      <button
+                        onClick={() => setShoutMediaTab("shots")}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "shots"
+                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                          : "hover:bg-white/10"
+                          }`}
+                      >
+                        Shots
+                      </button>
+                      <button
+                        onClick={() => setShoutMediaTab("media")}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "media"
+                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                          : "hover:bg-white/10"
+                          }`}
+                      >
+                        Media
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {shoutMediaTab === "shots" ? (
+                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                    {uploadedMedia
+                      .filter((item) => !item.isVideo)
+                      .map((item, index) => (
+                        <div
+                          key={item.id}
+                          className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl h-[226px] flex items-center justify-center relative"
+                        >
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                          />
+                          <img
+                            src={item.url}
+                            alt={`Shout ${index}`}
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                          />
+                        </div>
+                      ))}
+                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                      {Array.isArray(uploadedMedia) && uploadedMedia.length < 5 ? (
+                        <div
+                          className="flex flex-col items-center gap-4 cursor-pointer"
+                          onClick={handleImageUpload}
+                        >
+                          <img
+                            src={rightsideemojiimage}
+                            alt="Right Side Emoji"
+                            className="w-[88px] h-[88px]"
+                          />
+                          <p className="text-black text-lg">Upload shouts</p>
+                        </div>
+                      ) :(
+                      <p></p>
+                      ) }
+                    </div>
+                  </div>
+                ) : (
+                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                    {uploadedMedia
+                      .filter((item) => item.isVideo)
+                      .map((item) => (
+                        <div className="relative">
+                          <RxCross2
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            onClick={() => deleteShout(item.id)}
+                            style={{ pointerEvents: 'auto' }} // Ensure the icon can receive clicks
+                          />
+                          <video
+                            src={item.url}
+                            controls
+                            className="w-[242px] h-[226px] rounded-2xl object-cover"
+                            style={{ pointerEvents: 'none' }} // Disable clicks on the video
+                          />
+                        </div>
+                      ))}
+
+                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                      <div
+                        className="flex flex-col items-center gap-4 cursor-pointer"
+                        onClick={handleVideoUpload}
+                      >
+                        <img
+                          src={rightsideemojiimage}
+                          alt="Right Side Emoji"
+                          className="w-[88px] h-[88px]"
+                        />
+                        <p className="text-black text-lg">Upload Media</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* <div className="flex flex-col items-center justify-between pb-6 px-6">
                   <h1 className="text-[40px] font-bold text-black">
                     No shouts yet!
                   </h1>
                   <p className="text-[11px] font-normal text-black">
                     Shouts posted by alex james will apperar here
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
