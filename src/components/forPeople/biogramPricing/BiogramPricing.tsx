@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Info } from "lucide-react";
 import {
   Card,
@@ -40,6 +40,7 @@ interface PricingCardProps {
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
+  const [linkCount, setLinkCount] = useState(25);
   return (
     <Card
       className={`border border-gray-300 rounded-[46px] h-full w-[433px] bg-[#b5efd2] shadow-lg relative`}
@@ -76,9 +77,57 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan }) => {
         <ul className="space-y-3">
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              {feature.name === "Up to" ? (
-                <div className="bg-[#7ECFA7] text-white px-3 py-1 rounded-md text-sm font-medium">
-                  25 Links
+              {feature.name.includes("Up to") && plan.title === "Agency" ? (
+
+                <div className="flex items-center space-x-2">
+
+                  <span className="text-sm font-semibold text-gray-800">Up to</span>
+
+                  <select
+
+                    className="px-3 py-1 text-sm rounded-md bg-[#7ECFA7] text-white focus:outline-none"
+
+                    value={linkCount}
+
+                    onChange={(e) => setLinkCount(Number(e.target.value))}
+
+                  >
+
+                    {[25, 50, 100, 200, 500].map((num) => (
+
+                      <option key={num} value={num}>
+
+                        {num} Links
+
+                      </option>
+
+                    ))}
+
+                  </select>
+
+                  {feature.description && (
+
+                    <TooltipProvider delayDuration={100}>
+
+                      <Tooltip>
+
+                        <TooltipTrigger asChild>
+
+                          <Info className="h-4 w-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+
+                        </TooltipTrigger>
+
+                        <TooltipContent side="right" className="max-w-[300px]">
+
+                          <p className="text-sm text-white">{feature.description}</p>
+
+                        </TooltipContent>
+
+                      </Tooltip>
+
+                    </TooltipProvider>
+
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center">
