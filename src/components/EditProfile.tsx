@@ -847,7 +847,7 @@ const EditProfile = () => {
                 {/* Custom Links */}
                 <div
                   className="bg-white rounded-xl p-3 flex items-center justify-between cursor-pointer"
-                  // onClick={() => setIsCustomLinksOpen(true)}
+                // onClick={() => setIsCustomLinksOpen(true)}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -970,16 +970,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        isBioEnabled
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1023,16 +1021,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        featureLinkToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1178,16 +1174,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        merchToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1276,16 +1270,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        galleryToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1358,16 +1350,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        contactInfo
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactInfo
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1435,16 +1425,14 @@ const EditProfile = () => {
                       }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
-                        shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                      }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
-                        shoutsToggle
-                          ? "translate-x-6 bg-[#72bb96]"
-                          : "bg-[#d1d5db]"
-                      }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
+                        ? "translate-x-6 bg-[#72bb96]"
+                        : "bg-[#d1d5db]"
+                        }`}
                     ></div>
                   </label>
                 </div>
@@ -1464,21 +1452,19 @@ const EditProfile = () => {
                     >
                       <button
                         onClick={() => setShoutMediaTab("shots")}
-                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${
-                          shoutMediaTab === "shots"
-                            ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
-                            : "hover:bg-white/10"
-                        }`}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "shots"
+                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                          : "hover:bg-white/10"
+                          }`}
                       >
                         Shots
                       </button>
                       <button
                         onClick={() => setShoutMediaTab("media")}
-                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${
-                          shoutMediaTab === "media"
-                            ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
-                            : "hover:bg-white/10"
-                        }`}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "media"
+                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                          : "hover:bg-white/10"
+                          }`}
                       >
                         Media
                       </button>
@@ -1506,8 +1492,9 @@ const EditProfile = () => {
                           />
                         </div>
                       ))}
-                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      {Array.isArray(uploadedMedia) && shoutCount < 5 ? (
+
+                    {Array.isArray(uploadedMedia) && shoutCount < 5 ? (
+                      <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
                         <div
                           className="flex flex-col items-center gap-4 cursor-pointer"
                           onClick={handleImageUpload}
@@ -1519,13 +1506,14 @@ const EditProfile = () => {
                           />
                           <p className="text-black text-lg">Upload shouts</p>
                         </div>
-                      ) : (
-                        <p></p>
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <p></p>
+                    )}
+
                   </div>
                 ) : (
-                  <div className="  flex flex-col gap-4 mb-6 w-full       space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
+                  <div className="  flex flex-col gap-4 mb-6 w-full space-y-4 max-w-[242px] h-[600px] overflow-y-auto scrollbar-hide">
                     {uploadedMedia
                       .filter((item) => item.isVideo)
                       .map((item) => (
@@ -1542,24 +1530,26 @@ const EditProfile = () => {
                         </div>
                       ))}
 
-                    <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                    {Array.isArray(uploadedMedia) && mediaCount < 5 ? (
-                      <div
-                        className="flex flex-col items-center gap-4 cursor-pointer"
-                        onClick={handleVideoUpload}
-                      >
-                        <img
-                          src={rightsideemojiimage}
-                          alt="Right Side Emoji"
-                          className="w-[88px] h-[88px]"
-                        />
-                        <p className="text-black text-lg">Upload Media</p>
+
+                    {Array.isArray(uploadedMedia) && mediaCount < 1 ? (
+                      <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                        <div
+                          className="flex flex-col items-center gap-4 cursor-pointer"
+                          onClick={handleVideoUpload}
+                        >
+                          <img
+                            src={rightsideemojiimage}
+                            alt="Right Side Emoji"
+                            className="w-[88px] h-[88px]"
+                          />
+                          <p className="text-black text-lg">Upload Media</p>
+                        </div>
                       </div>
-                       ) : (
-                        <p></p>
-                      )}
-                    </div>
-                    
+                    ) : (
+                      <p></p>
+                    )}
+
+
                   </div>
                 )}
                 {/* <div className="flex flex-col items-center justify-between pb-6 px-6">
@@ -1736,21 +1726,19 @@ const EditProfile = () => {
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Solid"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Solid
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
-                            activeTab === "Gradient"
-                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                              : "hover:bg-white/10"
-                          }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
+                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                            : "hover:bg-white/10"
+                            }`}
                         >
                           Gradient
                         </button>
