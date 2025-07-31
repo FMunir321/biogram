@@ -157,21 +157,13 @@ const EditProfile = () => {
           return;
         }
 
-        const res = await fetch(
-          `http://3.111.146.115:5000/api/user/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-          }
-        );
+        const res = await api.get(`/api/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-
-        const data = await res.json();
+        const data = res.data;
         setIsBioEnabled(data?.visibilitySettings?.bio || false);
         setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
         setMerchToggle(data?.visibilitySettings?.merch || false);
@@ -469,7 +461,6 @@ const EditProfile = () => {
       Array.from(files).forEach((file) => {
         // const previewUrl = URL.createObjectURL(file);
         setSelectedImages((prev) => [...prev, file]);
-        console.log("Selected file:", selectedImages);
         // setImagePreviews((prev) => [...prev, previewUrl]);
         handleUpload(file);
       });
@@ -671,6 +662,9 @@ const EditProfile = () => {
 
       const shouts = res.data?.shouts || [];
 
+      // Calculate counts for shouts and media
+      calculateShoutAndMediaCounts(shouts);
+
       const media = shouts.map((shout: any) => {
         let url = shout.videoUrl || "";
 
@@ -778,11 +772,34 @@ const EditProfile = () => {
     }
   };
 
-  const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">("shots");
+  const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">(
+    "shots"
+  );
+
+  // Count variables for shouts and media
+  const [shoutCount, setShoutCount] = useState(0);
+  const [mediaCount, setMediaCount] = useState(0);
+
+  // Function to calculate counts from shouts data
+  const calculateShoutAndMediaCounts = (shouts: any[]) => {
+    let shoutsCount = 0;
+    let mediaCount = 0;
+
+    shouts.forEach((shout: any) => {
+      if (shout.isMedia === true) {
+        mediaCount++;
+      } else {
+        shoutsCount++;
+      }
+    });
+
+    setShoutCount(shoutsCount);
+    setMediaCount(mediaCount);
+  };
+
   return (
     <div className="w-full h-[calc(100vh-25px)] mx-auto  ">
       {/* Mobile View */}
-
 
       <div
         className="bg-white rounded-[32px] bg-cover bg-center "
@@ -830,7 +847,7 @@ const EditProfile = () => {
                 {/* Custom Links */}
                 <div
                   className="bg-white rounded-xl p-3 flex items-center justify-between cursor-pointer"
-                // onClick={() => setIsCustomLinksOpen(true)}
+                  // onClick={() => setIsCustomLinksOpen(true)}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -939,10 +956,7 @@ const EditProfile = () => {
             <div className="bg-[#dff3e9]/60 border rounded-[24px] border-[#7ecfa7]">
               <div className="">
                 <div className="flex items-center justify-between rounded-[24px] p-6">
-                  <label
-                    className="text-[32px] font-bold text-black"
-
-                  >
+                  <label className="text-[32px] font-bold text-black">
                     Bio
                   </label>
                   <label className="relative cursor-pointer">
@@ -951,17 +965,21 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={isBioEnabled}
-                      onChange={() => handleToggle("bio", isBioEnabled, setIsBioEnabled)}
+                      onChange={() =>
+                        handleToggle("bio", isBioEnabled, setIsBioEnabled)
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        isBioEnabled ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${isBioEnabled
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        isBioEnabled
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -996,17 +1014,25 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={featureLinkToggle}
-                      onChange={() => handleToggle("featuredLinks", featureLinkToggle, setFeatureLinkToggle)}
+                      onChange={() =>
+                        handleToggle(
+                          "featuredLinks",
+                          featureLinkToggle,
+                          setFeatureLinkToggle
+                        )
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        featureLinkToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${featureLinkToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        featureLinkToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -1147,25 +1173,28 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={merchToggle}
-                      onChange={() => handleToggle("merch", merchToggle, setMerchToggle)}
+                      onChange={() =>
+                        handleToggle("merch", merchToggle, setMerchToggle)
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        merchToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${merchToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        merchToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
                 <>
                   {merchData.map((item, index) => (
-                    <div className="flex justify-center px-4">
+                    <div key={item._id} className="flex justify-center px-4">
                       <div
-                        key={index}
                         className="flex flex-col md:flex-row w-full max-w-md items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] rounded-2xl p-4 shadow-lg space-y-4 md:space-y-0 mb-4"
                       >
                         <div className="text-center md:text-left">
@@ -1242,17 +1271,21 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={galleryToggle}
-                      onChange={() => handleToggle("gallery", galleryToggle, setGalleryToggle)}
+                      onChange={() =>
+                        handleToggle("gallery", galleryToggle, setGalleryToggle)
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        galleryToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${galleryToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        galleryToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -1320,17 +1353,21 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={contactInfo}
-                      onChange={() => handleToggle("contactInfo", contactInfo, setContactInfo)}
+                      onChange={() =>
+                        handleToggle("contactInfo", contactInfo, setContactInfo)
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        contactInfo ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${contactInfo
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        contactInfo
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -1393,17 +1430,21 @@ const EditProfile = () => {
                       id="bio-toggle"
                       className="sr-only"
                       checked={shoutsToggle}
-                      onChange={() => handleToggle("shouts", shoutsToggle, setShoutsToggle)}
+                      onChange={() =>
+                        handleToggle("shouts", shoutsToggle, setShoutsToggle)
+                      }
                     />
                     <div
-                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
-                        }`}
+                      className={`block w-14 h-8 rounded-full bg-white transition-colors duration-300 ${
+                        shoutsToggle ? "bg-[#72bb96]" : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                     <div
-                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${shoutsToggle
-                        ? "translate-x-6 bg-[#72bb96]"
-                        : "bg-[#d1d5db]"
-                        }`}
+                      className={`dot absolute left-1 top-1 w-6 h-6  rounded-full transition-transform duration-300 ${
+                        shoutsToggle
+                          ? "translate-x-6 bg-[#72bb96]"
+                          : "bg-[#d1d5db]"
+                      }`}
                     ></div>
                   </label>
                 </div>
@@ -1423,19 +1464,21 @@ const EditProfile = () => {
                     >
                       <button
                         onClick={() => setShoutMediaTab("shots")}
-                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "shots"
-                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
-                          : "hover:bg-white/10"
-                          }`}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${
+                          shoutMediaTab === "shots"
+                            ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                            : "hover:bg-white/10"
+                        }`}
                       >
                         Shots
                       </button>
                       <button
                         onClick={() => setShoutMediaTab("media")}
-                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${shoutMediaTab === "media"
-                          ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
-                          : "hover:bg-white/10"
-                          }`}
+                        className={`px-4 md:px-6 py-3 rounded-full text-[20px] font-normal ${
+                          shoutMediaTab === "media"
+                            ? "bg-gradient-to-r from-[#7ECFA7] to-[#53886C]"
+                            : "hover:bg-white/10"
+                        }`}
                       >
                         Media
                       </button>
@@ -1464,7 +1507,7 @@ const EditProfile = () => {
                         </div>
                       ))}
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
-                      {Array.isArray(uploadedMedia) && uploadedMedia.length < 5 ? (
+                      {Array.isArray(uploadedMedia) && shoutCount < 5 ? (
                         <div
                           className="flex flex-col items-center gap-4 cursor-pointer"
                           onClick={handleImageUpload}
@@ -1476,9 +1519,9 @@ const EditProfile = () => {
                           />
                           <p className="text-black text-lg">Upload shouts</p>
                         </div>
-                      ) :(
-                      <p></p>
-                      ) }
+                      ) : (
+                        <p></p>
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -1486,22 +1529,21 @@ const EditProfile = () => {
                     {uploadedMedia
                       .filter((item) => item.isVideo)
                       .map((item) => (
-                        <div className="relative">
+                        <div key={item.id} className="relative">
                           <RxCross2
-                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition"
+                            className="absolute top-2 right-2 bg-gray-200 text-red-600 p-1 rounded-full w-6 h-6 cursor-pointer hover:bg-gray-300 transition z-10"
                             onClick={() => deleteShout(item.id)}
-                            style={{ pointerEvents: 'auto' }} // Ensure the icon can receive clicks
                           />
                           <video
                             src={item.url}
                             controls
                             className="w-[242px] h-[226px] rounded-2xl object-cover"
-                            style={{ pointerEvents: 'none' }} // Disable clicks on the video
                           />
                         </div>
                       ))}
 
                     <div className="bg-[#FFFFFF40] backdrop-blur-sm rounded-2xl p-6 h-[226px] flex items-center justify-center">
+                    {Array.isArray(uploadedMedia) && mediaCount < 5 ? (
                       <div
                         className="flex flex-col items-center gap-4 cursor-pointer"
                         onClick={handleVideoUpload}
@@ -1513,7 +1555,11 @@ const EditProfile = () => {
                         />
                         <p className="text-black text-lg">Upload Media</p>
                       </div>
+                       ) : (
+                        <p></p>
+                      )}
                     </div>
+                    
                   </div>
                 )}
                 {/* <div className="flex flex-col items-center justify-between pb-6 px-6">
@@ -1538,17 +1584,18 @@ const EditProfile = () => {
 
             <div className="flex flex-col space-y-4 m-4">
               {sections.map((section, index) => (
-                <div key={index} onClick={() => {
-                  if (section.heading === 'E commerce') {
-                    setIsAddMerch(true);
-                  } else if (section.heading === 'Link') {
-                    setIsBigThumbnailOpen(true);
-                  }
-                }}>
+                <div
+                  key={index}
+                  onClick={() => {
+                    if (section.heading === "E commerce") {
+                      setIsAddMerch(true);
+                    } else if (section.heading === "Link") {
+                      setIsBigThumbnailOpen(true);
+                    }
+                  }}
+                >
                   <h1>{section.heading}</h1>
-                  <div
-                    className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50"
-                  >
+                  <div className="w-full flex items-center justify-between bg-gradient-to-r from-[#98e6c3] to-[#4a725f] p-4 rounded-xl border shadow-sm cursor-pointer hover:bg-gray-50">
                     <div className="flex items-center gap-3">
                       <img src={section.image} alt={section.title} />
                       <div>
@@ -1689,19 +1736,21 @@ const EditProfile = () => {
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
-                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                            : "hover:bg-white/10"
-                            }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
+                            activeTab === "Solid"
+                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                              : "hover:bg-white/10"
+                          }`}
                         >
                           Solid
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
-                            ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
-                            : "hover:bg-white/10"
-                            }`}
+                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${
+                            activeTab === "Gradient"
+                              ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
+                              : "hover:bg-white/10"
+                          }`}
                         >
                           Gradient
                         </button>

@@ -290,7 +290,7 @@ const Messages = () => {
         <div className="mt-6 md:mt-9">
           {(userChats?.length ?? 0) < 1 ? null : (
             <div>
-              <div className="messsages-box flex-grow-0 pe-3 hover:cursor-pointer max-h-72 md:max-h-[60vh] overflow-y-auto">
+              <div className="messsages-box flex-grow-0 pe-3 hover:cursor-pointer  max-h-[77vh] overflow-y-auto">
                 {isUserChatsLoading && <p>Loading chats...</p>}
                 {userChatsError && (
                   <p className="text-red-500">{userChatsError}</p>
