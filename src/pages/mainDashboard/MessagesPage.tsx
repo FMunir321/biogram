@@ -5,7 +5,8 @@ import { ChatBox } from "@/components/chat/chatBox";
 import { UserChat } from "@/components/chat/UserChat";
 import Cookies from "js-cookie";
 import api, { baseUrl, postRequest } from "@/service/api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
+import websocketService, { WebSocketMessage } from "@/service/websocket";
 
 // =================== Interfaces ===================
 
@@ -50,6 +51,12 @@ const Messages = () => {
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
 
+  // WebSocket state
+  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
+  const [connectionInfo, setConnectionInfo] = useState<{ connected: boolean; readyState: number | undefined; url: string | undefined } | null>(null);
+  const messageHandlerRef = useRef<string | null>(null);
+  const connectionHandlerRef = useRef<string | null>(null);
+
   // Fetch all users
   useEffect(() => {
     fetchUsers();
@@ -68,6 +75,95 @@ const Messages = () => {
       fetchMessages();
     }
   }, [currentChat]);
+
+  // Debug function to check WebSocket connection
+  const checkWebSocketConnection = () => {
+    const info = websocketService.getConnectionInfo();
+    setConnectionInfo(info);
+    console.log('WebSocket connection info:', info);
+  };
+
+  // Manual connection test
+  const testWebSocketConnection = () => {
+    console.log('Manually testing WebSocket connection...');
+    websocketService.connect();
+    setTimeout(() => {
+      checkWebSocketConnection();
+    }, 1000);
+  };
+
+  // WebSocket connection and message handling
+  useEffect(() => {
+    // Set up connection handler
+    connectionHandlerRef.current = websocketService.onConnectionChange((connected) => {
+      setIsWebSocketConnected(connected);
+      console.log('WebSocket connection status:', connected);
+      checkWebSocketConnection();
+    });
+
+    // Set up message handler
+    messageHandlerRef.current = websocketService.onMessage((message: WebSocketMessage) => {
+      console.log('Received WebSocket message:', message);
+      
+      if (message.type === 'message' && message.data.message) {
+        const newMessage = message.data.message as Message;
+        
+        // Add new message to current chat if it matches
+        if (currentChat && newMessage.chatId === currentChat._id) {
+          setMessages((prev) => {
+            if (!prev) return [newMessage];
+            
+            // Check if message already exists
+            const exists = prev.some(msg => msg._id === newMessage._id);
+            if (exists) return prev;
+            
+            return [...prev, newMessage];
+          });
+        }
+        
+        // Update chat list to show latest message
+        setUserChats((prev) => {
+          if (!prev) return prev;
+          
+          return prev.map(chat => {
+            if (chat._id === newMessage.chatId) {
+              // Move this chat to the top (you might want to add a lastMessage field to Chat interface)
+              return chat;
+            }
+            return chat;
+          });
+        });
+      }
+      
+      // Handle typing indicators (they will be handled by ChatBox component)
+      if (message.type === 'typing') {
+        console.log('Typing indicator received:', message.data);
+      }
+    });
+
+    // Connect to WebSocket
+    websocketService.connect();
+
+    // Initialize connection status
+    setIsWebSocketConnected(websocketService.isConnected());
+
+    // Set up periodic connection status check
+    const connectionCheckInterval = setInterval(() => {
+      const isConnected = websocketService.isConnected();
+      setIsWebSocketConnected(isConnected);
+    }, 5000); // Check every 5 seconds
+
+    // Cleanup function
+    return () => {
+      if (messageHandlerRef.current) {
+        websocketService.removeMessageHandler(messageHandlerRef.current);
+      }
+      if (connectionHandlerRef.current) {
+        websocketService.removeConnectionHandler(connectionHandlerRef.current);
+      }
+      clearInterval(connectionCheckInterval);
+    };
+  }, [currentChat?._id]);
 
   const fetchUsers = async () => {
     try {
@@ -170,6 +266,14 @@ const Messages = () => {
       if (!textMessage.trim()) return;
 
       try {
+        // Send message via WebSocket if connected
+        if (isWebSocketConnected) {
+          websocketService.sendChatMessage(currentChatId, sender._id, textMessage);
+          setTextMessage("");
+          return;
+        }
+
+        // Fallback to HTTP API if WebSocket is not connected
         const response = await postRequest(`${baseUrl}/api/messages`, {
           chatId: currentChatId,
           senderId: sender._id,
@@ -191,7 +295,7 @@ const Messages = () => {
         console.error("Error sending message:", error);
       }
     },
-    []
+    [isWebSocketConnected]
   );
 
   // Filter users based on search
@@ -215,9 +319,48 @@ const Messages = () => {
     >
       {/* Sidebar */}
       <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent h-[50vh] md:h-auto relative">
-        <h1 className="text-2xl md:text-[32px] font-semibold text-black mb-3">
-          Message
-        </h1>
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-2xl md:text-[32px] font-semibold text-black">
+            Message
+          </h1>
+          <div className="flex items-center gap-2">
+            <div className={`w-3 h-3 rounded-full ${isWebSocketConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span className="text-sm text-gray-600">
+              {isWebSocketConnected ? 'Connected' : 'Disconnected'}
+            </span>
+            <button
+              onClick={checkWebSocketConnection}
+              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+              title="Check WebSocket Connection"
+            >
+              Debug
+            </button>
+            <button
+              onClick={testWebSocketConnection}
+              className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+              title="Test WebSocket Connection"
+            >
+              Test
+            </button>
+          </div>
+        </div>
+        
+        {/* Debug Info */}
+        {connectionInfo && (
+          <div className="mb-3 p-2 bg-gray-100 rounded text-xs">
+            <div><strong>WebSocket Debug Info:</strong></div>
+            <div>Connected: {connectionInfo.connected ? 'Yes' : 'No'}</div>
+            <div>Ready State: {connectionInfo.readyState}</div>
+            <div>URL: {connectionInfo.url}</div>
+            <div className="mt-2 text-blue-600">
+              <strong>To see WebSocket in Network tab:</strong>
+              <br />1. Open DevTools (F12)
+              <br />2. Go to Network tab
+              <br />3. Filter by "WS" or "WebSocket"
+              <br />4. Refresh page or click "Test" button
+            </div>
+          </div>
+        )}
         {/* Searchbar */}
         <div className="flex border border-[#6fb793] gap-2 w-full rounded-full bg-gradient-to-r from-[#dfece2] to-[#d5dad9] text-black text-lg md:text-[20px] font-medium relative z-20">
           <Input
@@ -330,3 +473,4 @@ const Messages = () => {
 };
 
 export default Messages;
+

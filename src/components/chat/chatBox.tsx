@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { Input } from '../ui/input';
 import { baseUrl } from '@/service/api';
 import avatar from '../../../public/avatar.svg';
 import { useFetchRecipientsUser } from '@/hooks/useFetchRecipients';
+import websocketService, { WebSocketMessage } from '@/service/websocket';
 
 interface Message {
     _id?: string;
@@ -45,11 +46,121 @@ export const ChatBox = ({
 }: ChatBoxProps) => {
     const { recipientUser, isLoading, error } = useFetchRecipientsUser(currentChat, user);
     const [textMessage, setTextMessage] = useState<string>('');
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingUserId, setTypingUserId] = useState<string | null>(null);
+    const [showScrollButton, setShowScrollButton] = useState(false);
+    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Clear text input when current chat changes
     useEffect(() => {
         setTextMessage('');
     }, [currentChat?._id]);
+
+    // Handle typing indicator
+    const handleTyping = () => {
+        if (!currentChat || !user) return;
+        
+        setIsTyping(true);
+        
+        // Send typing indicator via WebSocket
+        websocketService.sendTyping(currentChat._id, user._id);
+        
+        // Clear typing indicator after 3 seconds
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+        
+        typingTimeoutRef.current = setTimeout(() => {
+            setIsTyping(false);
+        }, 3000);
+    };
+
+    // Auto-scroll to bottom when new messages arrive
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Check if user is near bottom of chat
+    const isNearBottom = () => {
+        const messagesContainer = messagesEndRef.current?.parentElement;
+        if (!messagesContainer) return true;
+        
+        const { scrollTop, scrollHeight, clientHeight } = messagesContainer;
+        const threshold = 100; // pixels from bottom
+        return scrollHeight - scrollTop - clientHeight < threshold;
+    };
+
+    useEffect(() => {
+        // Only auto-scroll if user is near bottom or if it's their own message
+        if (isNearBottom() || (messages && messages.length > 0 && messages[messages.length - 1]?.senderId === user._id)) {
+            scrollToBottom();
+            setShowScrollButton(false);
+        } else {
+            setShowScrollButton(true);
+        }
+    }, [messages, isTyping]);
+
+    // Handle scroll events to show/hide scroll button
+    useEffect(() => {
+        const messagesContainer = messagesEndRef.current?.parentElement;
+        if (!messagesContainer) return;
+
+        const handleScroll = () => {
+            if (!isNearBottom()) {
+                setShowScrollButton(true);
+            } else {
+                setShowScrollButton(false);
+            }
+        };
+
+        messagesContainer.addEventListener('scroll', handleScroll);
+        return () => {
+            messagesContainer.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Cleanup typing timeout
+    useEffect(() => {
+        return () => {
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Listen for typing indicators from other users
+    useEffect(() => {
+        const messageHandler = (message: WebSocketMessage) => {
+            if (message.type === 'typing' && message.data.chatId === currentChat?._id) {
+                const typingUser = message.data.senderId;
+                
+                // Only show typing indicator if it's from someone else
+                if (typingUser && typingUser !== user._id) {
+                    setTypingUserId(typingUser);
+                    setIsTyping(true);
+                    
+                    // Clear typing indicator after 3 seconds
+                    if (typingTimeoutRef.current) {
+                        clearTimeout(typingTimeoutRef.current);
+                    }
+                    
+                    typingTimeoutRef.current = setTimeout(() => {
+                        setIsTyping(false);
+                        setTypingUserId(null);
+                    }, 3000);
+                }
+            }
+        };
+
+        // Add message handler to WebSocket service
+        const handlerId = websocketService.onMessage(messageHandler);
+
+        // Cleanup
+        return () => {
+            websocketService.removeMessageHandler(handlerId);
+        };
+    }, [currentChat?._id, user._id]);
 
     if (!currentChat) {
         return <p style={{ textAlign: 'center', width: '100%' }}>No conversation selected</p>;
@@ -88,7 +199,25 @@ export const ChatBox = ({
             </div>
             
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2">
+            <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 relative">
+                {/* Scroll to bottom button */}
+                {showScrollButton && (
+                    <button
+                        onClick={scrollToBottom}
+                        className="absolute bottom-4 right-4 bg-green-500 hover:bg-green-600 text-white rounded-full p-2 shadow-lg transition-all duration-200 z-10"
+                        title="Scroll to bottom"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                        </svg>
+                    </button>
+                )}
                 {(messages || []).map((message, index) => {
                     const isOwnMessage = message?.senderId === user._id;
                     return (
@@ -111,6 +240,27 @@ export const ChatBox = ({
                         </div>
                     );
                 })}
+                
+                {/* Typing indicator */}
+                {isTyping && typingUserId && (
+                    <div className="flex justify-start">
+                        <div className="max-w-[60%] px-4 py-2 rounded-2xl bg-gray-100 text-gray-500">
+                            <div className="flex items-center space-x-1">
+                                <div className="flex space-x-1">
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                </div>
+                                <span className="text-xs ml-2">
+                                    {recipientUser?.username || 'Someone'} is typing...
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+                {/* Auto-scroll anchor */}
+                <div ref={messagesEndRef} />
             </div>
             
             {/* Input */}
@@ -121,7 +271,10 @@ export const ChatBox = ({
                         placeholder="Type a message"
                         className="flex-1 bg-transparent border-0 text-sm outline-none"
                         value={textMessage}
-                        onChange={(e) => setTextMessage(e.target.value)}
+                        onChange={(e) => {
+                            setTextMessage(e.target.value);
+                            handleTyping();
+                        }}
                         onKeyPress={(e) => {
                             if (e.key === 'Enter') {
                                 sendTextMessage(textMessage, user, currentChat._id, setTextMessage);
