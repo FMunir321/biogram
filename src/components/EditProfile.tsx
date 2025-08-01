@@ -95,8 +95,7 @@ const EditProfile = () => {
   const [price, setPrice] = useState("");
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  setSelectedImages(selectedImages)
+  
   // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
   const [email, setEmail] = useState("");
@@ -461,7 +460,7 @@ const EditProfile = () => {
     if (files && files.length > 0) {
       Array.from(files).forEach((file) => {
         // const previewUrl = URL.createObjectURL(file);
-        setSelectedImages((prev) => [...prev, file]);
+       
         // setImagePreviews((prev) => [...prev, previewUrl]);
         handleUpload(file);
       });
