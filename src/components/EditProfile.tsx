@@ -25,6 +25,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import LinkImg from "../../public/assets/Link.png";
+import SpotifyImg from "../../public/assets/Spotify.png";
+import ShoppingBagImg from "../../public/assets/Shopingbag.png";
 const colors = [
   "#7ecfa7",
   "#548a6e",
@@ -95,8 +98,7 @@ const EditProfile = () => {
   const [price, setPrice] = useState("");
   const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  setSelectedImages(selectedImages)
+
   // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
   const [email, setEmail] = useState("");
@@ -113,25 +115,26 @@ const EditProfile = () => {
   const [isAddBio, setIsAddBio] = useState(false);
   const [contactInfo, setContactInfo] = useState(false);
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
+
   const sections = [
     {
       heading: "Link",
       title: "Custom Links",
       subtitle: "Link section",
-      image: "/public/assets/Link.png",
+      image: LinkImg,
       // onClick: () => setIsCustomLinksOpen(true),
     },
     {
       heading: "Streaming",
       title: "Spotify",
       subtitle: "Music section",
-      image: "/public/assets/Spotify.png",
+      image: SpotifyImg,
     },
     {
       heading: "E commerce",
       title: "New Merch",
       subtitle: "Merch section",
-      image: "/public/assets/Shopingbag.png",
+      image: ShoppingBagImg,
     },
   ];
 
@@ -461,7 +464,7 @@ const EditProfile = () => {
     if (files && files.length > 0) {
       Array.from(files).forEach((file) => {
         // const previewUrl = URL.createObjectURL(file);
-        setSelectedImages((prev) => [...prev, file]);
+
         // setImagePreviews((prev) => [...prev, previewUrl]);
         handleUpload(file);
       });
