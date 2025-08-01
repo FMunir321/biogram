@@ -224,7 +224,7 @@ const BiogramPricing = () => {
     },
     {
       title: "Agency",
-      price: [10, 20, 35, 50],
+      price: [10],
       description:
         "Manage all your creators from in one place & maximize your traffic and content",
       features: [
