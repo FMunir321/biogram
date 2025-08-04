@@ -213,7 +213,7 @@ const Profile = () => {
                                       "/images/"
                                     )}`}
                                     alt="Shout"
-                                    className="w-full h-[90%] object-cover rounded-2xl text-white"
+                                    className="w-full h-[90%] object-contain rounded-2xl text-white"
                                   />
                                 )}
                                 {shout.content && (
@@ -255,7 +255,7 @@ const Profile = () => {
                               <div className="rounded-2xl shadow p-2 h-full flex flex-col justify-center">
                                 <video
                                   controls
-                                  className="w-full h-full object-cover object-center rounded-xl"
+                                  className="w-full h-full object-contain object-center rounded-xl"
                                   src={`http://3.111.146.115:5000${media.videoUrl}`}
                                 />
                               </div>

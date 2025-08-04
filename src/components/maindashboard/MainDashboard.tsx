@@ -2,6 +2,7 @@ import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
 import biogram from "../../../public/Biogram.png";
+import { baseUrl } from "@/service/api";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
@@ -164,7 +165,7 @@ const MainDashboard = () => {
                   }}
                 >
                   <img
-                    src={user.profileImage || "/public/assets/avatar.png"}
+                    src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
                     alt={user.username || "avatar"}
                     style={{
                       width: 40,
@@ -174,7 +175,7 @@ const MainDashboard = () => {
                       objectFit: "cover",
                       border: "2px solid #e0e0e0",
                     }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png"; }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png"; }}
                   />
                   <div>
                     <div style={{ fontWeight: 600, fontSize: 14 }}>{user.fullName || user.name || "No Name"}</div>
@@ -200,7 +201,7 @@ const MainDashboard = () => {
                 className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
               style={{
                 backgroundImage: selectedUser.profileImage
-                  ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
+                  ? `url("${baseUrl}${selectedUser.profileImage}")`
                   : `url("${group}")`,
 
               }}

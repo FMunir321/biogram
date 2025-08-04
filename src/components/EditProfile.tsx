@@ -1556,14 +1556,6 @@ const EditProfile = () => {
 
                   </div>
                 )}
-                {/* <div className="flex flex-col items-center justify-between pb-6 px-6">
-                  <h1 className="text-[40px] font-bold text-black">
-                    No shouts yet!
-                  </h1>
-                  <p className="text-[11px] font-normal text-black">
-                    Shouts posted by alex james will apperar here
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>
@@ -1611,15 +1603,6 @@ const EditProfile = () => {
           </div>
         </div>
       </div>
-
-      {/* Custom Links Tab */}
-      {/* <CustomLinksTab
-        isOpen={isCustomLinksOpen}
-        onClose={() => setIsCustomLinksOpen(false)}
-      /> */}
-
-      {/* Modals */}
-
       <Dialog.Root
         open={isBigThumbnailOpen}
         onOpenChange={setIsBigThumbnailOpen}
@@ -1889,162 +1872,6 @@ const EditProfile = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-
-      {/* <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
-            <Dialog.Close asChild>
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 6l12 12M6 18L18 6"
-                  />
-                </svg>
-              </button>
-            </Dialog.Close>
-            <Dialog.Title className="text-2xl font-bold text-white">
-              Manage Merch
-            </Dialog.Title>
-
-            <div className="flex flex-col gap-3 mt-4">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Select Type</p>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                >
-                  <option value="" disabled>
-                    Choose type
-                  </option>
-                  <option className="bg-[#72bb96]" value="youtube">
-                    YouTube
-                  </option>
-                  <option className="bg-[#72bb96]" value="vimeo">
-                    Vimeo
-                  </option>
-                  <option className="bg-[#72bb96]" value="spotify">
-                    Spotify
-                  </option>
-                  <option className="bg-[#72bb96]" value="other">
-                    Other
-                  </option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Embed Link</p>
-                <Input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  type="text"
-                  placeholder="Embed link"
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Title</p>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  placeholder="Title"
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">$USD</p>
-                <select
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#98e6c3] cursor-pointer"
-                >
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value=""
-                    disabled
-                  >
-                    Select Price Range
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="500-1000"
-                  >
-                    500$ - 1000$
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="1500-3000"
-                  >
-                    1500$ - 3000$
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="300-5000"
-                  >
-                    300$ - 5000$
-                  </option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Cover</p>
-                <label
-                  htmlFor="thumbnailUpload"
-                  className={`cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all overflow-hidden`}
-                  style={{
-                    backgroundImage: preview ? `url(${preview})` : "none",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    minHeight: "200px",
-                    width: "100%",
-                    borderRadius: "12px",
-                  }}
-                >
-                  {!preview && (
-                    <>
-                      <p className="text-white">Upload thumbnail photo</p>
-                      <p className="text-white text-sm">
-                        500x500px, under 10MB
-                      </p>
-                    </>
-                  )}
-                  <input
-                    type="file"
-                    id="thumbnailUpload"
-                    accept="image/*"
-                    onChange={handleThumbnailChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
-                onClick={handlePostSubmit}
-              >
-               Add
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root> */}
 
       <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
         <Dialog.Portal>
