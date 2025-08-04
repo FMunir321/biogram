@@ -1053,7 +1053,7 @@ const EditProfile = () => {
                               onClick={() => handleDelete(item._id)}
                             />
 
-                            <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
+                            <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-sm text-center ">
                               {item.title}
                             </p>
                             <img
@@ -1087,7 +1087,7 @@ const EditProfile = () => {
                               onClick={() => handleDelete(item._id)}
                             />
 
-                            <p className="absolute top-28 left-[50%] ml-[-146px] text-white font-bold text-lg text-center w-[205px]">
+                            <p className="absolute top-28 left-[50%] ml-[-146px] text-white font-bold text-sm text-center w-[205px]">
                               {item.title}
                             </p>
 
@@ -1638,43 +1638,43 @@ const EditProfile = () => {
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto scrollbar-hide  bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4">
               <div className="flex flex-col gap-3">
                 {/* Title Input */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">Title</p>
+                  <p className="text-white text-sm">Title</p>
                   <Input
                     type="text"
                     placeholder="Enter title"
                     value={bigThumbTitle}
                     onChange={(e) => setBigThumbTitle(e.target.value)}
-                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border"
                   />
                 </div>
                 {/* URL Input */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">URL</p>
+                  <p className="text-white text-sm">URL</p>
                   <Input
                     type="text"
                     placeholder="Enter URL"
                     value={bigThumbUrl}
                     onChange={(e) => setBigThumbUrl(e.target.value)}
-                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border"
                   />
                 </div>
 
                 {/* Image Upload */}
                 <div className="flex flex-col gap-1">
-                  <div>
-                    <h1 className="text-2xl text-white">
+                  <div className="border-2 border-white border-dashed rounded-lg p-3">
+                    <h1 className="text-sm text-white mb-2">
                       Image/icon(optional)
                     </h1>
                     <div
-                      className="flex gap-3 cursor-pointer"
+                      className="flex gap-2 cursor-pointer items-center justify-center p-2 border border-white rounded-md hover:bg-white/10 transition-colors"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <FaRegImage className="text-3xl text-white" />
-                      <p className="text-2xl text-white">Uploads thumbnail</p>
+                      <FaRegImage className="text-lg text-white" />
+                      <p className="text-sm text-white">Uploads thumbnail</p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1688,17 +1688,17 @@ const EditProfile = () => {
 
                 {/* Thumbnail Type */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">Thumbnail Type</p>
+                  <p className="text-white text-sm">Thumbnail Type</p>
                   <select
                     value={bigThumbType}
                     onChange={(e) => setBigThumbType(e.target.value)}
-                    className="flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border text-white"
+                    className="flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border text-white"
                   >
                     <option value="" disabled>
                       Select thumbnail type
                     </option>
                     <option className="bg-green-300" value="large">
-                      large Thumbnail
+                      Large Thumbnail
                     </option>
                     <option className="bg-green-300" value="small">
                       Small Thumbnail
@@ -1708,12 +1708,12 @@ const EditProfile = () => {
                 {/* Color Picker */}
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <p className="text-white">Background</p>
+                    <p className="text-white text-sm">Background</p>
                     <div className="p-[2px] rounded-full inline-block bg-white">
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
+                          className={`px-2 rounded-full text-xs font-normal transition-all duration-200 ${activeTab === "Solid"
                             ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
                             : "hover:bg-white/10"
                             }`}
@@ -1722,7 +1722,7 @@ const EditProfile = () => {
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
+                          className={`px-2 rounded-full text-xs font-normal transition-all duration-200 ${activeTab === "Gradient"
                             ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
                             : "hover:bg-white/10"
                             }`}
@@ -1734,32 +1734,32 @@ const EditProfile = () => {
                   </div>
 
                   {/* Color Info */}
-                  <div className="h-8">
+                  <div className="h-6">
                     {selectedColor ? (
                       <div className="flex items-center gap-2">
                         <div
-                          className="w-8 h-8 rounded-full border-2 border-white"
+                          className="w-6 h-6 rounded-full border-2 border-white"
                           style={{ backgroundColor: selectedColor }}
                           title={selectedColor}
                         ></div>
-                        <span className="text-white text-sm">
+                        <span className="text-white text-xs">
                           {selectedColor}
                         </span>
                       </div>
                     ) : (
-                      <div className="text-white">No color selected</div>
+                      <div className="text-white text-xs">No color selected</div>
                     )}
                   </div>
 
                   {/* Color Options */}
                   <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border border-white rounded-lg p-2 shadow-lg">
-                    <p className="text-white mb-1">Present Colors</p>
-                    <div className="flex flex-wrap gap-2">
+                    <p className="text-white text-xs mb-1">Present Colors</p>
+                    <div className="flex flex-wrap gap-1">
                       {colors.map((color, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedColor(color)}
-                          className="w-8 h-8 rounded-full border hover:border-white transition-colors duration-200"
+                          className="w-6 h-6 rounded-full border hover:border-white transition-colors duration-200"
                           style={{ backgroundColor: color }}
                           title={color}
                         ></button>
@@ -1767,40 +1767,59 @@ const EditProfile = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Preview Section moved here */}
+                <div className="flex flex-col gap-1 border-t border-white/20 pt-3">
+                  <p className="text-white text-sm">Preview</p>
+                  <div
+                    className="py-16 border-2 border-white border-dashed shadow-lg rounded-lg flex items-center justify-center min-h-[120px]"
+                    style={{
+                      background:
+                        selectedColor && activeTab === "Solid"
+                          ? selectedColor
+                          : "linear-gradient(to right, #7ecfa7, #53886c)",
+                    }}
+                  >
+                    {bigThumbPreview ? (
+                      <div className="text-center">
+                        <img
+                          src={bigThumbPreview}
+                          alt="Thumbnail Preview"
+                          className="h-20 object-contain rounded-lg mx-auto mb-1"
+                        />
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    ) : bigThumbImage ? (
+                      <div className="text-center">
+                        <img
+                          src={bigThumbImage}
+                          alt="Thumbnail Preview"
+                          className="h-20 object-contain rounded-lg mx-auto mb-1"
+                          onError={(e) => (e.currentTarget.style.display = "none")}
+                        />
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <p className="text-white/60 text-xs">Preview will appear here</p>
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium mt-1">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Footer with Preview and Button */}
-            <div className="px-6 py-4 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] rounded-b-2xl flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Preview</p>
-                <div
-                  className="py-24 border shadow-lg border-white rounded-lg flex items-center justify-center"
-                  style={{
-                    background:
-                      selectedColor && activeTab === "Solid"
-                        ? selectedColor
-                        : "linear-gradient(to right, #7ecfa7, #53886c)",
-                  }}
-                >
-                  {bigThumbPreview ? (
-                    <img
-                      src={bigThumbPreview}
-                      alt="Thumbnail Preview"
-                      className="h-32 object-contain rounded-lg"
-                    />
-                  ) : bigThumbImage ? (
-                    <img
-                      src={bigThumbImage}
-                      alt="Thumbnail Preview"
-                      className="h-32 object-contain rounded-lg"
-                      onError={(e) => (e.currentTarget.style.display = "none")}
-                    />
-                  ) : null}
-                </div>
-              </div>
+            {/* Footer with Button */}
+            <div className="px-6 py-4 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] rounded-b-2xl">
               <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer text-sm"
                 onClick={() =>
                   handleAddBigThumbnail(
                     bigThumbTitle,
