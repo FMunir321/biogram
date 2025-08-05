@@ -357,7 +357,7 @@ const EditProfile = () => {
     formData.append("category", category);
     formData.append("url", url);
     formData.append("title", title);
-    formData.append("Price", price);
+    formData.append("price", price);
 
     if (thumbnail) {
       formData.append("image", thumbnail);
