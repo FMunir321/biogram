@@ -11,14 +11,15 @@ export default function RealTimeAnalyticsHero({ name, handleNameInput, handleBut
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
     <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white sm:p-4 flex flex-col justify-between overflow-x-hidden">
+       <img
+          src={world}
+          alt="world"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none z-10"
+        />
       <div className="relative max-w-[1280px] w-[98%] mx-auto ">
         {" "}
         {/* Background World Image */}
-        <img
-          src={world}
-          alt="world"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none z-0"
-        />
+      
         {/* Floating Elements Container (Visible only on md+) */}
         <div className="absolute inset-0 z-10">
           {/* 8.5M Card */}

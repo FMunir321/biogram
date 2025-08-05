@@ -271,22 +271,27 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
+    
+    
     if (!title || !url || !type) {
+      
       alert("Title, URL, and Thumbnail Type are required.");
       return;
     }
     setIsBioUpdating(true);
     try {
       const token = Cookies.get("token");
+      const payload = {
+        title,
+        url,
+        thumbnailImage,
+        type,
+        background,
+      };
+
       await api.post(
         "/api/thumbnails",
-        {
-          title,
-          url,
-          thumbnailImage,
-          type,
-          background,
-        },
+        payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -985,19 +990,27 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                <div className="flex items-center justify-between w-full px-4 py-4 cursor-pointer">
-                  <p
-                    className="text-base font-normal text-black"
+                
+                {/* Add Bio Button */}
+                <div className="px-6 pb-2">
+                  <button
                     onClick={() => setIsAddBio(true)}
+                    className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-3 rounded-full font-medium text-center cursor-pointer hover:from-[#8dd9b8] hover:to-[#3f6454] transition-all duration-200"
                   >
-                    {userData?.bio || "bio"}
-                  </p>
-                  <img
-                    src={Greaterthen}
-                    alt="greater than"
-                    className="w-4 h-4 object-contain"
-                  />
+                    {userData?.bio ? "Edit Bio" : "Add Bio"}
+                  </button>
                 </div>
+
+                {/* Bio Display Area */}
+                {userData?.bio && (
+                  <div className="px-6 pb-6">
+                    <div className="p-4">
+                      <p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap break-words">
+                        {userData.bio}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1053,7 +1066,7 @@ const EditProfile = () => {
                               onClick={() => handleDelete(item._id)}
                             />
 
-                            <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-lg text-center ">
+                            <p className="absolute top-40 left-1/2 transform -translate-x-1/2 text-white font-bold text-sm text-center ">
                               {item.title}
                             </p>
                             <img
@@ -1087,7 +1100,7 @@ const EditProfile = () => {
                               onClick={() => handleDelete(item._id)}
                             />
 
-                            <p className="absolute top-28 left-[50%] ml-[-146px] text-white font-bold text-lg text-center w-[205px]">
+                            <p className="absolute top-28 left-[50%] ml-[-146px] text-white font-bold text-sm text-center w-[205px]">
                               {item.title}
                             </p>
 
@@ -1556,14 +1569,6 @@ const EditProfile = () => {
 
                   </div>
                 )}
-                {/* <div className="flex flex-col items-center justify-between pb-6 px-6">
-                  <h1 className="text-[40px] font-bold text-black">
-                    No shouts yet!
-                  </h1>
-                  <p className="text-[11px] font-normal text-black">
-                    Shouts posted by alex james will apperar here
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>
@@ -1611,15 +1616,6 @@ const EditProfile = () => {
           </div>
         </div>
       </div>
-
-      {/* Custom Links Tab */}
-      {/* <CustomLinksTab
-        isOpen={isCustomLinksOpen}
-        onClose={() => setIsCustomLinksOpen(false)}
-      /> */}
-
-      {/* Modals */}
-
       <Dialog.Root
         open={isBigThumbnailOpen}
         onOpenChange={setIsBigThumbnailOpen}
@@ -1655,43 +1651,43 @@ const EditProfile = () => {
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto scrollbar-hide  bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-6 py-4">
               <div className="flex flex-col gap-3">
                 {/* Title Input */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">Title</p>
+                  <p className="text-white text-sm">Title</p>
                   <Input
                     type="text"
                     placeholder="Enter title"
                     value={bigThumbTitle}
                     onChange={(e) => setBigThumbTitle(e.target.value)}
-                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border"
                   />
                 </div>
                 {/* URL Input */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">URL</p>
+                  <p className="text-white text-sm">URL</p>
                   <Input
                     type="text"
                     placeholder="Enter URL"
                     value={bigThumbUrl}
                     onChange={(e) => setBigThumbUrl(e.target.value)}
-                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border"
+                    className="!placeholder-white focus-visible:ring-0 shadow-lg flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border"
                   />
                 </div>
 
                 {/* Image Upload */}
                 <div className="flex flex-col gap-1">
-                  <div>
-                    <h1 className="text-2xl text-white">
+                  <div className="border-2 border-white border-dashed rounded-lg p-3">
+                    <h1 className="text-sm text-white mb-2">
                       Image/icon(optional)
                     </h1>
                     <div
-                      className="flex gap-3 cursor-pointer"
+                      className="flex gap-2 cursor-pointer items-center justify-center p-2 border border-white rounded-md hover:bg-white/10 transition-colors"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <FaRegImage className="text-3xl text-white" />
-                      <p className="text-2xl text-white">Uploads thumbnail</p>
+                      <FaRegImage className="text-lg text-white" />
+                      <p className="text-sm text-white">Uploads thumbnail</p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1705,17 +1701,17 @@ const EditProfile = () => {
 
                 {/* Thumbnail Type */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white">Thumbnail Type</p>
+                  <p className="text-white text-sm">Thumbnail Type111</p>
                   <select
                     value={bigThumbType}
                     onChange={(e) => setBigThumbType(e.target.value)}
-                    className="flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-[24px] font-medium !border-white rounded-lg focus:outline-none border text-white"
+                    className="flex-1 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 text-sm font-medium !border-white rounded-lg focus:outline-none border text-white"
                   >
                     <option value="" disabled>
                       Select thumbnail type
                     </option>
                     <option className="bg-green-300" value="large">
-                      large Thumbnail
+                      Large Thumbnail
                     </option>
                     <option className="bg-green-300" value="small">
                       Small Thumbnail
@@ -1725,12 +1721,12 @@ const EditProfile = () => {
                 {/* Color Picker */}
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <p className="text-white">Background</p>
+                    <p className="text-white text-sm">Background</p>
                     <div className="p-[2px] rounded-full inline-block bg-white">
                       <div className="inline-flex backdrop-blur-sm rounded-full p-1 w-full h-full">
                         <button
                           onClick={() => setActiveTab("Solid")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Solid"
+                          className={`px-2 rounded-full text-xs font-normal transition-all duration-200 ${activeTab === "Solid"
                             ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
                             : "hover:bg-white/10"
                             }`}
@@ -1739,7 +1735,7 @@ const EditProfile = () => {
                         </button>
                         <button
                           onClick={() => setActiveTab("Gradient")}
-                          className={`px-2 rounded-full text-[20px] font-normal transition-all duration-200 ${activeTab === "Gradient"
+                          className={`px-2 rounded-full text-xs font-normal transition-all duration-200 ${activeTab === "Gradient"
                             ? "bg-gradient-to-r from-[#ff6200] to-[#ff00ee] text-white"
                             : "hover:bg-white/10"
                             }`}
@@ -1751,32 +1747,32 @@ const EditProfile = () => {
                   </div>
 
                   {/* Color Info */}
-                  <div className="h-8">
+                  <div className="h-6">
                     {selectedColor ? (
                       <div className="flex items-center gap-2">
                         <div
-                          className="w-8 h-8 rounded-full border-2 border-white"
+                          className="w-6 h-6 rounded-full border-2 border-white"
                           style={{ backgroundColor: selectedColor }}
                           title={selectedColor}
                         ></div>
-                        <span className="text-white text-sm">
+                        <span className="text-white text-xs">
                           {selectedColor}
                         </span>
                       </div>
                     ) : (
-                      <div className="text-white">No color selected</div>
+                      <div className="text-white text-xs">No color selected</div>
                     )}
                   </div>
 
                   {/* Color Options */}
                   <div className="bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] border border-white rounded-lg p-2 shadow-lg">
-                    <p className="text-white mb-1">Present Colors</p>
-                    <div className="flex flex-wrap gap-2">
+                    <p className="text-white text-xs mb-1">Present Colors</p>
+                    <div className="flex flex-wrap gap-1">
                       {colors.map((color, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedColor(color)}
-                          className="w-8 h-8 rounded-full border hover:border-white transition-colors duration-200"
+                          className="w-6 h-6 rounded-full border hover:border-white transition-colors duration-200"
                           style={{ backgroundColor: color }}
                           title={color}
                         ></button>
@@ -1784,40 +1780,59 @@ const EditProfile = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Preview Section moved here */}
+                <div className="flex flex-col gap-1 border-t border-white/20 pt-3">
+                  <p className="text-white text-sm">Preview</p>
+                  <div
+                    className="py-16 border-2 border-white border-dashed shadow-lg rounded-lg flex items-center justify-center min-h-[120px]"
+                    style={{
+                      background:
+                        selectedColor && activeTab === "Solid"
+                          ? selectedColor
+                          : "linear-gradient(to right, #7ecfa7, #53886c)",
+                    }}
+                  >
+                    {bigThumbPreview ? (
+                      <div className="text-center">
+                        <img
+                          src={bigThumbPreview}
+                          alt="Thumbnail Preview"
+                          className="h-20 object-contain rounded-lg mx-auto mb-1"
+                        />
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    ) : bigThumbImage ? (
+                      <div className="text-center">
+                        <img
+                          src={bigThumbImage}
+                          alt="Thumbnail Preview"
+                          className="h-20 object-contain rounded-lg mx-auto mb-1"
+                          onError={(e) => (e.currentTarget.style.display = "none")}
+                        />
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <p className="text-white/60 text-xs">Preview will appear here</p>
+                        {bigThumbTitle && (
+                          <p className="text-white text-xs font-medium mt-1">{bigThumbTitle}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Footer with Preview and Button */}
-            <div className="px-6 py-4 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] rounded-b-2xl flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Preview</p>
-                <div
-                  className="py-24 border shadow-lg border-white rounded-lg flex items-center justify-center"
-                  style={{
-                    background:
-                      selectedColor && activeTab === "Solid"
-                        ? selectedColor
-                        : "linear-gradient(to right, #7ecfa7, #53886c)",
-                  }}
-                >
-                  {bigThumbPreview ? (
-                    <img
-                      src={bigThumbPreview}
-                      alt="Thumbnail Preview"
-                      className="h-32 object-contain rounded-lg"
-                    />
-                  ) : bigThumbImage ? (
-                    <img
-                      src={bigThumbImage}
-                      alt="Thumbnail Preview"
-                      className="h-32 object-contain rounded-lg"
-                      onError={(e) => (e.currentTarget.style.display = "none")}
-                    />
-                  ) : null}
-                </div>
-              </div>
+            {/* Footer with Button */}
+            <div className="px-6 py-4 bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] rounded-b-2xl">
               <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer"
+                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium text-center cursor-pointer text-sm"
                 onClick={() =>
                   handleAddBigThumbnail(
                     bigThumbTitle,
@@ -1889,162 +1904,6 @@ const EditProfile = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-
-      {/* <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] p-6 shadow-lg focus:outline-none">
-            <Dialog.Close asChild>
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-700 focus:outline-none"
-                aria-label="Close"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 6l12 12M6 18L18 6"
-                  />
-                </svg>
-              </button>
-            </Dialog.Close>
-            <Dialog.Title className="text-2xl font-bold text-white">
-              Manage Merch
-            </Dialog.Title>
-
-            <div className="flex flex-col gap-3 mt-4">
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Select Type</p>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                >
-                  <option value="" disabled>
-                    Choose type
-                  </option>
-                  <option className="bg-[#72bb96]" value="youtube">
-                    YouTube
-                  </option>
-                  <option className="bg-[#72bb96]" value="vimeo">
-                    Vimeo
-                  </option>
-                  <option className="bg-[#72bb96]" value="spotify">
-                    Spotify
-                  </option>
-                  <option className="bg-[#72bb96]" value="other">
-                    Other
-                  </option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Embed Link</p>
-                <Input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  type="text"
-                  placeholder="Embed link"
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Title</p>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  placeholder="Title"
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-2 py-2 rounded-lg"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">$USD</p>
-                <select
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="text-white bg-gradient-to-r from-[#7ecfa7] to-[#548a6e] px-3 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#98e6c3] cursor-pointer"
-                >
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value=""
-                    disabled
-                  >
-                    Select Price Range
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="500-1000"
-                  >
-                    500$ - 1000$
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="1500-3000"
-                  >
-                    1500$ - 3000$
-                  </option>
-                  <option
-                    className="bg-[#548a6e] hover:bg-blue-500"
-                    value="300-5000"
-                  >
-                    300$ - 5000$
-                  </option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-white">Cover</p>
-                <label
-                  htmlFor="thumbnailUpload"
-                  className={`cursor-pointer py-4 border border-white rounded-lg flex flex-col items-center justify-center transition-all overflow-hidden`}
-                  style={{
-                    backgroundImage: preview ? `url(${preview})` : "none",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    minHeight: "200px",
-                    width: "100%",
-                    borderRadius: "12px",
-                  }}
-                >
-                  {!preview && (
-                    <>
-                      <p className="text-white">Upload thumbnail photo</p>
-                      <p className="text-white text-sm">
-                        500x500px, under 10MB
-                      </p>
-                    </>
-                  )}
-                  <input
-                    type="file"
-                    id="thumbnailUpload"
-                    accept="image/*"
-                    onChange={handleThumbnailChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <button
-                className="w-full bg-white text-[#202020] py-2 rounded-full font-medium"
-                onClick={handlePostSubmit}
-              >
-               Add
-              </button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root> */}
 
       <Dialog.Root open={isaddMerch} onOpenChange={setIsAddMerch}>
         <Dialog.Portal>

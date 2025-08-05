@@ -128,11 +128,13 @@ const Profile = () => {
 
   return (
     <div
-      className="bg-white rounded-[32px] bg-center bg-cover h-[calc(100vh-25px)]"
+      className="h-[calc(100vh-25px)]"
+    >
+      <div   className="rounded-[32px] bg-center bg-cover bg-no-repeat"
       style={{
         backgroundImage: `url("${bground}")`,
-      }}
-    >
+        backgroundAttachment: 'fixed',
+      }}>
       <div className="flex p-4  flex-col items-center justify-center ">
         <div
           className="relative bg-cover bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
@@ -213,7 +215,7 @@ const Profile = () => {
                                       "/images/"
                                     )}`}
                                     alt="Shout"
-                                    className="w-full h-[90%] object-cover rounded-2xl text-white"
+                                    className="w-full h-[90%] object-contain rounded-2xl text-white"
                                   />
                                 )}
                                 {shout.content && (
@@ -255,7 +257,7 @@ const Profile = () => {
                               <div className="rounded-2xl shadow p-2 h-full flex flex-col justify-center">
                                 <video
                                   controls
-                                  className="w-full h-full object-cover object-center rounded-xl"
+                                  className="w-full h-full object-contain object-center rounded-xl"
                                   src={`http://3.111.146.115:5000${media.videoUrl}`}
                                 />
                               </div>
@@ -271,6 +273,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
+      </div>
       </div>
     </div>
   );
