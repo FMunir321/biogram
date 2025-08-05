@@ -40,20 +40,26 @@ const MainDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState("shouts"); // Default to "shouts"
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [shouts, setShouts] = useState<Shout[]>([]);
   const [mediaShouts, setMediaShouts] = useState<Shout[]>([]);
   const [loadingShouts, setLoadingShouts] = useState(false);
   const [loadingMedia, setLoadingMedia] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (selectedUser?._id) {
-      fetchUserShouts(selectedUser._id);
-      fetchUserMedia(selectedUser._id);
+    if (selectedUserId) {
+      setUserDetails(null);
+      setShouts([]);       // clear previous shouts
+      setMediaShouts([]);  // clear previous media
+      fetchUserById(selectedUserId);
+      fetchUserShouts(selectedUserId);
+      fetchUserMedia(selectedUserId);
     }
-  }, [selectedUser]);
+  }, [selectedUserId]);
+
 
   useEffect(() => {
     fetchUser();
@@ -147,7 +153,8 @@ const MainDashboard = () => {
     });
 
   const fetchUserShouts = async (userId: string) => {
-    if (!userId) return;
+    console.log("Fetching shouts for userId:", userId);
+    // if (!userId) return;
     setLoadingShouts(true);
     try {
       const token = Cookies.get("token");
@@ -164,7 +171,8 @@ const MainDashboard = () => {
   };
 
   const fetchUserMedia = async (userId: string) => {
-    if (!userId) return;
+    console.log("Fetching shouts for userId:", userId);
+    // if (!userId) return;
     setLoadingMedia(true);
     try {
       const token = Cookies.get("token");
@@ -212,11 +220,11 @@ const MainDashboard = () => {
                 <li
                   key={user._id}
                   onClick={() => {
-                    setSelectedUser(user);
-                    handleClickOnId(user._id);
-                    fetchUserById(user._id);
-                    fetchUserShouts(user._id);
-                    fetchUserMedia(user._id);
+                     setSelectedUserId(user._id);
+                     handleClickOnId(user._id);
+                    // fetchUserById(user._id);
+                    // fetchUserShouts(user._id);  
+                    // fetchUserMedia(user._id);    
                   }}
                   style={{
                     display: "flex",
@@ -257,7 +265,7 @@ const MainDashboard = () => {
       </div>
 
       <div className="flex flex-col items-center w-full  ">
-        {selectedUser ? (
+        {userDetails ? (
           <>
             {/* Profile Image as Card Header */}
             <div className=" cursor-pointer mt-10 relative " >
@@ -265,14 +273,12 @@ const MainDashboard = () => {
               <div
                 className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
                 style={{
-                  backgroundImage: selectedUser.profileImage
-                    ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
+                  backgroundImage: userDetails?.profileImage
+                    ? `url("http://3.111.146.115:5000${userDetails.profileImage}")`
                     : `url("${group}")`,
 
                 }}
-              >
-
-              </div>
+              ></div>
 
               <div className="inset-0  flex flex-col items-center justify-center mt-[-150px] z-10">
                 <h2 className="text-2xl text-white font-bold z-20">
@@ -287,7 +293,7 @@ const MainDashboard = () => {
               </div>
 
 
-              <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 " onClick={() => handleClickOnProfile(selectedUser._id)}>
+              <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 " onClick={() => handleClickOnProfile(userDetails._id)}>
                 <div className="flex justify-center gap-8  ">
                   <button
                     className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-blue-400" : "text-white"
