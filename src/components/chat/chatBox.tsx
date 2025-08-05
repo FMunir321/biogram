@@ -4,7 +4,7 @@ import { Input } from '../ui/input';
 import { baseUrl } from '@/service/api';
 import avatar from '../../../public/avatar.svg';
 import { useFetchRecipientsUser } from '@/hooks/useFetchRecipients';
-import websocketService, { WebSocketMessage } from '@/service/websocket';
+
 
 interface Message {
     _id?: string;
@@ -46,10 +46,7 @@ export const ChatBox = ({
 }: ChatBoxProps) => {
     const { recipientUser, isLoading, error } = useFetchRecipientsUser(currentChat, user);
     const [textMessage, setTextMessage] = useState<string>('');
-    const [isTyping, setIsTyping] = useState(false);
-    const [typingUserId, setTypingUserId] = useState<string | null>(null);
     const [showScrollButton, setShowScrollButton] = useState(false);
-    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Clear text input when current chat changes
@@ -57,24 +54,7 @@ export const ChatBox = ({
         setTextMessage('');
     }, [currentChat?._id]);
 
-    // Handle typing indicator
-    const handleTyping = () => {
-        if (!currentChat || !user) return;
-        
-        setIsTyping(true);
-        
-        // Send typing indicator via WebSocket
-        websocketService.sendTyping(currentChat._id, user._id);
-        
-        // Clear typing indicator after 3 seconds
-        if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-        }
-        
-        typingTimeoutRef.current = setTimeout(() => {
-            setIsTyping(false);
-        }, 3000);
-    };
+
 
     // Auto-scroll to bottom when new messages arrive
     const scrollToBottom = () => {
@@ -99,7 +79,7 @@ export const ChatBox = ({
         } else {
             setShowScrollButton(true);
         }
-    }, [messages, isTyping]);
+    }, [messages]);
 
     // Handle scroll events to show/hide scroll button
     useEffect(() => {
@@ -120,47 +100,9 @@ export const ChatBox = ({
         };
     }, []);
 
-    // Cleanup typing timeout
-    useEffect(() => {
-        return () => {
-            if (typingTimeoutRef.current) {
-                clearTimeout(typingTimeoutRef.current);
-            }
-        };
-    }, []);
 
-    // Listen for typing indicators from other users
-    useEffect(() => {
-        const messageHandler = (message: WebSocketMessage) => {
-            if (message.type === 'typing' && message.data.chatId === currentChat?._id) {
-                const typingUser = message.data.senderId;
-                
-                // Only show typing indicator if it's from someone else
-                if (typingUser && typingUser !== user._id) {
-                    setTypingUserId(typingUser);
-                    setIsTyping(true);
-                    
-                    // Clear typing indicator after 3 seconds
-                    if (typingTimeoutRef.current) {
-                        clearTimeout(typingTimeoutRef.current);
-                    }
-                    
-                    typingTimeoutRef.current = setTimeout(() => {
-                        setIsTyping(false);
-                        setTypingUserId(null);
-                    }, 3000);
-                }
-            }
-        };
 
-        // Add message handler to WebSocket service
-        const handlerId = websocketService.onMessage(messageHandler);
 
-        // Cleanup
-        return () => {
-            websocketService.removeMessageHandler(handlerId);
-        };
-    }, [currentChat?._id, user._id]);
 
     if (!currentChat) {
         return <p style={{ textAlign: 'center', width: '100%' }}>No conversation selected</p>;
@@ -240,24 +182,7 @@ export const ChatBox = ({
                         </div>
                     );
                 })}
-                
-                {/* Typing indicator */}
-                {isTyping && typingUserId && (
-                    <div className="flex justify-start">
-                        <div className="max-w-[60%] px-4 py-2 rounded-2xl bg-gray-100 text-gray-500">
-                            <div className="flex items-center space-x-1">
-                                <div className="flex space-x-1">
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                                </div>
-                                <span className="text-xs ml-2">
-                                    {recipientUser?.username || 'Someone'} is typing...
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                )}
+
                 
                 {/* Auto-scroll anchor */}
                 <div ref={messagesEndRef} />
@@ -273,7 +198,6 @@ export const ChatBox = ({
                         value={textMessage}
                         onChange={(e) => {
                             setTextMessage(e.target.value);
-                            handleTyping();
                         }}
                         onKeyPress={(e) => {
                             if (e.key === 'Enter') {
