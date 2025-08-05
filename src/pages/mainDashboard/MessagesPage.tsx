@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
-import bground from "../../../public/assets/lightbg.png";
+import bground from "/assets/lightbg.png";
 import { Input } from "@/components/ui/input";
 import { ChatBox } from "@/components/chat/chatBox";
 import { UserChat } from "@/components/chat/UserChat";
 import Cookies from "js-cookie";
 import api, { baseUrl, postRequest } from "@/service/api";
 import { useCallback, useEffect, useState, useRef } from "react";
+import { useSocket } from "@/context/SocketContext";
+import { SocketDiagnostics } from "@/components/SocketDiagnostics";
+import { DebugInfo } from "@/components/DebugInfo";
+import { SocketTest } from "@/components/SocketTest";
 
 
 // =================== Interfaces ===================
@@ -36,6 +40,17 @@ const Messages = () => {
   const userId = localStorage.getItem("userId") || "";
   const user: User = { _id: userId };
 
+  // Socket context
+  const { 
+    socket, 
+    connectSocket, 
+    disconnectSocket, 
+    joinRoom, 
+    leaveRoom, 
+    sendMessage: sendSocketMessage,
+    isConnected 
+  } = useSocket();
+
   // State for users and search
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
@@ -50,6 +65,9 @@ const Messages = () => {
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
+
+  // Previous chat reference for room management
+  const prevChatRef = useRef<string | null>(null);
 
 
 
@@ -71,6 +89,93 @@ const Messages = () => {
       fetchMessages();
     }
   }, [currentChat]);
+
+  // Initialize socket connection on component mount  
+  useEffect(() => {
+    console.log('=== SOCKET DEBUG ===');
+    console.log('User ID from localStorage:', userId);
+    console.log('User ID length:', userId.length);
+    console.log('User ID truthy:', !!userId);
+    console.log('Socket already connected:', !!socket);
+    
+    if (userId && userId.trim() !== '' && !socket) {
+      console.log('Attempting to connect socket for user:', userId);
+      connectSocket(userId);
+    } else if (socket) {
+      console.log('Socket already exists, skipping connection');
+    } else {
+      console.error('Cannot connect socket: User ID is empty. User might not be logged in.');
+    }
+
+    return () => {
+      console.log('Component unmounting, but NOT disconnecting socket (will be handled by context)');
+      // Don't disconnect here to prevent rapid cycles
+    };
+  }, [userId]); // Removed connectSocket and disconnectSocket from dependencies
+
+  // Handle chat room joining/leaving
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    // Leave previous room if exists
+    if (prevChatRef.current) {
+      leaveRoom(prevChatRef.current);
+    }
+
+    // Join new room if currentChat exists
+    if (currentChat?._id) {
+      console.log('Joining chat room:', currentChat._id);
+      joinRoom(currentChat._id);
+      prevChatRef.current = currentChat._id;
+    }
+
+    return () => {
+      if (currentChat?._id) {
+        leaveRoom(currentChat._id);
+      }
+    };
+  }, [currentChat?._id, socket, isConnected, joinRoom, leaveRoom]);
+
+  // Set up socket event listeners for real-time messages
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (message: Message) => {
+      console.log('Received new message via socket:', message);
+      
+      // Only add message if it's for the current chat
+      if (currentChat && message.chatId === currentChat._id) {
+        setMessages(prev => {
+          // Avoid duplicates by checking if message already exists
+          const exists = prev?.some(m => m._id === message._id);
+          if (exists) return prev;
+          return prev ? [...prev, message] : [message];
+        });
+      }
+    };
+
+    socket.on('getMessage', handleNewMessage);
+
+    return () => {
+      socket.off('getMessage', handleNewMessage);
+    };
+  }, [socket, currentChat]);
+
+  // Optional: Listen for typing indicators
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleUserTyping = (data: { userId: string; isTyping: boolean }) => {
+      console.log('User typing status:', data);
+      // You can implement typing indicators UI here
+    };
+
+    socket.on('userTyping', handleUserTyping);
+
+    return () => {
+      socket.off('userTyping', handleUserTyping);
+    };
+  }, [socket]);
 
 
 
@@ -177,7 +282,7 @@ const Messages = () => {
       if (!textMessage.trim()) return;
 
       try {
-        // Send message via HTTP API
+        // Send message via HTTP API (this will save to database and emit socket event)
         const response = await postRequest(`${baseUrl}/api/messages`, {
           chatId: currentChatId,
           senderId: sender._id,
@@ -193,13 +298,32 @@ const Messages = () => {
         }
 
         const message = response as Message;
-        setMessages((prev) => (prev ? [...prev, message] : [message]));
+        
+        // Add message to local state immediately for sender's UI
+        setMessages((prev) => {
+          // Avoid duplicates
+          const exists = prev?.some(m => m._id === message._id);
+          if (exists) return prev;
+          return prev ? [...prev, message] : [message];
+        });
+
+        // Also send via socket for real-time delivery to other users
+        if (socket && isConnected) {
+          sendSocketMessage({
+            _id: message._id,
+            chatId: currentChatId,
+            senderId: sender._id,
+            text: textMessage,
+            createdAt: message.createdAt
+          });
+        }
+
         setTextMessage("");
       } catch (error) {
         console.error("Error sending message:", error);
       }
     },
-    []
+    [socket, isConnected, sendSocketMessage]
   );
 
   // Filter users based on search
@@ -217,10 +341,14 @@ const Messages = () => {
         });
 
   return (
-    <div
-      className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
-      style={{ backgroundImage: `url(${bground})` }}
-    >
+    <>
+      <SocketDiagnostics />
+      <DebugInfo />
+      <SocketTest />
+      <div
+        className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
+        style={{ backgroundImage: `url(${bground})` }}
+      >
       {/* Sidebar */}
       <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent h-[50vh] md:h-auto relative">
         <div className="flex items-center justify-between mb-3">
@@ -275,11 +403,11 @@ const Messages = () => {
                   className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
                   <img
-                    src={user.profileImage || "/public/assets/avatar.png"}
+                    src={user.profileImage || "/assets/avatar.png"}
                     alt={user.username || "avatar"}
                     className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png";
+                      (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
                     }}
                   />
                   <div className="flex flex-col min-w-0">
@@ -338,6 +466,7 @@ const Messages = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

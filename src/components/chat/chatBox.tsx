@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { Input } from '../ui/input';
 import { baseUrl } from '@/service/api';
-import avatar from '../../../public/avatar.svg';
+import avatar from '/avatar.svg';
 import { useFetchRecipientsUser } from '@/hooks/useFetchRecipients';
 
 
