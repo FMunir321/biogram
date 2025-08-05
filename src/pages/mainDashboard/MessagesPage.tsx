@@ -7,9 +7,7 @@ import Cookies from "js-cookie";
 import api, { baseUrl, postRequest } from "@/service/api";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useSocket } from "@/context/SocketContext";
-import { SocketDiagnostics } from "@/components/SocketDiagnostics";
-import { DebugInfo } from "@/components/DebugInfo";
-import { SocketTest } from "@/components/SocketTest";
+
 
 
 // =================== Interfaces ===================
@@ -342,9 +340,6 @@ const Messages = () => {
 
   return (
     <>
-      <SocketDiagnostics />
-      <DebugInfo />
-      <SocketTest />
       <div
         className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
         style={{ backgroundImage: `url(${bground})` }}
