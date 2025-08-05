@@ -32,8 +32,8 @@ interface Shout {
   createdAt?: string;
   text?: string;
   isMedia: boolean;
-  image?: string; 
-  content?: string; 
+  image?: string;
+  content?: string;
 }
 
 const MainDashboard = () => {
@@ -54,7 +54,7 @@ const MainDashboard = () => {
       fetchUserMedia(selectedUser._id);
     }
   }, [selectedUser]);
-  
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -179,7 +179,7 @@ const MainDashboard = () => {
       setLoadingMedia(false);
     }
   };
- 
+
 
   return (
     <div
@@ -261,7 +261,7 @@ const MainDashboard = () => {
           <>
             {/* Profile Image as Card Header */}
             <div className=" cursor-pointer mt-10 relative " >
-             
+
               <div
                 className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
                 style={{
@@ -323,23 +323,23 @@ const MainDashboard = () => {
                         orientation="vertical"
                         className="relative w-full "
                         opts={{
-                           align: "start",
-                           loop: false 
-                          }}
+                          align: "start",
+                          loop: false
+                        }}
                       >
                         <CarouselContent className="h-80">
                           {shouts.map((shout) => (
                             <CarouselItem key={shout._id} className="h-full p-2">
                               <div className="bg-white text-black rounded-lg p-4 h-full">
-                                {shout.videoUrl && shout.isMedia &&(
+                                {shout.videoUrl && !shout.isMedia && (
                                   <img
-                                  src={`http://3.111.146.115:5000${shout.videoUrl.replace(
-                                    "/videos/",
-                                    "/images/"
-                                  )}`}
-                                  alt="Shout"
-                                  className="w-full h-[90%] object-cover rounded-2xl text-white"
-                                />
+                                    src={`http://3.111.146.115:5000${shout.videoUrl.replace(
+                                      "/videos/",
+                                      "/images/"
+                                    )}`}
+                                    alt="Shout"
+                                    className="w-full h-[90%] object-cover rounded-2xl text-white"
+                                  />
                                 )}
                                 {shout.content && (
                                   <p className="text-gray-800 mt-2">
