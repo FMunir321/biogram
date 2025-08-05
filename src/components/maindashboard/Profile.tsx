@@ -128,11 +128,13 @@ const Profile = () => {
 
   return (
     <div
-      className="bg-white rounded-[32px] bg-center bg-cover h-[calc(100vh-25px)]"
+      className="h-[calc(100vh-25px)]"
+    >
+      <div   className="rounded-[32px] bg-center bg-cover bg-no-repeat"
       style={{
         backgroundImage: `url("${bground}")`,
-      }}
-    >
+        backgroundAttachment: 'fixed',
+      }}>
       <div className="flex p-4  flex-col items-center justify-center ">
         <div
           className="relative bg-cover bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
@@ -271,6 +273,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
+      </div>
       </div>
     </div>
   );

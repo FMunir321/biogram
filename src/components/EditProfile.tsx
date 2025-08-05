@@ -985,19 +985,27 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                <div className="flex items-center justify-between w-full px-4 py-4 cursor-pointer">
-                  <p
-                    className="text-base font-normal text-black"
+                
+                {/* Add Bio Button */}
+                <div className="px-6 pb-2">
+                  <button
                     onClick={() => setIsAddBio(true)}
+                    className="w-full bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white py-3 rounded-full font-medium text-center cursor-pointer hover:from-[#8dd9b8] hover:to-[#3f6454] transition-all duration-200"
                   >
-                    {userData?.bio || "bio"}
-                  </p>
-                  <img
-                    src={Greaterthen}
-                    alt="greater than"
-                    className="w-4 h-4 object-contain"
-                  />
+                    {userData?.bio ? "Edit Bio" : "Add Bio"}
+                  </button>
                 </div>
+
+                {/* Bio Display Area */}
+                {userData?.bio && (
+                  <div className="px-6 pb-6">
+                    <div className="p-4">
+                      <p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap break-words">
+                        {userData.bio}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
