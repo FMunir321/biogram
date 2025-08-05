@@ -271,22 +271,27 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
+    
+    
     if (!title || !url || !type) {
+      
       alert("Title, URL, and Thumbnail Type are required.");
       return;
     }
     setIsBioUpdating(true);
     try {
       const token = Cookies.get("token");
+      const payload = {
+        title,
+        url,
+        thumbnailImage,
+        type,
+        background,
+      };
+
       await api.post(
         "/api/thumbnails",
-        {
-          title,
-          url,
-          thumbnailImage,
-          type,
-          background,
-        },
+        payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -1696,7 +1701,7 @@ const EditProfile = () => {
 
                 {/* Thumbnail Type */}
                 <div className="flex flex-col gap-1">
-                  <p className="text-white text-sm">Thumbnail Type</p>
+                  <p className="text-white text-sm">Thumbnail Type111</p>
                   <select
                     value={bigThumbType}
                     onChange={(e) => setBigThumbType(e.target.value)}
