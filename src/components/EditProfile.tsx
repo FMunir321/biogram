@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useCallback } from "react";
 import characterImg from "../../public/assets/aleximage.png";
-// import CustomLinksTab from "../components/CustomLinksTab";
 import bground from "../../public/assets/lightbg.png";
-import Greaterthen from "../../public/assets/greaterthen.png";
 import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
 import Call from "../../public/assets/edit-profile/call.svg";
 import Map from "../../public/assets/edit-profile/map.svg";
@@ -72,7 +69,6 @@ const EditProfile = () => {
   // const [isBioEnabled, setIsBioEnabled] = useState(false);
 
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isaddMultiLink, setIsAddMultiLink] = useState(false);
   // const [isAddBio, setIsAddBio] = useState(false);
   const [isaddMerch, setIsAddMerch] = useState(false);

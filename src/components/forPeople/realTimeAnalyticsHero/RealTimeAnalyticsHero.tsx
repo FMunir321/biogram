@@ -1,5 +1,4 @@
 import { useState } from "react";
-import world from "../../../../public/assets/world.png";
 import { Link } from "react-router-dom";
 import map from "../../../../public/assets/Vector.png";
 import Instagram from "../../../../public/assets/Instagram.png";
@@ -7,16 +6,20 @@ import TikTok from "../../../../public/assets/TikTok.png";
 import franceFlag from "../../../../public/assets/france.png";
 import usaFlag from "../../../../public/assets/united states.png";
 
+// Use direct path for public assets
+const world = "/assets/world.png";
+
 export default function RealTimeAnalyticsHero({ name, handleNameInput, handleButtonInput }: { name: string, handleNameInput: (name: string) => void, handleButtonInput: (name: string) => void }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
-    <section className=" min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white sm:p-4 flex flex-col justify-between overflow-x-hidden">
+    <section className="relative min-h-screen bg-gradient-to-r from-[#98e6c3] to-[#4a725f] text-white sm:p-4 flex flex-col justify-between overflow-x-hidden">
+       {/* Background World Image */}
        <img
           src={world}
           alt="world"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none z-10"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none z-0"
         />
-      <div className="relative max-w-[1280px] w-[98%] mx-auto ">
+      <div className="relative max-w-[1280px] w-[98%] mx-auto z-10">
         {" "}
         {/* Background World Image */}
       
