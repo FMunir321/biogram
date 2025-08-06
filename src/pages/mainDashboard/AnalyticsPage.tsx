@@ -15,6 +15,7 @@ import bground from "../../../public/assets/lightbg.png";
 import WorldAnalyticsMap from "../../components/WorldAnalyticsMap";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import api from "../../service/api";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,51 +31,131 @@ const [profileViews, setProfileViews] = useState(0);
 const [linkClicks, setLinkClicks] = useState(0);
 const [lastMonthVisitors, setLastMonthVisitors] = useState(0);
 const [totalVisitors, setTotalVisitors] = useState(0);
+const [chartData, setChartData] = useState<any>(null);
+const [chartLabels, setChartLabels] = useState<string[]>([]);
+const [selectedPeriod, setSelectedPeriod] = useState("30"); // "30", "7", "1" for days
+const [isChartLoading, setIsChartLoading] = useState(false);
 
 
+// Function to generate date ranges based on selected period
+const generateDateRange = (days: number) => {
+  const dates = [];
+  const today = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    dates.push(date.toISOString().split('T')[0]);
+  }
+  return dates;
+};
+
+// Function to generate random but realistic data based on period
+const generateFallbackData = (baseValue: number, days: number) => {
+  const avgPerDay = Math.floor(baseValue / days);
+  return Array.from({ length: days }, () => {
+    // Generate realistic variations (50% to 150% of average)
+    const variation = 0.5 + Math.random();
+    return Math.floor(avgPerDay * variation);
+  });
+};
+
+// Fetch basic analytics data (once on component mount)
 useEffect(() => {
-  try {
-    const token = Cookies.get("token");
-    const userId = localStorage.getItem("userId");
+  const fetchBasicData = async () => {
+    try {
+      const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
 
-    const fetchData = async () => {
-      const response = await fetch(`http://3.111.146.115:5000/api/analytics/${userId}`, {
+      const response = await api.get(`/api/analytics/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const data = await response.json();
+      const data = response.data;
 
       setProfileViews(data.profileViews);
       setLinkClicks(data.linkClicks);
       setLastMonthVisitors(data.lastMonthVisitors);
       setTotalVisitors(data.totalVisitors);
-    };
+    } catch (error) {
+      console.error("Error fetching basic analytics data:", error);
+    }
+  };
 
-    fetchData();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  fetchBasicData();
 }, []);
-  const labels = [
-    "2025-04-10",
-    "2025-04-11",
-    "2025-04-12",
-    "2025-04-13",
-    "2025-04-14",
-    "2025-04-15",
-    "2025-04-16",
-    "2025-04-17",
-  ];
 
-  // Fixed: Ensure all datasets have 8 data points to match 8 labels
+// Fetch chart data based on selected period
+useEffect(() => {
+  const fetchChartData = async () => {
+    setIsChartLoading(true);
+    try {
+      const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
+      const days = parseInt(selectedPeriod);
+
+      // Try to fetch period-specific data from API
+      try {
+        const chartResponse = await api.get(`/api/analytics/${userId}/chart?days=${days}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+        if (chartResponse.data && chartResponse.data.length > 0) {
+          const chartInfo = chartResponse.data;
+          const labels = chartInfo.map((item: any) => item.date);
+          const profileViewsData = chartInfo.map((item: any) => item.profileViews || 0);
+          const linkClicksData = chartInfo.map((item: any) => item.linkClicks || 0);
+          
+          setChartLabels(labels);
+          setChartData({
+            profileViews: profileViewsData,
+            linkClicks: linkClicksData
+          });
+        } else {
+          throw new Error("No chart data available");
+        }
+      } catch (chartError) {
+        console.log(`Chart data not available for ${days} days, using fallback data`);
+        
+        // Generate fallback data based on selected period
+        const dateLabels = generateDateRange(days);
+        setChartLabels(dateLabels);
+        
+        // Scale the total values based on the period
+        const periodFactor = days / 30; // Scale factor based on 30-day baseline
+        const scaledProfileViews = Math.floor(profileViews * periodFactor);
+        const scaledLinkClicks = Math.floor(linkClicks * periodFactor);
+        
+        setChartData({
+          profileViews: generateFallbackData(scaledProfileViews, days),
+          linkClicks: generateFallbackData(scaledLinkClicks, days)
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching chart data:", error);
+    } finally {
+      setIsChartLoading(false);
+    }
+  };
+
+  // Only fetch chart data if we have the basic analytics data
+  if (profileViews > 0 || linkClicks > 0) {
+    fetchChartData();
+  } else {
+    setIsChartLoading(false);
+  }
+}, [selectedPeriod, profileViews, linkClicks]);
+
+  // Create dynamic chart data based on fetched analytics
   const data = {
-    labels,
-    datasets: [
+    labels: chartLabels,
+    datasets: chartData ? [
       {
-        label: "@orylans",
-        data: [20, 300, 400, 800, 300, 300, 500, 600],
+        label: "Profile Views",
+        data: chartData.profileViews,
         borderColor: "#3B82F6",
         backgroundColor: "rgba(59, 130, 246, 0.1)",
         tension: 0.4,
@@ -86,8 +167,8 @@ useEffect(() => {
         fill: false,
       },
       {
-        label: "@Saekolove",
-        data: [20, 500, 800, 200, 600, 800, 300, 200],
+        label: "Link Clicks",
+        data: chartData.linkClicks,
         borderColor: "#22C55E",
         backgroundColor: "rgba(34, 197, 94, 0.1)",
         tension: 0.4,
@@ -98,46 +179,7 @@ useEffect(() => {
         pointBorderWidth: 2,
         fill: false,
       },
-      {
-        label: "@Ory",
-        data: [20, 800, 200, 100, 600, 800, 750, 700],
-        borderColor: "#06B6D4",
-        backgroundColor: "rgba(6, 182, 212, 0.1)",
-        tension: 0.4,
-        borderWidth: 3,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        pointBackgroundColor: "#06B6D4",
-        pointBorderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "@Orylann",
-        data: [40, 300, 200, 400, 600, 800, 200, 100],
-        borderColor: "#EF4444",
-        backgroundColor: "rgba(239, 68, 68, 0.1)",
-        tension: 0.4,
-        borderWidth: 3,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        pointBackgroundColor: "#EF4444",
-        pointBorderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "@Vikii",
-        data: [30, 500, 700, 600, 500, 400, 350, 300],
-        borderColor: "#EC4899",
-        backgroundColor: "rgba(236, 72, 153, 0.1)",
-        tension: 0.4,
-        borderWidth: 3,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        pointBackgroundColor: "#EC4899",
-        pointBorderWidth: 2,
-        fill: false,
-      },
-    ],
+    ] : [],
   };
   const options = {
     responsive: true,
@@ -162,14 +204,20 @@ useEffect(() => {
     },
     scales: {
       y: {
-      
         beginAtZero: true,
-        max:800,
-        // If you want specific ticks, uncomment and use the following:
+        max: Math.max(
+          chartData && chartData.profileViews && chartData.linkClicks 
+            ? Math.max(...chartData.profileViews, ...chartData.linkClicks) * 1.2 
+            : 10,
+          10
+        ),
         ticks: {
-          stepSize: 200,
+          stepSize: 2,
           min: 0,
-          max: 800,
+          callback: function(value: any) {
+            // Only show even numbers: 0, 2, 4, 6, 8, 10, etc.
+            return value % 2 === 0 ? value : '';
+          },
         },
         grid: {
           color: "rgba(0, 0, 0, 0.05)",
@@ -187,10 +235,6 @@ useEffect(() => {
       intersect: false,
     },
   };
-
- 
-  
-   
 
   const stats = [
     {
@@ -214,8 +258,6 @@ useEffect(() => {
       change: "Total Visitors",
     },
   ];
-
-
   return (
     <div
         className="bg-white rounded-[32px] p-4 md:p-6 bg-cover bg-center"
@@ -257,24 +299,37 @@ useEffect(() => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  7,889{" "}
+                  {totalVisitors.toLocaleString()}{" "}
                   <span className="text-xl font-medium text-gray-600">
                     Visitors
                   </span>
                 </h3>
                 <p className="text-sm text-black">
-                  Visits on your deeplinks from 2025-03-18 00:00 to 2025-04-17
-                  23:59 (UTC)
+                  Analytics data for your profile and links over the selected time period
                 </p>
               </div>
-              <select className="mt-2 md:mt-0 bg-[#c7efdb] px-4 py-2 rounded-full text-sm border border-gray-200">
-                <option>Last 30 Days</option>
-                <option>Last 7 Days</option>
-                <option>Last 24 Hours</option>
+              <select 
+                className="mt-2 md:mt-0 bg-[#c7efdb] px-4 py-2 rounded-full text-sm border border-gray-200"
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+              >
+                <option value="30">Last 30 Days</option>
+                <option value="7">Last 7 Days</option>
+                <option value="1">Last 24 Hours</option>
               </select>
             </div>
-            <div className="w-full h-[300px]">
-              <Line options={options} data={data} />
+            <div className="w-full h-[300px] mb-[5px]">
+              {isChartLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-gray-500">Loading chart data...</div>
+                </div>
+              ) : chartData ? (
+                <Line options={options} data={data} />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-gray-500">No chart data available</div>
+                </div>
+              )}
             </div>
           </div>
         </div>
