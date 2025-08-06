@@ -5,7 +5,7 @@ import { useState } from "react";
 // import axios from "axios";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import api from "@/service/api";
+import api, { baseUrl } from "@/service/api";
 import bground from "../../../public/assets/lightbg.png";
 import {
   Carousel,
@@ -23,7 +23,23 @@ type UserData = {
   gallery?: Gallery[];
   contactInfo?: ContactInfo;
   merch?: Merch[];
+  featuredLinks?: FeaturedLink[];
 };
+
+interface FeaturedLink {
+  _id: string;
+  user: string;
+  type: string;
+  title: string;
+  url: string;
+  thumbnailImage?: string;
+  image?: string;
+  background?: string;
+  feature?: boolean;
+  createdAt: string;
+  isVisible: boolean;
+  __v: number;
+}
 
 interface ContactInfo {
   visibility: {
@@ -84,6 +100,8 @@ const Profile = () => {
   const [mediaShouts, setMediaShouts] = useState<Shout[]>([]);
   const [loadingShouts, setLoadingShouts] = useState(true);
   const [loadingMedia, setLoadingMedia] = useState(true);
+  const [largeFeaturedLinks, setLargeFeaturedLinks] = useState<FeaturedLink[]>([]);
+  const [smallFeaturedLinks, setSmallFeaturedLinks] = useState<FeaturedLink[]>([]);
 
   // const [newText, setNewText] = useState("");
   // const [newMedia, setNewMedia] = useState<File | null>(null);
@@ -119,6 +137,22 @@ const Profile = () => {
           console.log("Text Shouts:", textShouts);
           console.log("Media Shouts:", mediaItems);
         }
+
+        // Filter featured links based on type
+        if (response.data.featuredLinks && Array.isArray(response.data.featuredLinks)) {
+          const largeLinks = response.data.featuredLinks.filter(
+            (link: FeaturedLink) => link.type === "large" && link.isVisible
+          );
+          const smallLinks = response.data.featuredLinks.filter(
+            (link: FeaturedLink) => link.type === "small" && link.isVisible
+          );
+          
+          setLargeFeaturedLinks(largeLinks);
+          setSmallFeaturedLinks(smallLinks);
+          
+          console.log("Large Featured Links:", largeLinks);
+          console.log("Small Featured Links:", smallLinks);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -146,7 +180,7 @@ const Profile = () => {
           className="relative bg-cover bg-center  bg-no-repeat text-white text-center h-[600px]  w-[550px] rounded-tl-2xl  rounded-tr-2xl "
           style={{
             backgroundImage: userData?.profileImage
-              ? `url("http://3.111.146.115:5000${userData.profileImage}")`
+              ? `url("${baseUrl}${userData.profileImage}")`
               : `url("${group}")`,
           }}
         >
@@ -220,7 +254,7 @@ const Profile = () => {
                               <div className=" rounded-2xl h-full flex flex-col justify-center">
                                 {shout.videoUrl && (
                                   <img
-                                    src={`http://3.111.146.115:5000${shout.videoUrl.replace(
+                                    src={`${baseUrl}${shout.videoUrl.replace(
                                       "/videos/",
                                       "/images/"
                                     )}`}
@@ -268,7 +302,7 @@ const Profile = () => {
                                 <video
                                   controls
                                   className="w-full h-full object-contain object-center rounded-xl"
-                                  src={`http://3.111.146.115:5000${media.videoUrl}`}
+                                  src={`${baseUrl}${media.videoUrl}`}
                                 />
                               </div>
                             </CarouselItem>
@@ -287,7 +321,7 @@ const Profile = () => {
                 <div className="w-[90%] mx-auto mb-6 px-4">
                   <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-3 tracking-wide">
                         About
                       </h3>
                       <div className="relative">
@@ -309,9 +343,9 @@ const Profile = () => {
             {/* Gallery Section */}
             {userData?.gallery && userData.gallery.length > 0 && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm rounded-2xl p-6 border border-purple-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Gallery
                       </h3>
                       <Carousel
@@ -324,7 +358,7 @@ const Profile = () => {
                       >
                         <CarouselContent className="-ml-2 md:-ml-4">
                           {userData.gallery.map((item) => {
-                            const imageUrl = `http://3.111.146.115:5000/${item.imageUrl.replace(/\\/g, '/')}`;
+                            const imageUrl = `${baseUrl}/${item.imageUrl.replace(/\\/g, '/')}`;
                             console.log('Gallery image URL:', imageUrl, 'Original:', item.imageUrl);
                             return (
                             <CarouselItem key={item._id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3">
@@ -380,9 +414,9 @@ const Profile = () => {
             {/* Contact Info Section */}
             {userData?.contactInfo && (userData.contactInfo.phoneNumber || userData.contactInfo.websiteUrl || userData.contactInfo.email) && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-blue-800/30 to-cyan-800/30 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Contact Info
                       </h3>
                       <div className="flex flex-col space-y-3">
@@ -437,14 +471,14 @@ const Profile = () => {
             {/* Merch Section */}
             {userData?.merch && userData.merch.length > 0 && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-green-800/30 to-emerald-800/30 backdrop-blur-sm rounded-2xl p-6 border border-green-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Merch
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {userData.merch.map((item) => {
-                          const imageUrl = `http://3.111.146.115:5000/${item.image.replace(/\\/g, '/')}`;
+                          const imageUrl = `${baseUrl}/${item.image.replace(/\\/g, '/')}`;
                           return (
                             <div key={item._id} className="group relative overflow-hidden rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-all duration-300 cursor-pointer">
                               <div className="aspect-square overflow-hidden">
@@ -473,18 +507,19 @@ const Profile = () => {
                                 />
                               </div>
                               
-                              <div className="p-4">
+                              <div className="p-4 flex flex-col justify-between">
                                 <h4 className="text-white font-semibold text-base mb-2 group-hover:text-green-300 transition-colors duration-300 capitalize">
                                   {item.title}
                                 </h4>
                                 <div className="flex items-center justify-between">
-                                  <p className="text-green-400 font-bold text-lg">
+                                  <p className="text-green-400 text-sm">
                                     €{item.price}
                                   </p>
-                                  <span className="text-gray-400 text-xs capitalize">
+                                  
+                                </div>
+                                <span className="text-gray-400 text-xs capitalize mt-3">
                                     {item.category}
                                   </span>
-                                </div>
                                 
                                 {/* Overlay for clickable area */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -504,6 +539,179 @@ const Profile = () => {
                   </div>
                 </div>
               )}
+
+            {/* Featured Links Section */}
+            {(largeFeaturedLinks.length > 0 || smallFeaturedLinks.length > 0) && (
+              <div className="w-[90%] mx-auto mb-6 px-4">
+                <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
+                  <div className="text-center">
+                    <h3 className="text-2xl font-semibold text-white mb-6 tracking-wide">
+                      Featured Links
+                    </h3>
+                  </div>
+                  
+                  {/* Large Featured Links */}
+                  {largeFeaturedLinks.length > 0 && (
+                    <div className="space-y-4">
+                      
+                      {largeFeaturedLinks.map((link) => {
+                        const thumbnailUrl = link.thumbnailImage 
+                          ? (link.thumbnailImage.startsWith('data:') 
+                              ? link.thumbnailImage 
+                              : `${baseUrl}${link.thumbnailImage}`)
+                          : null;
+                        
+                        return (
+                          <a
+                            key={link._id}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group block"
+                          >
+                            <div 
+                              className="relative overflow-hidden rounded-2xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl"
+                              style={{
+                                background: link.background || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                minHeight: '200px'
+                              }}
+                            >
+                              {/* Background Pattern/Overlay */}
+                              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                              
+                              {/* Content */}
+                              <div className="relative z-10 p-6 h-full flex items-center justify-between">
+                                <div className="flex items-center space-x-4">
+                                  {thumbnailUrl && (
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        src={thumbnailUrl}
+                                        alt={link.title}
+                                        className="w-16 h-16 rounded-lg object-cover shadow-lg"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                  <div className="text-left">
+                                    <h4 className="text-white font-bold text-xl group-hover:text-amber-200 transition-colors duration-300">
+                                      {link.title}
+                                    </h4>
+                                    <p className="text-white/80 text-base capitalize">
+                                      Large Link
+                                    </p>
+                                  </div>
+                                </div>
+                                
+                                {/* Arrow Icon */}
+                                <div className="flex-shrink-0">
+                                  <svg 
+                                    className="w-8 h-8 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" 
+                                    fill="currentColor" 
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path 
+                                      fillRule="evenodd" 
+                                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" 
+                                      clipRule="evenodd" 
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                              
+                              {/* Shine Effect */}
+                              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-all duration-1000 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></div>
+                            </div>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Small Featured Links */}
+                  {smallFeaturedLinks.length > 0 && (
+                    <div className="space-y-4">
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {smallFeaturedLinks.map((link) => {
+                          const thumbnailUrl = link.thumbnailImage 
+                            ? (link.thumbnailImage.startsWith('data:') 
+                                ? link.thumbnailImage 
+                                : `${baseUrl}${link.thumbnailImage}`)
+                            : null;
+                          
+                          return (
+                            <a
+                              key={link._id}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group block"
+                            >
+                              <div 
+                                className="relative overflow-hidden rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl"
+                                style={{
+                                  background: link.background || 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)',
+                                  minHeight: '120px'
+                                }}
+                              >
+                                {/* Background Pattern/Overlay */}
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                
+                                {/* Content */}
+                                <div className="relative z-10 p-4 h-full flex items-center justify-between">
+                                  <div className="flex items-center space-x-3">
+                                    {thumbnailUrl && (
+                                      <div className="flex-shrink-0">
+                                        <img
+                                          src={thumbnailUrl}
+                                          alt={link.title}
+                                          className="w-10 h-10 rounded-lg object-cover shadow-lg"
+                                          onError={(e) => {
+                                            e.currentTarget.style.display = 'none';
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                    <div className="text-left">
+                                      <h4 className="text-white font-bold text-base group-hover:text-purple-200 transition-colors duration-300">
+                                        {link.title}
+                                      </h4>
+                                      <p className="text-white/80 text-sm">
+                                        Small Link
+                                      </p>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Arrow Icon */}
+                                  <div className="flex-shrink-0">
+                                    <svg 
+                                      className="w-5 h-5 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" 
+                                      fill="currentColor" 
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path 
+                                        fillRule="evenodd" 
+                                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" 
+                                        clipRule="evenodd" 
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                                
+                                {/* Shine Effect */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-all duration-1000 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></div>
+                              </div>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
       </div>
       </div>
