@@ -36,12 +36,17 @@ interface Shout {
 type User = {
   _id: string;
   name?: string;
-  profileImage?: string;
   username?: string;
   fullName?: string;
   email?: string;
+  profileImage?: string;
+  bio?: string;
+  showBio?: boolean;
+  gallery?: { imageUrl: string }[];
+  showGallery?: boolean;
   shouts?: Shout[];
 };
+
 
 const MainDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -124,16 +129,14 @@ const MainDashboard = () => {
       const response = await api.get(`/api/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const userData = response.data;
-      console.log("Fetched userData:", userData);
 
-      setUserDetails(userData);
+      // ✅ Paste it right here
+      console.log("Fetched userData:", response.data);
+
+      const userData = response.data;
 
       const shouts: Shout[] = userData.shouts || [];
 
-
-
-      // Filter for shout tab: isMedia === false and only images
       const imageShouts = shouts
         .filter((shout) => shout.videoUrl && !shout.isMedia)
         .map((shout) => ({
@@ -145,14 +148,30 @@ const MainDashboard = () => {
         (shout) => shout.videoUrl && isVideoFile(shout.videoUrl)
       );
 
-      console.log("Video shouts after filter:", videoShouts);
+      // ✅ Format and assign user details properly
+      const formattedUser: User = {
+        _id: userData._id,
+        name: userData.name,
+        username: userData.username,
+        fullName: userData.fullName,
+        email: userData.email,
+        profileImage: userData.profileImage,
+        bio: userData.bio,
+        showBio: userData.visibilitySettings?.bio ?? false,
+        gallery: userData.gallery || [],
+        showGallery: userData.visibilitySettings?.gallery ?? false,
+        shouts: userData.shouts || [],
+      };
 
+
+      setUserDetails(formattedUser);
       setUserShouts(imageShouts);
       setUserMedia(videoShouts);
     } catch (error) {
       console.error("Error fetching user by ID:", error);
     }
   };
+
 
 
 
@@ -170,7 +189,7 @@ const MainDashboard = () => {
         (user.name ?? "").toLowerCase().includes(value)
       );
     });
-
+    console.log("Gallery data:", userDetails?.gallery);
   return (
     <div
       className="flex flex-col md:flex-row justify-center items-stretch h-[calc(100vh-25px)] bg-cover bg-center"
@@ -300,7 +319,7 @@ const MainDashboard = () => {
                 </div>
                 {activeTab === "shouts" && (
                   userShouts.length > 0 ? (
-                    <div className="text-white px-4 space-y-4">
+                    <div className="text-white px-4 space-y-4 mt-15">
                       <Carousel
                         orientation="vertical"
                         className="relative w-full h-80"
@@ -324,8 +343,9 @@ const MainDashboard = () => {
                             </div>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
+                        <CarouselPrevious className="bg-white text-black hover:bg-gray-200" />
+                        <CarouselNext className="bg-white text-black hover:bg-gray-200" />
+
                       </Carousel>
                     </div>
                   ) : (
@@ -358,8 +378,9 @@ const MainDashboard = () => {
                             </div>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
+                        <CarouselPrevious className="bg-white text-black hover:bg-gray-200" />
+                        <CarouselNext className="bg-white text-black hover:bg-gray-200" />
+
                       </Carousel>
                     </div>
                   ) : (
@@ -369,6 +390,57 @@ const MainDashboard = () => {
                     </div>
                   )
                 )}
+                <div className="relative" >
+                  {userDetails?.bio && userDetails?.showBio && (
+                    <div className="w-[90%] mx-auto mb-6 px-4 mt-15"> {/* mt-12 adds spacing */}
+                      <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                        <div className="text-center">
+                          <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                            About
+                          </h3>
+                          <div className="relative">
+                            <p className="text-gray-200 text-sm md:text-base leading-relaxed max-w-md mx-auto">
+                              {userDetails.bio}
+                            </p>
+                            <div className="absolute -top-2 -left-2 w-6 h-6 text-gray-600/30 text-2xl font-serif">
+                              "
+                            </div>
+                            <div className="absolute -bottom-2 -right-2 w-6 h-6 text-gray-600/30 text-2xl font-serif rotate-180">
+                              "
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+                <div className="relative">
+                  {userDetails?.gallery && userDetails?.showGallery && (
+                    <div className="w-[90%] mx-auto px-4 mt-12">
+                      <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                        <div className="text-center">
+                          <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                            Gallery
+                          </h3>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            {userDetails.gallery.map((item, index) => (
+                              <img
+                                key={index}
+                                src={item.imageUrl}
+                                alt={`Gallery image ${index + 1}`}
+                                className="w-full h-40 object-cover rounded-lg shadow-md border border-gray-700"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+
+                </div>
+
 
               </div>
             </div>
