@@ -17,7 +17,7 @@ const CategorySection: React.FC<{ title: string; children?: React.ReactNode }> =
     </h3>
 
     {/* Children */}
-    <div className="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start">
+    <div className="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start mb-3">
       {children}
     </div>
   </div>

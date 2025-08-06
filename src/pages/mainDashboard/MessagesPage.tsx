@@ -397,8 +397,9 @@ const Messages = () => {
                   }}
                   className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
-                  <img
-                    src={user.profileImage || "/assets/avatar.png"}
+                                     
+                    <img
+                    src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
                     alt={user.username || "avatar"}
                     className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
                     onError={(e) => {
