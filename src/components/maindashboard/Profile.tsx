@@ -321,7 +321,7 @@ const Profile = () => {
                 <div className="w-[90%] mx-auto mb-6 px-4">
                   <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-3 tracking-wide">
                         About
                       </h3>
                       <div className="relative">
@@ -343,9 +343,9 @@ const Profile = () => {
             {/* Gallery Section */}
             {userData?.gallery && userData.gallery.length > 0 && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm rounded-2xl p-6 border border-purple-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Gallery
                       </h3>
                       <Carousel
@@ -414,9 +414,9 @@ const Profile = () => {
             {/* Contact Info Section */}
             {userData?.contactInfo && (userData.contactInfo.phoneNumber || userData.contactInfo.websiteUrl || userData.contactInfo.email) && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-blue-800/30 to-cyan-800/30 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Contact Info
                       </h3>
                       <div className="flex flex-col space-y-3">
@@ -471,9 +471,9 @@ const Profile = () => {
             {/* Merch Section */}
             {userData?.merch && userData.merch.length > 0 && (
                 <div className="w-[90%] mx-auto mb-6 px-4">
-                  <div className="bg-gradient-to-r from-green-800/30 to-emerald-800/30 backdrop-blur-sm rounded-2xl p-6 border border-green-700/30">
+                  <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+                      <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
                         Merch
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -507,18 +507,19 @@ const Profile = () => {
                                 />
                               </div>
                               
-                              <div className="p-4">
+                              <div className="p-4 flex flex-col justify-between">
                                 <h4 className="text-white font-semibold text-base mb-2 group-hover:text-green-300 transition-colors duration-300 capitalize">
                                   {item.title}
                                 </h4>
                                 <div className="flex items-center justify-between">
-                                  <p className="text-green-400 font-bold text-lg">
+                                  <p className="text-green-400 text-sm">
                                     €{item.price}
                                   </p>
-                                  <span className="text-gray-400 text-xs capitalize">
+                                  
+                                </div>
+                                <span className="text-gray-400 text-xs capitalize mt-3">
                                     {item.category}
                                   </span>
-                                </div>
                                 
                                 {/* Overlay for clickable area */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -544,7 +545,7 @@ const Profile = () => {
               <div className="w-[90%] mx-auto mb-6 px-4">
                 <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                   <div className="text-center">
-                    <h3 className="text-xl font-bold text-white mb-6 tracking-wide">
+                    <h3 className="text-2xl font-semibold text-white mb-6 tracking-wide">
                       Featured Links
                     </h3>
                   </div>
