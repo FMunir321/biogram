@@ -2,7 +2,6 @@ import group from "../../../public/assets/avatar.png";
 import { useEffect, useState } from "react";
 import bground from "../../../public/assets/lightbg.png";
 import biogram from "../../../public/Biogram.png";
-import { baseUrl } from "@/service/api";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
@@ -16,7 +15,24 @@ import {
 } from "@/components/ui/carousel";
 
 
+
+const isVideoFile = (url: string) => {
+  return /\.(mp4|webm|mov|avi)$/i.test(url);
+};
+
+
 // Updated User type to include all used properties
+interface Shout {
+  _id: string;
+  userId: string;
+  isMedia: boolean;
+  videoUrl: string;
+  imageUrl?: string;
+  createdAt: string;
+  // Add other properties if needed
+}
+
+
 type User = {
   _id: string;
   name?: string;
@@ -24,42 +40,20 @@ type User = {
   username?: string;
   fullName?: string;
   email?: string;
+  shouts?: Shout[];
 };
-interface Shout {
-  _id: string;
-  mediaUrl?: string;
-  userId?: string;
-  videoUrl?: string;
-  createdAt?: string;
-  text?: string;
-  isMedia: boolean;
-  image?: string;
-  content?: string;
-}
 
 const MainDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState("shouts"); // Default to "shouts"
   const [userDetails, setUserDetails] = useState<User | null>(null);
-  const [shouts, setShouts] = useState<Shout[]>([]);
-  const [mediaShouts, setMediaShouts] = useState<Shout[]>([]);
-  const [loadingShouts, setLoadingShouts] = useState(false);
-  const [loadingMedia, setLoadingMedia] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+  const [userShouts, setUserShouts] = useState<Shout[]>([]);
+  const [userMedia, setUserMedia] = useState<Shout[]>([]);
 
-  useEffect(() => {
-    if (selectedUserId) {
-      setUserDetails(null);
-      setShouts([]);       // clear previous shouts
-      setMediaShouts([]);  // clear previous media
-      fetchUserById(selectedUserId);
-      fetchUserShouts(selectedUserId);
-      fetchUserMedia(selectedUserId);
-    }
-  }, [selectedUserId]);
+
 
 
   useEffect(() => {
@@ -128,15 +122,39 @@ const MainDashboard = () => {
     try {
       const token = Cookies.get("token");
       const response = await api.get(`/api/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setUserDetails(response.data); // ya response.data.user, jo bhi aapke backend se aaye
+      const userData = response.data;
+      console.log("Fetched userData:", userData);
+
+      setUserDetails(userData);
+
+      const shouts: Shout[] = userData.shouts || [];
+
+
+
+      // Filter for shout tab: isMedia === false and only images
+      const imageShouts = shouts
+        .filter((shout) => shout.videoUrl && !shout.isMedia)
+        .map((shout) => ({
+          ...shout,
+          imageUrl: shout.videoUrl.replace("/videos/", "/images/"),
+        }));
+
+      const videoShouts = shouts.filter(
+        (shout) => shout.videoUrl && isVideoFile(shout.videoUrl)
+      );
+
+      console.log("Video shouts after filter:", videoShouts);
+
+      setUserShouts(imageShouts);
+      setUserMedia(videoShouts);
     } catch (error) {
       console.error("Error fetching user by ID:", error);
     }
   };
+
+
 
   if (loading) return <div>Loading...</div>;
 
@@ -152,43 +170,6 @@ const MainDashboard = () => {
         (user.name ?? "").toLowerCase().includes(value)
       );
     });
-
-  const fetchUserShouts = async (userId: string) => {
-    console.log("Fetching shouts for userId:", userId);
-    // if (!userId) return;
-    setLoadingShouts(true);
-    try {
-      const token = Cookies.get("token");
-      const res = await api.get(`/api/shouts?userId=${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const onlyText = res.data.shouts.filter((s: Shout) => !s.isMedia);
-      setShouts(onlyText);
-    } catch (err) {
-      console.error("Error fetching shouts", err);
-    } finally {
-      setLoadingShouts(false);
-    }
-  };
-
-  const fetchUserMedia = async (userId: string) => {
-    console.log("Fetching shouts for userId:", userId);
-    // if (!userId) return;
-    setLoadingMedia(true);
-    try {
-      const token = Cookies.get("token");
-      const res = await api.get(`/api/shouts?userId=${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const onlyMedia = res.data.shouts.filter((s: Shout) => s.isMedia);
-      setMediaShouts(onlyMedia);
-    } catch (err) {
-      console.error("Error fetching media", err);
-    } finally {
-      setLoadingMedia(false);
-    }
-  };
-
 
   return (
     <div
@@ -221,11 +202,9 @@ const MainDashboard = () => {
                 <li
                   key={user._id}
                   onClick={() => {
-                     setSelectedUserId(user._id);
-                     handleClickOnId(user._id);
-                    // fetchUserById(user._id);
-                    // fetchUserShouts(user._id);  
-                    // fetchUserMedia(user._id);    
+                    setSelectedUser(user);
+                    handleClickOnId(user._id);
+                    fetchUserById(user._id); // yahan user ki id pass karein
                   }}
                   style={{
                     display: "flex",
@@ -240,7 +219,7 @@ const MainDashboard = () => {
                   }}
                 >
                   <img
-                    src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
+                    src={user.profileImage || "/public/assets/avatar.png"}
                     alt={user.username || "avatar"}
                     style={{
                       width: 40,
@@ -250,7 +229,7 @@ const MainDashboard = () => {
                       objectFit: "cover",
                       border: "2px solid #e0e0e0",
                     }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png"; }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png"; }}
                   />
                   <div>
                     <div style={{ fontWeight: 600, fontSize: 14 }}>{user.fullName || user.name || "No Name"}</div>
@@ -266,20 +245,23 @@ const MainDashboard = () => {
       </div>
 
       <div className="flex flex-col items-center w-full  ">
-        {userDetails ? (
+        {selectedUser ? (
           <>
             {/* Profile Image as Card Header */}
-            <div className=" cursor-pointer mt-10 relative " >
-
+            <div className=" cursor-pointer mt-10 relative" >
+              {/* <div className="absolute bottom-56 left-0 w-full h-20 bg-gradient-to-b from-transparent to-black via-black/90 z-10" >
+              </div> */}
               <div
                 className="w-100 h-130 mx-auto shadow-xl overflow-hidden bg-cover bg-center  rounded-2xl"
-              style={{
-                backgroundImage: selectedUser.profileImage
-                  ? `url("${baseUrl}${selectedUser.profileImage}")`
-                  : `url("${group}")`,
+                style={{
+                  backgroundImage: selectedUser.profileImage
+                    ? `url("http://3.111.146.115:5000${selectedUser.profileImage}")`
+                    : `url("${group}")`,
 
                 }}
-              ></div>
+              >
+
+              </div>
 
               <div className="inset-0  flex flex-col items-center justify-center mt-[-150px] z-10">
                 <h2 className="text-2xl text-white font-bold z-20">
@@ -294,8 +276,8 @@ const MainDashboard = () => {
               </div>
 
 
-              <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 " onClick={() => handleClickOnProfile(userDetails._id)}>
-                <div className="flex justify-center gap-8  ">
+              <div className="bg-black w-full max-w-[400px] rounded-b-2xl pb-8 pt-4 h-100%" onClick={() => handleClickOnProfile(selectedUser._id)}>
+                <div className="flex justify-center gap-8 ">
                   <button
                     className={`text-lg font-semibold rounded-none ${activeTab === "shouts" ? "text-blue-400" : "text-white"
                       }`}
@@ -317,89 +299,77 @@ const MainDashboard = () => {
                   <img src="/assets/Earth.png" alt="Earth" className="w-14 h-14" />
                 </div>
                 {activeTab === "shouts" && (
-                  <div className="text-center justify-center ">
-                    {loadingShouts ? (
-                      <p className="text-gray-300">Loading shouts...</p>
-                    ) : shouts.length === 0 ? (
-                      <>
-                        <h1 className="text-white font-bold text-4xl">No Shouts Yet!</h1>
-                        <p className="text-gray-300">No shouts have been uploaded yet</p>
-                      </>
-                    ) : (
+                  userShouts.length > 0 ? (
+                    <div className="text-white px-4 space-y-4">
                       <Carousel
                         orientation="vertical"
-                        className="relative w-full "
+                        className="relative w-full h-80"
                         opts={{
                           align: "start",
-                          loop: false
+                          loop: false,
                         }}
                       >
                         <CarouselContent className="h-80">
-                          {shouts.map((shout) => (
-                            <CarouselItem key={shout._id} className="h-full p-2">
-                              <div className="bg-white text-black rounded-lg p-4 h-full">
-                                {shout.videoUrl && !shout.isMedia && (
+                          {userShouts.map((shout, index) => (
+                            <div key={index} className="bg-gray-800 p-4 rounded-lg">
+                              {shout.imageUrl && (
+                                <CarouselItem key={shout._id} className=" h-full">
                                   <img
-                                    src={`http://3.111.146.115:5000${shout.videoUrl.replace(
-                                      "/videos/",
-                                      "/images/"
-                                    )}`}
-                                    alt="Shout"
-                                    className="w-full h-[90%] object-cover rounded-2xl text-white"
+                                    src={`http://3.111.146.115:5000${shout.imageUrl}`}
+                                    alt="shout"
+                                    className="w-full h-[90%] object-contain rounded-2xl text-white"
                                   />
-                                )}
-                                {shout.content && (
-                                  <p className="text-gray-800 mt-2">
-                                    {shout.content}
-                                  </p>
-                                )}
-                              </div>
-                            </CarouselItem>
+                                </CarouselItem>
+                              )}
+                            </div>
                           ))}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
                       </Carousel>
-                    )}
-
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="text-center justify-center">
+                      <h1 className="text-white font-bold text-4xl">No Shouts Yet!</h1>
+                      <p className="text-gray-300">by {userDetails?.fullName}</p>
+                    </div>
+                  )
                 )}
-
                 {activeTab === "media" && (
-                  <div className="text-center  justify-center px-4">
-                    {loadingMedia ? (
-                      <p className="text-gray-300">Loading media...</p>
-                    ) : mediaShouts.length === 0 ? (
-                      <>
-                        <h1 className="text-white font-bold text-4xl">No Media Yet!</h1>
-                        <p className="text-gray-300">No media uploaded yet</p>
-                      </>
-                    ) : (
+                  userMedia.length > 0 ? (
+                    <div className="text-white px-4 space-y-4">
                       <Carousel
                         orientation="vertical"
-                        className="relative w-full "
+                        className="relative w-full h-80"
                         opts={{ align: "start", loop: false }}
                       >
                         <CarouselContent className="h-80">
-                          {mediaShouts.map((media) => (
-                            <CarouselItem key={media._id} className="p-2 h-80">
-                              <div className="rounded-xl overflow-hidden h-full">
-                                <video
-                                  src={`http://3.111.146.115:5000${media.videoUrl}`}
-                                  controls
-                                  className="w-full h-full object-cover rounded-lg"
-                                />
-                              </div>
-                            </CarouselItem>
+                          {userMedia.map((shout, index) => (
+                            <div key={index} className="bg-gray-800 p-4 rounded-lg">
+                              {shout.videoUrl && (
+                                <CarouselItem key={shout._id} className=" h-full">
+                                  <video
+                                    controls
+                                    src={`http://3.111.146.115:5000${shout.videoUrl}`}
+                                    className="w-full h-full object-contain object-center rounded-xl"
+                                  />
+                                </CarouselItem>
+                              )}
+                            </div>
                           ))}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
                       </Carousel>
-                    )}
-
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="text-center justify-center">
+                      <h1 className="text-white font-bold text-4xl">No Media Yet!</h1>
+                      <p className="text-gray-300">by {userDetails?.fullName}</p>
+                    </div>
+                  )
                 )}
+
               </div>
             </div>
           </>
