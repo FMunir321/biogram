@@ -553,9 +553,7 @@ const Profile = () => {
                   {/* Large Featured Links */}
                   {largeFeaturedLinks.length > 0 && (
                     <div className="space-y-4">
-                      <h4 className="text-lg font-semibold text-orange-300 mb-4 tracking-wide">
-                        Large Links
-                      </h4>
+                      
                       {largeFeaturedLinks.map((link) => {
                         const thumbnailUrl = link.thumbnailImage 
                           ? (link.thumbnailImage.startsWith('data:') 
@@ -634,9 +632,7 @@ const Profile = () => {
                   {/* Small Featured Links */}
                   {smallFeaturedLinks.length > 0 && (
                     <div className="space-y-4">
-                      <h4 className="text-lg font-semibold text-purple-300 mb-4 tracking-wide">
-                        Small Links
-                      </h4>
+                      
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {smallFeaturedLinks.map((link) => {
                           const thumbnailUrl = link.thumbnailImage 
