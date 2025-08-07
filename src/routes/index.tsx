@@ -7,7 +7,7 @@ import Otp from "../pages/public/signup/OtpPage";
 import Forpeople from "../pages/public/forPeople/ForPeoplePage";
 import AddSocialMediaPictureUpload from "../pages/public/signup/AddSocialMediaPictureUploadPage";
 import Profile from "../pages/mainDashboard/ProfilePage";
-import EditProfile from "../pages/mainDashboard/EditProfilePage";
+import EditProfile from "../components/EditProfile";
 import Messages from "../pages/mainDashboard/MessagesPage";
 import Analytics from "../pages/mainDashboard/AnalyticsPage";
 // import Notifications from "../pages/mainDashboard/NotificationsPage";
@@ -23,6 +23,8 @@ import Signup from "../pages/public/signup/SignUpPage";
 import Login from "../pages/public/Login/LoginPage";
 // import  searchpage  from "../pages/mainDashboard/SearchPage.tsx";
 import SearchPage from "../pages/mainDashboard/SearchPage";
+import EditProfilePage from "../pages/mainDashboard/EditProfilePage";
+import DirectLink from "../components/DirectLink";
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
   <Layout>{children}</Layout>
 );
@@ -70,8 +72,11 @@ const RoutesComponent = () => {
       />
       <Route
         path="/edit-profile"
-        element={<ProtectedRoute element={<EditProfile />} />}
-      />
+        element={<ProtectedRoute element={<EditProfilePage />} />}
+      >
+        <Route path="landing-page" element={<EditProfile />} />
+        <Route path="direct-link" element={<DirectLink />} />
+      </Route>
       <Route
         path="/messages"
         element={<ProtectedRoute element={<Messages />} />}
@@ -84,6 +89,7 @@ const RoutesComponent = () => {
         path="/settings"
         element={<ProtectedRoute element={<Settings />} />}
       />
+     
     </Routes>
   );
 };
