@@ -413,7 +413,7 @@ const Profile = () => {
 
             {/* Contact Info Section */}
             {userData?.contactInfo && (userData.contactInfo.phoneNumber || userData.contactInfo.websiteUrl || userData.contactInfo.email) && (
-                <div className="w-[90%] mx-auto mb-6 px-4">
+                <div className="w-full mx-auto mb-6 px-4">
                   <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                     <div className="text-center">
                       <h3 className="text-2xl font-semibold text-white mb-4 tracking-wide">
