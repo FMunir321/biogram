@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Cookies from "js-cookie";
 import api from "@/service/api";
+import { baseUrl } from '@/service/api';
+
 import {
   Carousel,
   CarouselContent,
@@ -42,7 +44,10 @@ type User = {
   profileImage?: string;
   bio?: string;
   showBio?: boolean;
-  gallery?: { imageUrl: string }[];
+  gallery?: {
+     imageUrl: string 
+    _id: string;
+  }[];
   showGallery?: boolean;
   shouts?: Shout[];
 };
@@ -189,7 +194,7 @@ const MainDashboard = () => {
         (user.name ?? "").toLowerCase().includes(value)
       );
     });
-    console.log("Gallery data:", userDetails?.gallery);
+  console.log("Gallery data:", userDetails?.gallery);
   return (
     <div
       className="flex flex-col md:flex-row justify-center items-stretch h-[calc(100vh-25px)] bg-cover bg-center"
@@ -423,25 +428,43 @@ const MainDashboard = () => {
                           <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
                             Gallery
                           </h3>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            {userDetails.gallery.map((item, index) => (
-                              <img
-                                key={index}
-                                src={item.imageUrl}
-                                alt={`Gallery image ${index + 1}`}
-                                className="w-full h-40 object-cover rounded-lg shadow-md border border-gray-700"
-                              />
-                            ))}
-                          </div>
+                          <Carousel
+                            orientation="horizontal"
+                            className="relative w-full "
+                            opts={{
+                              align: "start",
+                              loop: true,
+                            }}
+                          >
+                            <CarouselContent className="-ml-2 md:-ml-4">
+                              {/* Group images into slides of 4 (optional) */}
+                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                {userDetails.gallery.map((item, index) => (
+
+                                  <CarouselItem key={item._id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3">
+
+                                    <img
+                                      key={index}
+                                      src={`${baseUrl}/${item.imageUrl}`} // Correct: full path now
+                                      alt={`Gallery image ${index + 1}`}
+                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                  </CarouselItem>
+                                ))}
+                                
+                              </div>
+
+                            </CarouselContent>
+
+                            <CarouselPrevious className="left-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
+                            <CarouselNext className="right-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
+                          </Carousel>
+
                         </div>
                       </div>
                     </div>
                   )}
-
-
                 </div>
-
-
               </div>
             </div>
           </>
