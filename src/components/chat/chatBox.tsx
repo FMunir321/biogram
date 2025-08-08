@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import moment from 'moment';
 import { Input } from '../ui/input';
 import { baseUrl } from '@/service/api';
 import avatar from '/avatar.svg';
@@ -195,7 +194,7 @@ export const ChatBox = ({
                                                                   {/* shows the time of the message*/}
 
                                 {/* <span className={`text-[10px] block mt-1 text-right ${isOwnMessage ? 'text-gray-500' : 'text-gray-500'}`}> 
-                                    {message.createdAt ? moment(message.createdAt).calendar() : ''}
+                                    {message.createdAt ? new Date(message.createdAt).toLocaleString() : ''}
                                 </span> */}
                             </div>
                         </div>

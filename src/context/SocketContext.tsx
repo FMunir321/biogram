@@ -30,7 +30,6 @@ const SocketContext = createContext<SocketContextType | undefined>(undefined);
 // Get the base URL for socket connection
 const getSocketURL = () => {
     if (typeof window !== 'undefined') {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         if (window.location.hostname === 'localhost') {
             return 'http://localhost:5000';
         }
@@ -122,10 +121,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         newSocket.on('connect_error', (error) => {
             console.error('❌ Socket connection error:', error);
             console.error('Error details:', {
-                message: error.message,
-                description: error.description,
-                context: error.context,
-                type: error.type
+                message: error.message
             });
             
             connectionInProgress = false;
