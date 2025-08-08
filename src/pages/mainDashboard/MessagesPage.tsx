@@ -63,6 +63,9 @@ const Messages = () => {
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
+  
+  // State to track chats with messages
+  const [chatsWithMessages, setChatsWithMessages] = useState<Set<string>>(new Set());
 
   // Previous chat reference for room management
   const prevChatRef = useRef<string | null>(null);
@@ -141,6 +144,9 @@ const Messages = () => {
     const handleNewMessage = (message: Message) => {
       console.log('Received new message via socket:', message);
       
+      // Track that this chat has messages
+      setChatsWithMessages(prev => new Set(prev).add(message.chatId));
+      
       // Only add message if it's for the current chat
       if (currentChat && message.chatId === currentChat._id) {
         setMessages(prev => {
@@ -209,6 +215,25 @@ const Messages = () => {
 
       const chats = response.data as Chat[];
       setUserChats(chats);
+      
+      // Check which chats have messages and add them to the set
+      const chatsWithMessagesSet = new Set<string>();
+      for (const chat of chats) {
+        try {
+          const messagesResponse = await api.get(`/api/messages/${chat._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const messages = messagesResponse.data as Message[];
+          if (messages && messages.length > 0) {
+            chatsWithMessagesSet.add(chat._id);
+          }
+        } catch (error) {
+          console.error(`Error checking messages for chat ${chat._id}:`, error);
+        }
+      }
+      setChatsWithMessages(chatsWithMessagesSet);
     } catch (error: unknown) {
       console.error("Error fetching user chats:", error);
       const errorMessage =
@@ -235,6 +260,11 @@ const Messages = () => {
 
       const messages = response.data as Message[];
       setMessages(messages);
+      
+      // Track if this chat has messages
+      if (messages && messages.length > 0) {
+        setChatsWithMessages(prev => new Set(prev).add(currentChat._id));
+      }
     } catch (error: unknown) {
       console.error("Error fetching messages:", error);
       const errorMessage =
@@ -302,7 +332,12 @@ const Messages = () => {
           // Avoid duplicates
           const exists = prev?.some(m => m._id === message._id);
           if (exists) return prev;
-          return prev ? [...prev, message] : [message];
+          const newMessages = prev ? [...prev, message] : [message];
+          
+          // Track that this chat now has messages
+          setChatsWithMessages(prev => new Set(prev).add(currentChatId));
+          
+          return newMessages;
         });
 
         // Also send via socket for real-time delivery to other users
@@ -435,7 +470,7 @@ const Messages = () => {
 
         {/* Chat Grid */}
         <div className="mt-6 md:mt-9">
-          {(userChats?.length ?? 0) < 1 ? null : (
+          {(!userChats || userChats.filter(chat => chatsWithMessages.has(chat._id)).length === 0) ? null : (
             <div className="h-full overflow-x-auto p-2">
               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-6">
                 {isUserChatsLoading && <p>Loading chats...</p>}
@@ -443,26 +478,28 @@ const Messages = () => {
                   <p className="text-red-500">{userChatsError}</p>
                 )}
                 {Array.isArray(userChats) &&
-                  userChats.map((chat, index) => {
-                    // Get the recipient user ID (the other user in the chat)
-                    const recipientId = chat.members.find(id => id !== user._id);
-                    const isOnline = recipientId ? isUserOnline(recipientId) : false;
-                    
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => updateCurrentChat(chat)}
-                        className="focus:outline-none"
-                      >
-                        <UserChat 
-                          chat={chat} 
-                          user={user} 
-                          isActive={currentChat?._id === chat._id}
-                          isOnline={isOnline}
-                        />
-                      </button>
-                    );
-                  })}
+                  userChats
+                    .filter(chat => chatsWithMessages.has(chat._id)) // Only show chats with messages
+                    .map((chat, index) => {
+                      // Get the recipient user ID (the other user in the chat)
+                      const recipientId = chat.members.find(id => id !== user._id);
+                      const isOnline = recipientId ? isUserOnline(recipientId) : false;
+                      
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => updateCurrentChat(chat)}
+                          className="focus:outline-none"
+                        >
+                          <UserChat 
+                            chat={chat} 
+                            user={user} 
+                            isActive={currentChat?._id === chat._id}
+                            isOnline={isOnline}
+                          />
+                        </button>
+                      );
+                    })}
               </div>
             </div>
           )}
