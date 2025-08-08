@@ -86,32 +86,31 @@ const EditProfilePage = () => {
           </div>
         </div>
       ) : (
-        // Show nested route content with optional back button
-        <div>
-          <div className="w-full">
-            <button 
-              onClick={() => navigate('/edit-profile')}
-              className="flex items-center font-semibold text-gray-600 hover:text-gray-900 transition-colors duration-200"
+        // Show nested route content with an absolutely positioned back button overlay
+        <div className="relative w-full h-[calc(100vh-25px)]">
+          <button
+            onClick={() => navigate('/edit-profile')}
+            className="absolute top-4 left-4 z-50 flex items-center font-semibold  text-gray-600 hover:text-gray-900 transition-colors duration-200"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-2"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2 mr-2"
-              >
-                <path d="m12 19-7-7 7-7"/>
-                <path d="M19 12H5"/>
-              </svg>
-              Back to Edit Profile
-            </button>
+              <path d="m12 19-7-7 7-7"/>
+              <path d="M19 12H5"/>
+            </svg>
+            Back to Edit Profile
+          </button>
+          <div className="w-full h-full">
+            <Outlet />
           </div>
-          
-          <Outlet />
         </div>
       )}
     </>

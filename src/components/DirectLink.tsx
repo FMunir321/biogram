@@ -27,7 +27,7 @@ const DirectLink = () => {
       </div>
 
       {/* Second div - With vertical scrollbar */}
-      <div className="w-full lg:w-[35%] overflow-y-auto scrollbar-hide">
+      <div className="w-full lg:w-[35%] overflow-y-auto scrollbar-hide border-l-2 border-green-200">
         {/* Cards placed vertically */}
         <div className="flex flex-col space-y-6 items-center justify-center">
           {templateKeys.map((templateKey) => {
