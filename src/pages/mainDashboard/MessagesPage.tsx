@@ -45,7 +45,8 @@ const Messages = () => {
     joinRoom, 
     leaveRoom, 
     sendMessage: sendSocketMessage,
-    isConnected 
+    isConnected,
+    onlineUsers 
   } = useSocket();
 
   // State for users and search
@@ -323,6 +324,11 @@ const Messages = () => {
     [socket, isConnected, sendSocketMessage]
   );
 
+  // Helper function to check if a user is online
+  const isUserOnline = (userId: string) => {
+    return onlineUsers.includes(userId);
+  };
+
   // Filter users based on search
   const filteredUsers =
     search.trim() === ""
@@ -397,15 +403,20 @@ const Messages = () => {
                   }}
                   className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
-                                     
+                  <div className="relative">
                     <img
-                    src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
-                    alt={user.username || "avatar"}
-                    className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
-                    }}
-                  />
+                      src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
+                      alt={user.username || "avatar"}
+                      className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
+                      }}
+                    />
+                    {/* Online Status Indicator for Search Results */}
+                    {isUserOnline(user._id) && (
+                      <div className="absolute bottom-0 right-3 md:right-4 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+                    )}
+                  </div>
                   <div className="flex flex-col min-w-0">
                     <div className="font-semibold text-sm md:text-base truncate max-w-[120px] md:max-w-[160px]">
                       {user.fullName || user.name || "No Name"}
@@ -432,15 +443,26 @@ const Messages = () => {
                   <p className="text-red-500">{userChatsError}</p>
                 )}
                 {Array.isArray(userChats) &&
-                  userChats.map((chat, index) => (
-                    <button
-                      key={index}
-                      onClick={() => updateCurrentChat(chat)}
-                      className="focus:outline-none"
-                    >
-                      <UserChat chat={chat} user={user} isActive={currentChat?._id === chat._id} />
-                    </button>
-                  ))}
+                  userChats.map((chat, index) => {
+                    // Get the recipient user ID (the other user in the chat)
+                    const recipientId = chat.members.find(id => id !== user._id);
+                    const isOnline = recipientId ? isUserOnline(recipientId) : false;
+                    
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => updateCurrentChat(chat)}
+                        className="focus:outline-none"
+                      >
+                        <UserChat 
+                          chat={chat} 
+                          user={user} 
+                          isActive={currentChat?._id === chat._id}
+                          isOnline={isOnline}
+                        />
+                      </button>
+                    );
+                  })}
               </div>
             </div>
           )}
@@ -457,6 +479,7 @@ const Messages = () => {
             messagesError={messagesError}
             sendTextMessage={sendTextMessage}
             user={user}
+            isRecipientOnline={currentChat ? isUserOnline(currentChat.members.find(id => id !== user._id) || '') : false}
           />
         </div>
       </div>

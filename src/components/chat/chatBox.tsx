@@ -34,6 +34,7 @@ interface ChatBoxProps {
         setTextMessage: (value: string) => void
     ) => Promise<void>;
     user: User;
+    isRecipientOnline?: boolean;
 }
 
 export const ChatBox = ({ 
@@ -42,7 +43,8 @@ export const ChatBox = ({
     isMessagesLoading, 
     messagesError, 
     sendTextMessage, 
-    user 
+    user,
+    isRecipientOnline = false
 }: ChatBoxProps) => {
     const { recipientUser, isLoading, error } = useFetchRecipientsUser(currentChat, user);
     const [textMessage, setTextMessage] = useState<string>('');
@@ -132,14 +134,25 @@ export const ChatBox = ({
         <div className="flex flex-col h-full w-full rounded-lg shadow-md overflow-hidden">
             {/* Header */}
             <div className="px-4 py-3 border-b border-gray-200 bg-white/30 flex items-center gap-2">
-                <img 
-                    src={recipientUser?.profileImage ? `${baseUrl}${recipientUser.profileImage}` : avatar} 
-                    alt={recipientUser?.username || "User"}
-                    className="w-14 h-14 md:w-17 md:h-17 rounded-full object-cover flex-shrink-0 border-2 border-gray-200"
-                />
+                <div className="relative">
+                    <img 
+                        src={recipientUser?.profileImage ? `${baseUrl}${recipientUser.profileImage}` : avatar} 
+                        alt={recipientUser?.username || "User"}
+                        className="w-14 h-14 md:w-17 md:h-17 rounded-full object-cover flex-shrink-0 border-2 border-gray-200"
+                    />
+                    {/* Online Status Indicator in Chat Header */}
+                    {isRecipientOnline && (
+                        <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+                    )}
+                </div>
                 <div className="flex flex-col ml-5">
-                    <strong className="text-gray-800 text-lg">{recipientUser?.fullName}</strong>
-                    <strong className="text-gray-500 text-xs">@{recipientUser?.username}</strong>
+                    <strong className="text-gray-800 text-lg">{recipientUser?.fullName || recipientUser?.name}</strong>
+                    <div className="flex items-center gap-2">
+                        <strong className="text-gray-500 text-xs">@{recipientUser?.username}</strong>
+                        {isRecipientOnline && (
+                            <span className="text-green-500 text-xs font-medium">• Online</span>
+                        )}
+                    </div>
                 </div>
             </div>
             

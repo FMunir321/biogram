@@ -2,6 +2,7 @@
 import { useFetchRecipientsUser } from '../../hooks/useFetchRecipients';
 import avatar from '../../../public/avatar.svg';
 import { baseUrl } from '@/service/api';
+
 interface Chat {
     _id: string;
     members: string[];
@@ -16,9 +17,11 @@ interface UserChatProps {
     chat: Chat;
     user: User;
     isActive?: boolean;
+    isOnline?: boolean;
+    recipientUser?: any; // For users without existing chats
 }
 
-export const UserChat = ({ chat, user, isActive = false }: UserChatProps) => {
+export const UserChat = ({ chat, user, isActive = false, isOnline = false }: UserChatProps) => {
     const { recipientUser } = useFetchRecipientsUser(chat, user);
 
     return (
@@ -36,6 +39,11 @@ export const UserChat = ({ chat, user, isActive = false }: UserChatProps) => {
                     (e.currentTarget as HTMLImageElement).src = avatar as unknown as string;
                 }}
             />
+            
+            {/* Online Status Indicator */}
+            {isOnline && (
+                <div className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+            )}
         </div>
     );
 }
