@@ -178,9 +178,12 @@ export const ChatBox = ({
                                     }`}
                             >
                                 <p className="whitespace-pre-line">{message.text}</p>
-                                <span className={`text-[10px] block mt-1 text-right ${isOwnMessage ? 'text-gray-500' : 'text-gray-500'}`}> 
+                                
+                                                                  {/* shows the time of the message*/}
+
+                                {/* <span className={`text-[10px] block mt-1 text-right ${isOwnMessage ? 'text-gray-500' : 'text-gray-500'}`}> 
                                     {message.createdAt ? moment(message.createdAt).calendar() : ''}
-                                </span>
+                                </span> */}
                             </div>
                         </div>
                     );
