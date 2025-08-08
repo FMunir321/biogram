@@ -42,7 +42,6 @@ const Messages = () => {
   const { 
     socket, 
     connectSocket, 
-    disconnectSocket, 
     joinRoom, 
     leaveRoom, 
     sendMessage: sendSocketMessage,
@@ -344,8 +343,9 @@ const Messages = () => {
         className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
         style={{ backgroundImage: `url(${bground})` }}
       >
+        <div></div>
       {/* Sidebar */}
-      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent h-[50vh] md:h-auto relative">
+      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 h-[50vh] md:h-auto relative bg-white/30">
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-2xl md:text-[32px] font-semibold text-black">
             Message
@@ -354,7 +354,7 @@ const Messages = () => {
         </div>
 
         {/* Searchbar */}
-        <div className="flex border border-[#6fb793] gap-2 w-full rounded-full bg-gradient-to-r from-[#dfece2] to-[#d5dad9] text-black text-lg md:text-[20px] font-medium relative z-20">
+        <div className="flex border border-[#6fb793] bg-white/30 gap-2 w-full rounded-full text-black text-lg md:text-[20px] font-medium relative z-20">
           <Input
             type="text"
             placeholder="Search Person name here"
@@ -370,7 +370,7 @@ const Messages = () => {
         {/* Search Results Overlay */}
         {search.trim() !== "" && (
           <ul
-            className="absolute left-0 right-0 mt-2 top-[120px] md:top-[135px] mx-4 bg-white rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto"
+            className="absolute left-0 right-0 mt-2 top-[120px] md:top-[135px] mx-4 bg-white/30 rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto"
             style={{ listStyle: "none", padding: 2 }}
           >
             {filteredUsers.length === 0 ? (
@@ -422,25 +422,24 @@ const Messages = () => {
           </ul>
         )}
 
-        {/* Chat List */}
+        {/* Chat Grid */}
         <div className="mt-6 md:mt-9">
           {(userChats?.length ?? 0) < 1 ? null : (
-            <div>
-              <div className="messsages-box flex-grow-0 pe-3 hover:cursor-pointer  max-h-[77vh] overflow-y-auto">
+            <div className="h-full overflow-x-auto p-2">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-6">
                 {isUserChatsLoading && <p>Loading chats...</p>}
                 {userChatsError && (
                   <p className="text-red-500">{userChatsError}</p>
                 )}
                 {Array.isArray(userChats) &&
                   userChats.map((chat, index) => (
-                    <div
+                    <button
                       key={index}
-                      onClick={() => {
-                        updateCurrentChat(chat);
-                      }}
+                      onClick={() => updateCurrentChat(chat)}
+                      className="focus:outline-none"
                     >
-                      <UserChat chat={chat} user={user} />
-                    </div>
+                      <UserChat chat={chat} user={user} isActive={currentChat?._id === chat._id} />
+                    </button>
                   ))}
               </div>
             </div>
@@ -449,7 +448,7 @@ const Messages = () => {
       </div>
 
       {/* Chat area */}
-      <div className="w-full md:w-[63%] border-t md:border-t-0 md:border-l border-[#b6c1bc] flex items-center min-h-[50vh] md:min-h-0">
+      <div className="w-full  md:w-[63%] border-t md:border-t-0 md:border-l border-[#b6c1bc] flex items-center min-h-[50vh] md:min-h-0">
         <div className="w-full h-full">
           <ChatBox
             currentChat={currentChat}

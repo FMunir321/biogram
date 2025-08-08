@@ -131,17 +131,20 @@ export const ChatBox = ({
     return (
         <div className="flex flex-col h-full w-full rounded-lg shadow-md overflow-hidden">
             {/* Header */}
-            <div className="px-4 py-3 border-b border-gray-200 bg-white flex items-center gap-2">
+            <div className="px-4 py-3 border-b border-gray-200 bg-white/30 flex items-center gap-2">
                 <img 
                     src={recipientUser?.profileImage ? `${baseUrl}${recipientUser.profileImage}` : avatar} 
                     alt={recipientUser?.username || "User"}
-                    className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover flex-shrink-0 border-2 border-gray-200"
+                    className="w-14 h-14 md:w-17 md:h-17 rounded-full object-cover flex-shrink-0 border-2 border-gray-200"
                 />
-                <strong className="text-gray-800 text-base">{recipientUser?.username}</strong>
+                <div className="flex flex-col ml-5">
+                    <strong className="text-gray-800 text-lg">{recipientUser?.fullName}</strong>
+                    <strong className="text-gray-500 text-xs">@{recipientUser?.username}</strong>
+                </div>
             </div>
             
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 relative">
+            <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 relative bg-white/50">
                 {/* Scroll to bottom button */}
                 {showScrollButton && (
                     <button
@@ -170,12 +173,12 @@ export const ChatBox = ({
                             <div
                                 className={`max-w-[60%] px-4 py-2 rounded-2xl shadow-sm break-words
                                     ${isOwnMessage
-                                        ? 'bg-green-500 text-white rounded-br-md'
-                                        : 'bg-white text-gray-900 border border-gray-200 rounded-bl-md'
+                                        ? 'bg-[#D0EBF3] text-black rounded-br-md'
+                                        : 'bg-[#E8D5F3] text-black border border-gray-200 rounded-bl-md'
                                     }`}
                             >
                                 <p className="whitespace-pre-line">{message.text}</p>
-                                <span className={`text-[10px] block mt-1 text-right ${isOwnMessage ? 'text-green-100' : 'text-gray-400'}`}> 
+                                <span className={`text-[10px] block mt-1 text-right ${isOwnMessage ? 'text-gray-500' : 'text-gray-500'}`}> 
                                     {message.createdAt ? moment(message.createdAt).calendar() : ''}
                                 </span>
                             </div>
