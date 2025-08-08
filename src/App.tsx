@@ -1,10 +1,13 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import RoutesComponent from "./routes";
+import { SocketProvider } from "./context/SocketContext";
 
 function App() {
   return (
     <Router>
-      <RoutesComponent />
+      <SocketProvider>
+        <RoutesComponent />
+      </SocketProvider>
     </Router>
   );
 }

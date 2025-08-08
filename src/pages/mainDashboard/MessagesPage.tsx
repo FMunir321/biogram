@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
-import bground from "../../../public/assets/lightbg.png";
+import bground from "/assets/lightbg.png";
 import { Input } from "@/components/ui/input";
 import { ChatBox } from "@/components/chat/chatBox";
 import { UserChat } from "@/components/chat/UserChat";
 import Cookies from "js-cookie";
 import api, { baseUrl, postRequest } from "@/service/api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { useSocket } from "@/context/SocketContext";
+
+
 
 // =================== Interfaces ===================
 
@@ -35,6 +38,17 @@ const Messages = () => {
   const userId = localStorage.getItem("userId") || "";
   const user: User = { _id: userId };
 
+  // Socket context
+  const { 
+    socket, 
+    connectSocket, 
+    joinRoom, 
+    leaveRoom, 
+    sendMessage: sendSocketMessage,
+    isConnected,
+    onlineUsers 
+  } = useSocket();
+
   // State for users and search
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
@@ -49,6 +63,14 @@ const Messages = () => {
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
+  
+  // State to track chats with messages
+  const [chatsWithMessages, setChatsWithMessages] = useState<Set<string>>(new Set());
+
+  // Previous chat reference for room management
+  const prevChatRef = useRef<string | null>(null);
+
+
 
   // Fetch all users
   useEffect(() => {
@@ -68,6 +90,100 @@ const Messages = () => {
       fetchMessages();
     }
   }, [currentChat]);
+
+  // Initialize socket connection on component mount  
+  useEffect(() => {
+    console.log('=== SOCKET DEBUG ===');
+    console.log('User ID from localStorage:', userId);
+    console.log('User ID length:', userId.length);
+    console.log('User ID truthy:', !!userId);
+    console.log('Socket already connected:', !!socket);
+    
+    if (userId && userId.trim() !== '' && !socket) {
+      console.log('Attempting to connect socket for user:', userId);
+      connectSocket(userId);
+    } else if (socket) {
+      console.log('Socket already exists, skipping connection');
+    } else {
+      console.error('Cannot connect socket: User ID is empty. User might not be logged in.');
+    }
+
+    return () => {
+      console.log('Component unmounting, but NOT disconnecting socket (will be handled by context)');
+      // Don't disconnect here to prevent rapid cycles
+    };
+  }, [userId]); // Removed connectSocket and disconnectSocket from dependencies
+
+  // Handle chat room joining/leaving
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    // Leave previous room if exists
+    if (prevChatRef.current) {
+      leaveRoom(prevChatRef.current);
+    }
+
+    // Join new room if currentChat exists
+    if (currentChat?._id) {
+      console.log('Joining chat room:', currentChat._id);
+      joinRoom(currentChat._id);
+      prevChatRef.current = currentChat._id;
+    }
+
+    return () => {
+      if (currentChat?._id) {
+        leaveRoom(currentChat._id);
+      }
+    };
+  }, [currentChat?._id, socket, isConnected, joinRoom, leaveRoom]);
+
+  // Set up socket event listeners for real-time messages
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (message: Message) => {
+      console.log('Received new message via socket:', message);
+      
+      // Track that this chat has messages
+      setChatsWithMessages(prev => new Set(prev).add(message.chatId));
+      
+      // Only add message if it's for the current chat
+      if (currentChat && message.chatId === currentChat._id) {
+        setMessages(prev => {
+          // Avoid duplicates by checking if message already exists
+          const exists = prev?.some(m => m._id === message._id);
+          if (exists) return prev;
+          return prev ? [...prev, message] : [message];
+        });
+      }
+    };
+
+    socket.on('getMessage', handleNewMessage);
+
+    return () => {
+      socket.off('getMessage', handleNewMessage);
+    };
+  }, [socket, currentChat]);
+
+  // Optional: Listen for typing indicators
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleUserTyping = (data: { userId: string; isTyping: boolean }) => {
+      console.log('User typing status:', data);
+      // You can implement typing indicators UI here
+    };
+
+    socket.on('userTyping', handleUserTyping);
+
+    return () => {
+      socket.off('userTyping', handleUserTyping);
+    };
+  }, [socket]);
+
+
+
+
 
   const fetchUsers = async () => {
     try {
@@ -99,6 +215,25 @@ const Messages = () => {
 
       const chats = response.data as Chat[];
       setUserChats(chats);
+      
+      // Check which chats have messages and add them to the set
+      const chatsWithMessagesSet = new Set<string>();
+      for (const chat of chats) {
+        try {
+          const messagesResponse = await api.get(`/api/messages/${chat._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const messages = messagesResponse.data as Message[];
+          if (messages && messages.length > 0) {
+            chatsWithMessagesSet.add(chat._id);
+          }
+        } catch (error) {
+          console.error(`Error checking messages for chat ${chat._id}:`, error);
+        }
+      }
+      setChatsWithMessages(chatsWithMessagesSet);
     } catch (error: unknown) {
       console.error("Error fetching user chats:", error);
       const errorMessage =
@@ -125,6 +260,11 @@ const Messages = () => {
 
       const messages = response.data as Message[];
       setMessages(messages);
+      
+      // Track if this chat has messages
+      if (messages && messages.length > 0) {
+        setChatsWithMessages(prev => new Set(prev).add(currentChat._id));
+      }
     } catch (error: unknown) {
       console.error("Error fetching messages:", error);
       const errorMessage =
@@ -170,6 +310,7 @@ const Messages = () => {
       if (!textMessage.trim()) return;
 
       try {
+        // Send message via HTTP API (this will save to database and emit socket event)
         const response = await postRequest(`${baseUrl}/api/messages`, {
           chatId: currentChatId,
           senderId: sender._id,
@@ -185,14 +326,43 @@ const Messages = () => {
         }
 
         const message = response as Message;
-        setMessages((prev) => (prev ? [...prev, message] : [message]));
+        
+        // Add message to local state immediately for sender's UI
+        setMessages((prev) => {
+          // Avoid duplicates
+          const exists = prev?.some(m => m._id === message._id);
+          if (exists) return prev;
+          const newMessages = prev ? [...prev, message] : [message];
+          
+          // Track that this chat now has messages
+          setChatsWithMessages(prev => new Set(prev).add(currentChatId));
+          
+          return newMessages;
+        });
+
+        // Also send via socket for real-time delivery to other users
+        if (socket && isConnected) {
+          sendSocketMessage({
+            _id: message._id,
+            chatId: currentChatId,
+            senderId: sender._id,
+            text: textMessage,
+            createdAt: message.createdAt
+          });
+        }
+
         setTextMessage("");
       } catch (error) {
         console.error("Error sending message:", error);
       }
     },
-    []
+    [socket, isConnected, sendSocketMessage]
   );
+
+  // Helper function to check if a user is online
+  const isUserOnline = (userId: string) => {
+    return onlineUsers.includes(userId);
+  };
 
   // Filter users based on search
   const filteredUsers =
@@ -209,17 +379,23 @@ const Messages = () => {
         });
 
   return (
-    <div
-      className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
-      style={{ backgroundImage: `url(${bground})` }}
-    >
+    <>
+      <div
+        className="flex flex-col md:flex-row h-[calc(100vh-25px)] bg-cover bg-center"
+        style={{ backgroundImage: `url(${bground})` }}
+      >
+        <div></div>
       {/* Sidebar */}
-      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 bg-white/80 md:bg-transparent h-[50vh] md:h-auto relative">
-        <h1 className="text-2xl md:text-[32px] font-semibold text-black mb-3">
-          Message
-        </h1>
+      <div className="w-full md:w-[37%] p-3 md:p-5 flex-shrink-0 h-[50vh] md:h-auto relative bg-white/30">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-2xl md:text-[32px] font-semibold text-black">
+            Message
+          </h1>
+
+        </div>
+
         {/* Searchbar */}
-        <div className="flex border border-[#6fb793] gap-2 w-full rounded-full bg-gradient-to-r from-[#dfece2] to-[#d5dad9] text-black text-lg md:text-[20px] font-medium relative z-20">
+        <div className="flex border border-[#6fb793] bg-white/30 gap-2 w-full rounded-full text-black text-lg md:text-[20px] font-medium relative z-20">
           <Input
             type="text"
             placeholder="Search Person name here"
@@ -235,7 +411,7 @@ const Messages = () => {
         {/* Search Results Overlay */}
         {search.trim() !== "" && (
           <ul
-            className="absolute left-0 right-0 mt-2 top-[120px] md:top-[135px] mx-4 bg-white rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto"
+            className="absolute left-0 right-0 mt-2 top-[120px] md:top-[135px] mx-4 bg-white/30 rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto"
             style={{ listStyle: "none", padding: 2 }}
           >
             {filteredUsers.length === 0 ? (
@@ -262,15 +438,20 @@ const Messages = () => {
                   }}
                   className="flex items-center mb-3 md:mb-4 bg-white rounded-lg  p-2 md:p-3 max-w-full md:max-w-xs cursor-pointer hover:bg-[#f0f7f3] transition"
                 >
-                                     
+                  <div className="relative">
                     <img
-                    src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
-                    alt={user.username || "avatar"}
-                    className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
-                    }}
-                  />
+                      src={user.profileImage ? `${baseUrl}${user.profileImage}` : "/assets/avatar.png"}
+                      alt={user.username || "avatar"}
+                      className="w-9 h-9 md:w-10 md:h-10 rounded-full mr-3 md:mr-4 object-cover border-2 border-gray-200 flex-shrink-0"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
+                      }}
+                    />
+                    {/* Online Status Indicator for Search Results */}
+                    {isUserOnline(user._id) && (
+                      <div className="absolute bottom-0 right-3 md:right-4 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+                    )}
+                  </div>
                   <div className="flex flex-col min-w-0">
                     <div className="font-semibold text-sm md:text-base truncate max-w-[120px] md:max-w-[160px]">
                       {user.fullName || user.name || "No Name"}
@@ -287,26 +468,38 @@ const Messages = () => {
           </ul>
         )}
 
-        {/* Chat List */}
+        {/* Chat Grid */}
         <div className="mt-6 md:mt-9">
-          {(userChats?.length ?? 0) < 1 ? null : (
-            <div>
-              <div className="messsages-box flex-grow-0 pe-3 hover:cursor-pointer  max-h-[77vh] overflow-y-auto">
+          {(!userChats || userChats.filter(chat => chatsWithMessages.has(chat._id)).length === 0) ? null : (
+            <div className="h-full overflow-x-auto p-2">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-6">
                 {isUserChatsLoading && <p>Loading chats...</p>}
                 {userChatsError && (
                   <p className="text-red-500">{userChatsError}</p>
                 )}
                 {Array.isArray(userChats) &&
-                  userChats.map((chat, index) => (
-                    <div
-                      key={index}
-                      onClick={() => {
-                        updateCurrentChat(chat);
-                      }}
-                    >
-                      <UserChat chat={chat} user={user} />
-                    </div>
-                  ))}
+                  userChats
+                    .filter(chat => chatsWithMessages.has(chat._id)) // Only show chats with messages
+                    .map((chat, index) => {
+                      // Get the recipient user ID (the other user in the chat)
+                      const recipientId = chat.members.find(id => id !== user._id);
+                      const isOnline = recipientId ? isUserOnline(recipientId) : false;
+                      
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => updateCurrentChat(chat)}
+                          className="focus:outline-none"
+                        >
+                          <UserChat 
+                            chat={chat} 
+                            user={user} 
+                            isActive={currentChat?._id === chat._id}
+                            isOnline={isOnline}
+                          />
+                        </button>
+                      );
+                    })}
               </div>
             </div>
           )}
@@ -314,7 +507,7 @@ const Messages = () => {
       </div>
 
       {/* Chat area */}
-      <div className="w-full md:w-[63%] border-t md:border-t-0 md:border-l border-[#b6c1bc] flex items-center min-h-[50vh] md:min-h-0">
+      <div className="w-full  md:w-[63%] border-t md:border-t-0 md:border-l border-[#b6c1bc] flex items-center min-h-[50vh] md:min-h-0">
         <div className="w-full h-full">
           <ChatBox
             currentChat={currentChat}
@@ -323,11 +516,14 @@ const Messages = () => {
             messagesError={messagesError}
             sendTextMessage={sendTextMessage}
             user={user}
+            isRecipientOnline={currentChat ? isUserOnline(currentChat.members.find(id => id !== user._id) || '') : false}
           />
         </div>
       </div>
     </div>
+    </>
   );
 };
 
 export default Messages;
+

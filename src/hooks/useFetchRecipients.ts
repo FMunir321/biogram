@@ -14,6 +14,9 @@ interface RecipientUser {
     _id: string;
     username: string;
     profileImage?: string;
+    fullName?: string;
+    name?: string;
+    email?: string;
     // Add other fields if needed
 }
 
