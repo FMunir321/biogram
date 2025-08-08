@@ -60,6 +60,7 @@ type User = {
       websiteUrl?: boolean;
     };
   };
+  showContactInfo?: boolean;
   merch?: {
     _id: string;
     user: string;
@@ -199,19 +200,19 @@ const MainDashboard = () => {
         profileImage: userData.profileImage,
         bio: userData.bio,
         showBio: userData.visibilitySettings?.bio ?? false,
-        gallery: userData.gallery || [],
+        gallery: userData.gallery,
         showGallery: userData.visibilitySettings?.gallery ?? false,
-        shouts: userData.shouts || [],
+        shouts: userData.shouts,
         contactInfo: {
           email: userData.contactInfo?.email,
           phoneNumber: userData.contactInfo?.phoneNumber,
           websiteUrl: userData.contactInfo?.websiteUrl,
           visibility: userData.contactInfo?.visibility ?? {},
         },
-        merch: userData.merch || [],
+        merch: userData.merch,
         showMerch: userData.visibilitySettings?.merch ?? false,
 
-        featuredLinks: userData.featuredLinks || [],
+        featuredLinks: userData.featuredLinks,
         showFeaturedLinks: userData.visibilitySettings?.featuredLinks ?? false,
       };
 
@@ -385,17 +386,17 @@ const MainDashboard = () => {
                             <CarouselContent className="h-80">
                               {userShouts.map((shout) => (
                                 <CarouselItem key={shout._id} className=" h-full">
-                                <div className=" rounded-2xl h-full flex flex-col justify-center">
-                                  {shout.imageUrl && (
-                                    
+                                  <div className=" rounded-2xl h-full flex flex-col justify-center">
+                                    {shout.imageUrl && (
+
                                       <img
                                         src={`http://3.111.146.115:5000${shout.imageUrl}`}
                                         alt="shout"
                                         className="w-full h-[90%] object-contain rounded-2xl text-white"
                                       />
-                                    
-                                  )}
-                                </div>
+
+                                    )}
+                                  </div>
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
@@ -423,17 +424,17 @@ const MainDashboard = () => {
                             <CarouselContent className="h-80">
                               {userMedia.map((shout) => (
                                 <CarouselItem key={shout._id} className=" h-full">
-                                <div className="rounded-2xl shadow p-2 h-full flex flex-col justify-center">
-                                  {shout.videoUrl && (
-                                    
+                                  <div className="rounded-2xl shadow p-2 h-full flex flex-col justify-center">
+                                    {shout.videoUrl && (
+
                                       <video
                                         controls
                                         src={`http://3.111.146.115:5000${shout.videoUrl}`}
                                         className="w-full h-full object-contain object-center rounded-xl"
                                       />
-                                   
-                                  )}
-                                </div>
+
+                                    )}
+                                  </div>
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
@@ -451,7 +452,7 @@ const MainDashboard = () => {
                     )}
                   </div>
                   <div className="relative" >
-                    {userDetails?.bio && userDetails?.showBio && (
+                    {userDetails?.bio?.trim() && userDetails?.showBio && (
                       <div className="w-[90%] mx-auto mb-6 px-4 mt-15"> {/* mt-12 adds spacing */}
                         <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
                           <div className="text-center">
@@ -476,55 +477,56 @@ const MainDashboard = () => {
 
                   </div>
                   <div className="relative">
-                    {userDetails?.gallery && userDetails?.showGallery && (
-                      <div className="w-[90%] mx-auto px-4 mt-12">
-                        <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                          <div className="text-center">
-                            <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
-                              Gallery
-                            </h3>
-                            <Carousel
-                              orientation="horizontal"
-                              className="relative w-full "
-                              opts={{
-                                align: "start",
-                                loop: true,
-                              }}
-                            >
-                              <CarouselContent className="-ml-2 md:-ml-4">
-                                {/* Group images into slides of 4 (optional) */}
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                  {userDetails.gallery.map((item, index) => (
+                    {Array.isArray(userDetails?.gallery) &&
+                      userDetails.gallery.length > 0 &&
+                      userDetails?.showGallery && (
+                        <div className="w-[90%] mx-auto px-4 mt-12">
+                          <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                            <div className="text-center">
+                              <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                                Gallery
+                              </h3>
+                              <Carousel
+                                orientation="horizontal"
+                                className="relative w-full "
+                                opts={{
+                                  align: "start",
+                                  loop: true,
+                                }}
+                              >
+                                <CarouselContent className="-ml-2 md:-ml-4">
+                                  {/* Group images into slides of 4 (optional) */}
+                                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                    {userDetails.gallery.map((item, index) => (
 
-                                    <CarouselItem key={item._id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3">
+                                      <CarouselItem key={item._id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3">
 
-                                      <img
-                                        key={index}
-                                        src={`${baseUrl}/${item.imageUrl}`} // Correct: full path now
-                                        alt={`Gallery image ${index + 1}`}
-                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                      />
-                                    </CarouselItem>
-                                  ))}
+                                        <img
+                                          key={index}
+                                          src={`${baseUrl}/${item.imageUrl}`} // Correct: full path now
+                                          alt={`Gallery image ${index + 1}`}
+                                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                        />
+                                      </CarouselItem>
+                                    ))}
 
-                                </div>
+                                  </div>
 
-                              </CarouselContent>
+                                </CarouselContent>
 
-                              <CarouselPrevious className="left-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
-                              <CarouselNext className="right-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
-                            </Carousel>
+                                <CarouselPrevious className="left-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
+                                <CarouselNext className="right-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
+                              </Carousel>
 
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                   <div className="relative">
                     {userDetails?.contactInfo &&
-                      (userDetails.contactInfo.phoneNumber ||
-                        userDetails.contactInfo.email ||
-                        userDetails.contactInfo.websiteUrl) && (
+                      Object.values(userDetails.contactInfo).some(value => value?.toString().trim() !== "") &&
+                      userDetails?.showContactInfo && (
                         <div className="w-110 mx-auto mb-6 px-4 mt-12 item-center">
                           <div className="bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30 space-y-6">
                             <div className="text-center">
@@ -607,93 +609,97 @@ const MainDashboard = () => {
                       )}
                   </div>
                   <div className="relative">
-                    {userDetails?.merch && userDetails?.showMerch && (
-                      <div className="w-[90%] mx-auto px-4 mt-12">
-                        <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                          <div className="text-center">
-                            <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
-                              Merch
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                              {userDetails.merch.map((item) => (
-                                <a
-                                  key={item._id}
-                                  href={item.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="group block bg-white/5 hover:bg-white/10 rounded-xl p-4 transition duration-300"
-                                >
-                                  <img
-                                    src={`${baseUrl}/${item.image}`}
-                                    alt={item.title}
-                                    className="w-full h-40 object-cover rounded-md mb-4 group-hover:scale-105 transition-transform"
-                                  />
-                                  <h4 className="text-white text-lg font-semibold">{item.title}</h4>
-                                  <p className="text-gray-300 text-sm mt-1">Price: {item.price}</p>
-                                  <p className="text-gray-400 text-xs mt-1 capitalize">Category: {item.category}</p>
-                                </a>
-                              ))}
+                    {Array.isArray(userDetails?.merch) &&
+                      userDetails.merch.length > 0 &&
+                      userDetails?.showMerch && (
+                        <div className="w-[90%] mx-auto px-4 mt-12">
+                          <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                            <div className="text-center">
+                              <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
+                                Merch
+                              </h3>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                {userDetails.merch.map((item) => (
+                                  <a
+                                    key={item._id}
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group block bg-white/5 hover:bg-white/10 rounded-xl p-4 transition duration-300"
+                                  >
+                                    <img
+                                      src={`${baseUrl}/${item.image}`}
+                                      alt={item.title}
+                                      className="w-full h-40 object-cover rounded-md mb-4 group-hover:scale-105 transition-transform"
+                                    />
+                                    <h4 className="text-white text-lg font-semibold">{item.title}</h4>
+                                    <p className="text-gray-300 text-sm mt-1">Price: {item.price}</p>
+                                    <p className="text-gray-400 text-xs mt-1 capitalize">Category: {item.category}</p>
+                                  </a>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                   <div className="relative">
-                    {userDetails?.featuredLinks && userDetails?.showFeaturedLinks && (
-                      <div className="w-[90%] mx-auto px-4 mt-12">
-                        <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
-                          <div className="text-center mb-4">
-                            <h3 className="text-lg font-semibold text-white tracking-wide">Featured Links</h3>
-                          </div>
-                          <div className="flex flex-col gap-4">
-                            {userDetails.featuredLinks
-                              .filter(link => link.isVisible)
-                              .map(link => (
-                                <a
-                                  key={link._id}
-                                  href={link.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-4 p-4 rounded-xl transition duration-300 group"
-                                  style={{
-                                    background: link.background || '#1f2937',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                  }}
-                                >
-                                  {/* Thumbnail */}
-                                  {link.thumbnailImage && (
-                                    <img
-                                      src={link.thumbnailImage}
-                                      alt={link.title}
-                                      className="w-10 h-10 rounded object-cover"
-                                    />
-                                  )}
-
-                                  {/* Text Info */}
-                                  <div className="flex-1 text-left">
-                                    <h4 className="text-white font-medium">{link.title}</h4>
-                                    <p className="text-sm text-white/70 break-all">{link.url}</p>
-                                  </div>
-
-                                  {/* Arrow Icon */}
-                                  <svg
-                                    className="w-4 h-4 text-white/50 group-hover:text-white"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
+                    {Array.isArray(userDetails?.featuredLinks) &&
+                      userDetails.featuredLinks.some(link => link?.url?.toString().trim() !== "") &&
+                      userDetails?.showFeaturedLinks && (
+                        <div className="w-[90%] mx-auto px-4 mt-12">
+                          <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
+                            <div className="text-center mb-4">
+                              <h3 className="text-lg font-semibold text-white tracking-wide">Featured Links</h3>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                              {userDetails.featuredLinks
+                                .filter(link => link.isVisible)
+                                .map(link => (
+                                  <a
+                                    key={link._id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 p-4 rounded-xl transition duration-300 group"
+                                    style={{
+                                      background: link.background || '#1f2937',
+                                      border: '1px solid rgba(255,255,255,0.1)',
+                                    }}
                                   >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M12.293 3.293a1 1 0 011.414 0L18 7.586a1 1 0 010 1.414l-4.293 4.293a1 1 0 01-1.414-1.414L14.586 9H4a1 1 0 110-2h10.586l-2.293-2.293a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </a>
-                              ))}
+                                    {/* Thumbnail */}
+                                    {link.thumbnailImage && (
+                                      <img
+                                        src={link.thumbnailImage}
+                                        alt={link.title}
+                                        className="w-10 h-10 rounded object-cover"
+                                      />
+                                    )}
+
+                                    {/* Text Info */}
+                                    <div className="flex-1 text-left">
+                                      <h4 className="text-white font-medium">{link.title}</h4>
+                                      <p className="text-sm text-white/70 break-all">{link.url}</p>
+                                    </div>
+
+                                    {/* Arrow Icon */}
+                                    <svg
+                                      className="w-4 h-4 text-white/50 group-hover:text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M12.293 3.293a1 1 0 011.414 0L18 7.586a1 1 0 010 1.414l-4.293 4.293a1 1 0 01-1.414-1.414L14.586 9H4a1 1 0 110-2h10.586l-2.293-2.293a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </a>
+                                ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
                   </div>
                 </div>
