@@ -7,6 +7,8 @@ import { Input } from "../ui/input";
 import Cookies from "js-cookie";
 import api from "@/service/api";
 import { baseUrl } from '@/service/api';
+import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Carousel,
@@ -16,12 +18,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-
-
 const isVideoFile = (url: string) => {
   return /\.(mp4|webm|mov|avi)$/i.test(url);
 };
-
 
 // Updated User type to include all used properties
 interface Shout {
@@ -33,7 +32,6 @@ interface Shout {
   createdAt: string;
   // Add other properties if needed
 }
-
 
 type User = {
   _id: string;
@@ -89,8 +87,9 @@ type User = {
   showFeaturedLinks?: boolean;
 };
 
-
 const MainDashboard = () => {
+  const navigate = useNavigate();
+
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -99,9 +98,7 @@ const MainDashboard = () => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [userShouts, setUserShouts] = useState<Shout[]>([]);
   const [userMedia, setUserMedia] = useState<Shout[]>([]);
-
-
-
+  
 
   useEffect(() => {
     fetchUser();
@@ -116,22 +113,18 @@ const MainDashboard = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
-
     } catch (error) {
       console.error("API error:", error);
     }
   };
   const handleClickOnProfile = async (userId: string) => {
     const token = Cookies.get("token");
-    // console.log("clicked",userId);
     try {
       await api.post(`/api/analytics/profile-view/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      // const data = await response.data;
-      // console.log("click tracked",data);
     } catch (error) {
       console.error("API error:", error);
     }
@@ -150,7 +143,6 @@ const MainDashboard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
 
       const allUsers = response.data.users || [];
 
@@ -172,7 +164,6 @@ const MainDashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // ✅ Paste it right here
       console.log("Fetched userData:", response.data);
 
       const userData = response.data;
@@ -190,7 +181,7 @@ const MainDashboard = () => {
         (shout) => shout.videoUrl && isVideoFile(shout.videoUrl)
       );
 
-      // ✅ Format and assign user details properly
+      // Format and assign user details properly
       const formattedUser: User = {
         _id: userData._id,
         name: userData.name,
@@ -211,11 +202,9 @@ const MainDashboard = () => {
         },
         merch: userData.merch,
         showMerch: userData.visibilitySettings?.merch ?? false,
-
         featuredLinks: userData.featuredLinks,
         showFeaturedLinks: userData.visibilitySettings?.featuredLinks ?? false,
       };
-
 
       setUserDetails(formattedUser);
       setUserShouts(imageShouts);
@@ -225,8 +214,11 @@ const MainDashboard = () => {
     }
   };
 
-
-
+  // minimal helper to navigate to chat — only thing added
+  const handleMessageClick = (userId: string) => {
+    // stops other handlers by caller (we also call stopPropagation where button lives)
+    navigate(`/chat/${userId}`);
+  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -242,6 +234,7 @@ const MainDashboard = () => {
         (user.name ?? "").toLowerCase().includes(value)
       );
     });
+
   console.log("Gallery data:", userDetails?.gallery);
   return (
     <div
@@ -263,54 +256,63 @@ const MainDashboard = () => {
           </Button>
         </div>
 
-
         {/* User List: only show if search is not empty */}
         {search.trim() !== "" && (
           <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
             {filteredUsers.length === 0 ? (
               <li style={{ color: "#888", textAlign: "center" }}>No users found.</li>
             ) : (
-              filteredUsers.map((user) => (
-                <li
-                  key={user._id}
-                  onClick={() => {
-                    setSelectedUser(user);
-                    handleClickOnId(user._id);
-                    fetchUserById(user._id); // yahan user ki id pass karein
-                  }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: 16,
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-                    padding: "10px 16px",
-                    maxWidth: 350,
-                    cursor: "pointer",
-                  }}
-                >
-                  <img
-                    src={user.profileImage || "/public/assets/avatar.png"}
-                    alt={user.username || "avatar"}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      marginRight: 16,
-                      objectFit: "cover",
-                      border: "2px solid #e0e0e0",
+              filteredUsers.map((user) => {
+                const profileImageUrl = user.profileImage
+                  ? `${baseUrl}${user.profileImage}` // backend image
+                  : "/assets/avatar.png"; // default image
+
+                return (
+                  <li
+                    key={user._id}
+                    onClick={() => {
+                      setSelectedUser(user);
+                      handleClickOnId(user._id);
+                      fetchUserById(user._id);
                     }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = "/public/assets/avatar.png"; }}
-                  />
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{user.fullName || user.name || "No Name"}</div>
-                    <div style={{ fontSize: 14, color: "#888" }}>@{user.username || user.email || "user"}</div>
-                  </div>
-
-
-                </li>
-              ))
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: 16,
+                      background: "#fff",
+                      borderRadius: 8,
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+                      padding: "10px 16px",
+                      maxWidth: 350,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <img
+                      src={profileImageUrl}
+                      alt={user.username || "avatar"}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        marginRight: 16,
+                        objectFit: "cover",
+                        border: "2px solid #e0e0e0",
+                      }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = "/assets/avatar.png";
+                      }}
+                    />
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>
+                        {user.fullName || user.name || "No Name"}
+                      </div>
+                      <div style={{ fontSize: 14, color: "#888" }}>
+                        @{user.username || user.email || "user"}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })
             )}
           </ul>
         )}
@@ -321,15 +323,12 @@ const MainDashboard = () => {
           <>
             {/* Profile Image as Card Header */}
             <div className=" cursor-pointer mt-10 relative" >
-              {/* <div className="absolute bottom-56 left-0 w-full h-20 bg-gradient-to-b from-transparent to-black via-black/90 z-10" >
-              </div> */}
               <div
                 className="relative bg-cover bg-center  bg-no-repeat text-white text-center h-[600px]  w-[500px] rounded-tl-2xl  rounded-tr-2xl "
                 style={{
                   backgroundImage: selectedUser.profileImage
                     ? `url("${baseUrl}${selectedUser.profileImage}")`
                     : `url("${group}")`,
-
                 }}
               >
                 <div className="absolute bottom-0 left-0 w-full h-46 bg-gradient-to-b from-transparent to-black via-black/90 z-10"></div>
@@ -347,7 +346,23 @@ const MainDashboard = () => {
                 </div>
               </div>
 
-              <div className="  bg-black w-[500px] ">
+              {/* Added only `relative` and message button here (minimal change) */}
+              <div className="  bg-black w-[500px] relative ">
+                {/* Message button (top-right). stopPropagation to avoid triggering parent onClick */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedUser && selectedUser._id) {
+                      handleMessageClick(selectedUser._id);
+                    }
+                  }}
+                  className="absolute top-3 right-3 z-40 bg-black/30 p-2 rounded-full hover:bg-black/50 transition"
+                  title="Message"
+                >
+                  <MessageCircle size={22} className="text-white" />
+                </button>
+
                 <div className="bg-black w-full max-w-[500px] rounded-b-2xl pb-8 pt-4 h-100% item-center" onClick={() => handleClickOnProfile(selectedUser._id)}>
                   <div className="flex gap-2 justify-center pt-22">
                     <button
@@ -451,6 +466,7 @@ const MainDashboard = () => {
                       )
                     )}
                   </div>
+
                   <div className="relative" >
                     {userDetails?.bio?.trim() && userDetails?.showBio && (
                       <div className="w-[90%] mx-auto mb-6 px-4 mt-15"> {/* mt-12 adds spacing */}
@@ -474,8 +490,8 @@ const MainDashboard = () => {
                         </div>
                       </div>
                     )}
-
                   </div>
+
                   <div className="relative">
                     {Array.isArray(userDetails?.gallery) &&
                       userDetails.gallery.length > 0 &&
@@ -498,9 +514,7 @@ const MainDashboard = () => {
                                   {/* Group images into slides of 4 (optional) */}
                                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                     {userDetails.gallery.map((item, index) => (
-
                                       <CarouselItem key={item._id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3">
-
                                         <img
                                           key={index}
                                           src={`${baseUrl}/${item.imageUrl}`} // Correct: full path now
@@ -509,9 +523,7 @@ const MainDashboard = () => {
                                         />
                                       </CarouselItem>
                                     ))}
-
                                   </div>
-
                                 </CarouselContent>
 
                                 <CarouselPrevious className="left-2 bg-black/50 border-white/20 text-white hover:bg-black/70" />
@@ -523,6 +535,7 @@ const MainDashboard = () => {
                         </div>
                       )}
                   </div>
+
                   <div className="relative">
                     {userDetails?.contactInfo &&
                       Object.values(userDetails.contactInfo).some(value => value?.toString().trim() !== "") &&
@@ -608,6 +621,7 @@ const MainDashboard = () => {
                         </div>
                       )}
                   </div>
+
                   <div className="relative">
                     {Array.isArray(userDetails?.merch) &&
                       userDetails.merch.length > 0 &&
@@ -643,6 +657,7 @@ const MainDashboard = () => {
                         </div>
                       )}
                   </div>
+
                   <div className="relative">
                     {Array.isArray(userDetails?.featuredLinks) &&
                       userDetails.featuredLinks.some(link => link?.url?.toString().trim() !== "") &&
