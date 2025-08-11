@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import api, { baseUrl, postRequest } from "@/service/api";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useSocket } from "@/context/SocketContext";
-
+import { useLocation } from "react-router-dom";
 
 
 // =================== Interfaces ===================
@@ -69,6 +69,11 @@ const Messages = () => {
 
   // Previous chat reference for room management
   const prevChatRef = useRef<string | null>(null);
+
+  const location = useLocation();
+const searchParams = new URLSearchParams(location.search);
+const userIdFromQuery = searchParams.get("userId");
+
 
 
 
@@ -377,6 +382,24 @@ const Messages = () => {
             (user.name ?? "").toLowerCase().includes(value)
           );
         });
+
+        useEffect(() => {
+          if (!userIdFromQuery) return;
+          if (!Array.isArray(userChats)) return;
+        
+          const chatWithUser = userChats.find(chat =>
+            chat.members.some(memberId => String(memberId) === String(userIdFromQuery))
+          );
+        
+          if (chatWithUser) {
+            updateCurrentChat(chatWithUser);
+          } else if (!isUserChatsLoading) {
+            // Only create if we're done loading chats
+            createChat(userId, userIdFromQuery);
+          }
+        }, [userIdFromQuery, userChats, isUserChatsLoading, userId, createChat, updateCurrentChat]);
+        
+        
 
   return (
     <>

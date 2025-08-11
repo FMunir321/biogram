@@ -34,7 +34,7 @@ interface Shout {
 }
 
 type User = {
-  _id: string;
+  _id: string
   name?: string;
   username?: string;
   fullName?: string;
@@ -98,7 +98,7 @@ const MainDashboard = () => {
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [userShouts, setUserShouts] = useState<Shout[]>([]);
   const [userMedia, setUserMedia] = useState<Shout[]>([]);
-  
+
 
   useEffect(() => {
     fetchUser();
@@ -214,11 +214,11 @@ const MainDashboard = () => {
     }
   };
 
-  // minimal helper to navigate to chat — only thing added
-  const handleMessageClick = (userId: string) => {
-    // stops other handlers by caller (we also call stopPropagation where button lives)
-    navigate(`/chat/${userId}`);
-  };
+  // // minimal helper to navigate to chat — only thing added
+  // const handleMessageClick = (userId: string) => {
+  //   // stops other handlers by caller (we also call stopPropagation where button lives)
+  //   navigate(`/messages`);
+  // };
 
   if (loading) return <div>Loading...</div>;
 
@@ -353,9 +353,8 @@ const MainDashboard = () => {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (selectedUser && selectedUser._id) {
-                      handleMessageClick(selectedUser._id);
-                    }
+                    // Pass user ID in the URL query parameters
+                    navigate(`/messages?userId=${userDetails?._id}`);
                   }}
                   className="absolute top-3 right-3 z-40 bg-black/30 p-2 rounded-full hover:bg-black/50 transition"
                   title="Message"
@@ -733,3 +732,4 @@ const MainDashboard = () => {
 };
 
 export default MainDashboard;
+
