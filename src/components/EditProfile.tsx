@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef} from "react";
 import characterImg from "../../public/assets/aleximage.png";
 import bground from "../../public/assets/lightbg.png";
 import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
@@ -83,7 +83,7 @@ const EditProfile = () => {
   const [bigThumbTitle, setBigThumbTitle] = useState("");
   const [bigThumbUrl, setBigThumbUrl] = useState("");
   const [bigThumbImage, setBigThumbImage] = useState("");
-  const userId = localStorage.getItem("userId");
+  // const userId = localStorage.getItem("userId");
   const [bigThumbPreview, setBigThumbPreview] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -189,7 +189,16 @@ const EditProfile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        const data = response.data;
         setUserData(response.data);
+        setMerchData(response.data.merch || []); // <-- pull merch here
+        setBigThumbnails(response.data.bigThumbnails || []);
+        setUploadedImages(response.data.gallery || []);
+        // contact info
+        setEmail(data.email || "");
+        setPhoneNumber(data.phoneNumber || "");
+        setWebsiteUrl(data.websiteUrl || "");
+        setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -267,10 +276,10 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
-    
-    
+
+
     if (!title || !url || !type) {
-      
+
       alert("Title, URL, and Thumbnail Type are required.");
       return;
     }
@@ -301,7 +310,6 @@ const EditProfile = () => {
       setBigThumbPreview(null);
       setBigThumbType("");
       setSelectedColor("");
-      fetchBigThumbnails();
     } catch (error) {
       console.error("Error adding big thumbnail:", error);
       alert("Failed to add thumbnail. Please try again.");
@@ -309,24 +317,6 @@ const EditProfile = () => {
       setIsBioUpdating(false);
     }
   };
-
-  // Function to fetch big thumbnails
-  const fetchBigThumbnails = useCallback(async () => {
-    try {
-      const token = Cookies.get("token");
-      const res = await api.get(`/api/thumbnails/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setBigThumbnails(res.data);
-    } catch (err) {
-      console.error("Error fetching thumbnails:", err);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    fetchBigThumbnails();
-  }, [fetchBigThumbnails]);
-
   // Function to handle deleting a thumbnail
   const handleDelete = async (id: string) => {
     try {
@@ -369,7 +359,7 @@ const EditProfile = () => {
         },
       });
       alert("Uploaded Successfully!");
-      fetchMerch();
+
       resetForm();
       setIsAddMerch(false);
     } catch (err) {
@@ -404,7 +394,7 @@ const EditProfile = () => {
         },
       });
       alert("Updated Successfully!");
-      fetchMerch(); // Refresh merch list
+
       resetForm(); // Reset form fields
       setIsEditMerch(false); // Close dialog
     } catch (err) {
@@ -422,25 +412,6 @@ const EditProfile = () => {
     setThumbnail(null);
     setEditMerchId(null); // Reset ID
   };
-
-  // Function to fetch merch data
-  const fetchMerch = useCallback(async () => {
-    try {
-      const token = Cookies.get("token");
-      const res = await api.get(`/api/merch/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setMerchData(res.data.merch);
-    } catch (err) {
-      console.error("Error fetching merch data:", err);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    fetchMerch();
-  }, [fetchMerch]);
 
   // Function to handle deleting a merch item
   const handleDeleteMerch = async (merchId: string) => {
@@ -486,42 +457,11 @@ const EditProfile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchUploadedImages();
       console.log("Upload success:", response.data);
     } catch (error) {
       console.error("Upload failed:", error);
     }
   };
-
-  // Function to fetch uploaded images
-  const fetchUploadedImages = async () => {
-    const token = Cookies.get("token");
-    const userId = localStorage.getItem("userId");
-
-    if (!userId) {
-      console.error("No userId found in localStorage");
-      return;
-    }
-    try {
-      const response = await api.get(`/api/gallery/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setUploadedImages(response.data.gallery);
-    } catch (error) {
-      console.error("Error fetching uploaded images:", error);
-      setUploadedImages([]);
-    }
-  };
-
-  // useEffect(() => {}, [uploadedImages]);
-
-  useEffect(() => {
-    fetchUploadedImages();
-  }, []);
-
   const handleDeleteImage = async (imageId: string) => {
     const token = Cookies.get("token");
 
@@ -531,7 +471,6 @@ const EditProfile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchUploadedImages();
     } catch (error) {
       console.error("Error deleting image:", error);
     }
@@ -575,46 +514,11 @@ const EditProfile = () => {
         alert("Contact info added successfully!");
         setContactExists(true);
       }
-
-      await fetchContactInfo();
     } catch (error) {
       console.error("Error submitting contact info:", error);
       alert("Failed to submit contact info.");
     }
   };
-
-  const fetchContactInfo = useCallback(async () => {
-    const token = Cookies.get("token");
-    const userId = localStorage.getItem("userId");
-
-    if (!token || !userId) {
-      console.error("Missing token or userId");
-      return;
-    }
-
-    try {
-      const response = await api.get(`/api/contact-info/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.data) {
-        setEmail(response.data.email || "");
-        setPhoneNumber(response.data.phoneNumber || "");
-        setWebsiteUrl(response.data.websiteUrl || "");
-        setContactExists(true);
-      } else {
-        setContactExists(false);
-      }
-    } catch (error) {
-      console.error("Error fetching contact info:", error);
-      setContactExists(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchContactInfo();
-  }, [fetchContactInfo]);
-
   const handleToggle = async (
     section: string,
     currentValue: boolean,
@@ -986,7 +890,7 @@ const EditProfile = () => {
                     ></div>
                   </label>
                 </div>
-                
+
                 {/* Add Bio Button */}
                 <div className="px-6 pb-2">
                   <button
