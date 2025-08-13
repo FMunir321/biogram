@@ -11,6 +11,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import api from "@/service/api";
+import baseUrl from "@/service/api";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
@@ -94,7 +95,7 @@ const EditProfile = () => {
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [preview, setPreview] = useState("");
+  // const [preview, setPreview] = useState("");
   const [merchData, setMerchData] = useState<MerchItem[]>([]);
 
   // const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -114,6 +115,7 @@ const EditProfile = () => {
   const [contactInfo, setContactInfo] = useState(false);
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
   const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">("shots");
+  const [preview, setPreview] = useState<string | null>(null);
 
 
   const sections = [
@@ -222,20 +224,27 @@ const EditProfile = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+  
+    // Show preview before uploading
+    setPreview(URL.createObjectURL(file));
+  
     setIsUploading(true);
     try {
       const token = Cookies.get("token");
       const formData = new FormData();
       formData.append("profileImage", file);
-
+  
       const response = await api.patch(`/api/user/profile-image`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+  
+      // Update user data so image changes everywhere
       setUserData(response.data);
       setUploadedImg(null);
+      setPreview(null); // use server URL after upload
     } catch (error) {
       console.error("Error uploading image:", error);
     } finally {
@@ -288,25 +297,17 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
-
-
     if (!title || !url || !type) {
-
       alert("Title, URL, and Thumbnail Type are required.");
       return;
     }
     setIsBioUpdating(true);
+  
     try {
       const token = Cookies.get("token");
-      const payload = {
-        title,
-        url,
-        thumbnailImage,
-        type,
-        background,
-      };
-
-      await api.post(
+      const payload = { title, url, thumbnailImage, type, background };
+  
+      const res = await api.post(
         "/api/thumbnails",
         payload,
         {
@@ -315,6 +316,11 @@ const EditProfile = () => {
           },
         }
       );
+  
+      // ⬇️ Update thumbnails state instantly so preview appears
+      setBigThumbnails((prev) => [...prev, res.data]);
+  
+      // Close modal + reset form
       setIsBigThumbnailOpen(false);
       setBigThumbTitle("");
       setBigThumbUrl("");
@@ -322,6 +328,7 @@ const EditProfile = () => {
       setBigThumbPreview(null);
       setBigThumbType("");
       setSelectedColor("");
+  
     } catch (error) {
       console.error("Error adding big thumbnail:", error);
       alert("Failed to add thumbnail. Please try again.");
@@ -329,6 +336,7 @@ const EditProfile = () => {
       setIsBioUpdating(false);
     }
   };
+  
   // Function to handle deleting a thumbnail
   const handleDelete = async (id: string) => {
     try {
