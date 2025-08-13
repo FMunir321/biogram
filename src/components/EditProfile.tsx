@@ -111,6 +111,8 @@ const EditProfile = () => {
   const [isAddBio, setIsAddBio] = useState(false);
   const [contactInfo, setContactInfo] = useState(false);
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
+  const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">("shots");
+
 
   const sections = [
     {
@@ -178,33 +180,58 @@ const EditProfile = () => {
     fetchVisibilitySettings();
   }, []);
 
-  useEffect(() => {
+  
     const fetchUser = async () => {
       try {
         const token = Cookies.get("token");
         const userId = localStorage.getItem("userId");
-
+    
         const response = await api.get(`/api/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         const data = response.data;
-        setUserData(response.data);
-        setMerchData(response.data.merch || []); // <-- pull merch here
-        setBigThumbnails(response.data.bigThumbnails || []);
-        setUploadedImages(response.data.gallery || []);
+        setUserData(data);
+        setMerchData(data.merch || []);
+        setBigThumbnails(data.bigThumbnails || []);
+        setUploadedImages(data.gallery || []);
+    
         // contact info
         setEmail(data.email || "");
         setPhoneNumber(data.phoneNumber || "");
         setWebsiteUrl(data.websiteUrl || "");
         setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
+    
+        // shouts/media processing
+        const shouts = data.shouts || [];
+        calculateShoutAndMediaCounts(shouts);
+    
+        const media = shouts.map((shout: any) => {
+          let url = shout.videoUrl || "";
+          if (!url.startsWith("http")) {
+            url = `http://3.111.146.115:5000${url}`;
+          }
+          if (!shout.isMedia && url.includes("/videos/")) {
+            url = url.replace("/videos/", "/images/");
+          }
+          return {
+            id: shout._id,
+            url,
+            isVideo: shout.isMedia,
+          };
+        });
+    
+        setUploadedMedia(media);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-    fetchUser();
-  }, []);
+    
+    // 2️⃣ Call it in useEffect
+    useEffect(() => {
+      fetchUser();
+    }, []);
 
   //handle file change
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -558,132 +585,83 @@ const EditProfile = () => {
       return false;
     }
   };
-
-  // postshout
-  const fetchShouts = async () => {
-    try {
-      const token = Cookies.get("token");
-      if (!token) return;
-
-      const res = await api.get(`/api/shouts`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const shouts = res.data?.shouts || [];
-
-      // Calculate counts for shouts and media
-      calculateShoutAndMediaCounts(shouts);
-
-      const media = shouts.map((shout: any) => {
-        let url = shout.videoUrl || "";
-
-        // Agar relative URL hai to full path banao
-        if (!url.startsWith("http")) {
-          url = `http://3.111.146.115:5000${url}`;
-        }
-
-        // Agar isMedia false hai (image), aur path videos ka hai, to fix karo
-        if (!shout.isMedia && url.includes("/videos/")) {
-          url = url.replace("/videos/", "/images/");
-        }
-
-        return {
-          id: shout._id,
-          url,
-          isVideo: shout.isMedia, // true = video, false = image
-        };
-      });
-
-      setUploadedMedia(media);
-    } catch (err) {
-      console.error("Failed to fetch shouts:", err);
-    }
-  };
-
   useEffect(() => {
-    fetchShouts();
+    fetchUser();
   }, []);
 
-  // ✅ POST image/video
-  const postShout = async (
-    file: File,
-    isMedia: boolean = false
-  ): Promise<any> => {
-    try {
-      const token = Cookies.get("token");
-      if (!token) return;
+ // 3️⃣ POST Image/Video (refresh with fetchUser)
+const postShout = async (file: File, isMedia: boolean = false): Promise<any> => {
+  try {
+    const token = Cookies.get("token");
+    if (!token) return;
 
-      const formData = new FormData();
-      formData.append("isMedia", String(isMedia)); // false=image, true=video
-      formData.append("file", file);
+    const formData = new FormData();
+    formData.append("isMedia", String(isMedia));
+    formData.append("file", file);
 
-      const response = await api.post("/api/shouts/create", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    const response = await api.post("/api/shouts/create", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-      return response.data;
-    } catch (error) {
-      console.error("Error posting shout:", error);
-      return null;
+    return response.data;
+  } catch (error) {
+    console.error("Error posting shout:", error);
+    return null;
+  }
+};
+
+// 4️⃣ Upload Image
+const handleImageUpload = () => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+
+  input.onchange = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const posted = await postShout(file, false);
+      if (posted) await fetchUser(); // ✅ refresh user
     }
   };
+  input.click();
+};
 
-  // Upload Image
-  const handleImageUpload = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
+// 5️⃣ Upload Video
+const handleVideoUpload = () => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "video/*";
 
-    input.onchange = async (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      const file = target.files?.[0];
-      if (file) {
-        const posted = await postShout(file, false); // false = image
-        if (posted) await fetchShouts();
-      }
-    };
-    input.click();
-  };
-
-  // Upload Video
-  const handleVideoUpload = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "video/*";
-
-    input.onchange = async (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      const file = target.files?.[0];
-      if (file) {
-        const posted = await postShout(file, true); // true = video
-        if (posted) await fetchShouts();
-      }
-    };
-    input.click();
-  };
-
-  // Delete Shout
-  const deleteShout = async (id: string) => {
-    try {
-      const token = Cookies.get("token");
-      if (!token) return;
-
-      await api.delete(`/api/shouts/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      await fetchShouts();
-    } catch (error) {
-      console.error("Failed to delete shout:", error);
+  input.onchange = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const posted = await postShout(file, true);
+      if (posted) await fetchUser(); // ✅ refresh user
     }
   };
+  input.click();
+};
 
-  const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">(
-    "shots"
-  );
+// 6️⃣ Delete Shout
+const deleteShout = async (id: string) => {
+  try {
+    const token = Cookies.get("token");
+    if (!token) return;
+
+    await api.delete(`/api/shouts/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    await fetchUser(); // ✅ refresh user
+  } catch (error) {
+    console.error("Failed to delete shout:", error);
+  }
+};
 
   // Count variables for shouts and media
   const [shoutCount, setShoutCount] = useState(0);
