@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef} from "react";
+import { useState, useRef } from "react";
 import characterImg from "../../public/assets/aleximage.png";
 import bground from "../../public/assets/lightbg.png";
 import Thumbnail from "../../public/assets/edit-profile/thumbnail.svg";
@@ -116,6 +116,7 @@ const EditProfile = () => {
   const [uploadedMedia, setUploadedMedia] = useState<UploadedMedia[]>([]);
   const [shoutMediaTab, setShoutMediaTab] = useState<"shots" | "media">("shots");
   const [preview, setPreview] = useState<string | null>(null);
+  // const token = localStorage.getItem("token");
 
 
   const sections = [
@@ -142,10 +143,10 @@ const EditProfile = () => {
 
   const imageToShow = uploadedImg || characterImg;
 
-  useEffect(() => {
-    console.log("EditProfile mounted");
-    return () => console.log("EditProfile unmounted");
-  }, []);
+  // useEffect(() => {
+  //   console.log("EditProfile mounted");
+  //   return () => console.log("EditProfile unmounted");
+  // }, []);
 
   const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -156,21 +157,27 @@ const EditProfile = () => {
       setBigThumbImage("");
     };
     reader.readAsDataURL(file);
-  }; 
+  };
+  
   const fetchUser = async () => {
     try {
       const token = Cookies.get("token");
-    const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
 
-    const response = await api.get(`/api/user/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      const response = await api.get(`/api/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
+      console.log("Fetched smallThumbnails from server:", data.smallThumbnails);
 
       setUserData(data);
       setMerchData(data.merch || []);
-      setBigThumbnails(data.bigThumbnails || []);
+      setBigThumbnails(
+        (data.featuredLinks || []).filter((link: any) => link.type === "large")
+      );
+      setThumbnail(data.featuredLinks?.filter((link: any) => link.type === "small") || []);
       setUploadedImages(data.gallery || []);
+     
 
       // contact info
       setEmail(data.email || "");
@@ -179,11 +186,11 @@ const EditProfile = () => {
       setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
 
       setIsBioEnabled(data?.visibilitySettings?.bio || false);
-    setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
-    setMerchToggle(data?.visibilitySettings?.merch || false);
-    setShoutsToggle(data?.visibilitySettings?.shouts || false);
-    setGalleryToggle(data?.visibilitySettings?.gallery || false);
-    setContactInfo(data?.visibilitySettings?.contactInfo || false);
+      setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
+      setMerchToggle(data?.visibilitySettings?.merch || false);
+      setShoutsToggle(data?.visibilitySettings?.shouts || false);
+      setGalleryToggle(data?.visibilitySettings?.gallery || false);
+      setContactInfo(data?.visibilitySettings?.contactInfo || false);
 
       // shouts/media processing
       const shouts = data.shouts || [];
@@ -201,7 +208,7 @@ const EditProfile = () => {
       });
 
       setUploadedMedia(media);
-    }catch (error: any) {
+    } catch (error: any) {
       if (error.code === "ERR_NETWORK") {
         console.warn("Network issue detected. Retrying...");
         setTimeout(fetchUser, 2000); // retry after 2 seconds
@@ -224,23 +231,23 @@ const EditProfile = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
+
     // Show preview before uploading
     setPreview(URL.createObjectURL(file));
-  
+
     setIsUploading(true);
     try {
       const token = Cookies.get("token");
       const formData = new FormData();
       formData.append("profileImage", file);
-  
+
       const response = await api.patch(`/api/user/profile-image`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
       // Update user data so image changes everywhere
       setUserData(response.data);
       setUploadedImg(null);
@@ -297,46 +304,31 @@ const EditProfile = () => {
     type: string,
     background: string
   ) => {
-    if (!title || !url || !type) {
-      alert("Title, URL, and Thumbnail Type are required.");
-      return;
-    }
-    setIsBioUpdating(true);
-  
     try {
       const token = Cookies.get("token");
       const payload = { title, url, thumbnailImage, type, background };
   
-      const res = await api.post(
-        "/api/thumbnails",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      // show instantly
+      setBigThumbnails((prev) => [
+        ...prev,
+        { title, url, thumbnailImage, type, background }
+      ]);
   
-      // ⬇️ Update thumbnails state instantly so preview appears
-      setBigThumbnails((prev) => [...prev, res.data]);
+      // send to server
+      await api.post("/api/thumbnails", payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
   
-      // Close modal + reset form
-      setIsBigThumbnailOpen(false);
-      setBigThumbTitle("");
-      setBigThumbUrl("");
-      setBigThumbImage("");
-      setBigThumbPreview(null);
-      setBigThumbType("");
-      setSelectedColor("");
+      // re-fetch authoritative data
+      await fetchUser();
   
-    } catch (error) {
-      console.error("Error adding big thumbnail:", error);
-      alert("Failed to add thumbnail. Please try again.");
-    } finally {
-      setIsBioUpdating(false);
+    } catch (err) {
+      console.error("Error adding big thumbnail:", err);
     }
   };
   
+
+
   // Function to handle deleting a thumbnail
   const handleDelete = async (id: string) => {
     try {
@@ -579,79 +571,79 @@ const EditProfile = () => {
     }
   };
 
- // 3️⃣ POST Image/Video (refresh with fetchUser)
-const postShout = async (file: File, isMedia: boolean = false): Promise<any> => {
-  try {
-    const token = Cookies.get("token");
-    if (!token) return;
+  // 3️⃣ POST Image/Video (refresh with fetchUser)
+  const postShout = async (file: File, isMedia: boolean = false): Promise<any> => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
 
-    const formData = new FormData();
-    formData.append("isMedia", String(isMedia));
-    formData.append("file", file);
+      const formData = new FormData();
+      formData.append("isMedia", String(isMedia));
+      formData.append("file", file);
 
-    const response = await api.post("/api/shouts/create", formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      const response = await api.post("/api/shouts/create", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    return response.data;
-  } catch (error) {
-    console.error("Error posting shout:", error);
-    return null;
-  }
-};
-
-// 4️⃣ Upload Image
-const handleImageUpload = () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-
-  input.onchange = async (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      const posted = await postShout(file, false);
-      if (posted) await fetchUser(); // ✅ refresh user
+      return response.data;
+    } catch (error) {
+      console.error("Error posting shout:", error);
+      return null;
     }
   };
-  input.click();
-};
 
-// 5️⃣ Upload Video
-const handleVideoUpload = () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "video/*";
+  // 4️⃣ Upload Image
+  const handleImageUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
 
-  input.onchange = async (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      const posted = await postShout(file, true);
-      if (posted) await fetchUser(); // ✅ refresh user
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        const posted = await postShout(file, false);
+        if (posted) await fetchUser(); // ✅ refresh user
+      }
+    };
+    input.click();
+  };
+
+  // 5️⃣ Upload Video
+  const handleVideoUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        const posted = await postShout(file, true);
+        if (posted) await fetchUser(); // ✅ refresh user
+      }
+    };
+    input.click();
+  };
+
+  // 6️⃣ Delete Shout
+  const deleteShout = async (id: string) => {
+    try {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      await api.delete(`/api/shouts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      await fetchUser(); // ✅ refresh user
+    } catch (error) {
+      console.error("Failed to delete shout:", error);
     }
   };
-  input.click();
-};
-
-// 6️⃣ Delete Shout
-const deleteShout = async (id: string) => {
-  try {
-    const token = Cookies.get("token");
-    if (!token) return;
-
-    await api.delete(`/api/shouts/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    await fetchUser(); // ✅ refresh user
-  } catch (error) {
-    console.error("Failed to delete shout:", error);
-  }
-};
 
   // Count variables for shouts and media
   const [shoutCount, setShoutCount] = useState(0);
@@ -942,7 +934,7 @@ const deleteShout = async (id: string) => {
                                 item.thumbnailImage
                                   ? item.thumbnailImage.startsWith("data:image")
                                     ? item.thumbnailImage
-                                    : `http://3.111.146.115:5000${item.thumbnailImage}`
+                                    : `${baseUrl}${item.thumbnailImage}`
                                   : "/default-thumbnail.png"
                               }
                               alt={item.title}
