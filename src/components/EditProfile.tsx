@@ -175,7 +175,11 @@ const EditProfile = () => {
       setBigThumbnails(
         (data.featuredLinks || []).filter((link: any) => link.type === "large")
       );
-      setThumbnail(data.featuredLinks?.filter((link: any) => link.type === "small") || []);
+      setBigThumbnails([
+        ...(data.featuredLinks?.filter((link: any) => link.type === "large") || []),
+        ...(data.featuredLinks?.filter((link: any) => link.type === "small") || [])
+      ]);
+      
       setUploadedImages(data.gallery || []);
      
 
