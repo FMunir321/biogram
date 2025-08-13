@@ -62,10 +62,12 @@ type UploadedMedia = {
   url: string;
   isVideo: boolean;
 };
+let hasFetchedUser = false;
 const EditProfile = () => {
   // const [isCustomLinksOpen, setIsCustomLinksOpen] = useState(false);
   const [uploadedImg, setUploadedImg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fetchedRef = useRef(false); // 👈 flag to track first call
   // const [isBioEnabled, setIsBioEnabled] = useState(false);
 
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
@@ -138,6 +140,11 @@ const EditProfile = () => {
 
   const imageToShow = uploadedImg || characterImg;
 
+  useEffect(() => {
+    console.log("EditProfile mounted");
+    return () => console.log("EditProfile unmounted");
+  }, []);
+
   const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -147,91 +154,69 @@ const EditProfile = () => {
       setBigThumbImage("");
     };
     reader.readAsDataURL(file);
+  }; 
+  const fetchUser = async () => {
+    try {
+      const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+
+    const response = await api.get(`/api/user/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = response.data;
+
+      setUserData(data);
+      setMerchData(data.merch || []);
+      setBigThumbnails(data.bigThumbnails || []);
+      setUploadedImages(data.gallery || []);
+
+      // contact info
+      setEmail(data.email || "");
+      setPhoneNumber(data.phoneNumber || "");
+      setWebsiteUrl(data.websiteUrl || "");
+      setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
+
+      setIsBioEnabled(data?.visibilitySettings?.bio || false);
+    setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
+    setMerchToggle(data?.visibilitySettings?.merch || false);
+    setShoutsToggle(data?.visibilitySettings?.shouts || false);
+    setGalleryToggle(data?.visibilitySettings?.gallery || false);
+    setContactInfo(data?.visibilitySettings?.contactInfo || false);
+
+      // shouts/media processing
+      const shouts = data.shouts || [];
+      calculateShoutAndMediaCounts(shouts);
+
+      const media = shouts.map((shout: any) => {
+        let url = shout.videoUrl || "";
+        if (!url.startsWith("http")) {
+          url = `http://3.111.146.115:5000${url}`;
+        }
+        if (!shout.isMedia && url.includes("/videos/")) {
+          url = url.replace("/videos/", "/images/");
+        }
+        return { id: shout._id, url, isVideo: shout.isMedia };
+      });
+
+      setUploadedMedia(media);
+    }catch (error: any) {
+      if (error.code === "ERR_NETWORK") {
+        console.warn("Network issue detected. Retrying...");
+        setTimeout(fetchUser, 2000); // retry after 2 seconds
+      } else {
+        console.error("Error fetching user:", error);
+      }
+    }
   };
 
   useEffect(() => {
-    const fetchVisibilitySettings = async () => {
-      try {
-        const token = Cookies.get("token");
-        const userId = localStorage.getItem("userId");
-        if (!token) {
-          console.error("Token not found");
-          return;
-        }
-
-        const res = await api.get(`/api/user/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = res.data;
-        setIsBioEnabled(data?.visibilitySettings?.bio || false);
-        setFeatureLinkToggle(data?.visibilitySettings?.featuredLinks || false);
-        setMerchToggle(data?.visibilitySettings?.merch || false);
-        setShoutsToggle(data?.visibilitySettings?.shouts || false);
-        setGalleryToggle(data?.visibilitySettings?.gallery || false);
-        setContactInfo(data?.visibilitySettings?.contactInfo || false);
-      } catch (error) {
-        console.error("Error fetching visibility settings:", error);
-      }
-    };
-
-    fetchVisibilitySettings();
+    if (!hasFetchedUser) {
+      hasFetchedUser = true;
+      fetchUser();
+    }
   }, []);
 
-  
-    const fetchUser = async () => {
-      try {
-        const token = Cookies.get("token");
-        const userId = localStorage.getItem("userId");
-    
-        const response = await api.get(`/api/user/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = response.data;
-        setUserData(data);
-        setMerchData(data.merch || []);
-        setBigThumbnails(data.bigThumbnails || []);
-        setUploadedImages(data.gallery || []);
-    
-        // contact info
-        setEmail(data.email || "");
-        setPhoneNumber(data.phoneNumber || "");
-        setWebsiteUrl(data.websiteUrl || "");
-        setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
-    
-        // shouts/media processing
-        const shouts = data.shouts || [];
-        calculateShoutAndMediaCounts(shouts);
-    
-        const media = shouts.map((shout: any) => {
-          let url = shout.videoUrl || "";
-          if (!url.startsWith("http")) {
-            url = `http://3.111.146.115:5000${url}`;
-          }
-          if (!shout.isMedia && url.includes("/videos/")) {
-            url = url.replace("/videos/", "/images/");
-          }
-          return {
-            id: shout._id,
-            url,
-            isVideo: shout.isMedia,
-          };
-        });
-    
-        setUploadedMedia(media);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    
-    // 2️⃣ Call it in useEffect
-    useEffect(() => {
-      fetchUser();
-    }, []);
+
 
   //handle file change
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -585,9 +570,6 @@ const EditProfile = () => {
       return false;
     }
   };
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
  // 3️⃣ POST Image/Video (refresh with fetchUser)
 const postShout = async (file: File, isMedia: boolean = false): Promise<any> => {
