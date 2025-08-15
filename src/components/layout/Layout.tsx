@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import api from "@/service/api";
+import api, { baseUrl } from "@/service/api";
 import logo from "../../../public/assets/Biogramlogo.png";
 import Search from "../../../public/assets/menue/search.svg";
 import Profile from "../../../public/assets/menue/profile.svg";
@@ -228,7 +228,7 @@ const Layout = ({ children }: LayoutProps) => {
             <div className="flex items-center gap-3 p-3 mt-6 bg-opacity-50 rounded-xl">
 
               <img
-                src={currentUser?.profileImage ? `http://3.111.146.115:5000${currentUser.profileImage}` : "/assets/avatar.png"}
+                src={currentUser?.profileImage ? `${baseUrl}${currentUser.profileImage}` : "/assets/avatar.png"}
                 alt="Profile"
                 className="w-[50px] h-[50px] rounded-full ring-2 ring-black"
               />

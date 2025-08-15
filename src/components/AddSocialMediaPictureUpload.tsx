@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef, ChangeEvent } from "react";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import api from "@/service/api";
+import api, { baseUrl } from "@/service/api";
 import { RxCross2 } from "react-icons/rx";
 
 type UploadedMedia = {
@@ -97,7 +97,7 @@ const AddSocialMediaPictureUpload = () => {
 
         // Agar relative URL hai to full path banao
         if (!url.startsWith("http")) {
-          url = `http://3.111.146.115:5000${url}`;
+          url = `${baseUrl}${url}`;
         }
 
         // Agar isMedia false hai (image), aur path videos ka hai, to fix karo

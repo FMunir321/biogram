@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import rightsideemojiimage from "../../public/assets/rightsidegoldenicon.png";
 import { useState } from "react";
 import AddSocialMediapopup from "../components/popup/AddSocialMediapopup";
-import api from "@/service/api";
+import api, { baseUrl } from "@/service/api";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
 const iconMap: Record<string, string> = {
@@ -221,7 +221,7 @@ const AddSocialMedia = () => {
 
         // Agar relative URL hai to full path banao
         if (!url.startsWith("http")) {
-          url = `http://3.111.146.115:5000${url}`;
+          url = `${baseUrl}${url}`;
         }
 
         // Agar isMedia false hai (image), aur path videos ka hai, to fix karo

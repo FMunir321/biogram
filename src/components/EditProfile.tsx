@@ -11,7 +11,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import api from "@/service/api";
-import baseUrl from "@/service/api";
+import {baseUrl} from "@/service/api";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
@@ -168,8 +168,6 @@ const EditProfile = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
-      console.log("Fetched smallThumbnails from server:", data.smallThumbnails);
-
       setUserData(data);
       setMerchData(data.merch || []);
       setBigThumbnails([
@@ -200,7 +198,7 @@ const EditProfile = () => {
       const media = shouts.map((shout: any) => {
         let url = shout.videoUrl || "";
         if (!url.startsWith("http")) {
-          url = `http://3.111.146.115:5000${url}`;
+          url = `${baseUrl}${url}`;
         }
         if (!shout.isMedia && url.includes("/videos/")) {
           url = url.replace("/videos/", "/images/");
@@ -319,7 +317,7 @@ const EditProfile = () => {
       await api.post("/api/thumbnails", payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
-  
+      
       // re-fetch authoritative data
       await fetchUser();
   
@@ -797,7 +795,7 @@ const EditProfile = () => {
                 <img
                   src={
                     userData?.profileImage
-                      ? `http://3.111.146.115:5000${userData.profileImage}`
+                      ? `${baseUrl}${userData.profileImage}`
                       : "/default-profile.png"
                   }
                   alt="Profile character"
@@ -1174,7 +1172,7 @@ const EditProfile = () => {
                             onClick={() => handleDeleteImage(imageObj._id)}
                           />
                           <img
-                            src={`http://3.111.146.115:5000/${imageObj.imageUrl}`}
+                            src={`${baseUrl}/${imageObj.imageUrl}`}
                             alt="Uploaded Image"
                             className="object-cover w-full h-full rounded-2xl mb-2"
                           />

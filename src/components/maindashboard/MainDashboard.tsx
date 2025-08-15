@@ -404,7 +404,7 @@ const MainDashboard = () => {
                                     {shout.imageUrl && (
 
                                       <img
-                                        src={`http://3.111.146.115:5000${shout.imageUrl}`}
+                                        src={`${baseUrl}${shout.imageUrl}`}
                                         alt="shout"
                                         className="w-full h-[90%] object-contain rounded-2xl text-white"
                                       />
@@ -443,7 +443,7 @@ const MainDashboard = () => {
 
                                       <video
                                         controls
-                                        src={`http://3.111.146.115:5000${shout.videoUrl}`}
+                                        src={`${baseUrl}${shout.videoUrl}`}
                                         className="w-full h-full object-contain object-center rounded-xl"
                                       />
 
@@ -641,7 +641,8 @@ const MainDashboard = () => {
                                     className="group block bg-white/5 hover:bg-white/10 rounded-xl p-4 transition duration-300"
                                   >
                                     <img
-                                      src={`${baseUrl}/${item.image}`}
+                                      src={`${baseUrl}/${item.image}`
+                                    }
                                       alt={item.title}
                                       className="w-full h-40 object-cover rounded-md mb-4 group-hover:scale-105 transition-transform"
                                     />
