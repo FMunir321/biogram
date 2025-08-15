@@ -172,9 +172,6 @@ const EditProfile = () => {
 
       setUserData(data);
       setMerchData(data.merch || []);
-      setBigThumbnails(
-        (data.featuredLinks || []).filter((link: any) => link.type === "large")
-      );
       setBigThumbnails([
         ...(data.featuredLinks?.filter((link: any) => link.type === "large") || []),
         ...(data.featuredLinks?.filter((link: any) => link.type === "small") || [])
@@ -973,7 +970,7 @@ const EditProfile = () => {
                                 item.thumbnailImage
                                   ? item.thumbnailImage.startsWith("data:image")
                                     ? item.thumbnailImage
-                                    : `http://3.111.146.115:5000${item.thumbnailImage}`
+                                    : `${baseUrl}${item.thumbnailImage}`
                                   : "/default-thumbnail.png"
                               }
                               alt={item.title}
