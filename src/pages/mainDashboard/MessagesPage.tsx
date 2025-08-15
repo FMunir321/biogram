@@ -98,14 +98,9 @@ const userIdFromQuery = searchParams.get("userId");
 
   // Initialize socket connection on component mount  
   useEffect(() => {
-    console.log('=== SOCKET DEBUG ===');
-    console.log('User ID from localStorage:', userId);
-    console.log('User ID length:', userId.length);
-    console.log('User ID truthy:', !!userId);
-    console.log('Socket already connected:', !!socket);
+   
     
     if (userId && userId.trim() !== '' && !socket) {
-      console.log('Attempting to connect socket for user:', userId);
       connectSocket(userId);
     } else if (socket) {
       console.log('Socket already exists, skipping connection');
@@ -130,7 +125,6 @@ const userIdFromQuery = searchParams.get("userId");
 
     // Join new room if currentChat exists
     if (currentChat?._id) {
-      console.log('Joining chat room:', currentChat._id);
       joinRoom(currentChat._id);
       prevChatRef.current = currentChat._id;
     }
@@ -147,7 +141,6 @@ const userIdFromQuery = searchParams.get("userId");
     if (!socket) return;
 
     const handleNewMessage = (message: Message) => {
-      console.log('Received new message via socket:', message);
       
       // Track that this chat has messages
       setChatsWithMessages(prev => new Set(prev).add(message.chatId));

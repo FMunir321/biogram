@@ -14,7 +14,7 @@ const AddMultiLink: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log({ embedLink, title, cover });
+    console.log({ cover });
   };
 
   return (

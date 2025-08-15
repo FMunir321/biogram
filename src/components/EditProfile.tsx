@@ -11,7 +11,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import api from "@/service/api";
-import {baseUrl} from "@/service/api";
+import { baseUrl } from "@/service/api";
 import { FaRegImage } from "react-icons/fa6";
 import "../components/EditProfile.css";
 import { RxCross2 } from "react-icons/rx";
@@ -72,7 +72,7 @@ const EditProfile = () => {
   // const [isBioEnabled, setIsBioEnabled] = useState(false);
 
   const [isBigThumbnailOpen, setIsBigThumbnailOpen] = useState(false);
-  const [isaddMultiLink, setIsAddMultiLink] = useState(false);
+
   // const [isAddBio, setIsAddBio] = useState(false);
   const [isaddMerch, setIsAddMerch] = useState(false);
   const [isEditMerch, setIsEditMerch] = useState(false);
@@ -143,11 +143,6 @@ const EditProfile = () => {
 
   const imageToShow = uploadedImg || characterImg;
 
-  // useEffect(() => {
-  //   console.log("EditProfile mounted");
-  //   return () => console.log("EditProfile unmounted");
-  // }, []);
-
   const handleBigThumbFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -158,7 +153,7 @@ const EditProfile = () => {
     };
     reader.readAsDataURL(file);
   };
-  
+
   const fetchUser = async () => {
     try {
       const token = Cookies.get("token");
@@ -174,9 +169,9 @@ const EditProfile = () => {
         ...(data.featuredLinks?.filter((link: any) => link.type === "large") || []),
         ...(data.featuredLinks?.filter((link: any) => link.type === "small") || [])
       ]);
-      
+
       setUploadedImages(data.gallery || []);
-     
+
 
       // contact info
       setEmail(data.contactInfo.email || "");
@@ -306,26 +301,26 @@ const EditProfile = () => {
     try {
       const token = Cookies.get("token");
       const payload = { title, url, thumbnailImage, type, background };
-  
+
       // show instantly
       setBigThumbnails((prev) => [
         ...prev,
         { title, url, thumbnailImage, type, background }
       ]);
-  
+
       // send to server
       await api.post("/api/thumbnails", payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       // re-fetch authoritative data
       await fetchUser();
-  
+
     } catch (err) {
       console.error("Error adding big thumbnail:", err);
     }
   };
-  
+
 
 
   // Function to handle deleting a thumbnail
@@ -381,7 +376,6 @@ const EditProfile = () => {
 
   // PUT Handler
   const handleUpdateSubmit = async () => {
-    console.log("Updating merch with ID:", editMerchId); // Debugging
 
     if (!editMerchId) {
       alert("Merch ID not found!");
@@ -429,13 +423,14 @@ const EditProfile = () => {
     try {
       const token = Cookies.get("token");
 
-      const res = await api.delete(`/api/merch/${merchId}`, {
+      await api.delete(`/api/merch/${merchId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+
       });
 
-      console.log("Delete response:", res.data);
+
       setMerchData((prev) => prev.filter((item) => item._id !== merchId));
     } catch (err) {
       console.error("Error deleting merch item:", err);
@@ -462,13 +457,12 @@ const EditProfile = () => {
     const token = Cookies.get("token");
 
     try {
-      const response = await api.post("/api/gallery", formData, {
+      await api.post("/api/gallery", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Upload success:", response.data);
     } catch (error) {
       console.error("Upload failed:", error);
     }
@@ -503,25 +497,25 @@ const EditProfile = () => {
 
     try {
       if (contactExists) {
-        const response = await api.put(
+          await api.put(
           "/api/contact-info",
           { email, phoneNumber, websiteUrl },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log("Contact info updated:", response.data);
+
         alert("Contact info updated successfully!");
       } else {
         // Create using POST
-        const response = await api.post(
+        await api.post(
           "/api/contact-info",
           { email, phoneNumber, websiteUrl },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log("Contact info added:", response.data);
+
         alert("Contact info added successfully!");
         setContactExists(true);
       }
@@ -1002,14 +996,6 @@ const EditProfile = () => {
                   {[1, 2].map((_, idx) => (
                     <div
                       key={idx}
-                      onClick={() => {
-                        if (idx === 0) {
-                          setIsAddMultiLink(true);
-                          console.log("Add Multi Link clicked", isaddMultiLink);
-                        } else {
-                          setIsAddMultiLink(false);
-                        }
-                      }}
                       className="flex-1 py-6 px-4 rounded-lg flex flex-col items-center justify-center bg-gradient-to-r from-[#7ecfa7] to-[#53886c]"
                     >
                       <img
@@ -1092,7 +1078,7 @@ const EditProfile = () => {
                                 <DropdownMenuItem
                                   className="text-white hover:bg-green-300 text-lg px-4 py-1 rounded"
                                   onClick={() => {
-                                    console.log("Selected Item:", item); // Debugging
+
                                     setIsEditMerch(true);
                                     setEditMerchId(String(item._id)); // Use _id from API
                                     setTitle(item.title);

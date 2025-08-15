@@ -164,8 +164,6 @@ const MainDashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Fetched userData:", response.data);
-
       const userData = response.data;
 
       const shouts: Shout[] = userData.shouts || [];
@@ -235,7 +233,6 @@ const MainDashboard = () => {
       );
     });
 
-  console.log("Gallery data:", userDetails?.gallery);
   return (
     <div
       className="flex flex-col md:flex-row justify-center items-stretch h-[calc(100vh-25px)] bg-cover bg-center"

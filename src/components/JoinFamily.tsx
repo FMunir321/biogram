@@ -47,7 +47,7 @@ const JoinTheFamilySection: React.FC = () => {
   ];
 
   const handleSignUp = () => {
-    console.log("Signing up with:", email);
+  
     // Handle sign up logic here
   };
 

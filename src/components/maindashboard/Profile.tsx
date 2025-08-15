@@ -134,8 +134,6 @@ const Profile = () => {
           setShouts(textShouts);
           setMediaShouts(mediaItems);
           
-          console.log("Text Shouts:", textShouts);
-          console.log("Media Shouts:", mediaItems);
         }
 
         // Filter featured links based on type
@@ -150,8 +148,6 @@ const Profile = () => {
           setLargeFeaturedLinks(largeLinks);
           setSmallFeaturedLinks(smallLinks);
           
-          console.log("Large Featured Links:", largeLinks);
-          console.log("Small Featured Links:", smallLinks);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

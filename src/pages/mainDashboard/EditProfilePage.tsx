@@ -7,12 +7,10 @@ const EditProfilePage = () => {
   const location = useLocation();
   
   const handleLandingPageClick = () => {
-    console.log('Landing Page clicked');
     navigate('/edit-profile/landing-page');
   };
 
   const handleDirectLinkClick = () => {
-    console.log('Direct Link clicked');
     navigate('/edit-profile/direct-link');
   };
 

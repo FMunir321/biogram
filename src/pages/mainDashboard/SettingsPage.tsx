@@ -55,7 +55,6 @@ const Settings = () => {
           },
         });
         setUserData(response.data);
-        console.log("userData:", response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

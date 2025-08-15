@@ -16,14 +16,14 @@ const FeaturedLinkForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ title, url, image, background, color });
+    console.log({ image });
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen 
       bg-none md:bg-gradient-to-r md:from-[#98e6c3] md:to-[#4a725f]
       px-4">
-      <form 
+      <form
         onSubmit={handleSubmit}
         className="
           w-full max-w-md 
@@ -32,7 +32,7 @@ const FeaturedLinkForm: React.FC = () => {
         "
       >
         <h2 className="text-xl font-bold mb-4 text-black md:text-white">Add Featured Link</h2>
-        
+
         <div className="mb-4">
           <input
             type="text"
@@ -102,12 +102,12 @@ const FeaturedLinkForm: React.FC = () => {
           </div>
         </div>
         <Link to="/add-multi-link">
-        <button 
-          type="submit" 
-          className="w-full bg-white text-black py-2 rounded mt-4"
-        >
-          Add
-        </button>
+          <button
+            type="submit"
+            className="w-full bg-white text-black py-2 rounded mt-4"
+          >
+            Add
+          </button>
         </Link>
       </form>
     </div>

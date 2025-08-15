@@ -51,7 +51,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const connectSocket = (userId: string) => {
         // Check singleton instance first
         if (globalSocket && globalSocket.connected) {
-            console.log('🔄 Using existing global socket:', globalSocket.id);
+           
             setSocket(globalSocket);
             setIsConnected(true);
             return;
@@ -69,11 +69,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
         connectionInProgress = true;
         const socketURL = getSocketURL();
-        console.log('=== 🚀 SOCKET CONNECTION ATTEMPT ===');
-        console.log('User ID:', userId);
-        console.log('Socket URL:', socketURL);
-        console.log('Global socket state:', globalSocket ? 'exists' : 'null');
-        console.log('Connection in progress:', connectionInProgress);
         
         // Create new socket instance
         const newSocket = io(socketURL, {
@@ -90,11 +85,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         globalSocket = newSocket;
 
         newSocket.on('connect', () => {
-            console.log('✅ Socket connected successfully!');
-            console.log('Socket ID:', newSocket.id);
-            console.log('Transport:', newSocket.io.engine.transport.name);
-            console.log('Adding user to online list:', userId);
-            
             connectionInProgress = false;
             setIsConnected(true);
             setSocket(newSocket);
@@ -102,7 +92,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         });
 
         newSocket.on('disconnect', (reason) => {
-            console.log('❌ Socket disconnected. Reason:', reason);
+         
             console.log('Disconnect details:', {
                 reason: reason,
                 connected: newSocket.connected,
@@ -119,7 +109,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         });
 
         newSocket.on('connect_error', (error) => {
-            console.error('❌ Socket connection error:', error);
+            
             console.error('Error details:', {
                 message: error.message
             });
@@ -160,7 +150,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         });
 
         newSocket.on('getOnlineUsers', (users: string[]) => {
-            console.log('Online users updated:', users);
+            
             setOnlineUsers(users);
         });
 
@@ -169,7 +159,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     const disconnectSocket = () => {
         if (globalSocket) {
-            console.log('🔌 Manually disconnecting global socket:', globalSocket.id);
             globalSocket.removeAllListeners();
             globalSocket.disconnect();
             globalSocket = null;
@@ -187,7 +176,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     const joinRoom = (chatId: string) => {
         if (socket && isConnected) {
-            console.log('Joining room:', chatId);
             socket.emit('joinRoom', chatId);
         } else {
             console.warn('Socket not connected, cannot join room');
@@ -196,14 +184,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     const leaveRoom = (chatId: string) => {
         if (socket && isConnected) {
-            console.log('Leaving room:', chatId);
             socket.emit('leaveRoom', chatId);
         }
     };
 
     const sendMessage = (messageData: MessageData) => {
         if (socket && isConnected) {
-            console.log('Sending message via socket:', messageData);
             socket.emit('sendMessage', messageData);
         } else {
             console.warn('Socket not connected, cannot send message');
