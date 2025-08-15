@@ -179,9 +179,9 @@ const EditProfile = () => {
      
 
       // contact info
-      setEmail(data.email || "");
-      setPhoneNumber(data.phoneNumber || "");
-      setWebsiteUrl(data.websiteUrl || "");
+      setEmail(data.contactInfo.email || "");
+      setPhoneNumber(data.contactInfo.phoneNumber || "");
+      setWebsiteUrl(data.contactInfo.websiteUrl || "");
       setContactExists(!!(data.email || data.phoneNumber || data.websiteUrl));
 
       setIsBioEnabled(data?.visibilitySettings?.bio || false);
