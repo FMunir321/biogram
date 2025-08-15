@@ -466,9 +466,9 @@ const MainDashboard = () => {
                     )}
                   </div>
 
-                  <div className="relative" >
-                    {userDetails?.bio?.trim() && userDetails?.showBio && (
-                      <div className="w-[90%] mx-auto mb-6 px-4 mt-15"> {/* mt-12 adds spacing */}
+                  <div className="relative">
+                    {typeof userDetails?.bio === "string" && userDetails.bio.trim() && userDetails?.showBio && (
+                      <div className="w-[90%] mx-auto mb-6 px-4 mt-15">
                         <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30">
                           <div className="text-center">
                             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">
@@ -490,6 +490,7 @@ const MainDashboard = () => {
                       </div>
                     )}
                   </div>
+
 
                   <div className="relative">
                     {Array.isArray(userDetails?.gallery) &&
@@ -642,7 +643,7 @@ const MainDashboard = () => {
                                   >
                                     <img
                                       src={`${baseUrl}/${item.image}`
-                                    }
+                                      }
                                       alt={item.title}
                                       className="w-full h-40 object-cover rounded-md mb-4 group-hover:scale-105 transition-transform"
                                     />
